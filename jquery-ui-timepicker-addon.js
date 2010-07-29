@@ -340,32 +340,15 @@
 
     //########################################################################
     // the bad hack :/ override datepicker so it doesnt close on select
+    // inspired: http://stackoverflow.com/questions/1252512/jquery-datepicker-prevent-closing-picker-when-clicking-a-date/1762378#1762378
     //########################################################################
-    $.datepicker._selectDate = function(id, dateStr) {
+    $.datepicker._selectDateOverload = $.datepicker._selectDate;
+    $.datepicker._selectDate = function (id, dateStr) {
         var target = $(id);
         var inst = this._getInst(target[0]);
-        var holdDatepickerOpen = (this._get(inst, 'holdDatepickerOpen') === true) ? true : false; // this line for timepicker..
-        dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
-
-        if (inst.input)
-            inst.input.val(dateStr);
-        this._updateAlternate(inst);
-        var onSelect = this._get(inst, 'onSelect');
-        if (onSelect)
-            onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);  // trigger custom callback
-        else if (inst.input)
-            inst.input.trigger('change'); // fire the change event
-        if (inst.inline)
-            this._updateDatepicker(inst);
-        else if (holdDatepickerOpen) { } // this line for timepicker..
-        else {
-            this._hideDatepicker();
-            this._lastInput = inst.input[0];
-            if (typeof (inst.input[0]) != 'object')
-                inst.input.focus(); // restore focus
-            this._lastInput = null;
-        }
-
+        inst.inline = true;
+        $.datepicker._selectDateOverload(id, dateStr);
+        inst.inline = false;
         this._notifyChange(inst);
         this._updateDatepicker(inst);
     };
