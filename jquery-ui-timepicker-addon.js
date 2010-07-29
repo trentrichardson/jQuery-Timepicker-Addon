@@ -367,6 +367,7 @@
         }
 
         this._notifyChange(inst);
+        this._updateDatepicker(inst);
     };
 
     //Change 4 - reduction of code required for override for _updateDatepicker function 
