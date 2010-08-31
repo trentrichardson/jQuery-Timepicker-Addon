@@ -39,7 +39,6 @@
 			showMinute: true,
 			showSecond: false,
 			showTime: true,
-			//----------------------------
 			stepHour: 0.05,
 			stepMinute: 0.05,
 			stepSecond: 0.05,
@@ -49,7 +48,6 @@
 			second: 0,
 			timeFormat: 'hh:mm tt',
 			alwaysSetTime: true
-			//----------------------------
 		},
 
 		//########################################################################
@@ -69,7 +67,6 @@
 				//the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
 				regstr = '.{' + this.defaults.timeFormat.length + ',}\\s+' + regstr;
 			}
-			//--------------------------------------
 
 			var order = this.getFormatPositions();
 			var treg = currDT.match(new RegExp(regstr, 'i'));
@@ -81,9 +78,11 @@
 
 				if (order.h !== -1) {
 					if (this.ampm == 'AM' && treg[order.h] == '12') {
-						this.hour = 0; // 12am = 0 hour
+						// 12am = 0 hour
+						this.hour = 0;
 					} else if (this.ampm == 'PM' && treg[order.h] != '12') {
-						this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); //12pm = 12 hour, any other pm = hour + 12
+						// 12pm = 12 hour, any other pm = hour + 12
+						this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0);
 					} else {
 						this.hour = treg[order.h];
 					}
@@ -99,7 +98,6 @@
 			}
 
 			tp_inst.timeDefined = (treg) ? true : false;
-			//---------------------
 
 			// wait for datepicker to create itself.. 60% of the time it works every time..
 			setTimeout(function() {
@@ -161,7 +159,8 @@
 
 				$tp = $(html);
 
-				if (tp_inst.defaults.timeOnly === true) { // if we only want time picker
+				// if we only want time picker...
+				if (tp_inst.defaults.timeOnly === true) {
 					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all"><div class="ui-datepicker-title">Choose Time</div></div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar, .ui-datepicker-current').hide();
 				}
@@ -175,7 +174,8 @@
 				 * - Pass in Event and UI instance into slide function
 				 */
 				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute').slider({ orientation: "horizontal", value: tp_inst.minute, min:0, max: minMax, step: tp_inst.defaults.stepMinute, slide: function(event, ui) {
-					tp_inst.minute_slider.slider( "option", "value", ui.value ); // update the global minute slider instance value with the current slider value
+					// update the global minute slider instance value with the current slider value
+					tp_inst.minute_slider.slider( "option", "value", ui.value );
 					tp_inst.onTimeChange(dp_inst, tp_inst);
 				} });
 				tp_inst.second_slider = $tp.find('#ui_tpicker_second').slider({ orientation: "horizontal", value: tp_inst.second, min:0, max: secMax, step: tp_inst.defaults.stepSecond, slide: function(event, ui) {
@@ -289,7 +289,6 @@
 					this.formattedDateTime = this.formattedDate + ' ' + this.formattedTime;
 				}
 			}
-			//-----------------------------
 
 			if (this.defaults.timeOnly == true) {
 				this.$input.val(this.formattedTime);
@@ -371,7 +370,7 @@
 		this._updateDatepicker(inst);
 	};
 
-	//Change 4 - reduction of code required for override for _updateDatepicker function
+	// Change 4 - reduction of code required for override for _updateDatepicker function
 	$.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 	//#############################################################################################
 	// second bad hack :/ override datepicker so it triggers an event when changing the input field
