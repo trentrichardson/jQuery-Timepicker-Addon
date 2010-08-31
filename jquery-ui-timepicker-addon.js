@@ -73,7 +73,7 @@
 
 			if (treg) {
 				if (order.t !== -1) {
-					this.ampm = ((treg[order.t] == undefined || treg[order.t].length == 0) ? '' : (treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
+					this.ampm = ((treg[order.t] === undefined || treg[order.t].length === 0) ? '' : (treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
 				}
 
 				if (order.h !== -1) {
