@@ -67,7 +67,7 @@
 
             if (!this.defaults.timeOnly) {
                 //the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
-                regstr = '\\S{' + this.defaults.timeFormat.length + ',}\\s+' + regstr;
+                regstr = '.{' + this.defaults.timeFormat.length + ',}\\s+' + regstr;
             }
             //--------------------------------------
 
