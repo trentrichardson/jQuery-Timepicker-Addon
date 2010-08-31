@@ -40,9 +40,9 @@
             showSecond: false,
             showTime: true,
             //----------------------------
-            stepHour: .05,
-            stepMinute: .05,
-            stepSecond: .05,
+            stepHour: 0.05,
+            stepMinute: 0.05,
+            stepSecond: 0.05,
             ampm: false,
             hour: 0,
             minute: 0,
@@ -75,23 +75,27 @@
             var treg = currDT.match(new RegExp(regstr, 'i'));
 
             if (treg) {
-                if (order.t !== -1)
+                if (order.t !== -1) {
                     this.ampm = ((treg[order.t] == undefined || treg[order.t].length == 0) ? '' : (treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
-
-                if (order.h !== -1) {
-                    if (this.ampm == 'AM' && treg[order.h] == '12')
-                        this.hour = 0; // 12am = 0 hour
-                    else if (this.ampm == 'PM' && treg[order.h] != '12')
-                        this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); //12pm = 12 hour, any other pm = hour + 12
-                    else
-                        this.hour = treg[order.h];
                 }
 
-                if (order.m !== -1)
-                    this.minute = treg[order.m];
+                if (order.h !== -1) {
+                    if (this.ampm == 'AM' && treg[order.h] == '12') {
+                        this.hour = 0; // 12am = 0 hour
+                    } else if (this.ampm == 'PM' && treg[order.h] != '12') {
+                        this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); //12pm = 12 hour, any other pm = hour + 12
+                    } else {
+                        this.hour = treg[order.h];
+                    }
+                }
 
-                if (order.s !== -1)
+                if (order.m !== -1) {
+                    this.minute = treg[order.m];
+                }
+
+                if (order.s !== -1) {
                     this.second = treg[order.s];
+                }
             }
 
             tp_inst.timeDefined = (treg) ? true : false;
@@ -113,8 +117,9 @@
 
             if (finds) {
                 for (var i = 0; i < finds.length; i++) {
-                    if (orders[finds[i].toString().charAt(0)] == -1)
+                    if (orders[finds[i].toString().charAt(0)] == -1) {
                         orders[finds[i].toString().charAt(0)] = i + 1;
+                    }
                 }
             }
 
@@ -139,7 +144,7 @@
             /* End Added by Peter Medeiros */
             
             // Prevent displaying twice
-            if ($dp.find("div#ui-timepicker-div").length == 0) {
+            if ($dp.find("div#ui-timepicker-div").length === 0) {
                 var html = '<div id="ui-timepicker-div">' +
 						'<dl>' +
 						    '<dt id="ui_tpicker_time_label"' + ((tp_inst.defaults.showTime) ? '' : ' style="display:none;"') + '>Time</dt>' +
@@ -155,7 +160,7 @@
 
                 $tp = $(html);
 
-                if (tp_inst.defaults.timeOnly == true) { // if we only want time picker
+                if (tp_inst.defaults.timeOnly === true) { // if we only want time picker
                     $tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all"><div class="ui-datepicker-title">Choose Time</div></div>');
                     $dp.find('.ui-datepicker-header, .ui-datepicker-calendar, .ui-datepicker-current').hide();
                 }
@@ -180,7 +185,7 @@
                 $dp.find('.ui-datepicker-calendar').after($tp);
                 tp_inst.$timeObj = $('#ui_tpicker_time');
 
-                if (dp_inst != null) {
+                if (dp_inst !== null) {
                   
                     var timeDefined = tp_inst.timeDefined;
 
@@ -205,8 +210,9 @@
 
             // if the update was done in the input field, this field should not be updated
             // if the update was done using the sliders, update the input field
-            if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm))
+            if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm)) {
                 hasChanged = true;
+            }
 
             tp_inst.hour = parseFloat(hour).toFixed(0);
             tp_inst.minute = parseFloat(minute).toFixed(0);
@@ -229,9 +235,9 @@
         formatTime: function(inst) {
             var tmptime = inst.defaults.timeFormat.toString();
             var hour12 = ((inst.ampm == 'AM') ? (inst.hour) : (inst.hour % 12));
-            hour12 = (hour12 == 0) ? 12 : hour12;
+            hour12 = (hour12 === 0) ? 12 : hour12;
 
-            if (inst.defaults.ampm == true) {
+            if (inst.defaults.ampm === true) {
                 tmptime = tmptime.toString()
 					.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
 					.replace(/h/g, hour12)
@@ -265,15 +271,17 @@
         updateDateTime: function(dp_inst, tp_inst) {
             var dt = this.$input.datepicker('getDate');
 
-            if (dt == null)
+            if (dt === null) {
                 this.formattedDate = $.datepicker.formatDate($.datepicker._get(dp_inst, 'dateFormat'), new Date(), $.datepicker._getFormatConfig(dp_inst));
-            else this.formattedDate = $.datepicker.formatDate($.datepicker._get(dp_inst, 'dateFormat'), dt, $.datepicker._getFormatConfig(dp_inst));
+            } else {
+                this.formattedDate = $.datepicker.formatDate($.datepicker._get(dp_inst, 'dateFormat'), dt, $.datepicker._getFormatConfig(dp_inst));
+            }
 
             if (this.defaults.alwaysSetTime) {
                 this.formattedDateTime = this.formattedDate + ' ' + this.formattedTime;
             }
             else {
-                if (dt == null || !tp_inst.timeDefined || tp_inst.timeDefined == false) {
+                if (dt === null || !tp_inst.timeDefined || tp_inst.timeDefined === false) {
                     this.formattedDateTime = this.formattedDate;
                 }
                 else {
@@ -282,9 +290,11 @@
             }
             //-----------------------------
 
-            if (this.defaults.timeOnly == true)
+            if (this.defaults.timeOnly == true) {
                 this.$input.val(this.formattedTime);
-            else this.$input.val(this.formattedDateTime);
+            } else {
+                this.$input.val(this.formattedDateTime);
+            }
         }
     };
 
@@ -294,8 +304,9 @@
     jQuery.fn.datetimepicker = function(o) {
         var tp = new Timepicker();
 
-        if (o == undefined)
+        if (o === undefined) {
             o = {};
+        }
 
         tp.defaults = $.extend({}, tp.defaults, o);
 
@@ -310,19 +321,25 @@
 
                 tp.addTimePicker(inst);
 
-                if ($.isFunction(o['beforeShow'])) o.beforeShow(input, inst);
+                if ($.isFunction(o.beforeShow)) {
+                    o.beforeShow(input, inst);
+                }
             },
             onChangeMonthYear: function(year, month, inst) {
                 
                 // Update the time as well : this prevents the time from disappearing from the input field.
                 tp.updateDateTime(inst, tp);
 
-                if ($.isFunction(o['onChangeMonthYear'])) o.onChangeMonthYear(year, month, inst);
+                if ($.isFunction(o.onChangeMonthYear)) {
+                    o.onChangeMonthYear(year, month, inst);
+                }
             },
             onClose: function(dateText, inst) {
                 tp.updateDateTime(inst, tp);
 
-                if ($.isFunction(o['onClose'])) o.onClose(dateText, inst);
+                if ($.isFunction(o.onClose)) {
+                    o.onClose(dateText, inst);
+                }
             }
         });
 
@@ -367,8 +384,9 @@
 
     $.datepicker._beforeShow = function(input, inst) {
         var beforeShow = this._get(inst, 'beforeShow');
-        if (beforeShow)
+        if (beforeShow) {
             beforeShow.apply((inst.input ? inst.input[0] : null), [inst.input, inst]);
+        }
     };
     //End Change 4 --------------------------------------------------------------------
 
@@ -379,7 +397,7 @@
         var inst = $.datepicker._getInst(event.target);
         if ($.datepicker._get(inst, 'constrainInput')) {
             var dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat'));
-            var chr = String.fromCharCode(event.charCode == undefined ? event.keyCode : event.charCode);
+            var chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
             // keyCode == 58 => ":"
             // keyCode == 32 => " "
             return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32);
