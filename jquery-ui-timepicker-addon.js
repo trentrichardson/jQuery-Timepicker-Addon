@@ -37,6 +37,12 @@
 				hour: 0,
 				minute: 0,
 				second: 0,
+				hourMin: 0,
+				minuteMin: 0,
+				secondMin: 0,
+				hourMax: 23,
+				minuteMax: 59,
+				secondMax: 59,
 				alwaysSetTime: true
 			};
 			$.extend(this.defaults, this.regional['']);
@@ -149,9 +155,9 @@
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
-			var hourMax = 23 - (23 % opts.stepHour);
-			var minMax  = 59 - (59 % opts.stepMinute);
-			var secMax  = 59 - (59 % opts.stepSecond);
+			var hourMax = opts.hourMax - (opts.hourMax % opts.stepHour);
+			var minMax  = opts.minuteMax - (opts.minuteMax % opts.stepMinute);
+			var secMax  = opts.secondMax - (opts.secondMax % opts.stepSecond);
 
 			// Prevent displaying twice
 			if ($dp.find("div#ui-timepicker-div").length === 0) {
@@ -181,7 +187,7 @@
 				tp_inst.hour_slider = $tp.find('#ui_tpicker_hour').slider({
 					orientation: "horizontal",
 					value: tp_inst.hour,
-					min: 0,
+					min: opts.hourMin,
 					max: hourMax,
 					step: opts.stepHour,
 					slide: function(event, ui) {
@@ -195,7 +201,7 @@
 				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute').slider({
 					orientation: "horizontal",
 					value: tp_inst.minute,
-					min: 0,
+					min: opts.minuteMin,
 					max: minMax,
 					step: opts.stepMinute,
 					slide: function(event, ui) {
@@ -208,7 +214,7 @@
 				tp_inst.second_slider = $tp.find('#ui_tpicker_second').slider({
 					orientation: "horizontal",
 					value: tp_inst.second,
-					min: 0,
+					min: opts.secondMin,
 					max: secMax,
 					step: opts.stepSecond,
 					slide: function(event, ui) {
