@@ -76,7 +76,7 @@
 
 			if (!this.defaults.timeOnly) {
 				//the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
-				regstr = '.{' + this.defaults.timeFormat.length + ',}\\s+' + regstr;
+				regstr = '.{' + this.defaults.dateFormat.length + ',}\\s+' + regstr;
 			}
 
 			var order = this.getFormatPositions();
@@ -306,7 +306,10 @@
 			var formattedDateTime = this.formattedDate;
 			var timeAvailable = dt !== null && tp_inst.timeDefined;
 
-			if (this.defaults.timeOnly !== true && (this.defaults.alwaysSetTime || timeAvailable)) {
+			if(this.defaults.timeOnly === true){
+				formattedDateTime = this.formattedTime;
+			}
+			else if (this.defaults.timeOnly !== true && (this.defaults.alwaysSetTime || timeAvailable)) {
 				formattedDateTime += ' ' + this.formattedTime;
 			}
 
@@ -315,9 +318,9 @@
 		},
 		
 		setDefaults: function(settings) {
-      extendRemove(this.defaults, settings || {});
-      return this;
-    }
+			extendRemove(this.defaults, settings || {});
+			return this;
+		}
 	};
 
 	//########################################################################
