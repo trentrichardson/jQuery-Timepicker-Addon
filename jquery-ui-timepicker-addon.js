@@ -21,7 +21,12 @@
 			this.regional = []; // Available regional settings, indexed by language code
 			this.regional[''] = { // Default regional settings
 				ampm: false,
-				timeFormat: 'hh:mm tt'
+				timeFormat: 'hh:mm tt',
+				timepickerTitle: 'Choose Time',
+				timeText: 'Time',
+				hourText: 'Hour',
+				minuteText: 'Minute',
+				secondText: 'Second'
 			};
 			this.defaults = { // Global defaults for all the datetime picker instances
 				holdDatepickerOpen: true,
@@ -164,13 +169,13 @@
 				var noDisplay = ' style="display:none;"';
 				var html =
 					'<div id="ui-timepicker-div"><dl>' +
-						'<dt id="ui_tpicker_time_label"'   + ((opts.showTime)   ? '' : noDisplay) + '>Time</dt>' +
+						'<dt id="ui_tpicker_time_label"'   + ((opts.showTime)   ? '' : noDisplay) + '>'+ opts.timeText +'</dt>' +
 						'<dd id="ui_tpicker_time"'         + ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_hour_label"'   + ((opts.showHour)   ? '' : noDisplay) + '>Hour</dt>' +
+						'<dt id="ui_tpicker_hour_label"'   + ((opts.showHour)   ? '' : noDisplay) + '>'+ opts.hourText +'</dt>' +
 						'<dd id="ui_tpicker_hour"'         + ((opts.showHour)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_minute_label"' + ((opts.showMinute) ? '' : noDisplay) + '>Minute</dt>' +
+						'<dt id="ui_tpicker_minute_label"' + ((opts.showMinute) ? '' : noDisplay) + '>'+ opts.minuteText +'</dt>' +
 						'<dd id="ui_tpicker_minute"'       + ((opts.showMinute) ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_second_label"' + ((opts.showSecond) ? '' : noDisplay) + '>Second</dt>' +
+						'<dt id="ui_tpicker_second_label"' + ((opts.showSecond) ? '' : noDisplay) + '>'+ opts.secondText +'</dt>' +
 						'<dd id="ui_tpicker_second"'       + ((opts.showSecond) ? '' : noDisplay) + '></dd>' +
 					'</dl></div>';
 				$tp = $(html);
@@ -179,7 +184,7 @@
 				if (opts.timeOnly === true) {
 					$tp.prepend(
 						'<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' +
-							'<div class="ui-datepicker-title">Choose Time</div>' +
+							'<div class="ui-datepicker-title">'+ opts.timepickerTitle +'</div>' +
 						'</div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar, .ui-datepicker-current').hide();
 				}
