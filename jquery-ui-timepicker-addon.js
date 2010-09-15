@@ -43,7 +43,11 @@
 				hourMax: 23,
 				minuteMax: 59,
 				secondMax: 59,
-				alwaysSetTime: true
+				alwaysSetTime: true,
+        timeText: 'Time',
+        hourText: 'Hour',
+        minuteText: 'Minute',
+        secondText: 'Second'
 			};
 			$.extend(this.defaults, this.regional['']);
 		} else {
@@ -164,13 +168,13 @@
 				var noDisplay = ' style="display:none;"';
 				var html =
 					'<div id="ui-timepicker-div"><dl>' +
-						'<dt id="ui_tpicker_time_label"'   + ((opts.showTime)   ? '' : noDisplay) + '>Time</dt>' +
+						'<dt id="ui_tpicker_time_label"'   + ((opts.showTime)   ? '' : noDisplay) + '>' + tp_inst.defaults.timeText + '</dt>' +
 						'<dd id="ui_tpicker_time"'         + ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_hour_label"'   + ((opts.showHour)   ? '' : noDisplay) + '>Hour</dt>' +
+						'<dt id="ui_tpicker_hour_label"'   + ((opts.showHour)   ? '' : noDisplay) + '>' + tp_inst.defaults.hourText + '</dt>' +
 						'<dd id="ui_tpicker_hour"'         + ((opts.showHour)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_minute_label"' + ((opts.showMinute) ? '' : noDisplay) + '>Minute</dt>' +
+						'<dt id="ui_tpicker_minute_label"' + ((opts.showMinute) ? '' : noDisplay) + '>' + tp_inst.defaults.minuteText + '</dt>' +
 						'<dd id="ui_tpicker_minute"'       + ((opts.showMinute) ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_second_label"' + ((opts.showSecond) ? '' : noDisplay) + '>Second</dt>' +
+						'<dt id="ui_tpicker_second_label"' + ((opts.showSecond) ? '' : noDisplay) + '>' + tp_inst.defaults.secondText + '</dt>' +
 						'<dd id="ui_tpicker_second"'       + ((opts.showSecond) ? '' : noDisplay) + '></dd>' +
 					'</dl></div>';
 				$tp = $(html);
