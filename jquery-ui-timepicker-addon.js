@@ -1,8 +1,8 @@
-﻿/*
+/*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.6
-* Last Modified: 9/1/2010
+* Last Modified: 9/15/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -16,7 +16,35 @@
 */
 
 (function($) {
-	function Timepicker() { }
+	function Timepicker(singleton) {
+		if(typeof(singleton) === 'boolean' && singleton == true) {
+			this.regional = []; // Available regional settings, indexed by language code
+			this.regional[''] = { // Default regional settings
+				ampm: false,
+				timeFormat: 'hh:mm tt'
+			};
+			this.defaults = { // Global defaults for all the datetime picker instances
+				holdDatepickerOpen: true,
+				showButtonPanel: true,
+				timeOnly: false,
+				showHour: true,
+				showMinute: true,
+				showSecond: false,
+				showTime: true,
+				stepHour: 0.05,
+				stepMinute: 0.05,
+				stepSecond: 0.05,
+				hour: 0,
+				minute: 0,
+				second: 0,
+				alwaysSetTime: true
+			};
+			$.extend(this.defaults, this.regional['']);
+		} else {
+			this.defaults = $.extend({}, $.timepicker.defaults);
+		}
+
+	}
 
 	Timepicker.prototype = {
 		$input: null,
@@ -32,25 +60,6 @@
 		formattedDate: '',
 		formattedTime: '',
 		formattedDateTime: '',
-
-		defaults: {
-			holdDatepickerOpen: true,
-			showButtonPanel: true,
-			timeOnly: false,
-			showHour: true,
-			showMinute: true,
-			showSecond: false,
-			showTime: true,
-			stepHour: 0.05,
-			stepMinute: 0.05,
-			stepSecond: 0.05,
-			ampm: false,
-			hour: 0,
-			minute: 0,
-			second: 0,
-			timeFormat: 'hh:mm tt',
-			alwaysSetTime: true
-		},
 
 		//########################################################################
 		// add our sliders to the calendar
@@ -101,10 +110,14 @@
 
 			tp_inst.timeDefined = (treg) ? true : false;
 
+			if (typeof(dp_inst.stay_open) !== 'boolean' || dp_inst.stay_open === false) {
 			// wait for datepicker to create itself.. 60% of the time it works every time..
-			setTimeout(function() {
-				tp_inst.injectTimePicker(dp_inst, tp_inst);
-			}, 10);
+        setTimeout(function() {
+          tp_inst.injectTimePicker(dp_inst, tp_inst);
+        }, 10);
+      } else {
+        tp_inst.injectTimePicker(dp_inst, tp_inst);
+      }
 
 		},
 
@@ -174,7 +187,7 @@
 					slide: function(event, ui) {
 						tp_inst.hour_slider.slider( "option", "value", ui.value );
 						tp_inst.onTimeChange(dp_inst, tp_inst);
-					},
+					}
 				});
 
 				// Updated by Peter Medeiros:
@@ -189,7 +202,7 @@
 						// update the global minute slider instance value with the current slider value
 						tp_inst.minute_slider.slider( "option", "value", ui.value );
 						tp_inst.onTimeChange(dp_inst, tp_inst);
-					},
+					}
 				});
 
 				tp_inst.second_slider = $tp.find('#ui_tpicker_second').slider({
@@ -201,7 +214,7 @@
 					slide: function(event, ui) {
 						tp_inst.second_slider.slider( "option", "value", ui.value );
 						tp_inst.onTimeChange(dp_inst, tp_inst);
-					},
+					}
 				});
 
 				$dp.find('.ui-datepicker-calendar').after($tp);
@@ -299,7 +312,12 @@
 
 			this.formattedDateTime = formattedDateTime;
 			this.$input.val(formattedDateTime);
-		}
+		},
+		
+		setDefaults: function(settings) {
+      extendRemove(this.defaults, settings || {});
+      return this;
+    }
 	};
 
 	//########################################################################
@@ -340,7 +358,7 @@
 		tp.defaults = $.extend({}, tp.defaults, opts, {
 			beforeShow: beforeShowFunc,
 			onChangeMonthYear: onChangeMonthYearFunc,
-			onClose: onCloseFunc,
+			onClose: onCloseFunc
 		});
 
 		$(this).datepicker(tp.defaults);
@@ -363,7 +381,9 @@
 		var target = $(id);
 		var inst = this._getInst(target[0]);
 		inst.inline = true;
+		inst.stay_open = true;
 		$.datepicker._selectDateOverload(id, dateStr);
+		inst.stay_open = false;
 		inst.inline = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -372,18 +392,23 @@
 	$.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 	//#############################################################################################
 	// second bad hack :/ override datepicker so it triggers an event when changing the input field
+	// and does not redraw the datepicker on every selectDate event
 	//#############################################################################################
 	// Generate the date picker content.
 	$.datepicker._updateDatepicker = function(inst) {
-		this._base_updateDatepicker(inst);
-		// Reload the time control when changing something in the input text field.
-		this._beforeShow(inst.input, inst);
+	  if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
+      this._base_updateDatepicker(inst);
+      // Reload the time control when changing something in the input text field.
+      this._beforeShow(inst.input, inst);
+    }
 	};
 
 	$.datepicker._beforeShow = function(input, inst) {
 		var beforeShow = this._get(inst, 'beforeShow');
 		if (beforeShow) {
+		  inst.stay_open = true;
 			beforeShow.apply((inst.input ? inst.input[0] : null), [inst.input, inst]);
+			inst.stay_open = false;
 		}
 	};
 
@@ -400,5 +425,15 @@
 			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32);
 		}
 	};
+	
+/* jQuery extend now ignores nulls! */
+function extendRemove(target, props) {
+	$.extend(target, props);
+	for (var name in props)
+		if (props[name] == null || props[name] == undefined)
+			target[name] = props[name];
+	return target;
+};
 
+$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
