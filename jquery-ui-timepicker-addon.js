@@ -22,7 +22,7 @@
 			this.regional[''] = { // Default regional settings
 				ampm: false,
 				timeFormat: 'hh:mm tt',
-				timepickerTitle: 'Choose Time',
+				timeOnlyTitle: 'Choose Time',
 				timeText: 'Time',
 				hourText: 'Hour',
 				minuteText: 'Minute',
@@ -184,7 +184,7 @@
 				if (opts.timeOnly === true) {
 					$tp.prepend(
 						'<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' +
-							'<div class="ui-datepicker-title">'+ opts.timepickerTitle +'</div>' +
+							'<div class="ui-datepicker-title">'+ opts.timeOnlyTitle +'</div>' +
 						'</div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar, .ui-datepicker-current').hide();
 				}
