@@ -299,7 +299,8 @@
 		// update our input with the new date time..
 		//########################################################################
 		updateDateTime: function(dp_inst, tp_inst) {
-			var dt = this.$input.datepicker('getDate');
+			//var dt = this.$input.datepicker('getDate');
+			var dt = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay);
 			var dateFmt = $.datepicker._get(dp_inst, 'dateFormat');
 			var formatCfg = $.datepicker._getFormatConfig(dp_inst);
 			this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
