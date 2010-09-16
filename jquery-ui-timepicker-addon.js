@@ -364,7 +364,9 @@
 		};
 
 		var onCloseFunc = function(dateText, inst) {
-			tp.updateDateTime(inst, tp);
+			if(tp.timeDefined === true) {
+			  tp.updateDateTime(inst, tp);
+			}
 			if ($.isFunction(opts.onClose)) {
 				opts.onClose(dateText, inst);
 			}
