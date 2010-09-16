@@ -29,7 +29,6 @@
 				secondText: 'Second'
 			};
 			this.defaults = { // Global defaults for all the datetime picker instances
-				holdDatepickerOpen: true,
 				showButtonPanel: true,
 				timeOnly: false,
 				showHour: true,
