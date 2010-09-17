@@ -340,7 +340,21 @@
 	//########################################################################		
 	jQuery.fn.datetimepicker = function(o) {
 		var opts = (o === undefined ? {} : o);
+		var input = $(this);
 		var tp = new Timepicker();
+		var inlineSettings = {};
+		
+		for (var attrName in tp.defaults) {
+			var attrValue = input.attr('time:' + attrName);
+			if (attrValue) {
+				try {
+					inlineSettings[attrName] = eval(attrValue);
+				} catch (err) {
+					inlineSettings[attrName] = attrValue;
+				}
+			}
+		}
+	  tp.defaults = $.extend(tp.defaults, inlineSettings);
 
 		var beforeShowFunc = function(input, inst) {
 			tp.hour = tp.defaults.hour;
