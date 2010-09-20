@@ -88,7 +88,8 @@
 
 			if (!this.defaults.timeOnly) {
 				//the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
-				regstr = '.{' + this.defaults.dateFormat.length + ',}\\s+' + regstr;
+				var dp_dateFormat = $.datepicker._get(dp_inst, 'dateFormat');
+				regstr = '.{' + dp_dateFormat.length + ',}\\s+' + regstr;
 			}
 
 			var order = this.getFormatPositions();
