@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.6
-* Last Modified: 9/15/2010
+* Version 0.6.1
+* Last Modified: 9/20/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -88,8 +88,7 @@
 
 			if (!this.defaults.timeOnly) {
 				//the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
-				var dp_dateFormat = $.datepicker._get(dp_inst, 'dateFormat');
-				regstr = '.{' + dp_dateFormat.length + ',}\\s+' + regstr;
+				regstr = '.{' + this.defaults.dateFormat.length + ',}\\s+' + regstr;
 			}
 
 			var order = this.getFormatPositions();
@@ -490,3 +489,5 @@
 
 	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
+
+
