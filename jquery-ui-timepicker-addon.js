@@ -48,7 +48,11 @@
 				hourMax: 23,
 				minuteMax: 59,
 				secondMax: 59,
-				alwaysSetTime: true
+				alwaysSetTime: true,
+        timeText: 'Time',
+        hourText: 'Hour',
+        minuteText: 'Minute',
+        secondText: 'Second'
 			};
 			$.extend(this.defaults, this.regional['']);
 		} else {
