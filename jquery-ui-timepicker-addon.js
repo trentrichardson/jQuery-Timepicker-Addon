@@ -378,7 +378,7 @@
 		};
 
 		var onCloseFunc = function(dateText, inst) {
-			if(tp.timeDefined === true) {
+			if(tp.timeDefined === true && input.val() != '') {
 				tp.updateDateTime(inst, tp);
 			}
 			if ($.isFunction(opts.onClose)) {
@@ -450,6 +450,7 @@
 	$.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 	$.datepicker._doKeyPress = function(event) {
 		var inst = $.datepicker._getInst(event.target);
+		
 		if ($.datepicker._get(inst, 'constrainInput')) {
 			var dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat'));
 			var chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
@@ -457,6 +458,7 @@
 			// keyCode == 32 => " "
 			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32);
 		}
+
 	};
 
 	//#######################################################################################
@@ -504,3 +506,4 @@
 
 	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
+
