@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.6.1
-* Last Modified: 9/20/2010
+* Version 0.6.2
+* Last Modified: 9/21/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -10,9 +10,9 @@
 * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
 * 
 * HERES THE CSS:
-* #ui-timepicker-div dl{ text-align: left; }
-* #ui-timepicker-div dl dt{ height: 25px; }
-* #ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+* .ui-timepicker-div dl{ text-align: left; }
+* .ui-timepicker-div dl dt{ height: 25px; }
+* .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 */
 
 (function($) {
@@ -30,7 +30,6 @@
 				secondText: 'Second'
 			};
 			this.defaults = { // Global defaults for all the datetime picker instances
-				holdDatepickerOpen: true,
 				showButtonPanel: true,
 				timeOnly: false,
 				showHour: true,
@@ -124,12 +123,12 @@
 
 			if (typeof(dp_inst.stay_open) !== 'boolean' || dp_inst.stay_open === false) {
 			// wait for datepicker to create itself.. 60% of the time it works every time..
-        setTimeout(function() {
-          tp_inst.injectTimePicker(dp_inst, tp_inst);
-        }, 10);
-      } else {
-        tp_inst.injectTimePicker(dp_inst, tp_inst);
-      }
+				setTimeout(function() {
+					tp_inst.injectTimePicker(dp_inst, tp_inst);
+				}, 10);
+			} else {
+				tp_inst.injectTimePicker(dp_inst, tp_inst);
+			}
 
 		},
 
@@ -166,18 +165,18 @@
 			var secMax  = opts.secondMax - (opts.secondMax % opts.stepSecond);
 
 			// Prevent displaying twice
-			if ($dp.find("div#ui-timepicker-div").length === 0) {
+			if ($dp.find("div#ui-timepicker-div-"+ dp_inst.id).length === 0) {
 				var noDisplay = ' style="display:none;"';
 				var html =
-					'<div id="ui-timepicker-div"><dl>' +
-						'<dt id="ui_tpicker_time_label"'   + ((opts.showTime)   ? '' : noDisplay) + '>'+ opts.timeText +'</dt>' +
-						'<dd id="ui_tpicker_time"'         + ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_hour_label"'   + ((opts.showHour)   ? '' : noDisplay) + '>'+ opts.hourText +'</dt>' +
-						'<dd id="ui_tpicker_hour"'         + ((opts.showHour)   ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_minute_label"' + ((opts.showMinute) ? '' : noDisplay) + '>'+ opts.minuteText +'</dt>' +
-						'<dd id="ui_tpicker_minute"'       + ((opts.showMinute) ? '' : noDisplay) + '></dd>' +
-						'<dt id="ui_tpicker_second_label"' + ((opts.showSecond) ? '' : noDisplay) + '>'+ opts.secondText +'</dt>' +
-						'<dd id="ui_tpicker_second"'       + ((opts.showSecond) ? '' : noDisplay) + '></dd>' +
+					'<div class="ui-timepicker-div" id="ui-timepicker-div-'+ dp_inst.id +'"><dl>' +
+						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_'+ dp_inst.id +'"'	+ ((opts.showTime)   ? '' : noDisplay) + '>'+ opts.timeText +'</dt>' +
+						'<dd class="ui_tpicker_time" id="ui_tpicker_time_'+ dp_inst.id +'"'	+ ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_'+ dp_inst.id +'"'   + ((opts.showHour)   ? '' : noDisplay) + '>'+ opts.hourText +'</dt>' +
+						'<dd class="ui_tpicker_hour" id="ui_tpicker_hour_'+ dp_inst.id +'"'	+ ((opts.showHour)   ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_'+ dp_inst.id +'"'	+ ((opts.showMinute) ? '' : noDisplay) + '>'+ opts.minuteText +'</dt>' +
+						'<dd class="ui_tpicker_minute" id="ui_tpicker_minute_'+ dp_inst.id +'"'	+ ((opts.showMinute) ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_'+ dp_inst.id +'"'	+ ((opts.showSecond) ? '' : noDisplay) + '>'+ opts.secondText +'</dt>' +
+						'<dd class="ui_tpicker_second" id="ui_tpicker_second_'+ dp_inst.id +'"'	+ ((opts.showSecond) ? '' : noDisplay) + '></dd>' +
 					'</dl></div>';
 				$tp = $(html);
 
@@ -187,10 +186,10 @@
 						'<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' +
 							'<div class="ui-datepicker-title">'+ opts.timeOnlyTitle +'</div>' +
 						'</div>');
-					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar, .ui-datepicker-current').hide();
+					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 				}
 
-				tp_inst.hour_slider = $tp.find('#ui_tpicker_hour').slider({
+				tp_inst.hour_slider = $tp.find('#ui_tpicker_hour_'+ dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.hour,
 					min: opts.hourMin,
@@ -204,7 +203,7 @@
 
 				// Updated by Peter Medeiros:
 				// - Pass in Event and UI instance into slide function
-				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute').slider({
+				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.minute,
 					min: opts.minuteMin,
@@ -217,7 +216,7 @@
 					}
 				});
 
-				tp_inst.second_slider = $tp.find('#ui_tpicker_second').slider({
+				tp_inst.second_slider = $tp.find('#ui_tpicker_second_'+ dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.second,
 					min: opts.secondMin,
@@ -230,7 +229,7 @@
 				});
 
 				$dp.find('.ui-datepicker-calendar').after($tp);
-				tp_inst.$timeObj = $('#ui_tpicker_time');
+				tp_inst.$timeObj = $('#ui_tpicker_time_'+ dp_inst.id);
 
 				if (dp_inst !== null) {
 					var timeDefined = tp_inst.timeDefined;
@@ -341,7 +340,21 @@
 	//########################################################################		
 	jQuery.fn.datetimepicker = function(o) {
 		var opts = (o === undefined ? {} : o);
+		var input = $(this);
 		var tp = new Timepicker();
+		var inlineSettings = {};
+
+		for (var attrName in tp.defaults) {
+			var attrValue = input.attr('time:' + attrName);
+			if (attrValue) {
+				try {
+					inlineSettings[attrName] = eval(attrValue);
+				} catch (err) {
+					inlineSettings[attrName] = attrValue;
+				}
+			}
+		}
+		tp.defaults = $.extend(tp.defaults, inlineSettings);
 
 		var beforeShowFunc = function(input, inst) {
 			tp.hour = tp.defaults.hour;
@@ -365,7 +378,9 @@
 		};
 
 		var onCloseFunc = function(dateText, inst) {
-			tp.updateDateTime(inst, tp);
+			if(tp.timeDefined === true) {
+				tp.updateDateTime(inst, tp);
+			}
 			if ($.isFunction(opts.onClose)) {
 				opts.onClose(dateText, inst);
 			}
@@ -489,5 +504,3 @@
 
 	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
-
-
