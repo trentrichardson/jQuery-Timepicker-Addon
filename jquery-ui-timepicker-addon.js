@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.6
-* Last Modified: 9/15/2010
+* Version 0.6.1
+* Last Modified: 9/20/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -20,6 +20,7 @@
 		if(typeof(singleton) === 'boolean' && singleton == true) {
 			this.regional = []; // Available regional settings, indexed by language code
 			this.regional[''] = { // Default regional settings
+				currentText: 'Now',
 				ampm: false,
 				timeFormat: 'hh:mm tt',
 				timeOnlyTitle: 'Choose Time',
@@ -91,8 +92,7 @@
 
 			if (!this.defaults.timeOnly) {
 				//the time should come after x number of characters and a space.  x = at least the length of text specified by the date format
-				var dp_dateFormat = $.datepicker._get(dp_inst, 'dateFormat');
-				regstr = '.{' + dp_dateFormat.length + ',}\\s+' + regstr;
+				regstr = '.{' + this.defaults.dateFormat.length + ',}\\s+' + regstr;
 			}
 
 			var order = this.getFormatPositions();
@@ -252,7 +252,7 @@
 			var hour   = tp_inst.hour_slider.slider('value');
 			var minute = tp_inst.minute_slider.slider('value');
 			var second = tp_inst.second_slider.slider('value');
-			var ampm = (tp_inst.hour < 12) ? 'AM' : 'PM';
+			var ampm = (hour < 12) ? 'AM' : 'PM';
 			var hasChanged = false;
 
 			// If the update was done in the input field, this field should not be updated.
@@ -278,37 +278,37 @@
 		//########################################################################
 		// format the time all pretty...
 		//########################################################################
-		formatTime: function(inst) {
-			var tmptime = inst.defaults.timeFormat.toString();
-			var hour12 = ((inst.ampm == 'AM') ? (inst.hour) : (inst.hour % 12));
+		formatTime: function(tp_inst) {
+			var tmptime = tp_inst.defaults.timeFormat.toString();
+			var hour12 = ((tp_inst.ampm == 'AM') ? (tp_inst.hour) : (tp_inst.hour % 12));
 			hour12 = (hour12 === 0) ? 12 : hour12;
 
-			if (inst.defaults.ampm === true) {
+			if (tp_inst.defaults.ampm === true) {
 				tmptime = tmptime.toString()
 					.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
 					.replace(/h/g, hour12)
-					.replace(/mm/g, ((inst.minute < 10) ? '0' : '') + inst.minute)
-					.replace(/m/g, inst.minute)
-					.replace(/ss/g, ((inst.second < 10) ? '0' : '') + inst.second)
-					.replace(/s/g, inst.second)
-					.replace(/TT/g, inst.ampm.toUpperCase())
-					.replace(/tt/g, inst.ampm.toLowerCase())
-					.replace(/T/g, inst.ampm.charAt(0).toUpperCase())
-					.replace(/t/g, inst.ampm.charAt(0).toLowerCase());
+					.replace(/mm/g, ((tp_inst.minute < 10) ? '0' : '') + tp_inst.minute)
+					.replace(/m/g, tp_inst.minute)
+					.replace(/ss/g, ((tp_inst.second < 10) ? '0' : '') + tp_inst.second)
+					.replace(/s/g, tp_inst.second)
+					.replace(/TT/g, tp_inst.ampm.toUpperCase())
+					.replace(/tt/g, tp_inst.ampm.toLowerCase())
+					.replace(/T/g, tp_inst.ampm.charAt(0).toUpperCase())
+					.replace(/t/g, tp_inst.ampm.charAt(0).toLowerCase());
 
 			} else {
 				tmptime = tmptime.toString()
-					.replace(/hh/g, ((inst.hour < 10) ? '0' : '') + inst.hour)
-					.replace(/h/g, inst.hour)
-					.replace(/mm/g, ((inst.minute < 10) ? '0' : '') + inst.minute)
-					.replace(/m/g, inst.minute)
-					.replace(/ss/g, ((inst.second < 10) ? '0' : '') + inst.second)
-					.replace(/s/g, inst.second);
+					.replace(/hh/g, ((tp_inst.hour < 10) ? '0' : '') + tp_inst.hour)
+					.replace(/h/g, tp_inst.hour)
+					.replace(/mm/g, ((tp_inst.minute < 10) ? '0' : '') + tp_inst.minute)
+					.replace(/m/g, tp_inst.minute)
+					.replace(/ss/g, ((tp_inst.second < 10) ? '0' : '') + tp_inst.second)
+					.replace(/s/g, tp_inst.second);
 				tmptime = $.trim(tmptime.replace(/t/gi, ''));
 			}
 
-			inst.formattedTime = tmptime;
-			return inst.formattedTime;
+			tp_inst.formattedTime = tmptime;
+			return tp_inst.formattedTime;
 		},
 
 		//########################################################################
@@ -378,10 +378,12 @@
 		tp.defaults = $.extend({}, tp.defaults, opts, {
 			beforeShow: beforeShowFunc,
 			onChangeMonthYear: onChangeMonthYearFunc,
-			onClose: onCloseFunc
+			onClose: onCloseFunc,
+			timepicker: tp // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
 
 		$(this).datepicker(tp.defaults);
+
 	};
 
 	//########################################################################
@@ -396,31 +398,30 @@
 	// the bad hack :/ override datepicker so it doesnt close on select
 	// inspired: http://stackoverflow.com/questions/1252512/jquery-datepicker-prevent-closing-picker-when-clicking-a-date/1762378#1762378
 	//########################################################################
-	$.datepicker._selectDateOverload = $.datepicker._selectDate;
+	$.datepicker._base_selectDate = $.datepicker._selectDate;
 	$.datepicker._selectDate = function (id, dateStr) {
 		var target = $(id);
 		var inst = this._getInst(target[0]);
 		inst.inline = true;
 		inst.stay_open = true;
-		$.datepicker._selectDateOverload(id, dateStr);
+		$.datepicker._base_selectDate(id, dateStr);
 		inst.stay_open = false;
 		inst.inline = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
 	};
 
-	$.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 	//#############################################################################################
 	// second bad hack :/ override datepicker so it triggers an event when changing the input field
 	// and does not redraw the datepicker on every selectDate event
 	//#############################################################################################
-	// Generate the date picker content.
+	$.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 	$.datepicker._updateDatepicker = function(inst) {
-	  if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
-      this._base_updateDatepicker(inst);
-      // Reload the time control when changing something in the input text field.
-      this._beforeShow(inst.input, inst);
-    }
+		if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
+			this._base_updateDatepicker(inst);
+			// Reload the time control when changing something in the input text field.
+			this._beforeShow(inst.input, inst);
+		}
 	};
 
 	$.datepicker._beforeShow = function(input, inst) {
@@ -435,6 +436,7 @@
 	//#######################################################################################
 	// third bad hack :/ override datepicker so it allows spaces and colan in the input field
 	//#######################################################################################
+	$.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 	$.datepicker._doKeyPress = function(event) {
 		var inst = $.datepicker._getInst(event.target);
 		if ($.datepicker._get(inst, 'constrainInput')) {
@@ -445,15 +447,51 @@
 			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32);
 		}
 	};
-	
-/* jQuery extend now ignores nulls! */
-function extendRemove(target, props) {
-	$.extend(target, props);
-	for (var name in props)
-		if (props[name] == null || props[name] == undefined)
-			target[name] = props[name];
-	return target;
-};
 
-$.timepicker = new Timepicker(true); // singleton instance
+	//#######################################################################################
+	// override "Today" button to also grab the time.
+	//#######################################################################################
+	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
+	$.datepicker._gotoToday = function(id) {
+		$.datepicker._base_gotoToday(id);
+		
+		var target = $(id);
+		var dp_inst = this._getInst(target[0]);
+		var tp_inst = $.datepicker._get(dp_inst, 'timepicker');
+
+		if(tp_inst){
+			var date = new Date();
+			var hour = date.getHours();
+			var minute = date.getMinutes();
+			var second = date.getSeconds();
+
+			//check if within min/max times..
+			if( (hour < tp_inst.defaults.hourMin || hour > tp_inst.defaults.hourMax) || (minute < tp_inst.defaults.minuteMin || minute > tp_inst.defaults.minuteMax) || (second < tp_inst.defaults.secondMin || second > tp_inst.defaults.secondMax) ){					
+				hour = tp_inst.defaults.hourMin;
+				minute = tp_inst.defaults.minuteMin;
+				second = tp_inst.defaults.secondMin;				
+			}
+			
+			tp_inst.hour_slider.slider('value', hour );
+			tp_inst.minute_slider.slider('value', minute );
+			tp_inst.second_slider.slider('value', second );
+
+			tp_inst.onTimeChange(dp_inst, tp_inst);
+		}
+	};
+
+	//#######################################################################################
+	// jQuery extend now ignores nulls!
+	//#######################################################################################
+	function extendRemove(target, props) {
+		$.extend(target, props);
+		for (var name in props)
+			if (props[name] == null || props[name] == undefined)
+				target[name] = props[name];
+		return target;
+	};
+
+	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
+
+
