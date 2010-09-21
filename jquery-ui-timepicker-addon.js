@@ -413,13 +413,20 @@
 	$.datepicker._selectDate = function (id, dateStr) {
 		var target = $(id);
 		var inst = this._getInst(target[0]);
-		inst.inline = true;
-		inst.stay_open = true;
-		$.datepicker._base_selectDate(id, dateStr);
-		inst.stay_open = false;
-		inst.inline = false;
-		this._notifyChange(inst);
-		this._updateDatepicker(inst);
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+		
+		if(tp_inst){
+			inst.inline = true;
+			inst.stay_open = true;
+			$.datepicker._base_selectDate(id, dateStr);
+			inst.stay_open = false;
+			inst.inline = false;
+			this._notifyChange(inst);
+			this._updateDatepicker(inst);
+		}
+		else{
+			$.datepicker._base_selectDate(id, dateStr);
+		}
 	};
 
 	//#############################################################################################
@@ -438,7 +445,7 @@
 	$.datepicker._beforeShow = function(input, inst) {
 		var beforeShow = this._get(inst, 'beforeShow');
 		if (beforeShow) {
-		  inst.stay_open = true;
+			inst.stay_open = true;
 			beforeShow.apply((inst.input ? inst.input[0] : null), [inst.input, inst]);
 			inst.stay_open = false;
 		}
@@ -450,13 +457,20 @@
 	$.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 	$.datepicker._doKeyPress = function(event) {
 		var inst = $.datepicker._getInst(event.target);
-		
-		if ($.datepicker._get(inst, 'constrainInput')) {
-			var dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat'));
-			var chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
-			// keyCode == 58 => ":"
-			// keyCode == 32 => " "
-			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32);
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+
+		if(tp_inst){
+			if ($.datepicker._get(inst, 'constrainInput')) {
+				var dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat'));
+				var chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
+				var chrl = chr.toLowerCase();
+				// keyCode == 58 => ":"
+				// keyCode == 32 => " "
+				return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32 || chr == ':' || chr == ' ' || chrl == 'a' || chrl == 'p' || charl == 'm');
+			}
+		}
+		else{
+			return $.datepicker._base_doKeyPress(event);
 		}
 
 	};
