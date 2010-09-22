@@ -154,7 +154,7 @@
 		// generate and inject html for timepicker into ui datepicker
 		//########################################################################
 		injectTimePicker: function(dp_inst, tp_inst) {
-			var $dp = $('#' + $.datepicker._mainDivId);
+			var $dp = dp_inst.dpDiv;
 			var opts = tp_inst.defaults;
 
 			// Added by Peter Medeiros:
@@ -227,8 +227,9 @@
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
-
+				
 				$dp.find('.ui-datepicker-calendar').after($tp);
+				
 				tp_inst.$timeObj = $('#ui_tpicker_time_'+ dp_inst.id);
 
 				if (dp_inst !== null) {
