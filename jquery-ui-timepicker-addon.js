@@ -3,12 +3,12 @@
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.6.2
 * Last Modified: 9/21/2010
-* 
+*
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
 * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
 * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
-* 
+*
 * HERES THE CSS:
 * .ui-timepicker-div dl{ text-align: left; }
 * .ui-timepicker-div dl dt{ height: 25px; }
@@ -227,9 +227,9 @@
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
-				
+
 				$dp.find('.ui-datepicker-calendar').after($tp);
-				
+
 				tp_inst.$timeObj = $('#ui_tpicker_time_'+ dp_inst.id);
 
 				if (dp_inst !== null) {
@@ -328,8 +328,9 @@
 
 			this.formattedDateTime = formattedDateTime;
 			this.$input.val(formattedDateTime);
+			this.$input.trigger("change");
 		},
-		
+
 		setDefaults: function(settings) {
 			extendRemove(this.defaults, settings || {});
 			return this;
@@ -338,7 +339,7 @@
 
 	//########################################################################
 	// extend timepicker to datepicker
-	//########################################################################		
+	//########################################################################
 	jQuery.fn.datetimepicker = function(o) {
 		var opts = (o === undefined ? {} : o);
 		var input = $(this);
@@ -415,7 +416,7 @@
 		var target = $(id);
 		var inst = this._getInst(target[0]);
 		var tp_inst = $.datepicker._get(inst, 'timepicker');
-		
+
 		if(tp_inst){
 			inst.inline = true;
 			inst.stay_open = true;
@@ -482,7 +483,7 @@
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function(id) {
 		$.datepicker._base_gotoToday(id);
-		
+
 		var target = $(id);
 		var dp_inst = this._getInst(target[0]);
 		var tp_inst = $.datepicker._get(dp_inst, 'timepicker');
@@ -494,12 +495,12 @@
 			var second = date.getSeconds();
 
 			//check if within min/max times..
-			if( (hour < tp_inst.defaults.hourMin || hour > tp_inst.defaults.hourMax) || (minute < tp_inst.defaults.minuteMin || minute > tp_inst.defaults.minuteMax) || (second < tp_inst.defaults.secondMin || second > tp_inst.defaults.secondMax) ){					
+			if( (hour < tp_inst.defaults.hourMin || hour > tp_inst.defaults.hourMax) || (minute < tp_inst.defaults.minuteMin || minute > tp_inst.defaults.minuteMax) || (second < tp_inst.defaults.secondMin || second > tp_inst.defaults.secondMax) ){
 				hour = tp_inst.defaults.hourMin;
 				minute = tp_inst.defaults.minuteMin;
-				second = tp_inst.defaults.secondMin;				
+				second = tp_inst.defaults.secondMin;
 			}
-			
+
 			tp_inst.hour_slider.slider('value', hour );
 			tp_inst.minute_slider.slider('value', minute );
 			tp_inst.second_slider.slider('value', second );
