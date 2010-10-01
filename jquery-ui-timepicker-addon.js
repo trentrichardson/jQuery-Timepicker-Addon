@@ -249,7 +249,8 @@
 			var hour   = tp_inst.hour_slider.slider('value');
 			var minute = tp_inst.minute_slider.slider('value');
 			var second = tp_inst.second_slider.slider('value');
-			var ampm = (hour < 12) ? 'AM' : 'PM';
+			var ampm = (hour < 11.5) ? 'AM' : 'PM';
+			hour = (hour >= 11.5 && hour < 12) ? 12 : hour;
 			var hasChanged = false;
 
 			// If the update was done in the input field, this field should not be updated.
