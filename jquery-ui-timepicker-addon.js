@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.6.2
-* Last Modified: 9/26/2010
+* Version 0.6.3
+* Last Modified: 10/1/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -278,7 +278,7 @@
 		formatTime: function(tp_inst) {
 			var tmptime = tp_inst.defaults.timeFormat.toString();
 			var hour12 = ((tp_inst.ampm == 'AM') ? (tp_inst.hour) : (tp_inst.hour % 12));
-			hour12 = (hour12 === 0) ? 12 : hour12;
+			hour12 = (Number(hour12) === 0) ? 12 : hour12;
 
 			if (tp_inst.defaults.ampm === true) {
 				tmptime = tmptime.toString()
@@ -469,7 +469,7 @@
 				var chrl = chr.toLowerCase();
 				// keyCode == 58 => ":"
 				// keyCode == 32 => " "
-				return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32 || chr == ':' || chr == ' ' || chrl == 'a' || chrl == 'p' || charl == 'm');
+				return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32 || chr == ':' || chr == ' ' || chrl == 'a' || chrl == 'p' || chrl == 'm');
 			}
 		}
 		else{
