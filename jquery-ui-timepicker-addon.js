@@ -472,12 +472,13 @@
 				formattedDateTime = this.formattedTime;
 			}
 			else if (this.defaults.timeOnly !== true && (this.defaults.alwaysSetTime || timeAvailable)) {
-				formattedDateTime += ' ' + this.formattedTime;
-			}
-			
-			if ((this.$altInput) && this.$altInput != null)
-			{
-				this.$altInput.val(formattedDateTime);
+				if ((this.$altInput) && this.$altInput != null)
+				{
+					this.$altInput.val(this.formattedTime);
+				}
+				else{
+					formattedDateTime += ' ' + this.formattedTime;
+				}
 			}
 			
 			this.formattedDateTime = formattedDateTime;
@@ -518,7 +519,8 @@
 			tp.second = tp.defaults.second;
 			tp.ampm = '';
 			tp.$input = $(input);
-			tp.$altInput = $($.datepicker._get(inst, 'altField'));
+			if(opts.altField != undefined && opts.altField != '')
+				tp.$altInput = $($.datepicker._get(inst, 'altField'));
 			tp.inst = inst;
 			tp.addTimePicker(inst);
 			if ($.isFunction(opts.beforeShow)) {
