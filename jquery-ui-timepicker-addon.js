@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.6.3
-* Last Modified: 10/1/2010
+* Version 0.6.4
+* Last Modified: 10/7/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -13,6 +13,11 @@
 * .ui-timepicker-div dl{ text-align: left; }
 * .ui-timepicker-div dl dt{ height: 25px; }
 * .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+* .ui-timepicker-div div:first-child { margin-left: 0.5em; margin-right: 0px; }
+* .ui-timepicker-div .ui_tpicker_hour div { padding-right: 2px; }
+* .ui-timepicker-div .ui_tpicker_minute div { padding-right: 6px; }
+* .ui-timepicker-div .ui_tpicker_second div { padding-right: 6px; }
+* .ui-timepicker-div td { font-size: 8pt; }
 */
 
 (function($) {
@@ -48,6 +53,9 @@
 				hourMax: 23,
 				minuteMax: 59,
 				secondMax: 59,
+				hourGrid: 0,
+				minuteGrid: 0,
+				secondGrid: 0,
 				alwaysSetTime: true
 			};
 			$.extend(this.defaults, this.regional['']);
@@ -59,6 +67,7 @@
 
 	Timepicker.prototype = {
 		$input: null,
+		$altInput: null,
 		$timeObj: null,
 		inst: null,
 		hour_slider: null,
@@ -77,7 +86,15 @@
 		//########################################################################
 		addTimePicker: function(dp_inst) {
 			var tp_inst = this;
-			var currDT = this.$input.val();
+			var currDT
+			if ((this.$altInput) && this.$altInput != null)
+			{
+				currDT = this.$input.val() + ' ' + this.$altInput.val();
+			}
+			else
+			{
+				currDT = this.$input.val();
+			}
 			var regstr = this.defaults.timeFormat.toString()
 				.replace(/h{1,2}/ig, '(\\d?\\d)')
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
@@ -169,16 +186,88 @@
 			if ($dp.find("div#ui-timepicker-div-"+ dp_inst.id).length === 0) {
 				var noDisplay = ' style="display:none;"';
 				var html =
-					'<div class="ui-timepicker-div" id="ui-timepicker-div-'+ dp_inst.id +'"><dl>' +
-						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_'+ dp_inst.id +'"'	+ ((opts.showTime)   ? '' : noDisplay) + '>'+ opts.timeText +'</dt>' +
-						'<dd class="ui_tpicker_time" id="ui_tpicker_time_'+ dp_inst.id +'"'	+ ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
-						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_'+ dp_inst.id +'"'   + ((opts.showHour)   ? '' : noDisplay) + '>'+ opts.hourText +'</dt>' +
-						'<dd class="ui_tpicker_hour" id="ui_tpicker_hour_'+ dp_inst.id +'"'	+ ((opts.showHour)   ? '' : noDisplay) + '></dd>' +
-						'<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_'+ dp_inst.id +'"'	+ ((opts.showMinute) ? '' : noDisplay) + '>'+ opts.minuteText +'</dt>' +
-						'<dd class="ui_tpicker_minute" id="ui_tpicker_minute_'+ dp_inst.id +'"'	+ ((opts.showMinute) ? '' : noDisplay) + '></dd>' +
-						'<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_'+ dp_inst.id +'"'	+ ((opts.showSecond) ? '' : noDisplay) + '>'+ opts.secondText +'</dt>' +
-						'<dd class="ui_tpicker_second" id="ui_tpicker_second_'+ dp_inst.id +'"'	+ ((opts.showSecond) ? '' : noDisplay) + '></dd>' +
-					'</dl></div>';
+					'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_inst.id + '"><dl>' +
+						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_inst.id + '"'	+ ((opts.showTime)   ? '' : noDisplay) + '>' + opts.timeText + '</dt>' +
+						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_inst.id + '"'	+ ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_inst.id + '"'   + ((opts.showHour)   ? '' : noDisplay) + '>' + opts.hourText + '</dt>';
+						
+				if (opts.hourGrid > 0)
+				{
+					html += '<dd class="ui_tpicker_hour ui_tpicker_hour_' + opts.hourGrid + '">' +
+							'<div id="ui_tpicker_hour_' + dp_inst.id + '"' + ((opts.showHour)   ? '' : noDisplay) + '></div>' +
+							'<div><table><tr>';
+							
+					for (var h = 0; h < hourMax; h += opts.hourGrid)
+					{
+						var tmph = h;
+						if(opts.ampm && h > 12)
+							tmph = h-12;
+						else tmph = h;
+
+						if(tmph < 10)
+							tmph = '0' + tmph;
+						if(opts.ampm)
+						{
+							if(h == 0)
+								tmph = 12 +'a';
+							else if(h < 12)
+								tmph += 'a';
+							else tmph += 'p';
+						}
+						html += '<td>' + tmph + '</td>';
+					}
+								
+					html += '</tr></table></div>' +
+							'</dd>';
+				}
+				else
+				{
+					html += '<dd class="ui_tpicker_hour" id="ui_tpicker_hour_' + dp_inst.id + '"'	+ ((opts.showHour)   ? '' : noDisplay) + '></dd>';
+				}
+						
+				html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_inst.id + '"'	+ ((opts.showMinute) ? '' : noDisplay) + '>' + opts.minuteText + '</dt>';
+				
+				if (opts.minuteGrid > 0)
+				{
+					html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + opts.minuteGrid + '">' +
+							'<div id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></div>' +
+							'<div><table><tr>';
+							
+					for (var m = 0; m < minMax; m += opts.minuteGrid)
+					{
+						html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
+					}
+								
+					html += '</tr></table></div>' +
+							'</dd>';
+				}
+				else
+				{
+					html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_inst.id + '"'	+ ((opts.showMinute) ? '' : noDisplay) + '></dd>'
+				}
+				
+				html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_inst.id + '"'	+ ((opts.showSecond) ? '' : noDisplay) + '>' + opts.secondText + '</dt>';
+				
+				if (opts.secondGrid > 0)
+				{
+					html += '<dd class="ui_tpicker_second ui_tpicker_second_' + opts.secondGrid + '">' +
+							'<div id="ui_tpicker_second_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '></div>' +
+							'<table><table><tr>';
+							
+					for (var s = 0; s < secMax; s += opts.secondGrid)
+					{
+						html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
+					}
+								
+					html += '</tr></table></table>' +
+							'</dd>';
+				}
+				else
+				{
+					html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_inst.id + '"'	+ ((opts.showSecond) ? '' : noDisplay) + '></dd>';
+				}
+				
+				html += '</dl></div>';
 				$tp = $(html);
 
 				// if we only want time picker...
@@ -228,7 +317,66 @@
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
-				
+
+				// Add grid functionality
+				$tp.find(".ui_tpicker_hour td").each(
+						function(index)
+						{
+							$(this).click(
+									function()
+									{
+										var h = $(this).html();
+										if(opts.ampm)
+										{
+											var ap = h.substring(2).toLowerCase();
+											var aph = new Number(h.substring(0,2));
+
+											if(ap == 'a'){
+												if(aph == 12)
+													h = 0;
+												else h = aph;
+											}else{
+												if(aph == 12)
+													h = 12;
+												else h = aph + 12;
+											}
+										}
+										tp_inst.hour_slider.slider("option", "value", h);
+										tp_inst.onTimeChange(dp_inst, tp_inst);
+									}
+								);
+							
+							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
+						}
+					);
+				$tp.find(".ui_tpicker_minute td").each(
+						function(index)
+						{
+							$(this).click(
+									function()
+									{
+										tp_inst.minute_slider.slider("option", "value", $(this).html());
+										tp_inst.onTimeChange(dp_inst, tp_inst);
+									}
+								);
+							
+							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
+						}
+					);
+				$tp.find(".ui_tpicker_second td").each(
+						function(index)
+						{
+							$(this).click(
+									function()
+									{
+										tp_inst.second_slider.slider("option", "value", $(this).html());
+										tp_inst.onTimeChange(dp_inst, tp_inst);
+									}
+								);
+							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
+						}
+					);
+					
 				$dp.find('.ui-datepicker-calendar').after($tp);
 				
 				tp_inst.$timeObj = $('#ui_tpicker_time_'+ dp_inst.id);
@@ -313,7 +461,6 @@
 		// update our input with the new date time..
 		//########################################################################
 		updateDateTime: function(dp_inst, tp_inst) {
-			//var dt = this.$input.datepicker('getDate');
 			var dt = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay);
 			var dateFmt = $.datepicker._get(dp_inst, 'dateFormat');
 			var formatCfg = $.datepicker._getFormatConfig(dp_inst);
@@ -327,7 +474,12 @@
 			else if (this.defaults.timeOnly !== true && (this.defaults.alwaysSetTime || timeAvailable)) {
 				formattedDateTime += ' ' + this.formattedTime;
 			}
-
+			
+			if ((this.$altInput) && this.$altInput != null)
+			{
+				this.$altInput.val(formattedDateTime);
+			}
+			
 			this.formattedDateTime = formattedDateTime;
 			this.$input.val(formattedDateTime);
 			this.$input.trigger("change");
@@ -366,6 +518,7 @@
 			tp.second = tp.defaults.second;
 			tp.ampm = '';
 			tp.$input = $(input);
+			tp.$altInput = $($.datepicker._get(inst, 'altField'));
 			tp.inst = inst;
 			tp.addTimePicker(inst);
 			if ($.isFunction(opts.beforeShow)) {
