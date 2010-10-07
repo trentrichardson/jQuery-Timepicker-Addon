@@ -13,11 +13,10 @@
 * .ui-timepicker-div dl{ text-align: left; }
 * .ui-timepicker-div dl dt{ height: 25px; }
 * .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
-* .ui-timepicker-div div:first-child { margin-left: 0.5em; margin-right: 0px; }
 * .ui-timepicker-div .ui_tpicker_hour div { padding-right: 2px; }
 * .ui-timepicker-div .ui_tpicker_minute div { padding-right: 6px; }
 * .ui-timepicker-div .ui_tpicker_second div { padding-right: 6px; }
-* .ui-timepicker-div td { font-size: 8pt; }
+* .ui-timepicker-div td { font-size: 90%; }
 */
 
 (function($) {
