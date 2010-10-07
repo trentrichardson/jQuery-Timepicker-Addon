@@ -63,7 +63,7 @@
 			this.defaults = $.extend({}, $.timepicker.defaults);
 		}
 
-	}
+	};
 
 	Timepicker.prototype = {
 		$input: null,
@@ -86,7 +86,7 @@
 		//########################################################################
 		addTimePicker: function(dp_inst) {
 			var tp_inst = this;
-			var currDT
+			var currDT;
 			if ((this.$altInput) && this.$altInput != null)
 			{
 				currDT = this.$input.val() + ' ' + this.$altInput.val();
