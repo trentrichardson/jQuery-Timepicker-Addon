@@ -498,6 +498,18 @@
 	jQuery.fn.datetimepicker = function(o) {
 		var opts = (o === undefined ? {} : o);
 		var input = $(this);
+
+		if(typeof(o) == 'string')
+		{
+			if(o == 'setDate')
+				return input.datepicker(o, arguments[1]);
+			if(o == 'options' && typeof(arguments[1]) == 'string')
+				return input.datepicker(o, arguments[1], arguments[2]);
+			if(o == 'dialog')
+				return input.datepicker(o, arguments[1], arguments[2], arguments[3], arguments[4]);
+			return input.datepicker(o);
+		}
+		
 		var tp = new Timepicker();
 		var inlineSettings = {};
 
@@ -560,8 +572,10 @@
 	// shorthand just to use timepicker..
 	//########################################################################
 	jQuery.fn.timepicker = function(opts) {
-		opts = $.extend(opts, { timeOnly: true });
-		$(this).datetimepicker(opts);
+		if(typeof opts == 'object')
+			opts = $.extend(opts, { timeOnly: true });
+			
+		$(this).datetimepicker(opts, arguments[1], arguments[2], arguments[3], arguments[4]);
 	};
 
 	//########################################################################
@@ -643,10 +657,19 @@
 		
 		var target = $(id);
 		var dp_inst = this._getInst(target[0]);
-		var tp_inst = $.datepicker._get(dp_inst, 'timepicker');
 
-		if(tp_inst){
-			var date = new Date();
+		this._setTime(dp_inst, new Date());
+
+	};
+
+	//#######################################################################################
+	// Create our on set time function
+	//#######################################################################################
+	$.datepicker._setTime = function(inst, date) {
+	
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+		
+		if(tp_inst && tp_inst.hour_slider && tp_inst.minute_slider && tp_inst.second_slider){
 			var hour = date.getHours();
 			var minute = date.getMinutes();
 			var second = date.getSeconds();
@@ -655,17 +678,53 @@
 			if( (hour < tp_inst.defaults.hourMin || hour > tp_inst.defaults.hourMax) || (minute < tp_inst.defaults.minuteMin || minute > tp_inst.defaults.minuteMax) || (second < tp_inst.defaults.secondMin || second > tp_inst.defaults.secondMax) ){					
 				hour = tp_inst.defaults.hourMin;
 				minute = tp_inst.defaults.minuteMin;
-				second = tp_inst.defaults.secondMin;				
+				second = tp_inst.defaults.secondMin;	
 			}
 			
 			tp_inst.hour_slider.slider('value', hour );
 			tp_inst.minute_slider.slider('value', minute );
 			tp_inst.second_slider.slider('value', second );
 
-			tp_inst.onTimeChange(dp_inst, tp_inst);
+			tp_inst.onTimeChange(inst, tp_inst);
 		}
-	};
 
+	};
+	
+	//#######################################################################################
+	// override getDate() to allow getting time too within date object
+	//#######################################################################################
+	$.datepicker._base_setDate = $.datepicker._setDate;
+	$.datepicker._setDate = function(inst, date, noChange) {
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+		var tp_date = new Date(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds());
+		
+		$.datepicker._base_setDate(inst, date, noChange);
+		
+		if(tp_inst){
+			this._setTime(inst, tp_date);
+		}
+		
+
+	};
+	
+	//#######################################################################################
+	// override getDate() to allow getting time too within date object
+	//#######################################################################################
+	$.datepicker._base_getDate = $.datepicker._getDate;
+	$.datepicker._getDate = function(inst) {
+	
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+		
+		if(tp_inst){
+			var startDate = (!inst.currentYear || (inst.input && inst.input.val() == '') ? null :
+				this._daylightSavingAdjust(new Date(
+				inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second)));
+				return startDate;
+		}
+		
+		return $.datepicker._base_getDate(inst);
+	};
+	
 	//#######################################################################################
 	// jQuery extend now ignores nulls!
 	//#######################################################################################
