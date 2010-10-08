@@ -197,7 +197,7 @@
 							'<div id="ui_tpicker_hour_' + dp_inst.id + '"' + ((opts.showHour)   ? '' : noDisplay) + '></div>' +
 							'<div><table><tr>';
 							
-					for (var h = 0; h < hourMax; h += opts.hourGrid)
+					for (var h = opts.hourMin; h < hourMax; h += opts.hourGrid)
 					{
 						var tmph = h;
 						if(opts.ampm && h > 12)
@@ -233,7 +233,7 @@
 							'<div id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></div>' +
 							'<div><table><tr>';
 							
-					for (var m = 0; m < minMax; m += opts.minuteGrid)
+					for (var m = opts.minuteMin; m < minMax; m += opts.minuteGrid)
 					{
 						html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 					}
@@ -254,7 +254,7 @@
 							'<div id="ui_tpicker_second_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '></div>' +
 							'<table><table><tr>';
 							
-					for (var s = 0; s < secMax; s += opts.secondGrid)
+					for (var s = opts.secondMin; s < secMax; s += opts.secondGrid)
 					{
 						html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 					}
