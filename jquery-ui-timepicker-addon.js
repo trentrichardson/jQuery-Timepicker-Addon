@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.7.1
-* Last Modified: 10/7/2010
+* Version 0.7.2
+* Last Modified: 10/21/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -14,9 +14,6 @@
 * .ui-timepicker-div dl{ text-align: left; }
 * .ui-timepicker-div dl dt{ height: 25px; }
 * .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
-* .ui-timepicker-div .ui_tpicker_hour div { padding-right: 2px; }
-* .ui-timepicker-div .ui_tpicker_minute div { padding-right: 6px; }
-* .ui-timepicker-div .ui_tpicker_second div { padding-right: 6px; }
 * .ui-timepicker-div td { font-size: 90%; }
 */
 
@@ -171,7 +168,8 @@
 		//########################################################################
 		// generate and inject html for timepicker into ui datepicker
 		//########################################################################
-		injectTimePicker: function(dp_inst, tp_inst) {
+		injectTimePicker: function(dp_inst, tp_inst)
+		{
 			var $dp = dp_inst.dpDiv;
 			var opts = tp_inst.defaults;
 
@@ -179,209 +177,270 @@
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
 			var hourMax = opts.hourMax - (opts.hourMax % opts.stepHour);
-			var minMax  = opts.minuteMax - (opts.minuteMax % opts.stepMinute);
-			var secMax  = opts.secondMax - (opts.secondMax % opts.stepSecond);
+			var minMax = opts.minuteMax - (opts.minuteMax % opts.stepMinute);
+			var secMax = opts.secondMax - (opts.secondMax % opts.stepSecond);
 
 			// Prevent displaying twice
-			if ($dp.find("div#ui-timepicker-div-"+ dp_inst.id).length === 0) {
+			if ($dp.find("div#ui-timepicker-div-" + dp_inst.id).length === 0){
 				var noDisplay = ' style="display:none;"';
 				var html =
 					'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_inst.id + '"><dl>' +
-						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_inst.id + '"'	+ ((opts.showTime)   ? '' : noDisplay) + '>' + opts.timeText + '</dt>' +
-						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_inst.id + '"'	+ ((opts.showTime)   ? '' : noDisplay) + '></dd>' +
-						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_inst.id + '"'   + ((opts.showHour)   ? '' : noDisplay) + '>' + opts.hourText + '</dt>';
-						
-				if (opts.hourGrid > 0)
-				{
-					html += '<dd class="ui_tpicker_hour ui_tpicker_hour_' + opts.hourGrid + '">' +
-							'<div id="ui_tpicker_hour_' + dp_inst.id + '"' + ((opts.showHour)   ? '' : noDisplay) + '></div>' +
-							'<div><table><tr>';
-							
-					for (var h = opts.hourMin; h < hourMax; h += opts.hourGrid)
-					{
-						var tmph = h;
-						if(opts.ampm && h > 12)
-							tmph = h-12;
-						else tmph = h;
+						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_inst.id + '"' + ((opts.showTime) ? '' : noDisplay) + '>' + opts.timeText + '</dt>' +
+						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_inst.id + '"' + ((opts.showTime) ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_inst.id + '"' + ((opts.showHour) ? '' : noDisplay) + '>' + opts.hourText + '</dt>';
+				var hourGridSize = 0;
+				var minuteGridSize = 0;
+				var secondGridSize = 0;
 
-						if(tmph < 10)
+				if (opts.showHour && opts.hourGrid > 0)
+				{
+					html += '<dd class="ui_tpicker_hour">' +
+							'<div id="ui_tpicker_hour_' + dp_inst.id + '"' + ((opts.showHour) ? '' : noDisplay) + '></div>' +
+							'<div style="padding-left: 1px"><table><tr>';
+
+					for (var h = 0; h <= hourMax; h += opts.hourGrid)
+					{
+						hourGridSize++;
+
+						var tmph = h;
+						if (opts.ampm && h > 12)
+							tmph = h - 12;
+						else
+							tmph = h;
+
+						if (tmph < 10)
 							tmph = '0' + tmph;
-						if(opts.ampm)
+						if (opts.ampm)
 						{
-							if(h == 0)
-								tmph = 12 +'a';
-							else if(h < 12)
+							if (h == 0)
+								tmph = 12 + 'a';
+							else if (h < 12)
 								tmph += 'a';
-							else tmph += 'p';
+							else
+								tmph += 'p';
 						}
 						html += '<td>' + tmph + '</td>';
 					}
-								
+
 					html += '</tr></table></div>' +
 							'</dd>';
 				}
 				else
 				{
-					html += '<dd class="ui_tpicker_hour" id="ui_tpicker_hour_' + dp_inst.id + '"'	+ ((opts.showHour)   ? '' : noDisplay) + '></dd>';
+					html += '<dd class="ui_tpicker_hour" id="ui_tpicker_hour_' + dp_inst.id + '"' + ((opts.showHour) ? '' : noDisplay) + '></dd>';
 				}
-						
-				html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_inst.id + '"'	+ ((opts.showMinute) ? '' : noDisplay) + '>' + opts.minuteText + '</dt>';
-				
-				if (opts.minuteGrid > 0)
+
+				html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '>' + opts.minuteText + '</dt>';
+
+				if (opts.showMinute && opts.minuteGrid > 0)
 				{
-					html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + opts.minuteGrid + '">' +
+					html += '<dd class="ui_tpicker_minute">' +
 							'<div id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></div>' +
-							'<div><table><tr>';
-							
-					for (var m = opts.minuteMin; m < minMax; m += opts.minuteGrid)
+							'<div style="padding-left: 1px"><table><tr>';
+
+					for (var m = 0; m <= minMax; m += opts.minuteGrid)
 					{
+						minuteGridSize++;
 						html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 					}
-								
+
 					html += '</tr></table></div>' +
 							'</dd>';
 				}
 				else
 				{
-					html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_inst.id + '"'	+ ((opts.showMinute) ? '' : noDisplay) + '></dd>'
+					html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></dd>'
 				}
-				
-				html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_inst.id + '"'	+ ((opts.showSecond) ? '' : noDisplay) + '>' + opts.secondText + '</dt>';
-				
-				if (opts.secondGrid > 0)
+
+				html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '>' + opts.secondText + '</dt>';
+
+				if (opts.showSecond && opts.secondGrid > 0)
 				{
-					html += '<dd class="ui_tpicker_second ui_tpicker_second_' + opts.secondGrid + '">' +
+					html += '<dd class="ui_tpicker_second">' +
 							'<div id="ui_tpicker_second_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '></div>' +
-							'<table><table><tr>';
-							
-					for (var s = opts.secondMin; s < secMax; s += opts.secondGrid)
+							'<div style="padding-left: 1px"><table><tr>';
+
+					for (var s = 0; s <= secMax; s += opts.secondGrid)
 					{
+						secondGridSize++;
 						html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 					}
-								
-					html += '</tr></table></table>' +
+
+					html += '</tr></table></div>' +
 							'</dd>';
 				}
 				else
 				{
-					html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_inst.id + '"'	+ ((opts.showSecond) ? '' : noDisplay) + '></dd>';
+					html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '></dd>';
 				}
-				
+
 				html += '</dl></div>';
 				$tp = $(html);
 
 				// if we only want time picker...
-				if (opts.timeOnly === true) {
+				if (opts.timeOnly === true)
+				{
 					$tp.prepend(
 						'<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' +
-							'<div class="ui-datepicker-title">'+ opts.timeOnlyTitle +'</div>' +
+							'<div class="ui-datepicker-title">' + opts.timeOnlyTitle + '</div>' +
 						'</div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 				}
 
-				tp_inst.hour_slider = $tp.find('#ui_tpicker_hour_'+ dp_inst.id).slider({
+				tp_inst.hour_slider = $tp.find('#ui_tpicker_hour_' + dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.hour,
 					min: opts.hourMin,
 					max: hourMax,
 					step: opts.stepHour,
-					slide: function(event, ui) {
-						tp_inst.hour_slider.slider( "option", "value", ui.value );
+					slide: function(event, ui)
+					{
+						tp_inst.hour_slider.slider("option", "value", ui.value);
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
 
 				// Updated by Peter Medeiros:
 				// - Pass in Event and UI instance into slide function
-				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_inst.id).slider({
+				tp_inst.minute_slider = $tp.find('#ui_tpicker_minute_' + dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.minute,
 					min: opts.minuteMin,
 					max: minMax,
 					step: opts.stepMinute,
-					slide: function(event, ui) {
+					slide: function(event, ui)
+					{
 						// update the global minute slider instance value with the current slider value
-						tp_inst.minute_slider.slider( "option", "value", ui.value );
+						tp_inst.minute_slider.slider("option", "value", ui.value);
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
 
-				tp_inst.second_slider = $tp.find('#ui_tpicker_second_'+ dp_inst.id).slider({
+				tp_inst.second_slider = $tp.find('#ui_tpicker_second_' + dp_inst.id).slider({
 					orientation: "horizontal",
 					value: tp_inst.second,
 					min: opts.secondMin,
 					max: secMax,
 					step: opts.stepSecond,
-					slide: function(event, ui) {
-						tp_inst.second_slider.slider( "option", "value", ui.value );
+					slide: function(event, ui)
+					{
+						tp_inst.second_slider.slider("option", "value", ui.value);
 						tp_inst.onTimeChange(dp_inst, tp_inst);
 					}
 				});
 
 				// Add grid functionality
-				$tp.find(".ui_tpicker_hour td").each(
-						function(index)
-						{
-							$(this).click(
-									function()
-									{
-										var h = $(this).html();
-										if(opts.ampm)
+				if (opts.showHour && opts.hourGrid > 0)
+				{
+					var size = 100 * hourGridSize * opts.hourGrid / (hourMax - opts.hourMin);
+
+					$tp.find(".ui_tpicker_hour table").css({
+							'width': size + "%",
+							'margin-left': (size / (-2 * hourGridSize)) + "%",
+							'border-collapse': 'collapse'
+						});
+					$tp.find(".ui_tpicker_hour td").each(
+							function(index)
+							{
+								$(this).click(
+										function()
 										{
-											var ap = h.substring(2).toLowerCase();
-											var aph = new Number(h.substring(0,2));
+											var h = $(this).html();
+											if (opts.ampm)
+											{
+												var ap = h.substring(2).toLowerCase();
+												var aph = new Number(h.substring(0, 2));
 
-											if(ap == 'a'){
-												if(aph == 12)
-													h = 0;
-												else h = aph;
-											}else{
-												if(aph == 12)
-													h = 12;
-												else h = aph + 12;
+												if (ap == 'a')
+												{
+													if (aph == 12)
+														h = 0;
+													else h = aph;
+												} else
+												{
+													if (aph == 12)
+														h = 12;
+													else h = aph + 12;
+												}
 											}
+											tp_inst.hour_slider.slider("option", "value", h);
+											tp_inst.onTimeChange(dp_inst, tp_inst);
 										}
-										tp_inst.hour_slider.slider("option", "value", h);
-										tp_inst.onTimeChange(dp_inst, tp_inst);
-									}
-								);
-							
-							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
-						}
-					);
-				$tp.find(".ui_tpicker_minute td").each(
-						function(index)
-						{
-							$(this).click(
-									function()
-									{
-										tp_inst.minute_slider.slider("option", "value", $(this).html());
-										tp_inst.onTimeChange(dp_inst, tp_inst);
-									}
-								);
-							
-							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
-						}
-					);
-				$tp.find(".ui_tpicker_second td").each(
-						function(index)
-						{
-							$(this).click(
-									function()
-									{
-										tp_inst.second_slider.slider("option", "value", $(this).html());
-										tp_inst.onTimeChange(dp_inst, tp_inst);
-									}
-								);
-							$(this).css({ 'cursor': "pointer", 'width': '1%', 'text-align': 'left' });
-						}
-					);
-					
-				$dp.find('.ui-datepicker-calendar').after($tp);
-				
-				tp_inst.$timeObj = $('#ui_tpicker_time_'+ dp_inst.id);
+									);
+								$(this).css({
+										'cursor': "pointer",
+										'width': (100 / hourGridSize) + '%',
+										'text-align': 'center',
+										'overflow': 'hidden'
+									});
+							}
+						);
+				}
 
-				if (dp_inst !== null) {
+				if (opts.showMinute && opts.minuteGrid > 0)
+				{
+					var size = 100 * minuteGridSize * opts.minuteGrid / (minMax - opts.minuteMin);
+
+					$tp.find(".ui_tpicker_minute table").css({
+							'width': size + "%",
+							'margin-left': (size / (-2 * minuteGridSize)) + "%",
+							'border-collapse': 'collapse'
+						});
+					$tp.find(".ui_tpicker_minute td").each(
+							function(index)
+							{
+								$(this).click(
+										function()
+										{
+											tp_inst.minute_slider.slider("option", "value", $(this).html());
+											tp_inst.onTimeChange(dp_inst, tp_inst);
+										}
+									);
+								$(this).css({
+										'cursor': "pointer",
+										'width': (100 / minuteGridSize) + '%',
+										'text-align': 'center',
+										'overflow': 'hidden'
+									});
+							}
+						);
+				}
+
+				if (opts.showSecond && opts.secondGrid > 0)
+				{
+					var size = 100 * secondGridSize * opts.secondGrid / (secMax - opts.secondMin);
+
+					$tp.find(".ui_tpicker_second table").css({
+							'width': size + "%",
+							'margin-left': (size / (-2 * secondGridSize)) + "%",
+							'border-collapse': 'collapse'
+						});
+					$tp.find(".ui_tpicker_second td").each(
+							function(index)
+							{
+								$(this).click(
+										function()
+										{
+											tp_inst.second_slider.slider("option", "value", $(this).html());
+											tp_inst.onTimeChange(dp_inst, tp_inst);
+										}
+									);
+								$(this).css({
+										'cursor': "pointer",
+										'width': (100 / secondGridSize) + '%',
+										'text-align': 'center',
+										'overflow': 'hidden'
+									});
+							}
+						);
+				}
+
+				$dp.find('.ui-datepicker-calendar').after($tp);
+
+				tp_inst.$timeObj = $('#ui_tpicker_time_' + dp_inst.id);
+
+				if (dp_inst !== null)
+				{
 					var timeDefined = tp_inst.timeDefined;
 					tp_inst.onTimeChange(dp_inst, tp_inst);
 					tp_inst.timeDefined = timeDefined;
@@ -557,6 +616,16 @@
 			}
 		};
 
+		// make the alt field trigger the picker if its set
+		if ((opts.altField) && opts.altField != null){
+			var me = $(opts.altField);
+
+			me.css({ 'cursor': 'pointer' });
+			me.focus(function(){
+				input.trigger("focus");
+			});
+		}
+		
 		tp.defaults = $.extend({}, tp.defaults, opts, {
 			beforeShow: beforeShowFunc,
 			onChangeMonthYear: onChangeMonthYearFunc,
