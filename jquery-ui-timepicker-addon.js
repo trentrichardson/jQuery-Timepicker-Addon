@@ -564,7 +564,7 @@
 			timepicker: tp // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
 
-		$(this).datepicker(tp.defaults);
+		return $(this).datepicker(tp.defaults);
 
 	};
 
@@ -575,7 +575,7 @@
 		if(typeof opts == 'object')
 			opts = $.extend(opts, { timeOnly: true });
 			
-		$(this).datetimepicker(opts, arguments[1], arguments[2], arguments[3], arguments[4]);
+		return $(this).datetimepicker(opts, arguments[1], arguments[2], arguments[3], arguments[4]);
 	};
 
 	//########################################################################
