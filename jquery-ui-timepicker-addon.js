@@ -137,7 +137,7 @@
 			tp_inst.timeDefined = (treg) ? true : false;
 
 			if (typeof(dp_inst.stay_open) !== 'boolean' || dp_inst.stay_open === false) {
-			// wait for datepicker to create itself.. 60% of the time it works every time..
+				// wait for datepicker to create itself.. 60% of the time it works every time..
 				setTimeout(function() {
 					tp_inst.injectTimePicker(dp_inst, tp_inst);
 				}, 10);
@@ -453,9 +453,9 @@
 		// on time change is also called when the time is updated in the text field
 		//########################################################################
 		onTimeChange: function(dp_inst, tp_inst) {
-			var hour   = tp_inst.hour_slider.slider('value');
-			var minute = tp_inst.minute_slider.slider('value');
-			var second = tp_inst.second_slider.slider('value');
+			var hour   = (tp_inst.hour_slider)? tp_inst.hour_slider.slider('value') : tp_inst.hour;
+			var minute = (tp_inst.minute_slider)? tp_inst.minute_slider.slider('value') : tp_inst.minute;
+			var second = (tp_inst.second_slider)? tp_inst.second_slider.slider('value') : tp_inst.second;
 			var ampm = (hour < 11.5) ? 'AM' : 'PM';
 			hour = (hour >= 11.5 && hour < 12) ? 12 : hour;
 			var hasChanged = false;
@@ -472,7 +472,8 @@
 			tp_inst.ampm = ampm;
 
 			tp_inst.formatTime(tp_inst);
-			tp_inst.$timeObj.text(tp_inst.formattedTime);
+			if(tp_inst.$timeObj)
+				tp_inst.$timeObj.text(tp_inst.formattedTime);
 
 			if (hasChanged) {
 				tp_inst.updateDateTime(dp_inst, tp_inst);
@@ -525,7 +526,7 @@
 			var formatCfg = $.datepicker._getFormatConfig(dp_inst);
 			this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 			var formattedDateTime = this.formattedDate;
-			var timeAvailable = dt !== null && tp_inst.timeDefined;
+			var timeAvailable = ((dt !== null && tp_inst.timeDefined) !== true)? false : true;
 
 			if(this.defaults.timeOnly === true){
 				formattedDateTime = this.formattedTime;
@@ -541,8 +542,10 @@
 			}
 			
 			this.formattedDateTime = formattedDateTime;
-			this.$input.val(formattedDateTime);
-			this.$input.trigger("change");
+			if(!dp_inst.inline && this.$input){
+				this.$input.val(formattedDateTime);
+				this.$input.trigger("change");
+			}
 		},
 		
 		setDefaults: function(settings) {
@@ -633,7 +636,7 @@
 			timepicker: tp // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
 
-		return $(this).datepicker(tp.defaults);
+		return input.datepicker(tp.defaults);
 
 	};
 
@@ -738,7 +741,7 @@
 	
 		var tp_inst = $.datepicker._get(inst, 'timepicker');
 		
-		if(tp_inst && tp_inst.hour_slider && tp_inst.minute_slider && tp_inst.second_slider){
+		if(tp_inst){
 			var hour = date.getHours();
 			var minute = date.getMinutes();
 			var second = date.getSeconds();
@@ -749,16 +752,22 @@
 				minute = tp_inst.defaults.minuteMin;
 				second = tp_inst.defaults.secondMin;	
 			}
-			
-			tp_inst.hour_slider.slider('value', hour );
-			tp_inst.minute_slider.slider('value', minute );
-			tp_inst.second_slider.slider('value', second );
 
+			if(tp_inst.hour_slider && tp_inst.minute_slider && tp_inst.second_slider){
+				tp_inst.hour_slider.slider('value', hour );
+				tp_inst.minute_slider.slider('value', minute );
+				tp_inst.second_slider.slider('value', second );
+			}
+			else{
+				tp_inst.hour = hour;
+				tp_inst.minute = minute;
+				tp_inst.second = second;
+			}
+			
 			tp_inst.onTimeChange(inst, tp_inst);
 		}
-
 	};
-	
+
 	//#######################################################################################
 	// override getDate() to allow getting time too within date object
 	//#######################################################################################
@@ -766,13 +775,12 @@
 	$.datepicker._setDate = function(inst, date, noChange) {
 		var tp_inst = $.datepicker._get(inst, 'timepicker');
 		var tp_date = new Date(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds());
-		
+
 		$.datepicker._base_setDate(inst, date, noChange);
 		
 		if(tp_inst){
 			this._setTime(inst, tp_date);
 		}
-		
 
 	};
 	
@@ -807,4 +815,5 @@
 
 	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
+
 
