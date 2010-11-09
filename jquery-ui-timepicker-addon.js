@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.7.2
-* Last Modified: 10/21/2010
+* Version 0.7.3
+* Last Modified: 11/9/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -442,7 +442,7 @@
 				if (dp_inst !== null)
 				{
 					var timeDefined = tp_inst.timeDefined;
-					tp_inst.onTimeChange(dp_inst, tp_inst);
+					tp_inst.onTimeChange(dp_inst, tp_inst, true);
 					tp_inst.timeDefined = timeDefined;
 				}
 			}
@@ -452,7 +452,7 @@
 		// when a slider moves..
 		// on time change is also called when the time is updated in the text field
 		//########################################################################
-		onTimeChange: function(dp_inst, tp_inst) {
+		onTimeChange: function(dp_inst, tp_inst, force) {
 			var hour   = (tp_inst.hour_slider)? tp_inst.hour_slider.slider('value') : tp_inst.hour;
 			var minute = (tp_inst.minute_slider)? tp_inst.minute_slider.slider('value') : tp_inst.minute;
 			var second = (tp_inst.second_slider)? tp_inst.second_slider.slider('value') : tp_inst.second;
@@ -462,7 +462,7 @@
 
 			// If the update was done in the input field, this field should not be updated.
 			// If the update was done using the sliders, update the input field.
-			if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm)) {
+			if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm) || (force != undefined && force == true)) {
 				hasChanged = true;
 			}
 
@@ -719,7 +719,30 @@
 		}
 
 	};
-
+	
+	//#######################################################################################
+	// Override key up event to sync manual input changes.
+	//#######################################################################################
+	$.datepicker._base_doKeyUp = $.datepicker._doKeyUp;
+	$.datepicker._doKeyUp = function (event) {
+	
+		var inst = $.datepicker._getInst(event.target);
+		var tp_inst = $.datepicker._get(inst, 'timepicker');
+		
+		if (tp_inst != null) {
+			if (tp_inst.defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
+				try {
+					$.datepicker._updateDatepicker(inst);
+				}
+				catch (event) {
+					$.datepicker.log(event);
+				}
+			}
+		}
+		
+		return $.datepicker._base_doKeyUp(event);
+	};
+	
 	//#######################################################################################
 	// override "Today" button to also grab the time.
 	//#######################################################################################
@@ -764,25 +787,25 @@
 				tp_inst.second = second;
 			}
 			
-			tp_inst.onTimeChange(inst, tp_inst);
+			tp_inst.onTimeChange(inst, tp_inst, true);
 		}
 	};
 
 	//#######################################################################################
 	// override getDate() to allow getting time too within date object
 	//#######################################################################################
-	$.datepicker._base_setDate = $.datepicker._setDate;
-	$.datepicker._setDate = function(inst, date, noChange) {
-		var tp_inst = $.datepicker._get(inst, 'timepicker');
-		var tp_date = new Date(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds());
-
-		$.datepicker._base_setDate(inst, date, noChange);
-		
-		if(tp_inst){
-			this._setTime(inst, tp_date);
-		}
-
-	};
+		$.datepicker._base_setDate = $.datepicker._setDate;
+		$.datepicker._setDate = function(inst, date, noChange) {
+			var tp_inst = $.datepicker._get(inst, 'timepicker');
+			var tp_date = new Date(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds());
+	
+			$.datepicker._base_setDate(inst, date, noChange);
+			
+			if(tp_inst){
+				this._setTime(inst, tp_date);
+			}
+	
+		};
 	
 	//#######################################################################################
 	// override getDate() to allow getting time too within date object
