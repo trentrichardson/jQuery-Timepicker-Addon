@@ -798,7 +798,9 @@
 		$.datepicker._setDate = function(inst, date, noChange) {
 			var tp_inst = $.datepicker._get(inst, 'timepicker');
 			var tp_date = new Date(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds());
-	
+			
+			$.datepicker._updateDatepicker(inst);
+			
 			$.datepicker._base_setDate(inst, date, noChange);
 			
 			if(tp_inst){
