@@ -19,7 +19,7 @@
 
 (function($) {
 	function Timepicker(singleton) {
-		if(typeof(singleton) === 'boolean' && singleton == true) {
+		if(typeof(singleton) === 'boolean' && singleton === true) {
 			this.regional = []; // Available regional settings, indexed by language code
 			this.regional[''] = { // Default regional settings
 				currentText: 'Now',
@@ -60,7 +60,7 @@
 			this.defaults = $.extend({}, $.timepicker.defaults);
 		}
 
-	};
+	}
 
 	Timepicker.prototype = {
 		$input: null,
@@ -84,7 +84,7 @@
 		addTimePicker: function(dp_inst) {
 			var tp_inst = this;
 			var currDT;
-			if ((this.$altInput) && this.$altInput != null)
+			if ((this.$altInput) && this.$altInput !== null)
 			{
 				currDT = this.$input.val() + ' ' + this.$altInput.val();
 			}
@@ -191,6 +191,7 @@
 				var hourGridSize = 0;
 				var minuteGridSize = 0;
 				var secondGridSize = 0;
+				var size = 0;
 
 				if (opts.showHour && opts.hourGrid > 0)
 				{
@@ -203,21 +204,28 @@
 						hourGridSize++;
 
 						var tmph = h;
-						if (opts.ampm && h > 12)
+						if (opts.ampm && h > 12){
 							tmph = h - 12;
-						else
+						}
+						else{
 							tmph = h;
-
-						if (tmph < 10)
+                        }
+                        
+						if (tmph < 10){
 							tmph = '0' + tmph;
+						}
+						
 						if (opts.ampm)
 						{
-							if (h == 0)
+							if (h === 0){
 								tmph = 12 + 'a';
-							else if (h < 12)
+							}
+							else if (h < 12){
 								tmph += 'a';
-							else
+							}
+							else{
 								tmph += 'p';
+							}
 						}
 						html += '<td>' + tmph + '</td>';
 					}
@@ -249,7 +257,7 @@
 				}
 				else
 				{
-					html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></dd>'
+					html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_inst.id + '"' + ((opts.showMinute) ? '' : noDisplay) + '></dd>';
 				}
 
 				html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_inst.id + '"' + ((opts.showSecond) ? '' : noDisplay) + '>' + opts.secondText + '</dt>';
@@ -332,7 +340,7 @@
 				// Add grid functionality
 				if (opts.showHour && opts.hourGrid > 0)
 				{
-					var size = 100 * hourGridSize * opts.hourGrid / (hourMax - opts.hourMin);
+					size = 100 * hourGridSize * opts.hourGrid / (hourMax - opts.hourMin);
 
 					$tp.find(".ui_tpicker_hour table").css({
 							'width': size + "%",
@@ -349,18 +357,24 @@
 											if (opts.ampm)
 											{
 												var ap = h.substring(2).toLowerCase();
-												var aph = new Number(h.substring(0, 2));
+												var aph = parseInt(h.substring(0, 2), 10);
 
 												if (ap == 'a')
 												{
-													if (aph == 12)
+													if (aph == 12){
 														h = 0;
-													else h = aph;
+													}
+													else{ 
+														h = aph;
+													}
 												} else
 												{
-													if (aph == 12)
+													if (aph == 12){
 														h = 12;
-													else h = aph + 12;
+													}
+													else{ 
+														h = aph + 12;
+													}
 												}
 											}
 											tp_inst.hour_slider.slider("option", "value", h);
@@ -379,7 +393,7 @@
 
 				if (opts.showMinute && opts.minuteGrid > 0)
 				{
-					var size = 100 * minuteGridSize * opts.minuteGrid / (minMax - opts.minuteMin);
+					size = 100 * minuteGridSize * opts.minuteGrid / (minMax - opts.minuteMin);
 
 					$tp.find(".ui_tpicker_minute table").css({
 							'width': size + "%",
@@ -408,7 +422,7 @@
 
 				if (opts.showSecond && opts.secondGrid > 0)
 				{
-					var size = 100 * secondGridSize * opts.secondGrid / (secMax - opts.secondMin);
+					size = 100 * secondGridSize * opts.secondGrid / (secMax - opts.secondMin);
 
 					$tp.find(".ui_tpicker_second table").css({
 							'width': size + "%",
@@ -462,7 +476,7 @@
 
 			// If the update was done in the input field, this field should not be updated.
 			// If the update was done using the sliders, update the input field.
-			if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm) || (force != undefined && force == true)) {
+			if (tp_inst.hour != hour || tp_inst.minute != minute || tp_inst.second != second || (tp_inst.ampm.length > 0 && tp_inst.ampm != ampm) || (force !== undefined && force === true)) {
 				hasChanged = true;
 			}
 
@@ -472,9 +486,10 @@
 			tp_inst.ampm = ampm;
 
 			tp_inst.formatTime(tp_inst);
-			if(tp_inst.$timeObj)
+			if(tp_inst.$timeObj){
 				tp_inst.$timeObj.text(tp_inst.formattedTime);
-
+			}
+			
 			if (hasChanged) {
 				tp_inst.updateDateTime(dp_inst, tp_inst);
 				tp_inst.timeDefined = true;
@@ -532,7 +547,7 @@
 				formattedDateTime = this.formattedTime;
 			}
 			else if (this.defaults.timeOnly !== true && (this.defaults.alwaysSetTime || timeAvailable)) {
-				if ((this.$altInput) && this.$altInput != null)
+				if ((this.$altInput) && this.$altInput !== null)
 				{
 					this.$altInput.val(this.formattedTime);
 				}
@@ -563,12 +578,15 @@
 
 		if(typeof(o) == 'string')
 		{
-			if(o == 'setDate')
+			if(o == 'setDate'){
 				return input.datepicker(o, arguments[1]);
-			if(o == 'options' && typeof(arguments[1]) == 'string')
+			}
+			if(o == 'options' && typeof(arguments[1]) == 'string'){
 				return input.datepicker(o, arguments[1], arguments[2]);
-			if(o == 'dialog')
+			}
+			if(o == 'dialog'){
 				return input.datepicker(o, arguments[1], arguments[2], arguments[3], arguments[4]);
+			}
 			return input.datepicker(o);
 		}
 		
@@ -593,8 +611,9 @@
 			tp.second = tp.defaults.second;
 			tp.ampm = '';
 			tp.$input = $(input);
-			if(opts.altField != undefined && opts.altField != '')
+			if(opts.altField !== undefined && opts.altField != ''){
 				tp.$altInput = $($.datepicker._get(inst, 'altField'));
+			}
 			tp.inst = inst;
 			tp.addTimePicker(inst);
 			if ($.isFunction(opts.beforeShow)) {
@@ -620,7 +639,7 @@
 		};
 
 		// make the alt field trigger the picker if its set
-		if ((opts.altField) && opts.altField != null){
+		if ((opts.altField) && opts.altField !== null){
 			var me = $(opts.altField);
 
 			me.css({ 'cursor': 'pointer' });
@@ -644,8 +663,9 @@
 	// shorthand just to use timepicker..
 	//########################################################################
 	jQuery.fn.timepicker = function(opts) {
-		if(typeof opts == 'object')
+		if(typeof opts == 'object'){
 			opts = $.extend(opts, { timeOnly: true });
+		}
 			
 		return $(this).datetimepicker(opts, arguments[1], arguments[2], arguments[3], arguments[4]);
 	};
@@ -729,13 +749,13 @@
 		var inst = $.datepicker._getInst(event.target);
 		var tp_inst = $.datepicker._get(inst, 'timepicker');
 		
-		if (tp_inst != null) {
+		if (tp_inst !== null) {
 			if (tp_inst.defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
 				try {
 					$.datepicker._updateDatepicker(inst);
 				}
-				catch (event) {
-					$.datepicker.log(event);
+				catch (err) {
+					$.datepicker.log(err);
 				}
 			}
 		}
@@ -832,11 +852,13 @@
 	//#######################################################################################
 	function extendRemove(target, props) {
 		$.extend(target, props);
-		for (var name in props)
-			if (props[name] == null || props[name] == undefined)
+		for (var name in props){
+			if (props[name] === null || props[name] === undefined){
 				target[name] = props[name];
+			}
+		}
 		return target;
-	};
+	}
 
 	$.timepicker = new Timepicker(true); // singleton instance
 })(jQuery);
