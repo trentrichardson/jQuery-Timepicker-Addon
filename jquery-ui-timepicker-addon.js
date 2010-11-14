@@ -581,7 +581,7 @@
 			if(o == 'setDate'){
 				return input.datepicker(o, arguments[1]);
 			}
-			if(o == 'options' && typeof(arguments[1]) == 'string'){
+			if(o == 'option' && typeof(arguments[1]) == 'string'){
 				return input.datepicker(o, arguments[1], arguments[2]);
 			}
 			if(o == 'dialog'){
