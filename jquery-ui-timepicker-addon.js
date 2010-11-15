@@ -449,7 +449,12 @@
 						);
 				}
 
-				$dp.find('.ui-datepicker-calendar:first').after($tp);
+				if (this.defaults.showButtonPanel) {
+					$dp.find('.ui-datepicker-buttonpane').before($tp);
+				}
+				else {
+					$dp.append($tp);
+				}
 
 				tp_inst.$timeObj = $('#ui_tpicker_time_' + dp_inst.id);
 
