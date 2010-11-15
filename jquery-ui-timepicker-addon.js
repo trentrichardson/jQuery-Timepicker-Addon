@@ -449,7 +449,7 @@
 						);
 				}
 
-				$dp.find('.ui-datepicker-calendar').after($tp);
+				$dp.find('.ui-datepicker-calendar:first').after($tp);
 
 				tp_inst.$timeObj = $('#ui_tpicker_time_' + dp_inst.id);
 
