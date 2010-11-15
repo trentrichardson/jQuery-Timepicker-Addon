@@ -172,7 +172,7 @@
 		{
 			var $dp = dp_inst.dpDiv;
 			var opts = tp_inst.defaults;
-			var dp_id = dp_inst.id;
+			var dp_id = dp_inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 			
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
@@ -549,7 +549,7 @@
 			var formattedDateTime = this.formattedDate;
 			var timeAvailable = ((dt !== null && tp_inst.timeDefined) !== true)? false : true;
 			
-			if (dp_inst.lastVal !== null && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
+			if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
 				return;
 			}
 
