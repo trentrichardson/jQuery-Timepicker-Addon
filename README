@@ -1,0 +1,5 @@
+jQuery Timepicker Addon
+
+-To use this plugin you must include jQuery and jQuery UI with datepicker 
+-Include timepicker-addon script
+-now use timepicker with $('#selector').datetimepicker() or $('#selector').timepicker()

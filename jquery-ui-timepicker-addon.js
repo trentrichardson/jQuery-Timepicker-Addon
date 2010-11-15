@@ -549,7 +549,7 @@
 			var formattedDateTime = this.formattedDate;
 			var timeAvailable = ((dt !== null && tp_inst.timeDefined) !== true)? false : true;
 			
-			if (dp_inst.lastVal.length > 0 && this.$input.val().length === 0) {
+			if (dp_inst.lastVal !== null && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
 				return;
 			}
 
