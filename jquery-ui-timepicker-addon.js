@@ -508,11 +508,11 @@ $.fn.extend({
 					tp_inst.ampm = '';
 					tp_inst.$input = $(input);
 					if (o.altField) {
-						tp_inst.$altinput = $($.datepicker._get(dp_inst, 'altField'))
-						  .css({ cursor: 'pointer' })
-						  .focus(function(){
-							$input.trigger("focus");
-						});
+						tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
+							.css({ cursor: 'pointer' })
+							.focus(function(){
+								$input.trigger("focus");
+							});
 					}
 					tp_inst.inst = dp_inst;
 					tp_inst._addTimePicker();
