@@ -1,7 +1,7 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.8-alt
+* Version 0.8.1
 * Last Modified: 11/15/2010 by Charles Phillips
 * 
 * Copyright 2010 Trent Richardson
@@ -19,7 +19,7 @@
 
 (function($) {
 	
-$.extend($.ui, { timepicker: { version: "0.8-alt" } });
+$.extend($.ui, { timepicker: { version: "0.8.1" } });
 
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
@@ -168,10 +168,10 @@ $.extend(Timepicker.prototype, {
 			var noDisplay = ' style="display:none;"',
 				html =
 				'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_id + '"><dl>' +
- 						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_id + '"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
- 						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_id + '"' + ((o.showTime) ? '' : noDisplay) + '></dd>' +
- 						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_id + '"' + ((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
- 				hourGridSize = 0,
+						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_id + '"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
+						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_id + '"' + ((o.showTime) ? '' : noDisplay) + '></dd>' +
+						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_id + '"' + ((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
+				hourGridSize = 0,
 				minuteGridSize = 0,
 				secondGridSize = 0,
 				size;
@@ -709,6 +709,7 @@ function extendRemove(target, props) {
 }
 
 $.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "0.8-alt";
+$.timepicker.version = "0.8.1";
 
 })(jQuery);
+
