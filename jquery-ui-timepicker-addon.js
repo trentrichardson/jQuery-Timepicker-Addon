@@ -460,9 +460,12 @@ $.fn.extend({
 	// shorthand just to use timepicker..
 	//########################################################################
 	timepicker: function(o) {
+		var tmp_args = arguments;
+		
 		if (typeof o == 'object') o = $.extend(o, { timeOnly: true });
+		
 		return this.each(function() {
-			$(this).datetimepicker(o, arguments[1], arguments[2], arguments[3], arguments[4]);
+			$(this).datetimepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
 		});
 	},
 
@@ -471,17 +474,18 @@ $.fn.extend({
 	//########################################################################		
 	datetimepicker: function(o) {
 		o = o || {};
-		var $input = this;
+		var $input = this,
+			tmp_args = arguments;
 		
 		if (typeof(o) == 'string') {
 			if (o == 'setDate') return this.each(function() {
-				$(this).datepicker(o, arguments[1]);
+				$(this).datepicker(o, tmp_args[1]);
 			});
-			else if(o == 'option' && typeof(arguments[1]) == 'string') return this.each(function() {
-				$(this).datepicker(o, arguments[1], arguments[2]);
+			else if(o == 'option' && typeof(tmp_args[1]) == 'string') return this.each(function() {
+				$(this).datepicker(o, tmp_args[1], tmp_args[2]);
 			});
 			else if(o == 'dialog') return this.each(function() {
-				$(this).datepicker(o, arguments[1], arguments[2], arguments[3], arguments[4]);
+				$(this).datepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
 			});
 			else return this.each(function() {
 				$(this).datepicker(o);
