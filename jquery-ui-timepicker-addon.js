@@ -474,9 +474,12 @@ $.fn.extend({
 		var $input = this;
 		
 		if (typeof(o) == 'string') {
-			if (o == 'setDate') return this.each(function() {
-				$(this).datepicker(o, arguments[1]);
-			});
+			if (o == 'setDate') {
+				var dt = arguments[1];
+				return this.each(function() {
+					$(this).datepicker(o, dt);
+				});
+			}
 			else if(o == 'option' && typeof(arguments[1]) == 'string') return this.each(function() {
 				$(this).datepicker(o, arguments[1], arguments[2]);
 			});
