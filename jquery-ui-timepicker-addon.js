@@ -347,8 +347,9 @@ $.extend(Timepicker.prototype, {
 					});
 				});
 			}
-				
-			if (this._defaults.showButtonPanel) $dp.find('.ui-datepicker-buttonpane').before($tp);
+
+			var buttonPanel = $dp.find('.ui-datepicker-buttonpane');
+			if (buttonPanel.length > 0) $dp.find('.ui-datepicker-buttonpane').before($tp);
 			else $dp.append($tp);
 			
 			this.$timeObj = $('#ui_tpicker_time_'+ dp_id);
