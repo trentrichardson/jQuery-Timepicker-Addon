@@ -707,7 +707,8 @@ $.datepicker._getDate = function(inst) {
 	if (tp_inst)
 		return startDate = (!inst.currentYear || (inst.input && inst.input.val() == '')) ?
 			null :
-			this._daylightSavingAdjustDateTime(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
+			(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
+			//this._daylightSavingAdjustDateTime(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
 	else return $.datepicker._base_getDate(inst);
 };
 	
