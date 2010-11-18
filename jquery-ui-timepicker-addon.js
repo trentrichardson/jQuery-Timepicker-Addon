@@ -529,8 +529,8 @@ $.fn.extend({
 		
 		if (typeof o == 'object') tmp_args[0] = $.extend(o, { timeOnly: true });
 		
-		return this.each(function() {
-			$.fn.datepicker.apply(this, tmp_args);
+		return $(this).each(function() {
+			$.fn.datetimepicker.apply($(this), tmp_args);
 		});
 	},
 
@@ -542,10 +542,14 @@ $.fn.extend({
 		var $input = this,
 			tmp_args = arguments;
 		
-		if (typeof(o) == 'string')
-			return this.each(function() {
-				$.fn.datepicker.apply(this, tmp_args);
-			});
+		if (typeof(o) == 'string'){
+			if(o == 'getDate') 
+				return $.fn.datepicker.apply($(this), tmp_args);
+			else 
+				return this.each(function() {
+					$.fn.datepicker.apply($(this), tmp_args);
+				});
+		}
 		else
 			return this.each(function() {
 				$(this).datepicker($.timepicker._newInst($input, o)._defaults);
