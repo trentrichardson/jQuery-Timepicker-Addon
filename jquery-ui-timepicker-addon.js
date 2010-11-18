@@ -676,15 +676,6 @@ $.datepicker._setTime = function(inst, date) {
 };
 
 //#######################################################################################
-// datepicker doesn't care about hours.. we do.. leave dp alone this time..
-//#######################################################################################
-$.datepicker._daylightSavingAdjustDateTime = function(date) {
-	if (!date) return null;
-	date.setHours(date.getHours() > 12 ? date.getHours() + 2 : date.getHours());
-	return date;
-};
-
-//#######################################################################################
 // override setDate() to allow getting time too within Date object
 //#######################################################################################
 $.datepicker._base_setDate = $.datepicker._setDate;
@@ -708,7 +699,6 @@ $.datepicker._getDate = function(inst) {
 		return startDate = (!inst.currentYear || (inst.input && inst.input.val() == '')) ?
 			null :
 			(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
-			//this._daylightSavingAdjustDateTime(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
 	else return $.datepicker._base_getDate(inst);
 };
 	
