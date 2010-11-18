@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.8.1
-* Last Modified: 11/15/2010 by Charles Phillips
+* Last Modified: 11/18/2010 by Charles Phillips
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -87,6 +87,58 @@ $.extend(Timepicker.prototype, {
 	setDefaults: function(settings) {
 		extendRemove(this._defaults, settings || {});
 		return this;
+	},
+
+	//########################################################################
+	// Create a new Timepicker instance
+	//########################################################################
+	_newInst: function($input, o) {
+		var tp_inst = new Timepicker(),
+			inlineSettings = {};
+	
+		for (var attrName in tp_inst._defaults) {
+			var attrValue = $input.attr('time:' + attrName);
+			if (attrValue) {
+				try {
+					inlineSettings[attrName] = eval(attrValue);
+				} catch (err) {
+					inlineSettings[attrName] = attrValue;
+				}
+			}
+		}
+		tp_inst._defaults = $.extend({}, tp_inst._defaults, inlineSettings, o, {
+			beforeShow: function(input, dp_inst) {
+				tp_inst.hour = tp_inst._defaults.hour;
+				tp_inst.minute = tp_inst._defaults.minute;
+				tp_inst.second = tp_inst._defaults.second;
+				tp_inst.ampm = '';
+				tp_inst.$input = $(input);
+				if (o.altField)
+					tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
+						.css({ cursor: 'pointer' })
+						.focus(function(){
+							$input.trigger("focus");
+						});
+				tp_inst.inst = dp_inst;
+				tp_inst._addTimePicker();
+				if ($.isFunction(o.beforeShow))
+					o.beforeShow(input, dp_inst);
+			},
+			onChangeMonthYear: function(year, month, dp_inst) {
+				// Update the time as well : this prevents the time from disappearing from the $input field.
+				tp_inst._updateDateTime(dp_inst);
+				if ($.isFunction(o.onChangeMonthYear))
+					o.onChangeMonthYear(year, month, dp_inst);
+			},
+			onClose: function(dateText, dp_inst) {
+				if (tp_inst.timeDefined === true && $input.val() != '')
+					tp_inst._updateDateTime(dp_inst);
+				if ($.isFunction(o.onClose))
+					o.onClose(dateText, dp_inst);
+			},
+			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
+		});
+		return tp_inst;
 	},
 
 	//########################################################################
@@ -361,7 +413,7 @@ $.extend(Timepicker.prototype, {
 			}
 
 			var $buttonPanel = $dp.find('.ui-datepicker-buttonpane');
-			if (buttonPanel.length) $buttonPanel.before($tp);
+			if ($buttonPanel.length) $buttonPanel.before($tp);
 			else $dp.append($tp);
 			
 			this.$timeObj = $('#ui_tpicker_time_'+ dp_id);
@@ -475,10 +527,10 @@ $.fn.extend({
 		o = o || {};
 		var tmp_args = arguments;
 		
-		if (typeof o == 'object') o = $.extend(o, { timeOnly: true });
+		if (typeof o == 'object') tmp_args[0] = $.extend(o, { timeOnly: true });
 		
 		return this.each(function() {
-			$(this).datetimepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
+			$.fn.datepicker.apply(this, tmp_args);
 		});
 	},
 
@@ -490,70 +542,14 @@ $.fn.extend({
 		var $input = this,
 			tmp_args = arguments;
 		
-		if (typeof(o) == 'string') {
-			if (o == 'setDate') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1]);
-			});
-			else if(o == 'option' && typeof(tmp_args[1]) == 'string') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1], tmp_args[2]);
-			});
-			else if(o == 'dialog') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
-			});
-			else return this.each(function() {
-				$(this).datepicker(o);
-			});
-		} else {	
-			var tp_inst = new Timepicker(),
-				inlineSettings = {};
-	
-			for (var attrName in tp_inst._defaults) {
-				var attrValue = $input.attr('time:' + attrName);
-				if (attrValue) {
-					try {
-						inlineSettings[attrName] = eval(attrValue);
-					} catch (err) {
-						inlineSettings[attrName] = attrValue;
-					}
-				}
-			}
-			tp_inst._defaults = $.extend({}, tp_inst._defaults, inlineSettings, o, {
-				beforeShow: function(input, dp_inst) {
-					tp_inst.hour = tp_inst._defaults.hour;
-					tp_inst.minute = tp_inst._defaults.minute;
-					tp_inst.second = tp_inst._defaults.second;
-					tp_inst.ampm = '';
-					tp_inst.$input = $(input);
-					if (o.altField)
-						tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
-							.css({ cursor: 'pointer' })
-							.focus(function(){
-								$input.trigger("focus");
-							});
-					tp_inst.inst = dp_inst;
-					tp_inst._addTimePicker();
-					if ($.isFunction(o.beforeShow))
-						o.beforeShow(input, dp_inst);
-				},
-				onChangeMonthYear: function(year, month, dp_inst) {
-					// Update the time as well : this prevents the time from disappearing from the $input field.
-					tp_inst._updateDateTime(dp_inst);
-					if ($.isFunction(o.onChangeMonthYear))
-						o.onChangeMonthYear(year, month, dp_inst);
-				},
-				onClose: function(dateText, dp_inst) {
-					if (tp_inst.timeDefined === true && $input.val() != '')
-						tp_inst._updateDateTime(dp_inst);
-					if ($.isFunction(o.onClose))
-						o.onClose(dateText, dp_inst);
-				},
-				timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
-			});
-			
+		if (typeof(o) == 'string')
 			return this.each(function() {
-				$(this).datepicker(tp_inst._defaults);
+				$.fn.datepicker.apply(this, tmp_args);
 			});
-		}
+		else
+			return this.each(function() {
+				$(this).datepicker($.timepicker._newInst($input, o)._defaults);
+			});
 	}
 });
 
@@ -716,7 +712,7 @@ $.datepicker._getDate = function(inst) {
 function extendRemove(target, props) {
 	$.extend(target, props);
 	for (var name in props)
-		if (props[name] == null || props[name] == undefined)
+		if (props[name] === null || props[name] === undefined)
 			target[name] = props[name];
 	return target;
 }
@@ -725,4 +721,3 @@ $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "0.8.1";
 
 })(jQuery);
-
