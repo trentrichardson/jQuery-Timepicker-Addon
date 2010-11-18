@@ -479,19 +479,17 @@ $.fn.extend({
 			tmp_args = arguments;
 		
 		if (typeof(o) == 'string') {
-			if (o == 'getDate') 
-				return $(this).datepicker(o);
-			else if (o == 'setDate') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1]);
+			if (o == 'setDate') return this.each(function() {
+				return $(this).datepicker(o, tmp_args[1]);
 			});
 			else if(o == 'option' && typeof(tmp_args[1]) == 'string') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1], tmp_args[2]);
+				return $(this).datepicker(o, tmp_args[1], tmp_args[2]);
 			});
 			else if(o == 'dialog') return this.each(function() {
-				$(this).datepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
+				return $(this).datepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
 			});
 			else return this.each(function() {
-				$(this).datepicker(o);
+				return $(this).datepicker(o);
 			});
 		} else {	
 			var tp_inst = new Timepicker(),
