@@ -479,7 +479,9 @@ $.fn.extend({
 			tmp_args = arguments;
 		
 		if (typeof(o) == 'string') {
-			if (o == 'setDate') return this.each(function() {
+			if (o == 'getDate') 
+				return $(this).datepicker(o);
+			else if (o == 'setDate') return this.each(function() {
 				$(this).datepicker(o, tmp_args[1]);
 			});
 			else if(o == 'option' && typeof(tmp_args[1]) == 'string') return this.each(function() {
