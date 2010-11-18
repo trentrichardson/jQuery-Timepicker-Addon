@@ -462,7 +462,8 @@ $.fn.extend({
 	timepicker: function(o) {
 		var tmp_args = arguments;
 		
-		if (typeof o == 'object') o = $.extend(o, { timeOnly: true });
+		if(o === undefined) o = { timeOnly: true };		
+		else if (typeof o == 'object') o = $.extend(o, { timeOnly: true });
 		
 		return this.each(function() {
 			$(this).datetimepicker(o, tmp_args[1], tmp_args[2], tmp_args[3], tmp_args[4]);
