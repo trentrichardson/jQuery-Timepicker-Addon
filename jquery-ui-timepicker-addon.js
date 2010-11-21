@@ -608,10 +608,13 @@ $.datepicker._doKeyPress = function(event) {
 
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
-			var datetimeChars = tp_inst._defaults.timeFormat.toString()
+			var ampm = tp_inst._defaults.ampm,
+				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
-								.replace(/TT|T/g, tp_inst._defaults.ampm ? 'APM' : '')
-								.replace(/tt|t/g, tp_inst._defaults.ampm ? 'apm' : '') +
+								.replace(/TT/g, ampm ? 'APM' : '')
+								.replace(/T/g, ampm ? 'AP' : '')
+								.replace(/tt/g, ampm ? 'apm' : '')
+								.replace(/t/g, ampm ? 'ap' : '') +
 								" " +
 								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
