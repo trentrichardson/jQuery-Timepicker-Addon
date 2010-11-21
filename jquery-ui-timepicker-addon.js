@@ -608,12 +608,9 @@ $.datepicker._doKeyPress = function(event) {
 
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
-			var dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
-				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode),
-				chrl = chr.toLowerCase();
-			// keyCode == 58 => ":"
-			// keyCode == 32 => " "
-			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1 || event.keyCode == 58 || event.keyCode == 32 || chr == ':' || chr == ' ' || chrl == 'a' || chrl == 'p' || chrl == 'm');
+			var datetimeChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')) + "aAmMpP :",
+				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
+			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1);
 		}
 	} else return $.datepicker._base_doKeyPress(event);
 	
