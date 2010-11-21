@@ -608,9 +608,14 @@ $.datepicker._doKeyPress = function(event) {
 
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
-			var datetimeChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')) + "aAmMpP :",
+			var datetimeChars = tp_inst._defaults.timeFormat.toString()
+								.replace(/[hms]/g, '')
+								.replace(/TT|T/g, 'APM')
+								.replace(/tt|t/g, 'apm') +
+								" " +
+								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
-			return event.ctrlKey || (chr < ' ' || !dateChars || dateChars.indexOf(chr) > -1);
+			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
 		}
 	} else return $.datepicker._base_doKeyPress(event);
 	
