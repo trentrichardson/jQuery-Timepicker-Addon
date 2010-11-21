@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.8.1
-* Last Modified: 11/18/2010 by Charles Phillips
+* Last Modified: 11/20/2010 by Charles Phillips
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -238,7 +238,7 @@ $.extend(Timepicker.prototype, {
 						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
 						'<div style="padding-left: 1px"><table><tr>';
 					
-				for (var h = 0; h < hourMax; h += o.hourGrid) {
+				for (var h = o.hourMin; h < hourMax; h += o.hourGrid) {
 					hourGridSize++;
 					var tmph = (o.ampm && h > 12) ? h-12 : h;
 					if (tmph < 10) tmph = '0' + tmph;
@@ -264,7 +264,7 @@ $.extend(Timepicker.prototype, {
 						((o.showMinute) ? '' : noDisplay) + '></div>' +
 						'<div style="padding-left: 1px"><table><tr>';
 						
-				for (var m = 0; m < minMax; m += o.minuteGrid) {
+				for (var m = o.minuteMin; m < minMax; m += o.minuteGrid) {
 					minuteGridSize++;
 					html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 				}
@@ -283,7 +283,7 @@ $.extend(Timepicker.prototype, {
 						((o.showSecond) ? '' : noDisplay) + '></div>' +
 						'<div style="padding-left: 1px"><table><tr>';
 	
-				for (var s = 0; s < secMax; s += o.secondGrid) {
+				for (var s = o.secondMin; s < secMax; s += o.secondGrid) {
 					secondGridSize++;
 					html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 				}
