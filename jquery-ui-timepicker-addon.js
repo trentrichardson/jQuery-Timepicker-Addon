@@ -350,11 +350,9 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-
 			// Add grid functionality
 			if (o.showHour && o.hourGrid > 0) {
 				size = 100 * hourGridSize * o.hourGrid / (hourMax - o.hourMin);
-			
 
 				$tp.find(".ui_tpicker_hour table").css({
 					width: size + "%",
@@ -382,7 +380,6 @@ $.extend(Timepicker.prototype, {
 					});
 				});
 			}
-		
 
 			if (o.showMinute && o.minuteGrid > 0) {
 				size = 100 * minuteGridSize * o.minuteGrid / (minMax - o.minuteMin);
@@ -545,8 +542,7 @@ $.fn.extend({
 
 	//########################################################################
 	// extend timepicker to datepicker
-	//########################################################################	
-
+	//########################################################################
 	datetimepicker: function(o) {
 		o = o || {};
 		var $input = this,
@@ -679,7 +675,7 @@ $.datepicker._setTime = function(inst, date) {
 			second = date ? date.getSeconds() : defaults.second;
 
 		//check if within min/max times..
-		if ((hour < defaults.hourMin || hour > defaults.hourMax) || (minute < defaults.minuteMin || minute > defaults.minuteMax) || (second < defaults.secondMin || second > defaults.secondMax)) {				
+		if ((hour < defaults.hourMin || hour > defaults.hourMax) || (minute < defaults.minuteMin || minute > defaults.minuteMax) || (second < defaults.secondMin || second > defaults.secondMax)) {
 			hour = defaults.hourMin;
 			minute = defaults.minuteMin;
 			second = defaults.secondMin;
