@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.8.1
-* Last Modified: 11/21/2010 by Charles Phillips
+* Last Modified: 11/26/2010 by Charles Phillips
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -574,8 +574,8 @@ $.datepicker._selectDate = function (id, dateStr) {
 
 	if (tp_inst) {
 		inst.inline = inst.stay_open = true;
-		inst.stay_open = inst.inline = false;
 		this._base_selectDate(id, dateStr);
+		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
 	}
