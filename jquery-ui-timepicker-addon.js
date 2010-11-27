@@ -477,6 +477,10 @@ $.extend(Timepicker.prototype, {
 			tmptime = tmptime.toString()
 				.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
 				.replace(/h/g, hour12)
+				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
+				.replace(/m/g, time.minute)
+				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
+				.replace(/s/g, time.second)
 				.replace(/TT/g, time.ampm.toUpperCase())
 				.replace(/tt/g, time.ampm.toLowerCase())
 				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
@@ -485,12 +489,12 @@ $.extend(Timepicker.prototype, {
 			tmptime = tmptime.toString()
 				.replace(/hh/g, ((time.hour < 10) ? '0' : '') + time.hour)
 				.replace(/h/g, time.hour)
+				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
+				.replace(/m/g, time.minute)
+				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
+				.replace(/s/g, time.second)
 			tmptime = $.trim(tmptime.replace(/t/gi, ''));
 		}
-		tmptime = tmptime.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
-			.replace(/m/g, time.minute)
-			.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
-			.replace(/s/g, time.second);
 
 		if (arguments.length) return tmptime;
 		else this.formattedTime = tmptime;
