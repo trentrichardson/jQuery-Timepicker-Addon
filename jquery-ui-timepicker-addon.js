@@ -492,7 +492,7 @@ $.extend(Timepicker.prototype, {
 				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
 				.replace(/m/g, time.minute)
 				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
-				.replace(/s/g, time.second)
+				.replace(/s/g, time.second);
 			tmptime = $.trim(tmptime.replace(/t/gi, ''));
 		}
 
