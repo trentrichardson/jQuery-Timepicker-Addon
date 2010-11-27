@@ -466,36 +466,34 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	// format the time all pretty...
 	//########################################################################
-	_formatTime: function() {
-		var tmptime = this._defaults.timeFormat.toString(),
-			hour12 = ((this.ampm == 'AM') ? (this.hour) : (this.hour % 12));
-		hour12 = (Number(hour12) === 0) ? 12 : hour12;
+	_formatTime: function(time, format, ampm) {
+		if (ampm == undefined) ampm = this._defaults.ampm;
+		time = time || { hour: this.hour, minute: this.minute, second: this.second, ampm: this.ampm };
+		var tmptime = format || this._defaults.timeFormat.toString();
 
-		if (this._defaults.ampm === true) {
+		if (ampm) {
+			var hour12 = ((time.ampm == 'AM') ? (time.hour) : (time.hour % 12));
+			hour12 = (Number(hour12) === 0) ? 12 : hour12;
 			tmptime = tmptime.toString()
 				.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
 				.replace(/h/g, hour12)
-				.replace(/mm/g, ((this.minute < 10) ? '0' : '') + this.minute)
-				.replace(/m/g, this.minute)
-				.replace(/ss/g, ((this.second < 10) ? '0' : '') + this.second)
-				.replace(/s/g, this.second)
-				.replace(/TT/g, this.ampm.toUpperCase())
-				.replace(/tt/g, this.ampm.toLowerCase())
-				.replace(/T/g, this.ampm.charAt(0).toUpperCase())
-				.replace(/t/g, this.ampm.charAt(0).toLowerCase());
+				.replace(/TT/g, time.ampm.toUpperCase())
+				.replace(/tt/g, time.ampm.toLowerCase())
+				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
+				.replace(/t/g, time.ampm.charAt(0).toLowerCase());
 		} else {
 			tmptime = tmptime.toString()
-				.replace(/hh/g, ((this.hour < 10) ? '0' : '') + this.hour)
-				.replace(/h/g, this.hour)
-				.replace(/mm/g, ((this.minute < 10) ? '0' : '') + this.minute)
-				.replace(/m/g, this.minute)
-				.replace(/ss/g, ((this.second < 10) ? '0' : '') + this.second)
-				.replace(/s/g, this.second);
+				.replace(/hh/g, ((time.hour < 10) ? '0' : '') + time.hour)
+				.replace(/h/g, time.hour)
 			tmptime = $.trim(tmptime.replace(/t/gi, ''));
 		}
+		tmptime = tmptime.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
+			.replace(/m/g, time.minute)
+			.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
+			.replace(/s/g, time.second);
 
-		this.formattedTime = tmptime;
-		return this.formattedTime;
+		if (arguments.length) return tmptime;
+		else this.formattedTime = tmptime;
 	},
 
 	//########################################################################
