@@ -30,6 +30,7 @@ function Timepicker() {
 	this.regional = []; // Available regional settings, indexed by language code
 	this.regional[''] = { // Default regional settings
 		currentText: 'Now',
+		closeText: 'Done',
 		ampm: false,
 		timeFormat: 'hh:mm tt',
 		timeOnlyTitle: 'Choose Time',
