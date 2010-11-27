@@ -96,7 +96,7 @@ $.extend(Timepicker.prototype, {
 		var tp_inst = new Timepicker(),
 			inlineSettings = {};
 
-		for (var attrName in tp_inst._defaults) {
+		for (var attrName in this._defaults) {
 			var attrValue = $input.attr('time:' + attrName);
 			if (attrValue) {
 				try {
@@ -106,7 +106,7 @@ $.extend(Timepicker.prototype, {
 				}
 			}
 		}
-		tp_inst._defaults = $.extend({}, tp_inst._defaults, inlineSettings, o, {
+		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
 			beforeShow: function(input, dp_inst) {
 				tp_inst.hour = tp_inst._defaults.hour;
 				tp_inst.minute = tp_inst._defaults.minute;
