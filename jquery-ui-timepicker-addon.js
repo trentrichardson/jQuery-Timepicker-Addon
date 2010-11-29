@@ -723,8 +723,12 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 //#######################################################################################
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
+	var inst = this._getInst(target),
+		tp_date = new Date(date.getTime());
+	
+	this._updateDatepicker(inst);	
 	this._base_setDateDatepicker.apply(this, arguments);
-	this._setTimeDatepicker(target, date, true);
+	this._setTimeDatepicker(target, tp_date, true);
 };
 
 //#######################################################################################
