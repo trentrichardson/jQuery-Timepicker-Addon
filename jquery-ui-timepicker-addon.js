@@ -220,9 +220,9 @@ $.extend(Timepicker.prototype, {
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
-			hourMax = o.hourMax - (o.hourMax % o.stepHour),
-			minMax  = o.minuteMax - (o.minuteMax % o.stepMinute),
-			secMax  = o.secondMax - (o.secondMax % o.stepSecond),
+			hourMax = (o.hourMax - (o.hourMax % o.stepHour)).toFixed(0),
+			minMax  = (o.minuteMax - (o.minuteMax % o.stepMinute)).toFixed(0),
+			secMax  = (o.secondMax - (o.secondMax % o.stepSecond)).toFixed(0),
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
