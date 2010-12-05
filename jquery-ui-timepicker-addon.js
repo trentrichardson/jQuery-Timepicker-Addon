@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.1
-* Last Modified: 12/2/2010
+* Version 0.9.1-dev
+* Last Modified: 12/5/2010 by Charles Phillips
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -148,10 +148,9 @@ $.extend(Timepicker.prototype, {
 	_addTimePicker: function() {
 		var currDT = (this.$altInput) ?
 				this.$input.val() + ' ' + this.$altInput.val() : 
-				this.$input.val(),
-				parsedDT = this._parseTime(currDT);
+				this.$input.val();
 
-		this.timeDefined = (parsedDT) ? true : false;
+		this.timeDefined = this._parseTime(currDT);
 		this._injectTimePicker();
 	},
 
@@ -165,9 +164,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
 				.replace(/\s/g, '\\s?') + '$',
-
-			treg = timeString.match(new RegExp(regstr, 'i')),
-			order = this._getFormatPositions();
+			order = this._getFormatPositions(),
+			treg;
 
 		if (withDate || !this._defaults.timeOnly) {
 			// the time should come after x number of characters and a space.
@@ -175,6 +173,8 @@ $.extend(Timepicker.prototype, {
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
 			regstr = '.{' + dp_dateFormat.length + ',}\\s+' + regstr;
 		}
+
+		treg = timeString.match(new RegExp(regstr, 'i'));
 
 		if (treg) {
 			if (order.t !== -1)
@@ -187,12 +187,15 @@ $.extend(Timepicker.prototype, {
 					this.hour = 0; // 12am = 0 hour
 				else if (this.ampm == 'PM' && treg[order.h] != '12') 
 					this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); // 12pm = 12 hour, any other pm = hour + 12
-				else this.hour = treg[order.h];
+				else this.hour = Number(treg[order.h]);
 			}
 
-			if (order.m !== -1) this.minute = treg[order.m];
-			if (order.s !== -1) this.second = treg[order.s];
-		}
+			if (order.m !== -1) this.minute = Number(treg[order.m]);
+			if (order.s !== -1) this.second = Number(treg[order.s]);
+			
+			return true;
+
+		} else return false;
 	},
 
 	//########################################################################
