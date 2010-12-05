@@ -440,31 +440,31 @@ $.extend(Timepicker.prototype, {
 	// when a slider moves...
 	// on time change is also called when the time is updated in the text field
 	//########################################################################
-	_onTimeChange: function(force) {
-		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : this.hour,
-			minute = (this.minute_slider) ? this.minute_slider.slider('value') : this.minute,
-			second = (this.second_slider) ? this.second_slider.slider('value') : this.second,
-			ampm = (hour < 11.5) ? 'AM' : 'PM',
-			hasChanged = false;
-		hour = (hour >= 11.5 && hour < 12) ? 12 : hour;
-
-		// If the update was done in the input field, this field should not be updated.
+	_onTimeChange: function() {
+		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
+			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
+			second = (this.second_slider) ? this.second_slider.slider('value') : false,
+			ampm = (hour < 12) ? 'AM' : 'PM';
+		
+		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
-		if (force || this.hour != hour || this.minute != minute || this.second != second || (this.ampm.length > 0 && this.ampm != ampm))
-			hasChanged = true;
+		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm));
+		
+		if (hasChanged) {
 
-		this.hour = parseFloat(hour).toFixed(0);
-		this.minute = parseFloat(minute).toFixed(0);
-		this.second = parseFloat(second).toFixed(0);
-		this.ampm = ampm;
+			if (hour) {
+				this.hour = parseFloat(hour).toFixed(0);
+				this.ampm = ampm;
+			}
+			if (minute) this.minute = parseFloat(minute).toFixed(0);
+			if (second) this.second = parseFloat(second).toFixed(0);
 
+		}
 		this._formatTime();
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
-
-		if (hasChanged) {
-			this._updateDateTime();
-			this.timeDefined = true;
-		}
+		this.timeDefined = true;
+	
+		if (hasChanged) this._updateDateTime();
 	},
 
 	//########################################################################
