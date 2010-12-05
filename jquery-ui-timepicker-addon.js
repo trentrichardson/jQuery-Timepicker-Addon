@@ -684,7 +684,8 @@ $.datepicker._setTime = function(inst, date) {
 		if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
 		else tp_inst.second = second;
 
-		tp_inst._onTimeChange(true);
+		tp_inst._onTimeChange();
+		tp_inst._updateDateTime();
 	}
 };
 
