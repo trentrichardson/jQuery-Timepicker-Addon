@@ -121,7 +121,6 @@ $.extend(Timepicker.prototype, {
 							$input.trigger("focus");
 						});
 				tp_inst.inst = dp_inst;
-				tp_inst._addTimePicker();
 				if ($.isFunction(o.beforeShow))
 					o.beforeShow(input, dp_inst);
 			},
@@ -437,7 +436,7 @@ $.extend(Timepicker.prototype, {
 	},
 
 	//########################################################################
-	// when a slider moves...
+	// when a slider moves, set the internal time...
 	// on time change is also called when the time is updated in the text field
 	//########################################################################
 	_onTimeChange: function() {
@@ -597,16 +596,7 @@ $.datepicker._updateDatepicker = function(inst) {
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 		this._base_updateDatepicker(inst);
 		// Reload the time control when changing something in the input text field.
-		this._beforeShow(inst.input, inst);
-	}
-};
-
-$.datepicker._beforeShow = function(input, inst) {
-	var beforeShow = this._get(inst, 'beforeShow');
-	if (beforeShow) {
-		inst.stay_open = true;
-		beforeShow.apply((inst.input ? inst.input[0] : null), [inst.input, inst]);
-		inst.stay_open = false;
+		this._get(inst, 'timepicker')._addTimePicker();
 	}
 };
 
@@ -726,12 +716,8 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 //#######################################################################################
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
-	var inst = this._getInst(target),
-		tp_date = new Date(date.getTime());
-	
-	this._updateDatepicker(inst);	
 	this._base_setDateDatepicker.apply(this, arguments);
-	this._setTimeDatepicker(target, tp_date, true);
+	this._setTimeDatepicker(target, date, true);
 };
 
 //#######################################################################################
