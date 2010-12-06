@@ -97,6 +97,13 @@ $.extend(Timepicker.prototype, {
 		var tp_inst = new Timepicker(),
 			inlineSettings = {};
 
+		tp_inst.hour = tp_inst._defaults.hour;
+		tp_inst.minute = tp_inst._defaults.minute;
+		tp_inst.second = tp_inst._defaults.second;
+		tp_inst.ampm = '';
+		tp_inst.$input = $input;
+			
+
 		for (var attrName in this._defaults) {
 			var attrValue = $input.attr('time:' + attrName);
 			if (attrValue) {
@@ -109,18 +116,12 @@ $.extend(Timepicker.prototype, {
 		}
 		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
 			beforeShow: function(input, dp_inst) {
-				tp_inst.hour = tp_inst._defaults.hour;
-				tp_inst.minute = tp_inst._defaults.minute;
-				tp_inst.second = tp_inst._defaults.second;
-				tp_inst.ampm = '';
-				tp_inst.$input = $(input);
 				if (o.altField)
 					tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
 						.css({ cursor: 'pointer' })
 						.focus(function(){
 							$input.trigger("focus");
 						});
-				tp_inst.inst = dp_inst;
 				if ($.isFunction(o.beforeShow))
 					o.beforeShow(input, dp_inst);
 			},
@@ -165,6 +166,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/\s/g, '\\s?') + '$',
 			order = this._getFormatPositions(),
 			treg;
+
+		if (!this.inst) this.inst = $.datepicker._getInst(this.$input[0]);
 
 		if (withDate || !this._defaults.timeOnly) {
 			// the time should come after x number of characters and a space.
@@ -462,7 +465,6 @@ $.extend(Timepicker.prototype, {
 		this._formatTime();
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
 		this.timeDefined = true;
-	
 		if (hasChanged) this._updateDateTime();
 	},
 
@@ -506,8 +508,8 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	// update our input with the new date time..
 	//########################################################################
-	_updateDateTime: function() {
-		var dp_inst = this.inst,
+	_updateDateTime: function(dp_inst) {
+		dp_inst = this.inst || dp_inst,
 			dt = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay),
 			dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 			formatCfg = $.datepicker._getFormatConfig(dp_inst),
@@ -732,10 +734,8 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 	if (tp_inst) {
 		this._setDateFromField(inst, noDefault);
 		var date = this._getDate(inst);
-		date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
-		return (!inst.currentYear || (inst.input && inst.input.val() == '')) ?
-			null :
-			date;
+		if (date && tp_inst._parseTime($(target).val(), true)) date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
+		return date;
 	}
 	else return this._base_getDateDatepicker(inst);
 };
