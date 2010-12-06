@@ -516,7 +516,6 @@ $.extend(Timepicker.prototype, {
 			timeAvailable = dt !== null && this.timeDefined;
 		this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 		var formattedDateTime = this.formattedDate;
-
 		if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0))
 			return;
 
@@ -664,7 +663,6 @@ $.datepicker._gotoToday = function(id) {
 //#######################################################################################
 $.datepicker._setTime = function(inst, date) {
 	var tp_inst = this._get(inst, 'timepicker');
-
 	if (tp_inst) {
 		var defaults = tp_inst._defaults,
 			// calling _setTime with no date sets time to defaults
@@ -687,7 +685,7 @@ $.datepicker._setTime = function(inst, date) {
 		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
-		tp_inst._updateDateTime();
+		tp_inst._updateDateTime(inst);
 	}
 };
 
@@ -699,6 +697,7 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 		tp_inst = this._get(inst, 'timepicker');
 
 	if (tp_inst) {
+		this._setDateFromField(inst);
 		var tp_date;
 		if (date) {
 			if (typeof date == "string") {
