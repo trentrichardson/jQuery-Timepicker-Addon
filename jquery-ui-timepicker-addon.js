@@ -742,7 +742,8 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 		return (!inst.currentYear || (inst.input && inst.input.val() == '')) ?
 			null :
 			(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
-	else return this._base_getDateDatepicker(inst);
+	
+	return this._base_getDateDatepicker(target, noDefault);
 };
 
 //#######################################################################################
