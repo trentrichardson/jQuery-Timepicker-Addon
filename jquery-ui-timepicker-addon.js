@@ -738,11 +738,15 @@ $.datepicker._base_getDateDatepicker = $.datepicker._getDateDatepicker;
 $.datepicker._getDateDatepicker = function(target, noDefault) {
 	var inst = this._getInst(target),
 		tp_inst = this._get(inst, 'timepicker');
-	if (tp_inst)
+		
+	if (tp_inst){
+		this._setDateFromField(inst, noDefault);
+		this._updateDatepicker(inst);
+		
 		return (!inst.currentYear || (inst.input && inst.input.val() == '')) ?
 			null :
 			(new Date(inst.currentYear, inst.currentMonth, inst.currentDay, tp_inst.hour, tp_inst.minute, tp_inst.second));
-	
+	}
 	return this._base_getDateDatepicker(target, noDefault);
 };
 
