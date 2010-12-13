@@ -564,7 +564,8 @@ $.fn.extend({
 		}
 		else
 			return this.each(function() {
-				$(this).datepicker($.timepicker._newInst($input, o)._defaults);
+				var $t = $(this);
+				$t.datepicker($.timepicker._newInst($t, o)._defaults);
 			});
 	}
 });
@@ -597,7 +598,8 @@ $.datepicker._updateDatepicker = function(inst) {
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 		this._base_updateDatepicker(inst);
 		// Reload the time control when changing something in the input text field.
-		this._get(inst, 'timepicker')._addTimePicker();
+		var tp_inst = this._get(inst, 'timepicker');
+		if(tp_inst) tp_inst._addTimePicker();
 	}
 };
 
@@ -685,7 +687,7 @@ $.datepicker._setTime = function(inst, date) {
 		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
-		tp_inst._updateDateTime(inst);
+		//tp_inst._updateDateTime(inst);
 	}
 };
 
@@ -718,8 +720,12 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 //#######################################################################################
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
+	var inst = this._getInst(target),
+	tp_date = !!date ? new Date(date.getTime()) : date;
+
+	this._updateDatepicker(inst);
 	this._base_setDateDatepicker.apply(this, arguments);
-	this._setTimeDatepicker(target, date, true);
+	this._setTimeDatepicker(target, tp_date, true);
 };
 
 //#######################################################################################
@@ -736,7 +742,7 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 		if (date && tp_inst._parseTime($(target).val(), true)) date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
 		return date;
 	}
-	else return this._base_getDateDatepicker(inst);
+	else return this._base_getDateDatepicker(target, noDefault);
 };
 
 //#######################################################################################
