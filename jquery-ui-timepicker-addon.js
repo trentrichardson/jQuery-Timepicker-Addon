@@ -687,7 +687,7 @@ $.datepicker._setTime = function(inst, date) {
 		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
-		//tp_inst._updateDateTime(inst);
+		tp_inst._updateDateTime(inst);
 	}
 };
 
