@@ -556,10 +556,11 @@ $.fn.extend({
 
 		if (typeof(o) == 'string'){
 			if(o == 'getDate') 
-				return $.fn.datepicker.apply($(this), tmp_args);
+				return $.fn.datepicker.apply($(this[0]), tmp_args);
 			else 
 				return this.each(function() {
-					$.fn.datepicker.apply($(this), tmp_args);
+					var $t = $(this);
+					$t.datepicker.apply($t, tmp_args);
 				});
 		}
 		else
