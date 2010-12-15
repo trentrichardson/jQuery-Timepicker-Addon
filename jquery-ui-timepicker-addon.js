@@ -58,6 +58,10 @@ function Timepicker() {
 		hourMax: 23,
 		minuteMax: 59,
 		secondMax: 59,
+
+		minDateTime: null,
+		maxDateTime: null,
+		
 		hourGrid: 0,
 		minuteGrid: 0,
 		secondGrid: 0,
@@ -77,6 +81,12 @@ $.extend(Timepicker.prototype, {
 	hour: 0,
 	minute: 0,
 	second: 0,
+	hourMinOriginal: null,
+	minuteMinOriginal: null,
+	secondMinOriginal: null,
+	hourMaxOriginal: null,
+	minuteMaxOriginal: null,
+	secondMaxOriginal: null,
 	ampm: '',
 	formattedDate: '',
 	formattedTime: '',
@@ -145,12 +155,13 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	// add our sliders to the calendar
 	//########################################################################
-	_addTimePicker: function() {
+	_addTimePicker: function(dp_inst) {
 		var currDT = (this.$altInput) ?
 				this.$input.val() + ' ' + this.$altInput.val() : 
 				this.$input.val();
 
 		this.timeDefined = this._parseTime(currDT);
+		this._limitMinMaxDateTime(dp_inst, false);
 		this._injectTimePicker();
 	},
 
@@ -439,6 +450,67 @@ $.extend(Timepicker.prototype, {
 	},
 
 	//########################################################################
+	// This function tries to limit the ability to go outside the 
+	// min/max date range
+	//########################################################################
+	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
+		var o = this._defaults,
+			dp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay),
+			tp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay, this.hour, this.minute, this.second, 0);
+		
+		if(this._defaults.minDateTime !== null && dp_date){
+			var minDateTime = this._defaults.minDateTime,
+				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
+			
+			if(this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null){
+				this.hourMinOriginal = o.hourMin;
+				this.minuteMinOriginal = o.minuteMin;
+				this.secondMinOriginal = o.secondMin;
+			}
+		
+			if(minDateTimeDate.getTime() == dp_date.getTime()){
+				this._defaults.hourMin = minDateTime.getHours();
+				this._defaults.minuteMin = minDateTime.getMinutes();
+				this._defaults.secondMin = minDateTime.getSeconds();
+			}else{
+				this._defaults.hourMin = this.hourMinOriginal;
+				this._defaults.minuteMin = this.minuteMinOriginal;
+				this._defaults.secondMin = this.secondMinOriginal;
+			}
+		}
+
+		if(this._defaults.maxDateTime !== null && dp_date){
+			var maxDateTime = this._defaults.maxDateTime,
+				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
+	
+			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
+				this.hourMaxOriginal = o.hourMax;
+				this.minuteMaxOriginal = o.minuteMax;
+				this.secondMaxOriginal = o.secondMax;
+			}
+		
+			if(maxDateTimeDate.getTime() == dp_date.getTime()){
+				this._defaults.hourMax = maxDateTime.getHours();
+				this._defaults.minuteMax = maxDateTime.getMinutes();
+				this._defaults.secondMax = maxDateTime.getSeconds();
+			}else{
+				this._defaults.hourMax = this.hourMaxOriginal;
+				this._defaults.minuteMax = this.minuteMaxOriginal;
+				this._defaults.secondMax = this.secondMaxOriginal;
+			}
+		}
+				
+		if(adjustSliders !== undefined && adjustSliders === true){
+			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax });
+			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax });
+			this.second_slider.slider("option", { min: this._defaults.secondMin, max: this._defaults.secondMax });
+		}
+		
+		$.datepicker._setTime(dp_inst, tp_date);
+
+	},
+	
+	//########################################################################
 	// when a slider moves, set the internal time...
 	// on time change is also called when the time is updated in the text field
 	//########################################################################
@@ -581,6 +653,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		tp_inst = this._get(inst, 'timepicker');
 
 	if (tp_inst) {
+		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
 		this._base_selectDate(id, dateStr);
 		inst.inline = inst.stay_open = false;
@@ -597,10 +670,12 @@ $.datepicker._selectDate = function (id, dateStr) {
 $.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 $.datepicker._updateDatepicker = function(inst) {
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
+				
 		this._base_updateDatepicker(inst);
+		
 		// Reload the time control when changing something in the input text field.
 		var tp_inst = this._get(inst, 'timepicker');
-		if(tp_inst) tp_inst._addTimePicker();
+		if(tp_inst) tp_inst._addTimePicker(inst);
 	}
 };
 
