@@ -472,6 +472,10 @@ $.extend(Timepicker.prototype, {
 				this._defaults.hourMin = minDateTime.getHours();
 				this._defaults.minuteMin = minDateTime.getMinutes();
 				this._defaults.secondMin = minDateTime.getSeconds();
+
+				if(this.hour < this._defaults.hourMin) this.hour = this._defaults.hourMin;
+				if(this.minute < this._defaults.minuteMin) this.minute = this._defaults.minuteMin;
+				if(this.second < this._defaults.secondMin) this.second = this._defaults.secondMin;
 			}else{
 				this._defaults.hourMin = this.hourMinOriginal;
 				this._defaults.minuteMin = this.minuteMinOriginal;
@@ -493,6 +497,10 @@ $.extend(Timepicker.prototype, {
 				this._defaults.hourMax = maxDateTime.getHours();
 				this._defaults.minuteMax = maxDateTime.getMinutes();
 				this._defaults.secondMax = maxDateTime.getSeconds();
+				
+				if(this.hour > this._defaults.hourMax) this.hour = this._defaults.hourMax;
+				if(this.minute > this._defaults.minuteMax) this.minute = this._defaults.minuteMax;
+				if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
 			}else{
 				this._defaults.hourMax = this.hourMaxOriginal;
 				this._defaults.minuteMax = this.minuteMaxOriginal;
@@ -501,12 +509,10 @@ $.extend(Timepicker.prototype, {
 		}
 				
 		if(adjustSliders !== undefined && adjustSliders === true){
-			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax });
-			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax });
-			this.second_slider.slider("option", { min: this._defaults.secondMin, max: this._defaults.secondMax });
+			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax }).slider('value', this.hour);
+			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax }).slider('value', this.minute);
+			this.second_slider.slider("option", { min: this._defaults.secondMin, max: this._defaults.secondMax }).slider('value', this.second);
 		}
-		
-		$.datepicker._setTime(dp_inst, tp_date);
 
 	},
 	
