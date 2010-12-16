@@ -529,7 +529,7 @@ $.extend(Timepicker.prototype, {
 					this.$altInput.val(this.formattedDateTime);
 				}
 			}
-			else formattedDateTime += ' ' + this.formattedTime;
+			formattedDateTime += ' ' + this.formattedTime;
 		}
 
 		this.formattedDateTime = formattedDateTime;
