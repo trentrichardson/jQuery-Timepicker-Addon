@@ -518,7 +518,13 @@ $.extend(Timepicker.prototype, {
 
 		if (this._defaults.timeOnly === true) formattedDateTime = this.formattedTime;
 		else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			if (this.$altInput)	this.$altInput.val(this.formattedTime);
+			if (this.$altInput)	{
+				if (this._defaults.timeOnly !== true) {
+					this.$altInput.val(this.$altInput.val() + ' ' + this.formattedTime);
+				} else {
+					this.$altInput.val(this.formattedDateTime);
+				}
+			}
 			else formattedDateTime += ' ' + this.formattedTime;
 		}
 
