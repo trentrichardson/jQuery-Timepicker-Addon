@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.9.2-dev
-* Last Modified: 12/13/2010 by Charles Phillips
+* Last Modified: 12/17/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -58,10 +58,8 @@ function Timepicker() {
 		hourMax: 23,
 		minuteMax: 59,
 		secondMax: 59,
-
 		minDateTime: null,
-		maxDateTime: null,
-		
+		maxDateTime: null,		
 		hourGrid: 0,
 		minuteGrid: 0,
 		secondGrid: 0,
@@ -185,7 +183,7 @@ $.extend(Timepicker.prototype, {
 			// the time should come after x number of characters and a space.
 			// x = at least the length of text specified by the date format
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
-			regstr = '.{' + dp_dateFormat.length + ',}\\s*?' + regstr;
+			regstr = '.{' + dp_dateFormat.length + ',}\\s*' + regstr;
 		}
 
 		treg = timeString.match(new RegExp(regstr, 'i'));
@@ -598,7 +596,6 @@ $.extend(Timepicker.prototype, {
 		if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0))
 			return;
 
-<<<<<<< HEAD
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
 			if (this.$altInput)	{
@@ -607,18 +604,12 @@ $.extend(Timepicker.prototype, {
 		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
 			if (this.$altInput)	{
 				if (this._defaults.timeOnly !== true) {
-					this.$altInput.val(this.$altInput.val() + ' ' + this.formattedTime);
+					this.$altInput.val(this.$altInput.val() + this._defaults.separator + this.formattedTime);
 				} else {
 					this.$altInput.val(this.formattedDateTime);
 				}
 			}
-			formattedDateTime += ' ' + this.formattedTime;
-=======
-		if (this._defaults.timeOnly === true) formattedDateTime = this.formattedTime;
-		else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			if (this.$altInput)	this.$altInput.val(this.formattedTime);
-			else formattedDateTime += this._defaults.separator + this.formattedTime;
->>>>>>> michael-simons-master
+			formattedDateTime += this._defaults.separator + this.formattedTime;
 		}
 
 		this.formattedDateTime = formattedDateTime;
