@@ -597,10 +597,20 @@ $.extend(Timepicker.prototype, {
 		if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0))
 			return;
 
-		if (this._defaults.timeOnly === true) formattedDateTime = this.formattedTime;
-		else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			if (this.$altInput)	this.$altInput.val(this.formattedTime);
-			else formattedDateTime += ' ' + this.formattedTime;
+		if (this._defaults.timeOnly === true) {
+			formattedDateTime = this.formattedTime;
+			if (this.$altInput)	{
+				this.$altInput.val(this.formattedDateTime);
+			}
+		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
+			if (this.$altInput)	{
+				if (this._defaults.timeOnly !== true) {
+					this.$altInput.val(this.$altInput.val() + ' ' + this.formattedTime);
+				} else {
+					this.$altInput.val(this.formattedDateTime);
+				}
+			}
+			formattedDateTime += ' ' + this.formattedTime;
 		}
 
 		this.formattedDateTime = formattedDateTime;
