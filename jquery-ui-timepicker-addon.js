@@ -65,7 +65,8 @@ function Timepicker() {
 		hourGrid: 0,
 		minuteGrid: 0,
 		secondGrid: 0,
-		alwaysSetTime: true
+		alwaysSetTime: true,
+		separator: ' '
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -169,7 +170,7 @@ $.extend(Timepicker.prototype, {
 	// parse the time string from input value or _setTime
 	//########################################################################
 	_parseTime: function(timeString, withDate) {
-		var regstr = this._defaults.timeFormat.toString()
+		var regstr = this._defaults.separator + this._defaults.timeFormat.toString()
 				.replace(/h{1,2}/ig, '(\\d?\\d)')
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
@@ -184,7 +185,7 @@ $.extend(Timepicker.prototype, {
 			// the time should come after x number of characters and a space.
 			// x = at least the length of text specified by the date format
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
-			regstr = '.{' + dp_dateFormat.length + ',}\\s+' + regstr;
+			regstr = '.{' + dp_dateFormat.length + ',}\\s*?' + regstr;
 		}
 
 		treg = timeString.match(new RegExp(regstr, 'i'));
@@ -597,6 +598,7 @@ $.extend(Timepicker.prototype, {
 		if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0))
 			return;
 
+<<<<<<< HEAD
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
 			if (this.$altInput)	{
@@ -611,6 +613,12 @@ $.extend(Timepicker.prototype, {
 				}
 			}
 			formattedDateTime += ' ' + this.formattedTime;
+=======
+		if (this._defaults.timeOnly === true) formattedDateTime = this.formattedTime;
+		else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
+			if (this.$altInput)	this.$altInput.val(this.formattedTime);
+			else formattedDateTime += this._defaults.separator + this.formattedTime;
+>>>>>>> michael-simons-master
 		}
 
 		this.formattedDateTime = formattedDateTime;
