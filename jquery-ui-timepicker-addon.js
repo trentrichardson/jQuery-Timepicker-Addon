@@ -64,7 +64,8 @@ function Timepicker() {
 		minuteGrid: 0,
 		secondGrid: 0,
 		alwaysSetTime: true,
-		separator: ' '
+		separator: ' ',
+		altFieldTimeOnly: true
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -155,7 +156,7 @@ $.extend(Timepicker.prototype, {
 	// add our sliders to the calendar
 	//########################################################################
 	_addTimePicker: function(dp_inst) {
-		var currDT = (this.$altInput) ?
+		var currDT = (this.$altInput && this._defaults.altFieldTimeOnly) ?
 				this.$input.val() + ' ' + this.$altInput.val() : 
 				this.$input.val();
 
@@ -598,22 +599,24 @@ $.extend(Timepicker.prototype, {
 
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
-			if (this.$altInput)	{
-				this.$altInput.val(this.formattedDateTime);
-			}
-		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			if (this.$altInput)	{
-				if (this._defaults.timeOnly !== true) {
-					this.$altInput.val(this.$altInput.val() + this._defaults.separator + this.formattedTime);
-				} else {
-					this.$altInput.val(this.formattedDateTime);
-				}
-			}
+		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {			
 			formattedDateTime += this._defaults.separator + this.formattedTime;
 		}
 
 		this.formattedDateTime = formattedDateTime;
-		this.$input.val(formattedDateTime).trigger("change");
+		
+		if (this.$altInput && this._defaults.altFieldTimeOnly === true)	{
+			this.$altInput.val(this.formattedTime);
+			this.$input.val(this.formattedDate);
+		} else if(this.$altInput) {
+			this.$altInput.val(formattedDateTime);
+			this.$input.val(formattedDateTime);
+		}
+		else{
+			this.$input.val(formattedDateTime);
+		}
+		
+		this.$input.trigger("change");
 	}
 
 });
