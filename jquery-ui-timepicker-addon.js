@@ -208,7 +208,8 @@ $.extend(Timepicker.prototype, {
 			
 			return true;
 
-		} else return false;
+		}
+		return false;
 	},
 
 	//########################################################################
@@ -611,8 +612,7 @@ $.extend(Timepicker.prototype, {
 		} else if(this.$altInput) {
 			this.$altInput.val(formattedDateTime);
 			this.$input.val(formattedDateTime);
-		}
-		else{
+		} else {
 			this.$input.val(formattedDateTime);
 		}
 		
@@ -715,12 +715,14 @@ $.datepicker._doKeyPress = function(event) {
 								.replace(/tt/g, ampm ? 'apm' : '')
 								.replace(/t/g, ampm ? 'ap' : '') +
 								" " +
+								tp_inst._defaults.separator +
 								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
 		}
-	} else return $.datepicker._base_doKeyPress(event);
-
+	}
+	
+	return $.datepicker._base_doKeyPress(event);
 };
 
 //#######################################################################################
@@ -836,7 +838,7 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 		if (date && tp_inst._parseTime($(target).val(), true)) date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
 		return date;
 	}
-	else return this._base_getDateDatepicker(target, noDefault);
+	return this._base_getDateDatepicker(target, noDefault);
 };
 
 //#######################################################################################
