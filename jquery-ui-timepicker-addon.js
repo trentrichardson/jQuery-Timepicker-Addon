@@ -194,7 +194,7 @@ $.extend(Timepicker.prototype, {
 
 			if (order.m !== -1) this.minute = Number(treg[order.m]);
 			if (order.s !== -1) this.second = Number(treg[order.s]);
-			
+
 			return true;
 
 		} else return false;
@@ -456,7 +456,7 @@ $.extend(Timepicker.prototype, {
 
 			if (hour) {
 				this.hour = parseFloat(hour).toFixed(0);
-				this.ampm = ampm;
+				if (this._defaults.ampm) this.ampm = ampm;
 			}
 			if (minute) this.minute = parseFloat(minute).toFixed(0);
 			if (second) this.second = parseFloat(second).toFixed(0);
