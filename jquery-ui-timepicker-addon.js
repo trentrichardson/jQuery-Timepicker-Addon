@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.9.2-dev
-* Last Modified: 12/17/2010
+* Last Modified: 12/22/2010
 * 
 * Copyright 2010 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -149,6 +149,17 @@ $.extend(Timepicker.prototype, {
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
+
+		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
+		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate !== null)
+			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
+		if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime !== null)
+			tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
+		if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate !== null)
+			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
+		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime !== null)
+			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
+			
 		return tp_inst;
 	},
 
@@ -499,7 +510,7 @@ $.extend(Timepicker.prototype, {
 				this._defaults.minuteMax = maxDateTime.getMinutes();
 				this._defaults.secondMax = maxDateTime.getSeconds();
 				
-				if(this.hour > this._defaults.hourMax) this.hour = this._defaults.hourMax;
+				if(this.hour > this._defaults.hourMax){ this.hour = this._defaults.hourMax; }
 				if(this.minute > this._defaults.minuteMax) this.minute = this._defaults.minuteMax;
 				if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
 			}else{
@@ -822,7 +833,7 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
 	var inst = this._getInst(target),
-	tp_date = !!date ? new Date(date.getTime()) : date;
+	tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
 
 	this._updateDatepicker(inst);
 	this._base_setDateDatepicker.apply(this, arguments);
