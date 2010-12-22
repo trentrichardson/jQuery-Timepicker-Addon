@@ -524,9 +524,14 @@ $.extend(Timepicker.prototype, {
 	_onTimeChange: function() {
 		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
-			second = (this.second_slider) ? this.second_slider.slider('value') : false,
-			ampm = (hour < 12) ? 'AM' : 'PM';
-		
+			second = (this.second_slider) ? this.second_slider.slider('value') : false;
+
+		if (hour) hour = parseFloat(hour).toFixed(0);
+		if (minute) minute = parseFloat(minute).toFixed(0);
+		if (second) second = parseFloat(second).toFixed(0);
+
+		var ampm = (hour < 12) ? 'AM' : 'PM';
+			
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
 		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm));
