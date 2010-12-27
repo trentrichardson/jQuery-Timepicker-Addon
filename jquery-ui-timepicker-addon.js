@@ -151,13 +151,13 @@ $.extend(Timepicker.prototype, {
 		});
 
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
-		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate !== null)
+		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
-		if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime !== null)
+		if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
 			tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
-		if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate !== null)
+		if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate instanceof Date)
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
-		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime !== null)
+		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
 			
 		return tp_inst;
