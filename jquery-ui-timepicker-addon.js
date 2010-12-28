@@ -537,9 +537,9 @@ $.extend(Timepicker.prototype, {
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false;
 
-		if (hour) hour = parseFloat(hour).toFixed(0);
-		if (minute) minute = parseFloat(minute).toFixed(0);
-		if (second) second = parseFloat(second).toFixed(0);
+		if (hour !== false) hour = parseInt(hour,10);
+		if (minute !== false) minute = parseInt(minute,10);
+		if (second !== false) second = parseInt(second,10);
 
 		var ampm = (hour < 12) ? 'AM' : 'PM';
 			
@@ -549,12 +549,12 @@ $.extend(Timepicker.prototype, {
 		
 		if (hasChanged) {
 
-			if (hour) {
-				this.hour = parseFloat(hour).toFixed(0);
+			if (hour !== false) {
+				this.hour = hour;
 				if (this._defaults.ampm) this.ampm = ampm;
 			}
-			if (minute) this.minute = parseFloat(minute).toFixed(0);
-			if (second) this.second = parseFloat(second).toFixed(0);
+			if (minute !== false) this.minute = minute;
+			if (second !== false) this.second = second;
 
 		}
 		this._formatTime();
