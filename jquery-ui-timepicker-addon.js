@@ -180,7 +180,7 @@ $.extend(Timepicker.prototype, {
 	// parse the time string from input value or _setTime
 	//########################################################################
 	_parseTime: function(timeString, withDate) {
-		var regstr = this._defaults.separator + this._defaults.timeFormat.toString()
+		var regstr = this._defaults.timeFormat.toString()
 				.replace(/h{1,2}/ig, '(\\d?\\d)')
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
@@ -195,7 +195,7 @@ $.extend(Timepicker.prototype, {
 			// the time should come after x number of characters and a space.
 			// x = at least the length of text specified by the date format
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
-			regstr = '.{' + dp_dateFormat.length + ',}\\s*' + regstr;
+			regstr = '.{' + dp_dateFormat.length + ',}\\s*' + this._defaults.separator.replace(/\s/g, '\\s?') + regstr;
 		}
 
 		treg = timeString.match(new RegExp(regstr, 'i'));
