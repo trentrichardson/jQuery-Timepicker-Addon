@@ -125,13 +125,7 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
-			beforeShow: function(input, dp_inst) {
-				if (o.altField)
-					tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
-						.css({ cursor: 'pointer' })
-						.focus(function(){
-							$input.trigger("focus");
-						});
+			beforeShow: function(input, dp_inst) {				
 				if ($.isFunction(o.beforeShow))
 					o.beforeShow(input, dp_inst);
 			},
@@ -150,6 +144,11 @@ $.extend(Timepicker.prototype, {
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
 
+		if (o.altField)
+			tp_inst.$altInput = $(o.altField)
+				.css({ cursor: 'pointer' })
+				.focus(function(){ $input.trigger("focus"); });
+						
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
