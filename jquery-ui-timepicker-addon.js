@@ -194,7 +194,7 @@ $.extend(Timepicker.prototype, {
 			// the time should come after x number of characters and a space.
 			// x = at least the length of text specified by the date format
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
-			regstr = '.{' + dp_dateFormat.length + ',}\\s*' + this._defaults.separator + regstr;
+			regstr = '.{' + dp_dateFormat.length + ',}' + this._defaults.separator + regstr;
 		}
 
 		treg = timeString.match(new RegExp(regstr, 'i'));
