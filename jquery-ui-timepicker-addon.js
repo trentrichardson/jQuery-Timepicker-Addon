@@ -457,6 +457,18 @@ $.extend(Timepicker.prototype, {
 				this._onTimeChange();
 				this.timeDefined = timeDefined;
 			}
+
+			//Emulate datepicker onSelect behavior. Call on slidestop.
+			var onSelect = tp_inst._defaults['onSelect'];
+			if (onSelect) {
+				var inputEl = tp_inst.$input ? tp_inst.$input[0] : null;
+				var onSelectHandler = function() {
+					onSelect.apply(inputEl, [tp_inst.formattedDateTime, tp_inst]); // trigger custom callback*/
+				}
+				this.hour_slider.bind('slidestop',onSelectHandler);		
+				this.minute_slider.bind('slidestop',onSelectHandler);		
+				this.second_slider.bind('slidestop',onSelectHandler);		
+			}
 		}
 	},
 
@@ -688,7 +700,8 @@ $.datepicker._selectDate = function (id, dateStr) {
 	if (tp_inst) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
-		this._base_selectDate(id, dateStr);
+		//This way the onSelect handler called from calendarpicker get the full dateTime
+		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
