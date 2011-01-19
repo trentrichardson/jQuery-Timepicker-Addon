@@ -65,7 +65,8 @@ function Timepicker() {
 		secondGrid: 0,
 		alwaysSetTime: true,
 		separator: ' ',
-		altFieldTimeOnly: true
+		altFieldTimeOnly: true,
+		showtimepicker: true
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -254,7 +255,7 @@ $.extend(Timepicker.prototype, {
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
-		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0) {
+		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0 && o.showtimepicker) {
 			var noDisplay = ' style="display:none;"',
 				html =	'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_id + '"><dl>' +
 						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_id + '"' +
@@ -622,7 +623,9 @@ $.extend(Timepicker.prototype, {
 
 		this.formattedDateTime = formattedDateTime;
 		
-		if (this.$altInput && this._defaults.altFieldTimeOnly === true)	{
+		if(!this._defaults.showtimepicker){
+			this.$input.val(this.formattedDate);
+		}else if (this.$altInput && this._defaults.altFieldTimeOnly === true)	{
 			this.$altInput.val(this.formattedTime);
 			this.$input.val(this.formattedDate);
 		} else if(this.$altInput) {
@@ -770,6 +773,29 @@ $.datepicker._base_gotoToday = $.datepicker._gotoToday;
 $.datepicker._gotoToday = function(id) {
 	this._base_gotoToday(id);
 	this._setTime(this._getInst($(id)[0]), new Date());
+};
+
+//#######################################################################################
+// Disable & enable the Time in the datetimepicker
+//#######################################################################################
+$.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
+	var inst = this._getInst(target),
+	tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		tp_inst._defaults.showtimepicker = false;
+		tp_inst._onTimeChange();
+		tp_inst._updateDateTime(inst);
+	}
+};
+
+$.datepicker._enableTimepickerDatepicker = function(target, date, withDate) {
+	var inst = this._getInst(target),
+	tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		tp_inst._defaults.showtimepicker = true;
+		tp_inst._onTimeChange();
+		tp_inst._updateDateTime(inst);
+	}
 };
 
 //#######################################################################################
