@@ -562,14 +562,12 @@ $.extend(Timepicker.prototype, {
 		
 		if (hasChanged) {
 
-			if (hour !== false) {
-				this.hour = hour;
-				if (this._defaults.ampm) this.ampm = ampm;
-			}
+			if (hour !== false)this.hour = hour;
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
-
 		}
+		if (this._defaults.ampm) this.ampm = ampm;
+		
 		this._formatTime();
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
 		this.timeDefined = true;
