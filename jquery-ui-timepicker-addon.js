@@ -107,14 +107,7 @@ $.extend(Timepicker.prototype, {
 	_newInst: function($input, o) {
 		var tp_inst = new Timepicker(),
 			inlineSettings = {};
-
-		tp_inst.hour = tp_inst._defaults.hour;
-		tp_inst.minute = tp_inst._defaults.minute;
-		tp_inst.second = tp_inst._defaults.second;
-		tp_inst.ampm = '';
-		tp_inst.$input = $input;
 			
-
 		for (var attrName in this._defaults) {
 			var attrValue = $input.attr('time:' + attrName);
 			if (attrValue) {
@@ -144,6 +137,12 @@ $.extend(Timepicker.prototype, {
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
+
+		tp_inst.hour = tp_inst._defaults.hour;
+		tp_inst.minute = tp_inst._defaults.minute;
+		tp_inst.second = tp_inst._defaults.second;
+		tp_inst.ampm = '';
+		tp_inst.$input = $input;
 
 		if (o.altField)
 			tp_inst.$altInput = $(o.altField)
