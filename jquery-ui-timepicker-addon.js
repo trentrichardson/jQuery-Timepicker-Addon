@@ -65,7 +65,8 @@ function Timepicker() {
 		secondGrid: 0,
 		alwaysSetTime: true,
 		separator: ' ',
-		altFieldTimeOnly: true
+		altFieldTimeOnly: true,
+		showTimepicker: true
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -125,31 +126,30 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
-			beforeShow: function(input, dp_inst) {
-				if (o.altField)
-					tp_inst.$altInput = $($.datepicker._get(dp_inst, 'altField'))
-						.css({ cursor: 'pointer' })
-						.focus(function(){
-							$input.trigger("focus");
-						});
+			beforeShow: function(input, dp_inst) {			
 				if ($.isFunction(o.beforeShow))
-					o.beforeShow(input, dp_inst);
+					o.beforeShow(input, dp_inst, tp_inst);
 			},
 			onChangeMonthYear: function(year, month, dp_inst) {
 				// Update the time as well : this prevents the time from disappearing from the $input field.
 				tp_inst._updateDateTime(dp_inst);
 				if ($.isFunction(o.onChangeMonthYear))
-					o.onChangeMonthYear(year, month, dp_inst);
+					o.onChangeMonthYear(year, month, dp_inst, tp_inst);
 			},
 			onClose: function(dateText, dp_inst) {
 				if (tp_inst.timeDefined === true && $input.val() != '')
 					tp_inst._updateDateTime(dp_inst);
 				if ($.isFunction(o.onClose))
-					o.onClose(dateText, dp_inst);
+					o.onClose(dateText, dp_inst, tp_inst);
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
 
+		if (o.altField)
+			tp_inst.$altInput = $(o.altField)
+				.css({ cursor: 'pointer' })
+				.focus(function(){ $input.trigger("focus"); });
+						
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -195,7 +195,7 @@ $.extend(Timepicker.prototype, {
 			// the time should come after x number of characters and a space.
 			// x = at least the length of text specified by the date format
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
-			regstr = '.{' + dp_dateFormat.length + ',}\\s*' + this._defaults.separator.replace(/\s/g, '\\s?') + regstr;
+			regstr = '.{' + dp_dateFormat.length + ',}' + this._defaults.separator + regstr;
 		}
 
 		treg = timeString.match(new RegExp(regstr, 'i'));
@@ -254,7 +254,8 @@ $.extend(Timepicker.prototype, {
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
-		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0) {
+		//if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0) {
+		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0 && o.showTimepicker) {
 			var noDisplay = ' style="display:none;"',
 				html =	'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_id + '"><dl>' +
 						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_id + '"' +
@@ -458,6 +459,18 @@ $.extend(Timepicker.prototype, {
 				this._onTimeChange();
 				this.timeDefined = timeDefined;
 			}
+
+			//Emulate datepicker onSelect behavior. Call on slidestop.
+			var onSelect = tp_inst._defaults['onSelect'];
+			if (onSelect) {
+				var inputEl = tp_inst.$input ? tp_inst.$input[0] : null;
+				var onSelectHandler = function() {
+					onSelect.apply(inputEl, [tp_inst.formattedDateTime, tp_inst]); // trigger custom callback*/
+				}
+				this.hour_slider.bind('slidestop',onSelectHandler);		
+				this.minute_slider.bind('slidestop',onSelectHandler);		
+				this.second_slider.bind('slidestop',onSelectHandler);		
+			}
 		}
 	},
 
@@ -549,14 +562,12 @@ $.extend(Timepicker.prototype, {
 		
 		if (hasChanged) {
 
-			if (hour !== false) {
-				this.hour = hour;
-				if (this._defaults.ampm) this.ampm = ampm;
-			}
+			if (hour !== false)this.hour = hour;
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
-
 		}
+		if (this._defaults.ampm) this.ampm = ampm;
+		
 		this._formatTime();
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
 		this.timeDefined = true;
@@ -621,8 +632,10 @@ $.extend(Timepicker.prototype, {
 		}
 
 		this.formattedDateTime = formattedDateTime;
-		
-		if (this.$altInput && this._defaults.altFieldTimeOnly === true)	{
+
+		if(!this._defaults.showTimepicker) {
+			this.$input.val(this.formattedDate);
+		} else if (this.$altInput && this._defaults.altFieldTimeOnly === true) {
 			this.$altInput.val(this.formattedTime);
 			this.$input.val(this.formattedDate);
 		} else if(this.$altInput) {
@@ -689,7 +702,8 @@ $.datepicker._selectDate = function (id, dateStr) {
 	if (tp_inst) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
-		this._base_selectDate(id, dateStr);
+		//This way the onSelect handler called from calendarpicker get the full dateTime
+		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -770,6 +784,29 @@ $.datepicker._base_gotoToday = $.datepicker._gotoToday;
 $.datepicker._gotoToday = function(id) {
 	this._base_gotoToday(id);
 	this._setTime(this._getInst($(id)[0]), new Date());
+};
+
+//#######################################################################################
+// Disable & enable the Time in the datetimepicker
+//#######################################################################################
+$.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
+	var inst = this._getInst(target),
+	tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		tp_inst._defaults.showTimepicker = false;
+		tp_inst._onTimeChange();
+		tp_inst._updateDateTime(inst);
+	}
+};
+
+$.datepicker._enableTimepickerDatepicker = function(target, date, withDate) {
+	var inst = this._getInst(target),
+	tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		tp_inst._defaults.showTimepicker = true;
+		tp_inst._onTimeChange();
+		tp_inst._updateDateTime(inst);
+	}
 };
 
 //#######################################################################################
