@@ -1,7 +1,7 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.3-dev
+* Version 0.9.4-dev
 * Last Modified: 12/27/2010
 * 
 * Copyright 2010 Trent Richardson
@@ -19,7 +19,7 @@
 
 (function($) {
 
-$.extend($.ui, { timepicker: { version: "0.9.3" } });
+$.extend($.ui, { timepicker: { version: "0.9.4" } });
 
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
@@ -916,6 +916,6 @@ function extendRemove(target, props) {
 }
 
 $.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "0.9.3";
+$.timepicker.version = "0.9.4";
 
 })(jQuery);
