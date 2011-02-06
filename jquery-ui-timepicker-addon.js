@@ -401,6 +401,7 @@ $.extend(Timepicker.prototype, {
 						}
 						tp_inst.hour_slider.slider("option", "value", h);
 						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
 					}).css({
 						cursor: 'pointer',
 						width: (100 / hourGridSize) + '%',
@@ -420,6 +421,7 @@ $.extend(Timepicker.prototype, {
 					$(this).click(function() {
 						tp_inst.minute_slider.slider("option", "value", $(this).html());
 						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
 					}).css({
 						cursor: 'pointer',
 						width: (100 / minuteGridSize) + '%',
@@ -438,6 +440,7 @@ $.extend(Timepicker.prototype, {
 					$(this).click(function() {
 						tp_inst.second_slider.slider("option", "value", $(this).html());
 						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
 					}).css({
 						cursor: 'pointer',
 						width: (100 / secondGridSize) + '%',
@@ -460,16 +463,12 @@ $.extend(Timepicker.prototype, {
 			}
 
 			//Emulate datepicker onSelect behavior. Call on slidestop.
-			var onSelect = tp_inst._defaults['onSelect'];
-			if (onSelect) {
-				var inputEl = tp_inst.$input ? tp_inst.$input[0] : null;
-				var onSelectHandler = function() {
-					onSelect.apply(inputEl, [tp_inst.formattedDateTime, tp_inst]); // trigger custom callback*/
-				}
-				this.hour_slider.bind('slidestop',onSelectHandler);		
-				this.minute_slider.bind('slidestop',onSelectHandler);		
-				this.second_slider.bind('slidestop',onSelectHandler);		
+			var onSelectDelegate = function() {
+				tp_inst._onSelectHandler();
 			}
+			this.hour_slider.bind('slidestop',onSelectDelegate);		
+			this.minute_slider.bind('slidestop',onSelectDelegate);		
+			this.second_slider.bind('slidestop',onSelectDelegate);		
 		}
 	},
 
@@ -571,6 +570,18 @@ $.extend(Timepicker.prototype, {
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
 		this.timeDefined = true;
 		if (hasChanged) this._updateDateTime();
+	},
+    
+	//########################################################################
+	// call custom onSelect. 
+	// bind to sliders slidestop, and grid click.
+	//########################################################################
+	_onSelectHandler: function() {
+		var onSelect = this._defaults['onSelect'];
+		var inputEl = this.$input ? this.$input[0] : null;
+		if (onSelect && inputEl) {
+			onSelect.apply(inputEl, [this.formattedDateTime, this]);
+		}
 	},
 
 	//########################################################################
