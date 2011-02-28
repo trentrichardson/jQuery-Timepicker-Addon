@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js">/**/</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js">/**/</script>
+  <script src="jquery-ui-timepicker-addon.js">/**/</script>
+  <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/ui-lightness/jquery-ui.css" /> 
+<style media="screen" type="text/css">
+body{ font: Arial, Helvetica, sans-serif; }
+#ui-datepicker-div{ font-size: 90%; }
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
+input { width: 200px; }
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".timepicktest0").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm' });
+    $(".timepicktest1").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm z', showTimezone: true });
+    $(".timepicktest2").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm z', showTimezone: true,
+								    timezoneList: [{"value": "+0000", "label": "British Winter Time"}, {"value": "+0100", "label": "British Summer Time"}] });
+});
+</script>
+</head>
+<body>
+
+<form action="" method="">
+<input type="text" class="timepicktest0" /><br />
+<input type="text" class="timepicktest1" /><br />
+<input type="text" class="timepicktest1" value="Mon, 28 Feb 2011 10:58"/><br />
+<input type="text" class="timepicktest1" value="Mon, 28 Feb 2011 10:58 +0000"/><br />
+<input type="text" class="timepicktest2" value="Mon, 28 Feb 2011 10:58 +0000"/><br />
+<input type="text" class="timepicktest2" value="Mon, 28 Feb 2011 10:58 +0100"/><br />
+</form>
+</body>
+</html>
