@@ -37,7 +37,8 @@ function Timepicker() {
 		timeText: 'Time',
 		hourText: 'Hour',
 		minuteText: 'Minute',
-		secondText: 'Second'
+		secondText: 'Second',
+		timezoneText: 'Time Zone'
 	};
 	this._defaults = { // Global defaults for all the datetime picker instances
 		showButtonPanel: true,
@@ -45,6 +46,7 @@ function Timepicker() {
 		showHour: true,
 		showMinute: true,
 		showSecond: false,
+		showTimezone: false,
 		showTime: true,
 		stepHour: 0.05,
 		stepMinute: 0.05,
@@ -66,7 +68,11 @@ function Timepicker() {
 		alwaysSetTime: true,
 		separator: ' ',
 		altFieldTimeOnly: true,
-		showTimepicker: true
+		showTimepicker: true,
+		timezoneList: ["-1100", "-1000", "-0900", "-0800", "-0700", "-0600",
+			       "-0500", "-0400", "-0300", "-0200", "-0100", "+0000",
+			       "+0100", "+0200", "+0300", "+0400", "+0500", "+0600",
+			       "+0700", "+0800", "+0900", "+1000", "+1100", "+1200"]
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -79,9 +85,11 @@ $.extend(Timepicker.prototype, {
 	hour_slider: null,
 	minute_slider: null,
 	second_slider: null,
+	timezone_select: null,
 	hour: 0,
 	minute: 0,
 	second: 0,
+	timezone: '+0000',
 	hourMinOriginal: null,
 	minuteMinOriginal: null,
 	secondMinOriginal: null,
@@ -92,6 +100,10 @@ $.extend(Timepicker.prototype, {
 	formattedDate: '',
 	formattedTime: '',
 	formattedDateTime: '',
+	timezoneList: ["-1100", "-1000", "-0900", "-0800", "-0700", "-0600",
+			"-0500", "-0400", "-0300", "-0200", "-0100", "+0000",
+			"+0100", "+0200", "+0300", "+0400", "+0500", "+0600",
+			"+0700", "+0800", "+0900", "+1000", "+1100", "+1200"],
 
 	/* Override the default settings for all instances of the time picker.
 	   @param  settings  object - the new settings to use as defaults (anonymous object)
@@ -112,6 +124,7 @@ $.extend(Timepicker.prototype, {
 		tp_inst.minute = tp_inst._defaults.minute;
 		tp_inst.second = tp_inst._defaults.second;
 		tp_inst.ampm = '';
+		tp_inst.timezone = tp_inst._defaults.timezone;
 		tp_inst.$input = $input;
 			
 
@@ -185,6 +198,7 @@ $.extend(Timepicker.prototype, {
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
+				.replace(/z{1}/ig, '((\\+|-)\\d\\d\\d\\d)?')
 				.replace(/\s/g, '\\s?') + '$',
 			order = this._getFormatPositions(),
 			treg;
@@ -197,7 +211,7 @@ $.extend(Timepicker.prototype, {
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
 			regstr = '.{' + dp_dateFormat.length + ',}' + this._defaults.separator + regstr;
 		}
-
+		
 		treg = timeString.match(new RegExp(regstr, 'i'));
 
 		if (treg) {
@@ -216,6 +230,7 @@ $.extend(Timepicker.prototype, {
 
 			if (order.m !== -1) this.minute = Number(treg[order.m]);
 			if (order.s !== -1) this.second = Number(treg[order.s]);
+			if (order.z !== -1) this.timezone = treg[order.z];
 			
 			return true;
 
@@ -227,8 +242,8 @@ $.extend(Timepicker.prototype, {
 	// figure out position of time elements.. cause js cant do named captures
 	//########################################################################
 	_getFormatPositions: function() {
-		var finds = this._defaults.timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|t{1,2})/g),
-			orders = { h: -1, m: -1, s: -1, t: -1 };
+		var finds = this._defaults.timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|t{1,2}|z)/g),
+			orders = { h: -1, m: -1, s: -1, t: -1, z: -1 };
 
 		if (finds)
 			for (var i = 0; i < finds.length; i++)
@@ -328,6 +343,11 @@ $.extend(Timepicker.prototype, {
 						'</dd>';
 			} else html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_id + '"'	+
 							((o.showSecond) ? '' : noDisplay) + '></dd>';
+							
+			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
+					((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
+			html += '<dd class="ui_tpicker_timezone" id="ui_tpicker_timezone_' + dp_id + '"'	+
+							((o.showTimezone) ? '' : noDisplay) + '></dd>';
 
 			html += '</dl></div>';
 			$tp = $(html);
@@ -378,6 +398,20 @@ $.extend(Timepicker.prototype, {
 					tp_inst.second_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
 				}
+			});
+			
+			
+			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select");
+			$.fn.append.apply(this.timezone_select,
+				$.map(o.timezoneList, function(val, idx) {
+					return $("<option />")
+						.val(typeof val == "object" ? val.value : val)
+						.text(typeof val == "object" ? val.label : val);
+				})
+			);
+			this.timezone_select.val(this.timezone);
+			this.timezone_select.change(function() {
+				tp_inst._onTimeChange();
 			});
 
 			// Add grid functionality
@@ -548,8 +582,9 @@ $.extend(Timepicker.prototype, {
 	_onTimeChange: function() {
 		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
-			second = (this.second_slider) ? this.second_slider.slider('value') : false;
-
+			second = (this.second_slider) ? this.second_slider.slider('value') : false,
+			timezone = (this.timezone_select) ? this.timezone_select.val() : false
+		
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
 		if (second !== false) second = parseInt(second,10);
@@ -558,13 +593,14 @@ $.extend(Timepicker.prototype, {
 			
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
-		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm));
+		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
 		
 		if (hasChanged) {
 
 			if (hour !== false)this.hour = hour;
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
+			if (timezone !== false) this.timezone = timezone;
 		}
 		if (this._defaults.ampm) this.ampm = ampm;
 		
@@ -579,7 +615,7 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_formatTime: function(time, format, ampm) {
 		if (ampm == undefined) ampm = this._defaults.ampm;
-		time = time || { hour: this.hour, minute: this.minute, second: this.second, ampm: this.ampm };
+		time = time || { hour: this.hour, minute: this.minute, second: this.second, ampm: this.ampm, timezone: this.timezone };
 		var tmptime = format || this._defaults.timeFormat.toString();
 
 		if (ampm) {
@@ -595,7 +631,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/TT/g, time.ampm.toUpperCase())
 				.replace(/tt/g, time.ampm.toLowerCase())
 				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
-				.replace(/t/g, time.ampm.charAt(0).toLowerCase());
+				.replace(/t/g, time.ampm.charAt(0).toLowerCase())
+				.replace(/z/g, time.timezone);
 		} else {
 			tmptime = tmptime.toString()
 				.replace(/hh/g, ((time.hour < 10) ? '0' : '') + time.hour)
@@ -603,7 +640,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
 				.replace(/m/g, time.minute)
 				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
-				.replace(/s/g, time.second);
+				.replace(/s/g, time.second)
+				.replace(/z/g, time.timezone);
 			tmptime = $.trim(tmptime.replace(/t/gi, ''));
 		}
 
