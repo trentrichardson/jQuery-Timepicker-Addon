@@ -54,6 +54,7 @@ function Timepicker() {
 		hour: 0,
 		minute: 0,
 		second: 0,
+		timezone: '+0000',
 		hourMin: 0,
 		minuteMin: 0,
 		secondMin: 0,
@@ -409,7 +410,7 @@ $.extend(Timepicker.prototype, {
 						.text(typeof val == "object" ? val.label : val);
 				})
 			);
-			this.timezone_select.val(this.timezone);
+			this.timezone_select.val((typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") ? this.timezone : o.timezone);
 			this.timezone_select.change(function() {
 				tp_inst._onTimeChange();
 			});

@@ -22,7 +22,7 @@ input { width: 200px; }
 <script type="text/javascript">
 $(document).ready(function(){
     $(".timepicktest0").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm' });
-    $(".timepicktest1").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm z', showTimezone: true });
+    $(".timepicktest1").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm z', showTimezone: true, timezone: "+0100" });
     $(".timepicktest2").datetimepicker({ dateFormat: $.datepicker.RFC_2822, timeFormat: 'hh:mm z', showTimezone: true,
 								    timezoneList: [{"value": "+0000", "label": "British Winter Time"}, {"value": "+0100", "label": "British Summer Time"}] });
 });
