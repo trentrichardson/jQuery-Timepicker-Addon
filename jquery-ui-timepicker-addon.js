@@ -140,13 +140,13 @@ $.extend(Timepicker.prototype, {
 				// Update the time as well : this prevents the time from disappearing from the $input field.
 				tp_inst._updateDateTime(dp_inst);
 				if ($.isFunction(o.onChangeMonthYear))
-					o.onChangeMonthYear(year, month, dp_inst, tp_inst);
+					o.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
 			},
 			onClose: function(dateText, dp_inst) {
 				if (tp_inst.timeDefined === true && $input.val() != '')
 					tp_inst._updateDateTime(dp_inst);
 				if ($.isFunction(o.onClose))
-					o.onClose(dateText, dp_inst, tp_inst);
+					o.onClose.call($input[0], dateText, dp_inst, tp_inst);
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
