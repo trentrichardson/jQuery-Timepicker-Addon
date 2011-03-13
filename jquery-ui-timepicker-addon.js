@@ -721,7 +721,7 @@ $.fn.extend({
 	datetimepicker: function(o) {
 		o = o || {};
 		var $input = this,
-			tmp_args = arguments;
+		tmp_args = arguments;
 
 		if (typeof(o) == 'string'){
 			if(o == 'getDate') 
@@ -908,8 +908,8 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 			}
 			else tp_date = new Date(date.getTime());
 			if (tp_date.toString() == 'Invalid Date') tp_date = undefined;
+			this._setTime(inst, tp_date);
 		}
-		this._setTime(inst, tp_date);
 	}
 
 };
