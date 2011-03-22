@@ -480,27 +480,34 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
 		var o = this._defaults,
-			dp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay),
-			tp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay, this.hour, this.minute, this.second, 0);
-		
+			dp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay);
+
 		if(this._defaults.minDateTime !== null && dp_date){
 			var minDateTime = this._defaults.minDateTime,
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
-			
+
 			if(this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null){
 				this.hourMinOriginal = o.hourMin;
 				this.minuteMinOriginal = o.minuteMin;
 				this.secondMinOriginal = o.secondMin;
 			}
-		
-			if(minDateTimeDate.getTime() == dp_date.getTime()){
-				this._defaults.hourMin = minDateTime.getHours();
-				this._defaults.minuteMin = minDateTime.getMinutes();
-				this._defaults.secondMin = minDateTime.getSeconds();
 
-				if(this.hour < this._defaults.hourMin) this.hour = this._defaults.hourMin;
-				if(this.minute < this._defaults.minuteMin) this.minute = this._defaults.minuteMin;
-				if(this.second < this._defaults.secondMin) this.second = this._defaults.secondMin;
+			if(dp_inst.settings.timeOnly || minDateTimeDate.getTime() == dp_date.getTime()) {
+				this._defaults.hourMin = minDateTime.getHours();
+				if (this.hour <= this._defaults.hourMin) {
+					this.hour = this._defaults.hourMin;
+					this._defaults.minuteMin = minDateTime.getMinutes();
+					if (this.minute <= this._defaults.minuteMin) {
+						this.minute = this._defaults.minuteMin;
+						this._defaults.secondMin = minDateTime.getSeconds();
+					} else {
+						if(this.second < this._defaults.secondMin) this.second = this._defaults.secondMin;
+						this._defaults.secondMin = this.secondMinOriginal;
+					}
+				} else {
+					this._defaults.minuteMin = this.minuteMinOriginal;
+					this._defaults.secondMin = this.secondMinOriginal;
+				}
 			}else{
 				this._defaults.hourMin = this.hourMinOriginal;
 				this._defaults.minuteMin = this.minuteMinOriginal;
@@ -517,22 +524,30 @@ $.extend(Timepicker.prototype, {
 				this.minuteMaxOriginal = o.minuteMax;
 				this.secondMaxOriginal = o.secondMax;
 			}
-		
-			if(maxDateTimeDate.getTime() == dp_date.getTime()){
+
+			if(dp_inst.settings.timeOnly || maxDateTimeDate.getTime() == dp_date.getTime()){
 				this._defaults.hourMax = maxDateTime.getHours();
-				this._defaults.minuteMax = maxDateTime.getMinutes();
-				this._defaults.secondMax = maxDateTime.getSeconds();
-				
-				if(this.hour > this._defaults.hourMax){ this.hour = this._defaults.hourMax; }
-				if(this.minute > this._defaults.minuteMax) this.minute = this._defaults.minuteMax;
-				if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
+				if (this.hour >= this._defaults.hourMax) {
+					this.hour = this._defaults.hourMax;
+					this._defaults.minuteMax = maxDateTime.getMinutes();
+					if (this.minute >= this._defaults.minuteMax) {
+						this.minute = this._defaults.minuteMax;
+						this._defaults.secondMin = maxDateTime.getSeconds();
+					} else {
+						if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
+						this._defaults.secondMax = this.secondMaxOriginal;
+					}
+				} else {
+					this._defaults.minuteMax = this.minuteMaxOriginal;
+					this._defaults.secondMax = this.secondMaxOriginal;
+				}
 			}else{
 				this._defaults.hourMax = this.hourMaxOriginal;
 				this._defaults.minuteMax = this.minuteMaxOriginal;
 				this._defaults.secondMax = this.secondMaxOriginal;
 			}
 		}
-				
+
 		if(adjustSliders !== undefined && adjustSliders === true){
 			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax }).slider('value', this.hour);
 			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax }).slider('value', this.minute);
@@ -565,6 +580,7 @@ $.extend(Timepicker.prototype, {
 			if (hour !== false)this.hour = hour;
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
+			this._limitMinMaxDateTime(this.inst, true);
 		}
 		if (this._defaults.ampm) this.ampm = ampm;
 		
