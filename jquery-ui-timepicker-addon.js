@@ -452,7 +452,7 @@ $.extend(Timepicker.prototype, {
 			if ($buttonPanel.length) $buttonPanel.before($tp);
 			else $dp.append($tp);
 
-			this.$timeObj = $('#ui_tpicker_time_'+ dp_id);
+			this.$timeObj = $tp.find('#ui_tpicker_time_'+ dp_id);
 
 			if (this.inst !== null) {
 				var timeDefined = this.timeDefined;
