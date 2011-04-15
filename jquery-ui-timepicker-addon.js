@@ -62,7 +62,7 @@ function Timepicker() {
 		minuteMax: 59,
 		secondMax: 59,
 		minDateTime: null,
-		maxDateTime: null,		
+		maxDateTime: null,
 		hourGrid: 0,
 		minuteGrid: 0,
 		secondGrid: 0,
@@ -132,7 +132,7 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
-			beforeShow: function(input, dp_inst) {			
+			beforeShow: function(input, dp_inst) {
 				if ($.isFunction(o.beforeShow))
 					o.beforeShow(input, dp_inst, tp_inst);
 			},
@@ -502,9 +502,9 @@ $.extend(Timepicker.prototype, {
 			var onSelectDelegate = function() {
 				tp_inst._onSelectHandler();
 			}
-			this.hour_slider.bind('slidestop',onSelectDelegate);		
-			this.minute_slider.bind('slidestop',onSelectDelegate);		
-			this.second_slider.bind('slidestop',onSelectDelegate);		
+			this.hour_slider.bind('slidestop',onSelectDelegate);
+			this.minute_slider.bind('slidestop',onSelectDelegate);
+			this.second_slider.bind('slidestop',onSelectDelegate);
 		}
 	},
 
@@ -515,6 +515,8 @@ $.extend(Timepicker.prototype, {
 	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
 		var o = this._defaults,
 			dp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay);
+
+		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
 		if(this._defaults.minDateTime !== null && dp_date){
 			var minDateTime = this._defaults.minDateTime,
@@ -694,7 +696,7 @@ $.extend(Timepicker.prototype, {
 
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
-		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {			
+		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
 			formattedDateTime += this._defaults.separator + this.formattedTime;
 		}
 
@@ -859,9 +861,9 @@ $.datepicker._gotoToday = function(id) {
 $.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
 	var inst = this._getInst(target),
 	tp_inst = this._get(inst, 'timepicker');
+	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
 		tp_inst._defaults.showTimepicker = false;
-		tp_inst._onTimeChange();
 		tp_inst._updateDateTime(inst);
 	}
 };
@@ -869,9 +871,10 @@ $.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
 $.datepicker._enableTimepickerDatepicker = function(target, date, withDate) {
 	var inst = this._getInst(target),
 	tp_inst = this._get(inst, 'timepicker');
+	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
 		tp_inst._defaults.showTimepicker = true;
-		tp_inst._onTimeChange();
+		tp_inst._addTimePicker(inst); // Could be disabled on page load
 		tp_inst._updateDateTime(inst);
 	}
 };
