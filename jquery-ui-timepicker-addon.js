@@ -660,6 +660,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
 				.replace(/s/g, time.second)
 				.replace(/TT/g, time.ampm.toUpperCase())
+				.replace(/Tt/g, time.ampm.toUpperCase())
+				.replace(/tT/g, time.ampm.toLowerCase())
 				.replace(/tt/g, time.ampm.toLowerCase())
 				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
 				.replace(/t/g, time.ampm.charAt(0).toLowerCase())
@@ -810,6 +812,8 @@ $.datepicker._doKeyPress = function(event) {
 				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
 								.replace(/TT/g, ampm ? 'APM' : '')
+								.replace(/Tt/g, ampm ? 'AaPpMm' : '')
+								.replace(/tT/g, ampm ? 'AaPpMm' : '')
 								.replace(/T/g, ampm ? 'AP' : '')
 								.replace(/tt/g, ampm ? 'apm' : '')
 								.replace(/t/g, ampm ? 'ap' : '') +
