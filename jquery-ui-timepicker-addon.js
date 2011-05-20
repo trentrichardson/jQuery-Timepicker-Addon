@@ -501,7 +501,7 @@ $.extend(Timepicker.prototype, {
 			//Emulate datepicker onSelect behavior. Call on slidestop.
 			var onSelectDelegate = function() {
 				tp_inst._onSelectHandler();
-			}
+			};
 			this.hour_slider.bind('slidestop',onSelectDelegate);
 			this.minute_slider.bind('slidestop',onSelectDelegate);
 			this.second_slider.bind('slidestop',onSelectDelegate);
@@ -601,7 +601,7 @@ $.extend(Timepicker.prototype, {
 		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
-			timezone = (this.timezone_select) ? this.timezone_select.val() : false
+			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
 		
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
