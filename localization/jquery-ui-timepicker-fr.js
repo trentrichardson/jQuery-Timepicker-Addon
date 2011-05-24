@@ -1,5 +1,5 @@
 /* Czech translation for the jQuery Timepicker Addon */
-/* Written by Ondřej Vodáček */
+/* Written by Thomas Lété */
 $.timepicker.regional['fr'] = {
 	timeOnlyTitle: 'Choisir une heure',
 	timeText: 'Heure',
