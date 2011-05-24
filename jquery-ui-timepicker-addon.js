@@ -1,7 +1,7 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.4
+* Version 0.9.5-dev
 * Last Modified: 05/12/2011
 * 
 * Copyright 2011 Trent Richardson
@@ -501,7 +501,7 @@ $.extend(Timepicker.prototype, {
 			//Emulate datepicker onSelect behavior. Call on slidestop.
 			var onSelectDelegate = function() {
 				tp_inst._onSelectHandler();
-			}
+			};
 			this.hour_slider.bind('slidestop',onSelectDelegate);
 			this.minute_slider.bind('slidestop',onSelectDelegate);
 			this.second_slider.bind('slidestop',onSelectDelegate);
@@ -601,7 +601,7 @@ $.extend(Timepicker.prototype, {
 		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
-			timezone = (this.timezone_select) ? this.timezone_select.val() : false
+			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
 		
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
@@ -660,6 +660,8 @@ $.extend(Timepicker.prototype, {
 				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
 				.replace(/s/g, time.second)
 				.replace(/TT/g, time.ampm.toUpperCase())
+				.replace(/Tt/g, time.ampm.toUpperCase())
+				.replace(/tT/g, time.ampm.toLowerCase())
 				.replace(/tt/g, time.ampm.toLowerCase())
 				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
 				.replace(/t/g, time.ampm.charAt(0).toLowerCase())
@@ -810,6 +812,8 @@ $.datepicker._doKeyPress = function(event) {
 				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
 								.replace(/TT/g, ampm ? 'APM' : '')
+								.replace(/Tt/g, ampm ? 'AaPpMm' : '')
+								.replace(/tT/g, ampm ? 'AaPpMm' : '')
 								.replace(/T/g, ampm ? 'AP' : '')
 								.replace(/tt/g, ampm ? 'apm' : '')
 								.replace(/t/g, ampm ? 'ap' : '') +
@@ -958,7 +962,7 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 	if (tp_inst) {
 		this._setDateFromField(inst, noDefault);
 		var date = this._getDate(inst);
-		if (date && tp_inst._parseTime($(target).val(), true)) date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
+		if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second);
 		return date;
 	}
 	return this._base_getDateDatepicker(target, noDefault);
