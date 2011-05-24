@@ -1,6 +1,6 @@
 /* Czech translation for the jQuery Timepicker Addon */
 /* Written by Ondřej Vodáček */
-$.timepicker.regional.cs = {
+$.timepicker.regional['cs'] = {
 	timeOnlyTitle: 'Vyberte čas',
 	timeText: 'Čas',
 	hourText: 'Hodiny',
@@ -12,4 +12,4 @@ $.timepicker.regional.cs = {
 	timeFormat: 'h:m',
 	ampm: false
 };
-$.timepicker.setDefaults($.timepicker.regional.cs);
+$.timepicker.setDefaults($.timepicker.regional['cs']);
