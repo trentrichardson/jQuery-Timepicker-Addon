@@ -13,7 +13,7 @@ $.datepicker.regional['lt'] = {
 	dayNamesShort: ['Sek','Pir','Ant','Tre','Ket','Pen','Šeš'],
 	dayNamesMin: ['S','P','A','T','K','Pn','Š'],
 	weekHeader: 'Sav',
-	dateFormat: 'yyyy-mm-dd',
+	dateFormat: 'yy-mm-dd',
 	firstDay: 1,
 	isRTL: false,
 	showMonthAfterYear: false,
