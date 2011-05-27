@@ -29,7 +29,7 @@ $.timepicker.regional['lt'] = {
 	secondText: 'Sekundės',
 	timezoneText: 'Laiko zona',
 	currentText: 'Dabar',
-	closeText: 'Uždaryti'
+	closeText: 'Uždaryti',
 	timeFormat: 'h:m',
 	ampm: false
 };
