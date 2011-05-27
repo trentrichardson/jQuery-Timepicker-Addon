@@ -30,7 +30,7 @@ $.timepicker.regional['lt'] = {
 	timezoneText: 'Laiko zona',
 	currentText: 'Dabar',
 	closeText: 'Uždaryti',
-	timeFormat: 'h:m',
+	timeFormat: 'hh:mm',
 	ampm: false
 };
 $.timepicker.setDefaults($.timepicker.regional['lt']);
