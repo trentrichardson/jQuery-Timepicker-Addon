@@ -1,17 +1,17 @@
 /* Lithuanian translation for the jQuery Timepicker Addon */
-/* Written by Irmantas Ğiupğinskas */
+/* Written by Irmantas Å iupÅ¡inskas */
 $.datepicker.regional['lt'] = {
-	closeText: 'Uşdaryti',
-	prevText: '< Buvæs',
+	closeText: 'UÅ¾daryti',
+	prevText: '< BuvÄ™s',
 	nextText: 'Kitas >',
-	currentText: 'Ğiandien',
-	monthNames: ['Sausis','Vasaris','Kovas','Balandis','Geguşë','Birşelis',
-	'Liepa','Rugpjûtis','Rugsëjis','Spalis','Lapkritis','Gruodis'],
+	currentText: 'Å iandien',
+	monthNames: ['Sausis','Vasaris','Kovas','Balandis','GeguÅ¾Ä—','BirÅ¾elis',
+	'Liepa','RugpjÅ«tis','RugsÄ—jis','Spalis','Lapkritis','Gruodis'],
 	monthNamesShort: ['Sau','Vas','Kov','Bal','Geg','Bir',
 	'Lie','Rugpj','Rugs','Spa','Lap','Gruo'],
-	dayNames: ['Sekmadienis','Pirmadienis','Antradienis','Treèiadienis','Ketvirtadienis','Penktadienis','Ğeğtadienis'],
-	dayNamesShort: ['Sek','Pir','Ant','Tre','Ket','Pen','Ğeğ'],
-	dayNamesMin: ['S','P','A','T','K','Pn','Ğ'],
+	dayNames: ['Sekmadienis','Pirmadienis','Antradienis','TreÄiadienis','Ketvirtadienis','Penktadienis','Å eÅ¡tadienis'],
+	dayNamesShort: ['Sek','Pir','Ant','Tre','Ket','Pen','Å eÅ¡'],
+	dayNamesMin: ['S','P','A','T','K','Pn','Å '],
 	weekHeader: 'Sav',
 	dateFormat: 'yyyy-mm-dd',
 	firstDay: 1,
@@ -22,14 +22,14 @@ $.datepicker.regional['lt'] = {
 $.datepicker.setDefaults($.datepicker.regional['lt']);
 
 $.timepicker.regional['lt'] = {
-	timeOnlyTitle: 'Pasirinkite laikà',
+	timeOnlyTitle: 'Pasirinkite laikÄ…',
 	timeText: 'Laikas',
 	hourText: 'Valandos',
-	minuteText: 'Minutës',
-	secondText: 'Sekundës',
+	minuteText: 'MinutÄ—s',
+	secondText: 'SekundÄ—s',
 	timezoneText: 'Laiko zona',
 	currentText: 'Dabar',
-	closeText: 'Uşdaryti'
+	closeText: 'UÅ¾daryti'
 	timeFormat: 'h:m',
 	ampm: false
 };
