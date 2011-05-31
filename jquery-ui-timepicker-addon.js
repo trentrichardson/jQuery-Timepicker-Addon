@@ -33,6 +33,7 @@ function Timepicker() {
 		closeText: 'Done',
 		ampm: false,
 		timeFormat: 'hh:mm tt',
+		timeSuffix: '',
 		timeOnlyTitle: 'Choose Time',
 		timeText: 'Time',
 		hourText: 'Hour',
@@ -198,7 +199,7 @@ $.extend(Timepicker.prototype, {
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
 				.replace(/z{1}/ig, '((\\+|-)\\d\\d\\d\\d)?')
-				.replace(/\s/g, '\\s?') + '$',
+				.replace(/\s/g, '\\s?') + this._defaults.timeSuffix + '$',
 			order = this._getFormatPositions(),
 			treg;
 
@@ -624,7 +625,7 @@ $.extend(Timepicker.prototype, {
 		if (this._defaults.ampm) this.ampm = ampm;
 		
 		this._formatTime();
-		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
+		if (this.$timeObj) this.$timeObj.text(this.formattedTime + this._defaults.timeSuffix);
 		this.timeDefined = true;
 		if (hasChanged) this._updateDateTime();
 	},
@@ -699,7 +700,7 @@ $.extend(Timepicker.prototype, {
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
 		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			formattedDateTime += this._defaults.separator + this.formattedTime;
+			formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
 		}
 
 		this.formattedDateTime = formattedDateTime;
@@ -774,7 +775,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
 		//This way the onSelect handler called from calendarpicker get the full dateTime
-		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime);
+		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime + tp_inst._defaults.timeSuffix);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -819,6 +820,7 @@ $.datepicker._doKeyPress = function(event) {
 								.replace(/t/g, ampm ? 'ap' : '') +
 								" " +
 								tp_inst._defaults.separator +
+								tp_inst._defaults.timeSuffix +
 								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
