@@ -1,4 +1,4 @@
-/* Czech translation for the jQuery Timepicker Addon */
+/* French translation for the jQuery Timepicker Addon */
 /* Written by Thomas Lété */
 (function($) {
 	$.timepicker.regional['fr'] = {
@@ -10,7 +10,7 @@
 		timezoneText: 'Fuseau horaire',
 		currentText: 'Maintenant',
 		closeText: 'Terminé',
-		timeFormat: 'h:m',
+		timeFormat: 'hh:mm',
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['fr']);
