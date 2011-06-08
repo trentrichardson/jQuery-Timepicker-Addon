@@ -569,7 +569,7 @@ $.extend(Timepicker.prototype, {
 					this._defaults.minuteMax = maxDateTime.getMinutes();
 					if (this.minute >= this._defaults.minuteMax) {
 						this.minute = this._defaults.minuteMax;
-						this._defaults.secondMin = maxDateTime.getSeconds();
+						this._defaults.secondMax = maxDateTime.getSeconds();
 					} else {
 						if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
 						this._defaults.secondMax = this.secondMaxOriginal;
@@ -586,9 +586,13 @@ $.extend(Timepicker.prototype, {
 		}
 
 		if(adjustSliders !== undefined && adjustSliders === true){
-			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax }).slider('value', this.hour);
-			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax }).slider('value', this.minute);
-			this.second_slider.slider("option", { min: this._defaults.secondMin, max: this._defaults.secondMax }).slider('value', this.second);
+			var hourMax = (this._defaults.hourMax - (this._defaults.hourMax % this._defaults.stepHour)).toFixed(0),
+				minMax  = (this._defaults.minuteMax - (this._defaults.minuteMax % this._defaults.stepMinute)).toFixed(0),
+				secMax  = (this._defaults.secondMax - (this._defaults.secondMax % this._defaults.stepSecond)).toFixed(0);
+
+			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
+			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
+			this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
 		}
 
 	},
