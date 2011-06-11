@@ -429,7 +429,7 @@ $.extend(Timepicker.prototype, {
 						var h = $(this).html();
 						if(o.ampm)	{
 							var ap = h.substring(2).toLowerCase(),
-								aph = parseInt(h.substring(0,2));
+								aph = parseInt(h.substring(0,2), 10);
 							if (ap == 'a') {
 								if (aph == 12) h = 0;
 								else h = aph;
