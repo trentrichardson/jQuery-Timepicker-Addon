@@ -519,8 +519,8 @@ $.extend(Timepicker.prototype, {
 
 		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
-		if(this._defaults.minDateTime !== null && dp_date){
-			var minDateTime = this._defaults.minDateTime,
+		if($.datepicker._get(dp_inst, 'minDateTime') !== null && dp_date){
+			var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
 			if(this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null){
@@ -552,8 +552,8 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 
-		if(this._defaults.maxDateTime !== null && dp_date){
-			var maxDateTime = this._defaults.maxDateTime,
+		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
+			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 	
 			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
