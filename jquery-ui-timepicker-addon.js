@@ -804,7 +804,7 @@ $.datepicker._updateDatepicker = function(inst) {
 };
 
 //#######################################################################################
-// third bad hack :/ override datepicker so it allows spaces and colan in the input field
+// third bad hack :/ override datepicker so it allows spaces and colon in the input field
 //#######################################################################################
 $.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 $.datepicker._doKeyPress = function(event) {
@@ -814,6 +814,7 @@ $.datepicker._doKeyPress = function(event) {
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
 			var ampm = tp_inst._defaults.ampm,
+				dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
 								.replace(/TT/g, ampm ? 'APM' : '')
@@ -825,9 +826,9 @@ $.datepicker._doKeyPress = function(event) {
 								" " +
 								tp_inst._defaults.separator +
 								tp_inst._defaults.timeSuffix +
-								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
+								dateChars,
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
-			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
+			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 		}
 	}
 	
