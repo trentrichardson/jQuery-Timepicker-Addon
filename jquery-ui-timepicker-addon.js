@@ -798,6 +798,16 @@ $.datepicker._selectDate = function (id, dateStr) {
 //#############################################################################################
 $.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 $.datepicker._updateDatepicker = function(inst) {
+
+	// don't popup the datepicker if there is another instance already opened
+	var input = inst.input[0];
+	if($.datepicker._curInst &&
+	   $.datepicker._curInst != inst &&
+	   $.datepicker._datepickerShowing &&
+	   $.datepicker._lastInput != input) {
+		return;
+	}
+
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 				
 		this._base_updateDatepicker(inst);
