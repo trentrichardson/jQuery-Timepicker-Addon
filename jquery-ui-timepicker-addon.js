@@ -607,13 +607,18 @@ $.extend(Timepicker.prototype, {
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
 			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
-		
+
+		if (typeof(hour) == 'object') hour = false;
+		if (typeof(minute) == 'object') minute = false;
+		if (typeof(second) == 'object') second = false;
+		if (typeof(timezone) == 'object') timezone = false;
+
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
 		if (second !== false) second = parseInt(second,10);
 
 		var ampm = (hour < 12) ? 'AM' : 'PM';
-			
+
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
 		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
@@ -909,12 +914,13 @@ $.datepicker._setTime = function(inst, date) {
 			second = defaults.secondMin;
 		}
 
+		tp_inst.hour = hour;
+		tp_inst.minute = minute;
+		tp_inst.second = second;
+
 		if (tp_inst.hour_slider) tp_inst.hour_slider.slider('value', hour);
-		else tp_inst.hour = hour;
 		if (tp_inst.minute_slider) tp_inst.minute_slider.slider('value', minute);
-		else tp_inst.minute = minute;
 		if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
-		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
 		tp_inst._updateDateTime(inst);
