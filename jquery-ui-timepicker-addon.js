@@ -429,7 +429,7 @@ $.extend(Timepicker.prototype, {
 						var h = $(this).html();
 						if(o.ampm)	{
 							var ap = h.substring(2).toLowerCase(),
-								aph = parseInt(h.substring(0,2));
+								aph = parseInt(h.substring(0,2), 10);
 							if (ap == 'a') {
 								if (aph == 12) h = 0;
 								else h = aph;
@@ -519,8 +519,8 @@ $.extend(Timepicker.prototype, {
 
 		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
-		if(this._defaults.minDateTime !== null && dp_date){
-			var minDateTime = this._defaults.minDateTime,
+		if($.datepicker._get(dp_inst, 'minDateTime') !== null && dp_date){
+			var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
 			if(this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null){
@@ -552,8 +552,8 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 
-		if(this._defaults.maxDateTime !== null && dp_date){
-			var maxDateTime = this._defaults.maxDateTime,
+		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
+			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 	
 			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
@@ -607,13 +607,18 @@ $.extend(Timepicker.prototype, {
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
 			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
-		
+
+		if (typeof(hour) == 'object') hour = false;
+		if (typeof(minute) == 'object') minute = false;
+		if (typeof(second) == 'object') second = false;
+		if (typeof(timezone) == 'object') timezone = false;
+
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
 		if (second !== false) second = parseInt(second,10);
 
 		var ampm = (hour < 12) ? 'AM' : 'PM';
-			
+
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
 		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
@@ -793,6 +798,16 @@ $.datepicker._selectDate = function (id, dateStr) {
 //#############################################################################################
 $.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 $.datepicker._updateDatepicker = function(inst) {
+
+	// don't popup the datepicker if there is another instance already opened
+	var input = inst.input[0];
+	if($.datepicker._curInst &&
+	   $.datepicker._curInst != inst &&
+	   $.datepicker._datepickerShowing &&
+	   $.datepicker._lastInput != input) {
+		return;
+	}
+
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 				
 		this._base_updateDatepicker(inst);
@@ -804,7 +819,7 @@ $.datepicker._updateDatepicker = function(inst) {
 };
 
 //#######################################################################################
-// third bad hack :/ override datepicker so it allows spaces and colan in the input field
+// third bad hack :/ override datepicker so it allows spaces and colon in the input field
 //#######################################################################################
 $.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 $.datepicker._doKeyPress = function(event) {
@@ -814,6 +829,7 @@ $.datepicker._doKeyPress = function(event) {
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
 			var ampm = tp_inst._defaults.ampm,
+				dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
 								.replace(/TT/g, ampm ? 'APM' : '')
@@ -825,9 +841,10 @@ $.datepicker._doKeyPress = function(event) {
 								" " +
 								tp_inst._defaults.separator +
 								tp_inst._defaults.timeSuffix +
-								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
+								(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') +
+								dateChars,
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
-			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
+			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 		}
 	}
 	
@@ -908,12 +925,13 @@ $.datepicker._setTime = function(inst, date) {
 			second = defaults.secondMin;
 		}
 
+		tp_inst.hour = hour;
+		tp_inst.minute = minute;
+		tp_inst.second = second;
+
 		if (tp_inst.hour_slider) tp_inst.hour_slider.slider('value', hour);
-		else tp_inst.hour = hour;
 		if (tp_inst.minute_slider) tp_inst.minute_slider.slider('value', minute);
-		else tp_inst.minute = minute;
 		if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
-		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
 		tp_inst._updateDateTime(inst);
