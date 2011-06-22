@@ -590,9 +590,12 @@ $.extend(Timepicker.prototype, {
 				minMax  = (this._defaults.minuteMax - (this._defaults.minuteMax % this._defaults.stepMinute)).toFixed(0),
 				secMax  = (this._defaults.secondMax - (this._defaults.secondMax % this._defaults.stepSecond)).toFixed(0);
 
-			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
-			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
-			this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
+			if(this.hour_slider)
+				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
+			if(this.minute_slider)
+				this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
+			if(this.second_slider)
+				this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
 		}
 
 	},
@@ -629,6 +632,9 @@ $.extend(Timepicker.prototype, {
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
 			if (timezone !== false) this.timezone = timezone;
+			
+			if (!this.inst) this.inst = $.datepicker._getInst(this.$input[0]);
+			
 			this._limitMinMaxDateTime(this.inst, true);
 		}
 		if (this._defaults.ampm) this.ampm = ampm;
