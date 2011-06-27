@@ -288,7 +288,7 @@ $.extend(Timepicker.prototype, {
 			if (o.showHour && o.hourGrid > 0) {
 				html += '<dd class="ui_tpicker_hour">' +
 						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+						'<div style="padding-left: 1px"><table class="ui-tpicker-step-label"><tr>';
 
 				for (var h = o.hourMin; h < hourMax; h += o.hourGrid) {
 					hourGridSize++;
@@ -314,7 +314,7 @@ $.extend(Timepicker.prototype, {
 				html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + o.minuteGrid + '">' +
 						'<div id="ui_tpicker_minute_' + dp_id + '"' +
 						((o.showMinute) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+						'<div style="padding-left: 1px"><table class="ui-tpicker-step-label"><tr>';
 
 				for (var m = o.minuteMin; m < minMax; m += o.minuteGrid) {
 					minuteGridSize++;
