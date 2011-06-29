@@ -8,7 +8,7 @@ $.timepicker.regional['es'] = {
 	timezoneText: 'Zona horaria',
 	currentText: 'Ahora',
 	closeText: 'Cerrar',
-	timeFormat: 'h:m',
+	timeFormat: 'hh:mm',
 	ampm: false
 };
 
