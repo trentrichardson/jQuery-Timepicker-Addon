@@ -163,6 +163,7 @@ $.extend(Timepicker.prototype, {
 				.focus(function(){ $input.trigger("focus"); });
 						
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
+                /*
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
 		if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
@@ -171,7 +172,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-			
+		*/	
 		return tp_inst;
 	},
 
@@ -513,6 +514,14 @@ $.extend(Timepicker.prototype, {
 	// min/max date range
 	//########################################################################
 	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
+		 if ($.datepicker._get(dp_inst, 'minDate')) {
+                    this._defaults.minDateTime = new Date($.datepicker._get(dp_inst, 'minDate').getTime());
+                    this._defaults.minDate = new Date($.datepicker._get(dp_inst, 'minDate').getTime());
+                }
+                if ($.datepicker._get(dp_inst, 'maxDate')) {
+                    this._defaults.maxDateTime = new Date($.datepicker._get(dp_inst, 'maxDate').getTime());
+                    this._defaults.maxDate = new Date($.datepicker._get(dp_inst, 'maxDate').getTime());
+                }
 		var o = this._defaults,
 			dp_date = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay);
 
