@@ -969,6 +969,33 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 };
 
 //#######################################################################################
+// override options setter to add time to maxDate(Time) and minDate(Time)
+//#######################################################################################
+$.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
+$.datepicker._optionDatepicker = function(target, name, value) {
+	this._base_optionDatepicker(target, name, value);
+		var inst = this._getInst(target),
+		tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		//Set minimum and maximum date values if we have timepicker
+		if(name==='minDate') {
+        	if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
+				tp_inst._defaults.minDateTime = new Date(value);
+			if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
+				tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
+			tp_inst._limitMinMaxDateTime(inst,true);
+		}
+		if(name==='maxDate') {
+			if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate instanceof Date)
+				tp_inst._defaults.maxDateTime = new Date(value);
+			if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
+				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
+			tp_inst._limitMinMaxDateTime(inst,true);
+		}
+	}
+};
+
+//#######################################################################################
 // jQuery extend now ignores nulls!
 //#######################################################################################
 function extendRemove(target, props) {
