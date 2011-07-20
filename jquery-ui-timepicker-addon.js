@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.6-dev
-* Last Modified: 05/25/2011
+* Version 0.9.6
+* Last Modified: 07/20/2011
 * 
 * Copyright 2011 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -162,7 +162,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-						
+					
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -172,7 +172,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-			
+		
 		return tp_inst;
 	},
 
@@ -996,6 +996,51 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 		return date;
 	}
 	return this._base_getDateDatepicker(target, noDefault);
+};
+
+//#######################################################################################
+// override parseDate() because UI 1.8.14 throws an error about "Extra characters"
+// An option in datapicker to ignore extra format characters would be nicer.
+//#######################################################################################
+$.datepicker._base_parseDate = $.datepicker.parseDate;
+$.datepicker.parseDate = function(format, value, settings) {
+	var date;
+	try {
+		date = this._base_parseDate(format, value, settings);
+	} catch (err) {
+		// Hack!  The error message ends with a colon, a space, and
+		// the "extra" characters.  We rely on that instead of
+		// attempting to perfectly reproduce the parsing algorithm.
+		date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+	}
+	return date;
+};
+
+//#######################################################################################
+// override options setter to add time to maxDate(Time) and minDate(Time)
+//#######################################################################################
+$.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
+$.datepicker._optionDatepicker = function(target, name, value) {
+	this._base_optionDatepicker(target, name, value);
+	var inst = this._getInst(target),
+		tp_inst = this._get(inst, 'timepicker');
+	if (tp_inst) {
+		//Set minimum and maximum date values if we have timepicker
+		if(name==='minDate') {
+        	if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
+				tp_inst._defaults.minDateTime = new Date(value);
+			if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
+				tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
+			tp_inst._limitMinMaxDateTime(inst,true);
+		}
+		if(name==='maxDate') {
+			if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate instanceof Date)
+				tp_inst._defaults.maxDateTime = new Date(value);
+			if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
+				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
+			tp_inst._limitMinMaxDateTime(inst,true);
+		}
+	}
 };
 
 //#######################################################################################
