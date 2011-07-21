@@ -790,7 +790,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
 		//This way the onSelect handler called from calendarpicker get the full dateTime
-		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime + tp_inst._defaults.timeSuffix);
+		this._base_selectDate(id, dateStr);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -1015,6 +1015,22 @@ $.datepicker.parseDate = function(format, value, settings) {
 	}
 	return date;
 };
+
+//#######################################################################################
+// override formatDate to set date with time to the input
+//#######################################################################################
+$.datepicker._base_formatDate=$.datepicker._formatDate;
+$.datepicker._formatDate = function(inst, day, month, year){
+	var tp_inst = this._get(inst, 'timepicker');
+	if(tp_inst)
+	{
+		if(day)
+			var b = this._base_formatDate(inst, day, month, year);
+		tp_inst._updateDateTime();	
+		return tp_inst.$input.val();
+	}
+	return this._base_formatDate(inst);
+}
 
 //#######################################################################################
 // override options setter to add time to maxDate(Time) and minDate(Time)
