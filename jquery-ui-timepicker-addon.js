@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.5
-* Last Modified: 05/25/2011
+* Version 0.9.6
+* Last Modified: 07/20/2011
 * 
 * Copyright 2011 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -19,7 +19,7 @@
 
 (function($) {
 
-$.extend($.ui, { timepicker: { version: "0.9.5" } });
+$.extend($.ui, { timepicker: { version: "0.9.6" } });
 
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
@@ -33,6 +33,7 @@ function Timepicker() {
 		closeText: 'Done',
 		ampm: false,
 		timeFormat: 'hh:mm tt',
+		timeSuffix: '',
 		timeOnlyTitle: 'Choose Time',
 		timeText: 'Time',
 		hourText: 'Hour',
@@ -161,7 +162,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-						
+					
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -171,7 +172,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-			
+		
 		return tp_inst;
 	},
 
@@ -198,7 +199,7 @@ $.extend(Timepicker.prototype, {
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
 				.replace(/z{1}/ig, '((\\+|-)\\d\\d\\d\\d)?')
-				.replace(/\s/g, '\\s?') + '$',
+				.replace(/\s/g, '\\s?') + this._defaults.timeSuffix + '$',
 			order = this._getFormatPositions(),
 			treg;
 
@@ -288,9 +289,9 @@ $.extend(Timepicker.prototype, {
 			if (o.showHour && o.hourGrid > 0) {
 				html += '<dd class="ui_tpicker_hour">' +
 						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
-				for (var h = o.hourMin; h < hourMax; h += o.hourGrid) {
+				for (var h = o.hourMin; h <= hourMax; h += o.hourGrid) {
 					hourGridSize++;
 					var tmph = (o.ampm && h > 12) ? h-12 : h;
 					if (tmph < 10) tmph = '0' + tmph;
@@ -314,9 +315,9 @@ $.extend(Timepicker.prototype, {
 				html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + o.minuteGrid + '">' +
 						'<div id="ui_tpicker_minute_' + dp_id + '"' +
 						((o.showMinute) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
-				for (var m = o.minuteMin; m < minMax; m += o.minuteGrid) {
+				for (var m = o.minuteMin; m <= minMax; m += o.minuteGrid) {
 					minuteGridSize++;
 					html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 				}
@@ -335,7 +336,7 @@ $.extend(Timepicker.prototype, {
 						((o.showSecond) ? '' : noDisplay) + '></div>' +
 						'<div style="padding-left: 1px"><table><tr>';
 
-				for (var s = o.secondMin; s < secMax; s += o.secondGrid) {
+				for (var s = o.secondMin; s <= secMax; s += o.secondGrid) {
 					secondGridSize++;
 					html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 				}
@@ -428,7 +429,7 @@ $.extend(Timepicker.prototype, {
 						var h = $(this).html();
 						if(o.ampm)	{
 							var ap = h.substring(2).toLowerCase(),
-								aph = parseInt(h.substring(0,2));
+								aph = parseInt(h.substring(0,2), 10);
 							if (ap == 'a') {
 								if (aph == 12) h = 0;
 								else h = aph;
@@ -518,8 +519,8 @@ $.extend(Timepicker.prototype, {
 
 		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
-		if(this._defaults.minDateTime !== null && dp_date){
-			var minDateTime = this._defaults.minDateTime,
+		if($.datepicker._get(dp_inst, 'minDateTime') !== null && dp_date){
+			var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
 			if(this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null){
@@ -551,8 +552,8 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 
-		if(this._defaults.maxDateTime !== null && dp_date){
-			var maxDateTime = this._defaults.maxDateTime,
+		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
+			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 	
 			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
@@ -568,7 +569,7 @@ $.extend(Timepicker.prototype, {
 					this._defaults.minuteMax = maxDateTime.getMinutes();
 					if (this.minute >= this._defaults.minuteMax) {
 						this.minute = this._defaults.minuteMax;
-						this._defaults.secondMin = maxDateTime.getSeconds();
+						this._defaults.secondMax = maxDateTime.getSeconds();
 					} else {
 						if(this.second > this._defaults.secondMax) this.second = this._defaults.secondMax;
 						this._defaults.secondMax = this.secondMaxOriginal;
@@ -585,9 +586,16 @@ $.extend(Timepicker.prototype, {
 		}
 
 		if(adjustSliders !== undefined && adjustSliders === true){
-			this.hour_slider.slider("option", { min: this._defaults.hourMin, max: this._defaults.hourMax }).slider('value', this.hour);
-			this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: this._defaults.minuteMax }).slider('value', this.minute);
-			this.second_slider.slider("option", { min: this._defaults.secondMin, max: this._defaults.secondMax }).slider('value', this.second);
+			var hourMax = (this._defaults.hourMax - (this._defaults.hourMax % this._defaults.stepHour)).toFixed(0),
+				minMax  = (this._defaults.minuteMax - (this._defaults.minuteMax % this._defaults.stepMinute)).toFixed(0),
+				secMax  = (this._defaults.secondMax - (this._defaults.secondMax % this._defaults.stepSecond)).toFixed(0);
+
+			if(this.hour_slider)
+				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
+			if(this.minute_slider)
+				this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
+			if(this.second_slider)
+				this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
 		}
 
 	},
@@ -602,13 +610,18 @@ $.extend(Timepicker.prototype, {
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
 			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
-		
+
+		if (typeof(hour) == 'object') hour = false;
+		if (typeof(minute) == 'object') minute = false;
+		if (typeof(second) == 'object') second = false;
+		if (typeof(timezone) == 'object') timezone = false;
+
 		if (hour !== false) hour = parseInt(hour,10);
 		if (minute !== false) minute = parseInt(minute,10);
 		if (second !== false) second = parseInt(second,10);
 
 		var ampm = (hour < 12) ? 'AM' : 'PM';
-			
+
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
 		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
@@ -619,12 +632,15 @@ $.extend(Timepicker.prototype, {
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
 			if (timezone !== false) this.timezone = timezone;
+			
+			if (!this.inst) this.inst = $.datepicker._getInst(this.$input[0]);
+			
 			this._limitMinMaxDateTime(this.inst, true);
 		}
 		if (this._defaults.ampm) this.ampm = ampm;
 		
 		this._formatTime();
-		if (this.$timeObj) this.$timeObj.text(this.formattedTime);
+		if (this.$timeObj) this.$timeObj.text(this.formattedTime + this._defaults.timeSuffix);
 		this.timeDefined = true;
 		if (hasChanged) this._updateDateTime();
 	},
@@ -699,7 +715,7 @@ $.extend(Timepicker.prototype, {
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
 		} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
-			formattedDateTime += this._defaults.separator + this.formattedTime;
+			formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
 		}
 
 		this.formattedDateTime = formattedDateTime;
@@ -774,7 +790,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
 		//This way the onSelect handler called from calendarpicker get the full dateTime
-		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime);
+		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime + tp_inst._defaults.timeSuffix);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -788,6 +804,16 @@ $.datepicker._selectDate = function (id, dateStr) {
 //#############################################################################################
 $.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 $.datepicker._updateDatepicker = function(inst) {
+
+	// don't popup the datepicker if there is another instance already opened
+	var input = inst.input[0];
+	if($.datepicker._curInst &&
+	   $.datepicker._curInst != inst &&
+	   $.datepicker._datepickerShowing &&
+	   $.datepicker._lastInput != input) {
+		return;
+	}
+
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 				
 		this._base_updateDatepicker(inst);
@@ -799,7 +825,7 @@ $.datepicker._updateDatepicker = function(inst) {
 };
 
 //#######################################################################################
-// third bad hack :/ override datepicker so it allows spaces and colan in the input field
+// third bad hack :/ override datepicker so it allows spaces and colon in the input field
 //#######################################################################################
 $.datepicker._base_doKeyPress = $.datepicker._doKeyPress;
 $.datepicker._doKeyPress = function(event) {
@@ -809,6 +835,7 @@ $.datepicker._doKeyPress = function(event) {
 	if (tp_inst) {
 		if ($.datepicker._get(inst, 'constrainInput')) {
 			var ampm = tp_inst._defaults.ampm,
+				dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 				datetimeChars = tp_inst._defaults.timeFormat.toString()
 								.replace(/[hms]/g, '')
 								.replace(/TT/g, ampm ? 'APM' : '')
@@ -819,9 +846,11 @@ $.datepicker._doKeyPress = function(event) {
 								.replace(/t/g, ampm ? 'ap' : '') +
 								" " +
 								tp_inst._defaults.separator +
-								$.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
+								tp_inst._defaults.timeSuffix +
+								(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') +
+								dateChars,
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
-			return event.ctrlKey || (chr < ' ' || !datetimeChars || datetimeChars.indexOf(chr) > -1);
+			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 		}
 	}
 	
@@ -902,12 +931,13 @@ $.datepicker._setTime = function(inst, date) {
 			second = defaults.secondMin;
 		}
 
+		tp_inst.hour = hour;
+		tp_inst.minute = minute;
+		tp_inst.second = second;
+
 		if (tp_inst.hour_slider) tp_inst.hour_slider.slider('value', hour);
-		else tp_inst.hour = hour;
 		if (tp_inst.minute_slider) tp_inst.minute_slider.slider('value', minute);
-		else tp_inst.minute = minute;
 		if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
-		else tp_inst.second = second;
 
 		tp_inst._onTimeChange();
 		tp_inst._updateDateTime(inst);
@@ -969,12 +999,30 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 };
 
 //#######################################################################################
+// override parseDate() because UI 1.8.14 throws an error about "Extra characters"
+// An option in datapicker to ignore extra format characters would be nicer.
+//#######################################################################################
+$.datepicker._base_parseDate = $.datepicker.parseDate;
+$.datepicker.parseDate = function(format, value, settings) {
+	var date;
+	try {
+		date = this._base_parseDate(format, value, settings);
+	} catch (err) {
+		// Hack!  The error message ends with a colon, a space, and
+		// the "extra" characters.  We rely on that instead of
+		// attempting to perfectly reproduce the parsing algorithm.
+		date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+	}
+	return date;
+};
+
+//#######################################################################################
 // override options setter to add time to maxDate(Time) and minDate(Time)
 //#######################################################################################
 $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 $.datepicker._optionDatepicker = function(target, name, value) {
 	this._base_optionDatepicker(target, name, value);
-		var inst = this._getInst(target),
+	var inst = this._getInst(target),
 		tp_inst = this._get(inst, 'timepicker');
 	if (tp_inst) {
 		//Set minimum and maximum date values if we have timepicker
@@ -1007,6 +1055,6 @@ function extendRemove(target, props) {
 }
 
 $.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "0.9.5";
+$.timepicker.version = "0.9.6";
 
 })(jQuery);
