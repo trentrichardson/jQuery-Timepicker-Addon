@@ -64,6 +64,7 @@ function Timepicker() {
 		secondMax: 59,
 		minDateTime: null,
 		maxDateTime: null,
+		onSelect: null,
 		hourGrid: 0,
 		minuteGrid: 0,
 		secondGrid: 0,
@@ -162,7 +163,16 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-					
+		
+		if(tp_inst._defaults.minDate==0 || tp_inst._defaults.minDateTime==0)
+		{
+			tp_inst._defaults.minDate=new Date();
+		}
+		if(tp_inst._defaults.maxDate==0 || tp_inst._defaults.maxDateTime==0)
+		{
+			tp_inst._defaults.maxDate=new Date();
+		}
+		
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -172,7 +182,6 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-		
 		return tp_inst;
 	},
 
@@ -519,7 +528,7 @@ $.extend(Timepicker.prototype, {
 
 		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
-		if($.datepicker._get(dp_inst, 'minDateTime') !== null && dp_date){
+		if($.datepicker._get(dp_inst, 'minDateTime') !== null && $.datepicker._get(dp_inst, 'minDateTime') !== undefined && dp_date){
 			var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
@@ -552,7 +561,7 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 
-		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
+		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && $.datepicker._get(dp_inst, 'maxDateTime') !== undefined && dp_date){
 			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 	
@@ -650,7 +659,7 @@ $.extend(Timepicker.prototype, {
 	// bind to sliders slidestop, and grid click.
 	//########################################################################
 	_onSelectHandler: function() {
-		var onSelect = this._defaults['onSelect'];
+		var onSelect = this._defaults.onSelect;
 		var inputEl = this.$input ? this.$input[0] : null;
 		if (onSelect && inputEl) {
 			onSelect.apply(inputEl, [this.formattedDateTime, this]);
@@ -790,7 +799,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
 		//This way the onSelect handler called from calendarpicker get the full dateTime
-		this._base_selectDate(id, dateStr + tp_inst._defaults.separator + tp_inst.formattedTime + tp_inst._defaults.timeSuffix);
+		this._base_selectDate(id, dateStr);
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
@@ -1017,30 +1026,67 @@ $.datepicker.parseDate = function(format, value, settings) {
 };
 
 //#######################################################################################
-// override options setter to add time to maxDate(Time) and minDate(Time)
+// override formatDate to set date with time to the input
+//#######################################################################################
+$.datepicker._base_formatDate=$.datepicker._formatDate;
+$.datepicker._formatDate = function(inst, day, month, year){
+	var tp_inst = this._get(inst, 'timepicker');
+	if(tp_inst)
+	{
+		if(day)
+			var b = this._base_formatDate(inst, day, month, year);
+		tp_inst._updateDateTime();	
+		return tp_inst.$input.val();
+	}
+	return this._base_formatDate(inst);
+}
+
+//#######################################################################################
+// override options setter to add time to maxDate(Time) and minDate(Time). MaxDate
 //#######################################################################################
 $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 $.datepicker._optionDatepicker = function(target, name, value) {
-	this._base_optionDatepicker(target, name, value);
 	var inst = this._getInst(target),
 		tp_inst = this._get(inst, 'timepicker');
 	if (tp_inst) {
-		//Set minimum and maximum date values if we have timepicker
-		if(name==='minDate') {
-        	if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
-				tp_inst._defaults.minDateTime = new Date(value);
-			if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
-				tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
-			tp_inst._limitMinMaxDateTime(inst,true);
+		var min,max,onselect;
+		if (typeof name == 'string') { // if min/max was set with the string
+			if (name==='minDate' || name==='minDateTime' )
+				min = value;
+			else if (name==='maxDate' || name==='maxDateTime')
+				max = value;
+			else if (name==='onSelect')
+				onselect=value;
+		} else if (typeof name == 'object') { //if min/max was set with the JSON
+			if(name.minDate)
+				min = name.minDate;
+			else if (name.minDateTime)
+				min = name.minDateTime;
+			else if (name.maxDate)
+				max = name.maxDate;
+			else if (name.maxDateTime)
+				max = name.maxDateTime;
 		}
-		if(name==='maxDate') {
-			if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate instanceof Date)
-				tp_inst._defaults.maxDateTime = new Date(value);
-			if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
-				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-			tp_inst._limitMinMaxDateTime(inst,true);
+		if(min){ //if min was set
+			if(min==0)
+				min=new Date();
+			else
+				min= new Date(min);
+			
+			tp_inst._defaults.minDate = min;
+			tp_inst._defaults.minDateTime = min;
+		} else if (max){ //if max was set
+			if(max==0)
+				max=new Date();
+			else
+				max= new Date(max);
+			tp_inst._defaults.maxDate = max;
+			tp_inst._defaults.maxDateTime = max;
 		}
+		else if (onselect)
+			tp_inst._defaults.onSelect=onselect;
 	}
+	this._base_optionDatepicker(target, name, value);
 };
 
 //#######################################################################################
