@@ -163,7 +163,16 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-					
+		
+		if(tp_inst._defaults.minDate==0 || tp_inst._defaults.minDateTime==0)
+		{
+			tp_inst._defaults.minDate=new Date();
+		}
+		if(tp_inst._defaults.maxDate==0 || tp_inst._defaults.maxDateTime==0)
+		{
+			tp_inst._defaults.maxDate=new Date();
+		}
+		
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -173,7 +182,6 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-		
 		return tp_inst;
 	},
 
@@ -520,7 +528,7 @@ $.extend(Timepicker.prototype, {
 
 		if(!this._defaults.showTimepicker) return; // No time so nothing to check here
 
-		if($.datepicker._get(dp_inst, 'minDateTime') !== null && dp_date){
+		if($.datepicker._get(dp_inst, 'minDateTime') !== null && $.datepicker._get(dp_inst, 'minDateTime') !== undefined && dp_date){
 			var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 				minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
@@ -553,7 +561,7 @@ $.extend(Timepicker.prototype, {
 			}
 		}
 
-		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
+		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && $.datepicker._get(dp_inst, 'maxDateTime') !== undefined && dp_date){
 			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 	
@@ -1060,11 +1068,18 @@ $.datepicker._optionDatepicker = function(target, name, value) {
 				max = name.maxDateTime;
 		}
 		if(min){ //if min was set
-			min= new Date(min);
+			if(min==0)
+				min=new Date();
+			else
+				min= new Date(min);
+			
 			tp_inst._defaults.minDate = min;
 			tp_inst._defaults.minDateTime = min;
 		} else if (max){ //if max was set
-			max= new Date(max);
+			if(max==0)
+				max=new Date();
+			else
+				max= new Date(max);
 			tp_inst._defaults.maxDate = max;
 			tp_inst._defaults.maxDateTime = max;
 		}
