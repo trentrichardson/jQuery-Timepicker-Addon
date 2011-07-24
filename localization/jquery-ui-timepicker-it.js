@@ -7,6 +7,7 @@
         hourText: 'Ora',
         minuteText: 'Minuto',
         secondText: 'Secondo',
+        millisecText: 'Millisecondo',
         timezoneText: 'Fuso orario',
         currentText: 'Adesso',
         closeText: 'Chiudi',

@@ -7,6 +7,7 @@
 		hourText: 'Hodiny',
 		minuteText: 'Minuty',
 		secondText: 'Vteřiny',
+		millisecText: 'Milisekundy',
 		timezoneText: 'Časové pásmo',
 		currentText: 'Nyní',
 		closeText: 'Zavřít',

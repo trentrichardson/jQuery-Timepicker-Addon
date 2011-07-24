@@ -7,6 +7,7 @@
 		hourText: 'Pukul',
 		minuteText: 'Menit',
 		secondText: 'Detik',
+		millisecText: 'Milidetik',
 		timezoneText: 'Zona Waktu',
 		currentText: 'Sekarang',
 		closeText: 'OK',

@@ -7,6 +7,7 @@
 		hourText: 'Valandos',
 		minuteText: 'Minutės',
 		secondText: 'Sekundės',
+		millisecText: 'Milisekundės',
 		timezoneText: 'Laiko zona',
 		currentText: 'Dabar',
 		closeText: 'Uždaryti',

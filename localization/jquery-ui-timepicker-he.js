@@ -7,6 +7,7 @@
 		hourText: "שעות",
 		minuteText: "דקות",
 		secondText: "שניות",
+		millisecText: "אלפית השנייה",
 		timezoneText: "אזור זמן",
 		currentText: "עכשיו",
 		closeText:"סגור",

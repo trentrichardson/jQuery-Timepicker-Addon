@@ -7,6 +7,7 @@
 		hourText: 'Uur',
 		minuteText: 'Minuut',
 		secondText: 'Seconde',
+		millisecText: 'Milliseconde',
 		timezoneText: 'Tijdzone',
 		currentText: 'Vandaag',
 		closeText: 'Sluiten',

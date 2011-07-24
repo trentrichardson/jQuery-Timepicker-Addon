@@ -7,6 +7,7 @@
 		hourText: 'Часы',
 		minuteText: 'Минуты',
 		secondText: 'Секунды',
+		millisecText: 'Миллисекунды',
 		timezoneText: 'Время зоны',
 		currentText: 'Теперь',
 		closeText: 'Закрыть',

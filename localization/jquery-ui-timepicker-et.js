@@ -7,6 +7,7 @@
 		hourText: 'Tund',
 		minuteText: 'Minut',
 		secondText: 'Sekund',
+		millisecText: 'Millisekundis',
 		timezoneText: 'Ajavöönd',
 		currentText: 'Praegu',
 		closeText: 'Valmis',

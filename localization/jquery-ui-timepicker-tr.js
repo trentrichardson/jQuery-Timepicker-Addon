@@ -7,6 +7,7 @@
 		hourText: 'Saat',
 		minuteText: 'Dakika',
 		secondText: 'Saniye',
+		millisecText: 'Milisaniyelik',
 		timezoneText: 'Zaman Dilimi',
 		currentText: 'Şu an',
 		closeText: 'Tamam',

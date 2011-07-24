@@ -7,6 +7,7 @@
 		hourText: 'Hores',
 		minuteText: 'Minuts',
 		secondText: 'Segons',
+		millisecText: 'Milisegons',
 		timezoneText: 'Fus horari',
 		currentText: 'Ara',
 		closeText: 'Tancar',

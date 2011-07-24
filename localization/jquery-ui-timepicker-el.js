@@ -7,6 +7,7 @@
 		hourText: 'Ώρες',
 		minuteText: 'Λεπτά',
 		secondText: 'Δευτερόλεπτα',
+		millisecText: 'μιλιδευτερόλεπτο',
 		timezoneText: 'Ζώνη ώρας',
 		currentText: 'Τώρα',
 		closeText: 'Κλείσιμο',
