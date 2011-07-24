@@ -986,8 +986,11 @@ $.datepicker._doKeyUp = function (event) {
 //#######################################################################################
 $.datepicker._base_gotoToday = $.datepicker._gotoToday;
 $.datepicker._gotoToday = function(id) {
+	var inst = this._getInst($(id)[0]),
+		$dp = inst.dpDiv;
 	this._base_gotoToday(id);
 	this._setTime(this._getInst($(id)[0]), new Date());
+	$( '.ui-datepicker-today', $dp).click(); 
 };
 
 //#######################################################################################
