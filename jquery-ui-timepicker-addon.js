@@ -79,10 +79,8 @@ function Timepicker() {
 		separator: ' ',
 		altFieldTimeOnly: true,
 		showTimepicker: true,
-		timezoneList: ["-1100", "-1000", "-0900", "-0800", "-0700", "-0600",
-			       "-0500", "-0400", "-0300", "-0200", "-0100", "+0000",
-			       "+0100", "+0200", "+0300", "+0400", "+0500", "+0600",
-			       "+0700", "+0800", "+0900", "+1000", "+1100", "+1200"]
+		timezoneIso8609: false,
+		timezoneList: null
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -114,10 +112,7 @@ $.extend(Timepicker.prototype, {
 	formattedDate: '',
 	formattedTime: '',
 	formattedDateTime: '',
-	timezoneList: ["-1100", "-1000", "-0900", "-0800", "-0700", "-0600",
-			"-0500", "-0400", "-0300", "-0200", "-0100", "+0000",
-			"+0100", "+0200", "+0300", "+0400", "+0500", "+0600",
-			"+0700", "+0800", "+0900", "+1000", "+1100", "+1200"],
+	timezoneList: null,
 
 	/* Override the default settings for all instances of the time picker.
 	   @param  settings  object - the new settings to use as defaults (anonymous object)
@@ -163,6 +158,17 @@ $.extend(Timepicker.prototype, {
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
+
+		if (tp_inst._defaults.timezoneList === null) {
+			var timezoneList = [];
+			for (var i = -11; i <= 12; i++)
+				timezoneList.push((i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00');
+			if (tp_inst._defaults.timezoneIso8609)
+				timezoneList = $.map(timezoneList, function(val) {
+					return val == '+0000' ? 'Z' : (val.substring(0, 3) + ':' + val.substring(3));
+				});
+			tp_inst._defaults.timezoneList = timezoneList;
+		}
 
 		tp_inst.hour = tp_inst._defaults.hour;
 		tp_inst.minute = tp_inst._defaults.minute;
@@ -220,7 +226,7 @@ $.extend(Timepicker.prototype, {
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/l{1}/ig, '(\\d?\\d?\\d)')
 				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
-				.replace(/z{1}/ig, '((\\+|-)\\d\\d\\d\\d)?')
+				.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d)?')
 				.replace(/\s/g, '\\s?') + this._defaults.timeSuffix + '$',
 			order = this._getFormatPositions(),
 			treg;
@@ -255,7 +261,29 @@ $.extend(Timepicker.prototype, {
 			if (order.m !== -1) this.minute = Number(treg[order.m]);
 			if (order.s !== -1) this.second = Number(treg[order.s]);
 			if (order.l !== -1) this.millisec = Number(treg[order.l]);
-			if (order.z !== -1) this.timezone = treg[order.z];
+			if (order.z !== -1 && treg[order.z] !== undefined) {
+				var tz = treg[order.z].toUpperCase();
+				switch (tz.length) {
+				case 1:	// Z
+					tz = this._defaults.timezoneIso8609 ? 'Z' : '+0000';
+					break;
+				case 5:	// +hhmm
+					if (this._defaults.timezoneIso8609)
+						tz = tz.substring(1) == '0000'
+						   ? 'Z'
+						   : tz.substring(0, 3) + ':' + tz.substring(3);
+					break;
+				case 6:	// +hh:mm
+					if (!this._defaults.timezoneIso8609)
+						tz = tz == 'Z' || tz.substring(1) == '00:00'
+						   ? '+0000'
+						   : tz.replace(/:/, '');
+					else if (tz.substring(1) == '00:00')
+						tz = 'Z';
+					break;
+				}
+				this.timezone = tz;
+			}
 			
 			return true;
 
