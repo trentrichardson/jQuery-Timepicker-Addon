@@ -12,6 +12,8 @@
 		currentText: 'Hiện thời',
 		closeText: 'Đóng'
 		timeFormat: 'h:m',
+		amNames: ['SA', 'AM', 'A'],
+		pmNames: ['CH', 'PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['vi']);

@@ -12,6 +12,8 @@
 		currentText: 'Acum',
 		closeText: 'Închide',
 		timeFormat: 'hh:mm',
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['ro']);
