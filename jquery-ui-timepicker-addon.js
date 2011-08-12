@@ -976,6 +976,8 @@ $.datepicker._doKeyPress = function(event) {
 								tp_inst._defaults.separator +
 								tp_inst._defaults.timeSuffix +
 								(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') +
+								(tp_inst._defaults.amNames.join('')) +
+								(tp_inst._defaults.pmNames.join('')) +
 								dateChars,
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
