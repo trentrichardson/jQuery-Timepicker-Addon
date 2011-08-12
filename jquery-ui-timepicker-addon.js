@@ -1025,6 +1025,8 @@ $.datepicker._gotoToday = function(id) {
 		tzoffset = Math.abs(tzoffset);
 		var tzmin = tzoffset % 60
 		tzoffset = tzsign + ('0' + (tzoffset - tzmin) / 60).slice(-2) + ('0' + tzmin).slice(-2);
+		if (tp_inst._defaults.timezoneIso8609)
+			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
 		tp_inst.timezone_select.val(tzoffset);
 	}
 	this._setTime(inst, now);
