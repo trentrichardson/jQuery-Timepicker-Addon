@@ -11,7 +11,9 @@
 		currentText: 'Nyní',
 		closeText: 'Zavřít',
 		timeFormat: 'h:m',
-		ampm: false
+		ampm: false,
+        am: 'dop.',
+        pm: 'odp.'
 	};
 	$.timepicker.setDefaults($.timepicker.regional['cs']);
 })(jQuery);
