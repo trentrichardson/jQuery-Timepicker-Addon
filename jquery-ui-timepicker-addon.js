@@ -39,7 +39,9 @@ function Timepicker() {
 		hourText: 'Hour',
 		minuteText: 'Minute',
 		secondText: 'Second',
-		timezoneText: 'Time Zone'
+		timezoneText: 'Time Zone',
+        am: 'AM',
+        pm: 'PM'
 	};
 	this._defaults = { // Global defaults for all the datetime picker instances
 		showButtonPanel: true,
@@ -220,12 +222,12 @@ $.extend(Timepicker.prototype, {
 			if (order.t !== -1)
 				this.ampm = ((treg[order.t] === undefined || treg[order.t].length === 0) ?
 					'' :
-					(treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
+					(treg[order.t].charAt(0).toUpperCase() == 'A') ? this.am : this.pm);
 
 			if (order.h !== -1) {
-				if (this.ampm == 'AM' && treg[order.h] == '12') 
+				if (this.ampm == this.am && treg[order.h] == '12')
 					this.hour = 0; // 12am = 0 hour
-				else if (this.ampm == 'PM' && treg[order.h] != '12') 
+				else if (this.ampm == this.pm && treg[order.h] != '12')
 					this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); // 12pm = 12 hour, any other pm = hour + 12
 				else this.hour = Number(treg[order.h]);
 			}
@@ -620,7 +622,7 @@ $.extend(Timepicker.prototype, {
 		if (minute !== false) minute = parseInt(minute,10);
 		if (second !== false) second = parseInt(second,10);
 
-		var ampm = (hour < 12) ? 'AM' : 'PM';
+		var ampm = (hour < 12) ? this._defaults.am : this._defaults.pm;
 
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
@@ -666,7 +668,7 @@ $.extend(Timepicker.prototype, {
 		var tmptime = format || this._defaults.timeFormat.toString();
 
 		if (ampm) {
-			var hour12 = ((time.ampm == 'AM') ? (time.hour) : (time.hour % 12));
+			var hour12 = ((time.ampm == this.am) ? (time.hour) : (time.hour % 12));
 			hour12 = (Number(hour12) === 0) ? 12 : hour12;
 			tmptime = tmptime.toString()
 				.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
@@ -675,12 +677,12 @@ $.extend(Timepicker.prototype, {
 				.replace(/m/g, time.minute)
 				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
 				.replace(/s/g, time.second)
-				.replace(/TT/g, time.ampm.toUpperCase())
-				.replace(/Tt/g, time.ampm.toUpperCase())
-				.replace(/tT/g, time.ampm.toLowerCase())
-				.replace(/tt/g, time.ampm.toLowerCase())
-				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
-				.replace(/t/g, time.ampm.charAt(0).toLowerCase())
+				.replace(/TT/g, time.ampm)
+				.replace(/Tt/g, time.ampm)
+				.replace(/tT/g, time.ampm)
+				.replace(/tt/g, time.ampm)
+				.replace(/T/g, time.ampm.charAt(0))
+				.replace(/t/g, time.ampm.charAt(0))
 				.replace(/z/g, time.timezone);
 		} else {
 			tmptime = tmptime.toString()
