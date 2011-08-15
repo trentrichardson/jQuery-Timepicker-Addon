@@ -1,4 +1,4 @@
-/* German translation for the jQuery Timepicker Addon */
+/* Polish translation for the jQuery Timepicker Addon */
 /* Written by Michał Pena */
 (function($) {
 	$.timepicker.regional['pl'] = {
@@ -12,6 +12,8 @@
 		currentText: 'Teraz',
 		closeText: 'Gotowe',
 		timeFormat: 'hh:mm tt',
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['pl']);
