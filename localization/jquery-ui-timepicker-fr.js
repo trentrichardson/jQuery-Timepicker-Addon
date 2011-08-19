@@ -12,6 +12,8 @@
 		currentText: 'Maintenant',
 		closeText: 'Terminé',
 		timeFormat: 'hh:mm',
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['fr']);

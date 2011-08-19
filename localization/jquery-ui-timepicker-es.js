@@ -12,6 +12,8 @@
 		currentText: 'Ahora',
 		closeText: 'Cerrar',
 		timeFormat: 'hh:mm',
+		amNames: ['a.m.', 'AM', 'A'],
+		pmNames: ['p.m.', 'PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['es']);

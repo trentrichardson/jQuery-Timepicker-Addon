@@ -12,6 +12,8 @@
 		currentText: 'Nyt',
 		closeText: 'Sulje',
 		timeFormat: 'hh:mm',
+		amNames: ['ap.', 'AM', 'A'],
+		pmNames: ['ip.', 'PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['fi']);

@@ -12,6 +12,8 @@
 		currentText: 'Dabar',
 		closeText: 'Uždaryti',
 		timeFormat: 'hh:mm',
+		amNames: ['priešpiet', 'AM', 'A'],
+		pmNames: ['popiet', 'PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['lt']);

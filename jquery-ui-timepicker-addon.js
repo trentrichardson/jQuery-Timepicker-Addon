@@ -32,6 +32,8 @@ function Timepicker() {
 		currentText: 'Now',
 		closeText: 'Done',
 		ampm: false,
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		timeFormat: 'hh:mm tt',
 		timeSuffix: '',
 		timeOnlyTitle: 'Choose Time',
@@ -158,6 +160,8 @@ $.extend(Timepicker.prototype, {
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
+		tp_inst.amNames = $.map(tp_inst._defaults.amNames, function(val) { return val.toUpperCase() });
+		tp_inst.pmNames = $.map(tp_inst._defaults.pmNames, function(val) { return val.toUpperCase() });
 
 		if (tp_inst._defaults.timezoneList === null) {
 			var timezoneList = [];
@@ -225,10 +229,11 @@ $.extend(Timepicker.prototype, {
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/l{1}/ig, '(\\d?\\d?\\d)')
-				.replace(/t{1,2}/ig, '(am|pm|a|p)?')
+				.replace(/t{1,2}/ig, this._getPatternAmpm())
 				.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d)?')
 				.replace(/\s/g, '\\s?') + this._defaults.timeSuffix + '$',
 			order = this._getFormatPositions(),
+			ampm = '',
 			treg;
 
 		if (!this.inst) this.inst = $.datepicker._getInst(this.$input[0]);
@@ -245,15 +250,20 @@ $.extend(Timepicker.prototype, {
 		treg = timeString.match(new RegExp(regstr, 'i'));
 
 		if (treg) {
-			if (order.t !== -1)
-				this.ampm = ((treg[order.t] === undefined || treg[order.t].length === 0) ?
-					'' :
-					(treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
+			if (order.t !== -1) {
+				if (treg[order.t] === undefined || treg[order.t].length === 0) {
+					ampm = '';
+					this.ampm = '';
+				} else {
+					ampm = $.inArray(treg[order.t].toUpperCase(), this.amNames) !== -1 ? 'AM' : 'PM';
+					this.ampm = this._defaults[ampm == 'AM' ? 'amNames' : 'pmNames'][0];
+				}
+			}
 
 			if (order.h !== -1) {
-				if (this.ampm == 'AM' && treg[order.h] == '12') 
+				if (ampm == 'AM' && treg[order.h] == '12')
 					this.hour = 0; // 12am = 0 hour
-				else if (this.ampm == 'PM' && treg[order.h] != '12') 
+				else if (ampm == 'PM' && treg[order.h] != '12')
 					this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); // 12pm = 12 hour, any other pm = hour + 12
 				else this.hour = Number(treg[order.h]);
 			}
@@ -289,6 +299,20 @@ $.extend(Timepicker.prototype, {
 
 		}
 		return false;
+	},
+
+	//########################################################################
+	// pattern for standard and localized AM/PM markers
+	//########################################################################
+	_getPatternAmpm: function() {
+		var markers = [];
+			o = this._defaults;
+		if (o.amNames)
+			$.merge(markers, o.amNames);
+		if (o.pmNames)
+			$.merge(markers, o.pmNames);
+		markers = $.map(markers, function(val) { return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&') });
+		return '(' + markers.join('|') + ')?';
 	},
 
 	//########################################################################
@@ -734,7 +758,8 @@ $.extend(Timepicker.prototype, {
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
 			millisec = (this.millisec_slider) ? this.millisec_slider.slider('value') : false,
-			timezone = (this.timezone_select) ? this.timezone_select.val() : false;
+			timezone = (this.timezone_select) ? this.timezone_select.val() : false,
+			o = this._defaults;
 
 		if (typeof(hour) == 'object') hour = false;
 		if (typeof(minute) == 'object') minute = false;
@@ -747,11 +772,15 @@ $.extend(Timepicker.prototype, {
 		if (second !== false) second = parseInt(second,10);
 		if (millisec !== false) millisec = parseInt(millisec,10);
 
-		var ampm = (hour < 12) ? 'AM' : 'PM';
+		var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
 
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
-		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
+		var hasChanged = (hour != this.hour || minute != this.minute
+				|| second != this.second || millisec != this.millisec
+				|| (this.ampm.length > 0
+				    && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1))
+				|| timezone != this.timezone);
 		
 		if (hasChanged) {
 
@@ -765,10 +794,10 @@ $.extend(Timepicker.prototype, {
 			
 			this._limitMinMaxDateTime(this.inst, true);
 		}
-		if (this._defaults.ampm) this.ampm = ampm;
+		if (o.ampm) this.ampm = ampm;
 		
 		this._formatTime();
-		if (this.$timeObj) this.$timeObj.text(this.formattedTime + this._defaults.timeSuffix);
+		if (this.$timeObj) this.$timeObj.text(this.formattedTime + o.timeSuffix);
 		this.timeDefined = true;
 		if (hasChanged) this._updateDateTime();
 	},
@@ -791,38 +820,35 @@ $.extend(Timepicker.prototype, {
 	_formatTime: function(time, format, ampm) {
 		if (ampm == undefined) ampm = this._defaults.ampm;
 		time = time || { hour: this.hour, minute: this.minute, second: this.second, millisec: this.millisec, ampm: this.ampm, timezone: this.timezone };
-		var tmptime = format || this._defaults.timeFormat.toString();
+		var tmptime = (format || this._defaults.timeFormat).toString();
 
+		var hour = parseInt(time.hour, 10);
 		if (ampm) {
-			var hour12 = ((time.ampm == 'AM') ? (time.hour) : (time.hour % 12));
-			hour12 = (Number(hour12) === 0) ? 12 : hour12;
-			tmptime = tmptime.toString()
-				.replace(/hh/g, ((hour12 < 10) ? '0' : '') + hour12)
-				.replace(/h/g, hour12)
-				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
-				.replace(/m/g, time.minute)
-				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
-				.replace(/s/g, time.second)
-				.replace(/l/g, ((time.millisec < 10) ? '00' : (time.millisec < 100) ? '0': '') + time.millisec)
-				.replace(/TT/g, time.ampm.toUpperCase())
-				.replace(/Tt/g, time.ampm.toUpperCase())
-				.replace(/tT/g, time.ampm.toLowerCase())
-				.replace(/tt/g, time.ampm.toLowerCase())
-				.replace(/T/g, time.ampm.charAt(0).toUpperCase())
-				.replace(/t/g, time.ampm.charAt(0).toLowerCase())
-				.replace(/z/g, time.timezone);
-		} else {
-			tmptime = tmptime.toString()
-				.replace(/hh/g, ((time.hour < 10) ? '0' : '') + time.hour)
-				.replace(/h/g, time.hour)
-				.replace(/mm/g, ((time.minute < 10) ? '0' : '') + time.minute)
-				.replace(/m/g, time.minute)
-				.replace(/ss/g, ((time.second < 10) ? '0' : '') + time.second)
-				.replace(/s/g, time.second)
-				.replace(/l/g, ((time.millisec < 10) ? '00' : (time.millisec < 100) ? '0': '') + time.millisec)
-				.replace(/z/g, time.timezone);
-			tmptime = $.trim(tmptime.replace(/t/gi, ''));
+			if (!$.inArray(time.ampm.toUpperCase(), this.amNames) !== -1)
+				hour = hour % 12;
+			if (hour === 0)
+				hour = 12;
 		}
+		tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz])/g, function(match) {
+			switch (match.toLowerCase()) {
+				case 'hh': return ('0' + hour).slice(-2);
+				case 'h':  return hour;
+				case 'mm': return ('0' + time.minute).slice(-2);
+				case 'm':  return time.minute;
+				case 'ss': return ('0' + time.second).slice(-2);
+				case 's':  return time.second;
+				case 'l':  return ('00' + time.millisec).slice(-3);
+				case 'z':  return time.timezone;
+				case 't': case 'tt':
+					if (ampm) {
+						var _ampm = time.ampm;
+						if (match.length == 1)
+							_ampm = _ampm.charAt(0);
+						return match.charAt(0) == 'T' ? _ampm.toUpperCase() : _ampm.toLowerCase();
+					}
+					return '';
+			}
+		});
 
 		if (arguments.length) return tmptime;
 		else this.formattedTime = tmptime;
@@ -978,6 +1004,8 @@ $.datepicker._doKeyPress = function(event) {
 								tp_inst._defaults.separator +
 								tp_inst._defaults.timeSuffix +
 								(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') +
+								(tp_inst._defaults.amNames.join('')) +
+								(tp_inst._defaults.pmNames.join('')) +
 								dateChars,
 				chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
