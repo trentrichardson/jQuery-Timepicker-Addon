@@ -12,6 +12,8 @@
 		currentText: 'Most',
 		closeText: 'Kész',
 		timeFormat: 'hh:mm tt',
+		amNames: ['de.', 'AM', 'A'],
+		pmNames: ['du.', 'PM', 'P'],
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['hu']);
