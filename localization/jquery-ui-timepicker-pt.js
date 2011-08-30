@@ -11,6 +11,7 @@
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'hh:mm',
+		dateFormat: 'dd/mm/yy',
 		ampm: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['pt']);
