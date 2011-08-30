@@ -1,4 +1,4 @@
-/* Spanish translation for the jQuery Timepicker Addon */
+/* Portuguese translation for the jQuery Timepicker Addon */
 /* Written by Luan Almeida */
 (function($) {
 	$.timepicker.regional['pt'] = {
