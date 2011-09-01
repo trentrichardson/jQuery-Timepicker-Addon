@@ -411,7 +411,8 @@ $.extend(Timepicker.prototype, {
 						.text(typeof val == "object" ? val.label : val);
 				})
 			);
-			this.timezone_select.val((typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") ? this.timezone : o.timezone);
+			var tzDefault = (typeof o.timezone != "undefined" && o.timezone != null && o.timezone != "") ? o.timezone : this.timezone;
+			this.timezone_select.val(tzDefault);
 			this.timezone_select.change(function() {
 				tp_inst._onTimeChange();
 			});
