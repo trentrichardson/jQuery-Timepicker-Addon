@@ -778,6 +778,12 @@ $.fn.extend({
 	}
 });
 
+
+//########################################################################
+// Add closeOnSelect option to the defaults.
+//########################################################################
+$.datepicker._defaults.closeOnSelect = true;
+
 //########################################################################
 // the bad hack :/ override datepicker so it doesnt close on select
 // inspired: http://stackoverflow.com/questions/1252512/jquery-datepicker-prevent-closing-picker-when-clicking-a-date/1762378#1762378
@@ -796,7 +802,31 @@ $.datepicker._selectDate = function (id, dateStr) {
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
 	}
-	else this._base_selectDate(id, dateStr);
+	//else this._base_selectDate(id, dateStr);
+    else {
+        var target = $(id);
+        var inst = this._getInst(target[0]);
+        dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
+        if (inst.input)
+            inst.input.val(dateStr);
+        this._updateAlternate(inst);
+        var onSelect = this._get(inst, 'onSelect');
+        if (onSelect)
+            onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);  // trigger custom callback
+        else if (inst.input)
+            inst.input.trigger('change'); // fire the change event
+        var closeOnSelect = this._get(inst, 'closeOnSelect');
+        if (inst.inline || !closeOnSelect)
+            this._updateDatepicker(inst);
+        else {
+            this._hideDatepicker();
+            this._lastInput = inst.input[0];
+            if (typeof(inst.input[0]) != 'object')
+                inst.input.focus(); // restore focus
+            this._lastInput = null;
+        }
+
+    }
 };
 
 //#############################################################################################
