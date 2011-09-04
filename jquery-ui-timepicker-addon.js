@@ -838,9 +838,13 @@ $.datepicker._adjustDate = function(id, offset, period) {
     this._adjustInstDate(inst, offset +
         (period == 'M' ? this._get(inst, 'showCurrentAtPos') : 0), // undo positioning
         period);
-    this._updateDatepicker(inst);
+
     this._selectDate(id, this._formatDate(inst,
         inst.selectedDay, inst.drawMonth, inst.drawYear));
+
+    $.datepicker._setDateFromField(inst);
+    $.datepicker._updateAlternate(inst);
+    $.datepicker._updateDatepicker(inst);
 };
 
 //#############################################################################################
