@@ -829,6 +829,20 @@ $.datepicker._selectDate = function (id, dateStr) {
     }
 };
 
+$.datepicker._adjustDate = function(id, offset, period) {
+    var target = $(id);
+    var inst = this._getInst(target[0]);
+    if (this._isDisabledDatepicker(target[0])) {
+        return;
+    }
+    this._adjustInstDate(inst, offset +
+        (period == 'M' ? this._get(inst, 'showCurrentAtPos') : 0), // undo positioning
+        period);
+    this._updateDatepicker(inst);
+    this._selectDate(id, this._formatDate(inst,
+        inst.selectedDay, inst.drawMonth, inst.drawYear));
+};
+
 //#############################################################################################
 // second bad hack :/ override datepicker so it triggers an event when changing the input field
 // and does not redraw the datepicker on every selectDate event
