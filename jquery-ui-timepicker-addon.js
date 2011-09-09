@@ -411,7 +411,8 @@ $.extend(Timepicker.prototype, {
 						.text(typeof val == "object" ? val.label : val);
 				})
 			);
-			this.timezone_select.val((typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") ? this.timezone : o.timezone);
+			var tzDefault = (typeof o.timezone != "undefined" && o.timezone != null && o.timezone != "") ? o.timezone : this.timezone;
+			this.timezone_select.val(tzDefault);
 			this.timezone_select.change(function() {
 				tp_inst._onTimeChange();
 			});
@@ -777,6 +778,12 @@ $.fn.extend({
 	}
 });
 
+
+//########################################################################
+// Add closeOnSelect option to the defaults.
+//########################################################################
+$.datepicker._defaults.closeOnSelect = true;
+
 //########################################################################
 // the bad hack :/ override datepicker so it doesnt close on select
 // inspired: http://stackoverflow.com/questions/1252512/jquery-datepicker-prevent-closing-picker-when-clicking-a-date/1762378#1762378
@@ -795,7 +802,49 @@ $.datepicker._selectDate = function (id, dateStr) {
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
 	}
-	else this._base_selectDate(id, dateStr);
+	//else this._base_selectDate(id, dateStr);
+    else {
+        var target = $(id);
+        var inst = this._getInst(target[0]);
+        dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
+        if (inst.input)
+            inst.input.val(dateStr);
+        this._updateAlternate(inst);
+        var onSelect = this._get(inst, 'onSelect');
+        if (onSelect)
+            onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);  // trigger custom callback
+        else if (inst.input)
+            inst.input.trigger('change'); // fire the change event
+        var closeOnSelect = this._get(inst, 'closeOnSelect');
+        if (inst.inline || !closeOnSelect)
+            this._updateDatepicker(inst);
+        else {
+            this._hideDatepicker();
+            this._lastInput = inst.input[0];
+            if (typeof(inst.input[0]) != 'object')
+                inst.input.focus(); // restore focus
+            this._lastInput = null;
+        }
+
+    }
+};
+
+$.datepicker._adjustDate = function(id, offset, period) {
+    var target = $(id);
+    var inst = this._getInst(target[0]);
+    if (this._isDisabledDatepicker(target[0])) {
+        return;
+    }
+    this._adjustInstDate(inst, offset +
+        (period == 'M' ? this._get(inst, 'showCurrentAtPos') : 0), // undo positioning
+        period);
+
+    this._selectDate(id, this._formatDate(inst,
+        inst.selectedDay, inst.drawMonth, inst.drawYear));
+
+    $.datepicker._setDateFromField(inst);
+    $.datepicker._updateAlternate(inst);
+    $.datepicker._updateDatepicker(inst);
 };
 
 //#############################################################################################
