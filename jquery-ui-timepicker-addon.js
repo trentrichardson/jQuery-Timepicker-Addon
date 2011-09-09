@@ -1159,6 +1159,28 @@ $.datepicker._setDateDatepicker = function(target, date) {
 };
 
 //#######################################################################################
+//override _updateAlternate() to avoid date strings on altFields at initalization if
+//using datepicker and timepicker as standalone on one page
+//#######################################################################################
+$.datepicker._updateAlternate = function(inst) {
+    var altField = this._get(inst, 'altField');
+    if (altField) { // update alternate field too
+        var altFormat = this._get(inst, 'altFormat') || this._get(inst, 'dateFormat');
+        var date = this._getDate(inst);
+        var timeOnly = this._get(inst, 'altFieldTimeOnly');
+        if(timeOnly){
+            tp_inst = this._get(inst, 'timepicker');            
+            tp_inst._formatTime();
+            var dateStr = tp_inst.formattedTime;
+            $(altField).each(function() { $(this).val(dateStr); });
+        } else {
+            var dateStr = this.formatDate(altFormat, date, this._getFormatConfig(inst));
+            $(altField).each(function() { $(this).val(dateStr); });
+        }
+    }
+}
+
+//#######################################################################################
 // override getDate() to allow getting time too within Date object
 //#######################################################################################
 $.datepicker._base_getDateDatepicker = $.datepicker._getDateDatepicker;
