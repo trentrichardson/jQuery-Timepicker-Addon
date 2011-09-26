@@ -340,10 +340,10 @@ $.extend(Timepicker.prototype, {
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
-			hourMax = (o.hourMax - (o.hourMax % o.stepHour)).toFixed(0),
-			minMax  = (o.minuteMax - (o.minuteMax % o.stepMinute)).toFixed(0),
-			secMax  = (o.secondMax - (o.secondMax % o.stepSecond)).toFixed(0),
-			millisecMax  = (o.millisecMax - (o.millisecMax % o.stepMillisec)).toFixed(0),
+			hourMax = (o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)).toFixed(0),
+            minMax  = (o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)).toFixed(0),
+            secMax  = (o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)).toFixed(0),
+			millisecMax  = (o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)).toFixed(0),
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
@@ -362,7 +362,7 @@ $.extend(Timepicker.prototype, {
 				secondGridSize = 0,
 				millisecGridSize = 0,
 				size;
- 			
+
  			// Hours
 			if (o.showHour && o.hourGrid > 0) {
 				html += '<dd class="ui_tpicker_hour">' +
@@ -388,7 +388,7 @@ $.extend(Timepicker.prototype, {
 
 			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
 					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>';
-			
+
 			// Minutes
 			if (o.showMinute && o.minuteGrid > 0) {
 				html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + o.minuteGrid + '">' +
@@ -425,7 +425,7 @@ $.extend(Timepicker.prototype, {
 						'</dd>';
 			} else html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_id + '"'	+
 							((o.showSecond) ? '' : noDisplay) + '></dd>';
-			
+
 			// Milliseconds
 			html += '<dt class="ui_tpicker_millisec_label" id="ui_tpicker_millisec_label_' + dp_id + '"' +
 					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>';
@@ -445,8 +445,8 @@ $.extend(Timepicker.prototype, {
 						'</dd>';
 			} else html += '<dd class="ui_tpicker_millisec" id="ui_tpicker_millisec_' + dp_id + '"'	+
 							((o.showMillisec) ? '' : noDisplay) + '></dd>';
-			
-			// Timezone			
+
+			// Timezone
 			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
 					((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
 			html += '<dd class="ui_tpicker_timezone" id="ui_tpicker_timezone_' + dp_id + '"'	+
@@ -502,7 +502,7 @@ $.extend(Timepicker.prototype, {
 					tp_inst._onTimeChange();
 				}
 			});
-			
+
 			this.millisec_slider = $tp.find('#ui_tpicker_millisec_'+ dp_id).slider({
 				orientation: "horizontal",
 				value: this.millisec,
@@ -514,7 +514,7 @@ $.extend(Timepicker.prototype, {
 					tp_inst._onTimeChange();
 				}
 			});
-			
+
 			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select");
 			$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
@@ -598,7 +598,7 @@ $.extend(Timepicker.prototype, {
 					});
 				});
 			}
-			
+
 			if (o.showMillisec && o.millisecGrid > 0) {
 				$tp.find(".ui_tpicker_millisec table").css({
 					width: size + "%",
@@ -642,7 +642,7 @@ $.extend(Timepicker.prototype, {
 	},
 
 	//########################################################################
-	// This function tries to limit the ability to go outside the 
+	// This function tries to limit the ability to go outside the
 	// min/max date range
 	//########################################################################
 	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
@@ -674,7 +674,7 @@ $.extend(Timepicker.prototype, {
 						this.second = this._defaults.secondMin;
 						this._defaults.millisecMin = minDateTime.getMilliseconds();
 					} else {
-						if(this.millisec < this._defaults.millisecMin) 
+						if(this.millisec < this._defaults.millisecMin)
 							this.millisec = this._defaults.millisecMin;
 						this._defaults.millisecMin = this.millisecMinOriginal;
 					}
@@ -694,7 +694,7 @@ $.extend(Timepicker.prototype, {
 		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && $.datepicker._get(dp_inst, 'maxDateTime') !== undefined && dp_date){
 			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
-	
+
 			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
 				this.hourMaxOriginal = o.hourMax;
 				this.minuteMaxOriginal = o.minuteMax;
@@ -731,10 +731,10 @@ $.extend(Timepicker.prototype, {
 		}
 
 		if(adjustSliders !== undefined && adjustSliders === true){
-			var hourMax = (this._defaults.hourMax - (this._defaults.hourMax % this._defaults.stepHour)).toFixed(0),
-				minMax  = (this._defaults.minuteMax - (this._defaults.minuteMax % this._defaults.stepMinute)).toFixed(0),
-				secMax  = (this._defaults.secondMax - (this._defaults.secondMax % this._defaults.stepSecond)).toFixed(0),
-				millisecMax  = (this._defaults.millisecMax - (this._defaults.millisecMax % this._defaults.stepMillisec)).toFixed(0);
+			var hourMax = (this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)).toFixed(0),
+                minMax  = (this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)).toFixed(0),
+                secMax  = (this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)).toFixed(0),
+				millisecMax  = (this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)).toFixed(0);
 
 			if(this.hour_slider)
 				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
