@@ -3,12 +3,12 @@
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.9.6
 * Last Modified: 07/20/2011
-* 
+*
 * Copyright 2011 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
 * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
 * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
-* 
+*
 * HERES THE CSS:
 * .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
 * .ui-timepicker-div dl{ text-align: left; }
@@ -121,7 +121,7 @@ $.extend(Timepicker.prototype, {
 	_newInst: function($input, o) {
 		var tp_inst = new Timepicker(),
 			inlineSettings = {};
-			
+
 		for (var attrName in this._defaults) {
 			var attrValue = $input.attr('time:' + attrName);
 			if (attrValue) {
@@ -162,7 +162,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-					
+
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
@@ -172,7 +172,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date)
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-		
+
 		return tp_inst;
 	},
 
@@ -181,7 +181,7 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_addTimePicker: function(dp_inst) {
 		var currDT = (this.$altInput && this._defaults.altFieldTimeOnly) ?
-				this.$input.val() + ' ' + this.$altInput.val() : 
+				this.$input.val() + ' ' + this.$altInput.val() :
 				this.$input.val();
 
 		this.timeDefined = this._parseTime(currDT);
@@ -213,7 +213,7 @@ $.extend(Timepicker.prototype, {
 			var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g");
 			regstr = '.{' + dp_dateFormat.length + ',}' + this._defaults.separator.replace(specials, "\\$&") + regstr;
 		}
-		
+
 		treg = timeString.match(new RegExp(regstr, 'i'));
 
 		if (treg) {
@@ -223,9 +223,9 @@ $.extend(Timepicker.prototype, {
 					(treg[order.t].charAt(0).toUpperCase() == 'A') ? 'AM' : 'PM').toUpperCase();
 
 			if (order.h !== -1) {
-				if (this.ampm == 'AM' && treg[order.h] == '12') 
+				if (this.ampm == 'AM' && treg[order.h] == '12')
 					this.hour = 0; // 12am = 0 hour
-				else if (this.ampm == 'PM' && treg[order.h] != '12') 
+				else if (this.ampm == 'PM' && treg[order.h] != '12')
 					this.hour = (parseFloat(treg[order.h]) + 12).toFixed(0); // 12pm = 12 hour, any other pm = hour + 12
 				else this.hour = Number(treg[order.h]);
 			}
@@ -233,7 +233,7 @@ $.extend(Timepicker.prototype, {
 			if (order.m !== -1) this.minute = Number(treg[order.m]);
 			if (order.s !== -1) this.second = Number(treg[order.s]);
 			if (order.z !== -1) this.timezone = treg[order.z];
-			
+
 			return true;
 
 		}
@@ -285,7 +285,7 @@ $.extend(Timepicker.prototype, {
 				minuteGridSize = 0,
 				secondGridSize = 0,
 				size;
- 
+
 			if (o.showHour && o.hourGrid > 0) {
 				html += '<dd class="ui_tpicker_hour">' +
 						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
@@ -345,7 +345,7 @@ $.extend(Timepicker.prototype, {
 						'</dd>';
 			} else html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_id + '"'	+
 							((o.showSecond) ? '' : noDisplay) + '></dd>';
-							
+
 			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
 					((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
 			html += '<dd class="ui_tpicker_timezone" id="ui_tpicker_timezone_' + dp_id + '"'	+
@@ -401,8 +401,8 @@ $.extend(Timepicker.prototype, {
 					tp_inst._onTimeChange();
 				}
 			});
-			
-			
+
+
 			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select");
 			$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
@@ -510,7 +510,7 @@ $.extend(Timepicker.prototype, {
 	},
 
 	//########################################################################
-	// This function tries to limit the ability to go outside the 
+	// This function tries to limit the ability to go outside the
 	// min/max date range
 	//########################################################################
 	_limitMinMaxDateTime: function(dp_inst, adjustSliders){
@@ -555,7 +555,7 @@ $.extend(Timepicker.prototype, {
 		if($.datepicker._get(dp_inst, 'maxDateTime') !== null && dp_date){
 			var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 				maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
-	
+
 			if(this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null){
 				this.hourMaxOriginal = o.hourMax;
 				this.minuteMaxOriginal = o.minuteMax;
@@ -600,7 +600,7 @@ $.extend(Timepicker.prototype, {
 
 	},
 
-	
+
 	//########################################################################
 	// when a slider moves, set the internal time...
 	// on time change is also called when the time is updated in the text field
@@ -625,28 +625,28 @@ $.extend(Timepicker.prototype, {
 		// If the update was done in the input field, the input field should not be updated.
 		// If the update was done using the sliders, update the input field.
 		var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || (this.ampm.length > 0 && this.ampm != ampm) || timezone != this.timezone);
-		
+
 		if (hasChanged) {
 
 			if (hour !== false)this.hour = hour;
 			if (minute !== false) this.minute = minute;
 			if (second !== false) this.second = second;
 			if (timezone !== false) this.timezone = timezone;
-			
+
 			if (!this.inst) this.inst = $.datepicker._getInst(this.$input[0]);
-			
+
 			this._limitMinMaxDateTime(this.inst, true);
 		}
 		if (this._defaults.ampm) this.ampm = ampm;
-		
+
 		this._formatTime();
 		if (this.$timeObj) this.$timeObj.text(this.formattedTime + this._defaults.timeSuffix);
 		this.timeDefined = true;
 		if (hasChanged) this._updateDateTime();
 	},
-    
+
 	//########################################################################
-	// call custom onSelect. 
+	// call custom onSelect.
 	// bind to sliders slidestop, and grid click.
 	//########################################################################
 	_onSelectHandler: function() {
@@ -731,7 +731,7 @@ $.extend(Timepicker.prototype, {
 		} else {
 			this.$input.val(formattedDateTime);
 		}
-		
+
 		this.$input.trigger("change");
 	}
 
@@ -761,9 +761,9 @@ $.fn.extend({
 		tmp_args = arguments;
 
 		if (typeof(o) == 'string'){
-			if(o == 'getDate') 
+			if(o == 'getDate')
 				return $.fn.datepicker.apply($(this[0]), tmp_args);
-			else 
+			else
 				return this.each(function() {
 					var $t = $(this);
 					$t.datepicker.apply($t, tmp_args);
@@ -815,9 +815,9 @@ $.datepicker._updateDatepicker = function(inst) {
 	}
 
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
-				
+
 		this._base_updateDatepicker(inst);
-		
+
 		// Reload the time control when changing something in the input text field.
 		var tp_inst = this._get(inst, 'timepicker');
 		if(tp_inst) tp_inst._addTimePicker(inst);
@@ -853,7 +853,7 @@ $.datepicker._doKeyPress = function(event) {
 			return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 		}
 	}
-	
+
 	return $.datepicker._base_doKeyPress(event);
 };
 
@@ -1027,7 +1027,7 @@ $.datepicker._optionDatepicker = function(target, name, value) {
 	if (tp_inst) {
 		//Set minimum and maximum date values if we have timepicker
 		if(name==='minDate') {
-        	if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
+			if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date)
 				tp_inst._defaults.minDateTime = new Date(value);
 			if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date)
 				tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
