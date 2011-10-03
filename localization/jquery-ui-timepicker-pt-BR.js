@@ -8,7 +8,7 @@
 		minuteText: 'Minutos',
 		secondText: 'Segundos',
 		millisecText: 'Milissegundos',
-		timezoneText: 'Fuso hor&aacute;rio',
+		timezoneText: 'Fuso horário',
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'hh:mm',
