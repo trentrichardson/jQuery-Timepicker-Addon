@@ -1204,7 +1204,7 @@ $.datepicker._formatDate = function(inst, day, month, year){
 	{
 		if(day)
 			var b = this._base_formatDate(inst, day, month, year);
-		tp_inst._updateDateTime();	
+		tp_inst._updateDateTime(inst);	
 		return tp_inst.$input.val();
 	}
 	return this._base_formatDate(inst);
