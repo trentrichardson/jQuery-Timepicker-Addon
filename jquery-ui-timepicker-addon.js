@@ -362,13 +362,17 @@ $.extend(Timepicker.prototype, {
 				minuteGridSize = 0,
 				secondGridSize = 0,
 				millisecGridSize = 0,
+				sliderChange = function(event, ui) {
+						$(this).slider( "option", "value", ui.value);
+						tp_inst._onTimeChange();
+					},
 				size;
 
  			// Hours
+			html += '<dd class="ui_tpicker_hour"><div id="ui_tpicker_hour_' + dp_id + '"' +
+						((o.showHour) ? '' : noDisplay) + '></div>';
 			if (o.showHour && o.hourGrid > 0) {
-				html += '<dd class="ui_tpicker_hour">' +
-						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+				html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
 				for (var h = o.hourMin; h <= hourMax; h += parseInt(o.hourGrid,10)) {
 					hourGridSize++;
@@ -382,70 +386,63 @@ $.extend(Timepicker.prototype, {
 					html += '<td>' + tmph + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_hour" id="ui_tpicker_hour_' + dp_id + '"' +
-							((o.showHour) ? '' : noDisplay) + '></dd>';
-
-			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
-					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Minutes
+			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
+					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>'+
+					'<dd class="ui_tpicker_minute"><div id="ui_tpicker_minute_' + dp_id + '"' +
+							((o.showMinute) ? '' : noDisplay) + '></div>';
+
 			if (o.showMinute && o.minuteGrid > 0) {
-				html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + o.minuteGrid + '">' +
-						'<div id="ui_tpicker_minute_' + dp_id + '"' +
-						((o.showMinute) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+				html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
 				for (var m = o.minuteMin; m <= minMax; m += parseInt(o.minuteGrid,10)) {
 					minuteGridSize++;
 					html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_id + '"' +
-							((o.showMinute) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Seconds
 			html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_id + '"' +
-					((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>';
+					((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>'+
+					'<dd class="ui_tpicker_second"><div id="ui_tpicker_second_' + dp_id + '"'+
+							((o.showSecond) ? '' : noDisplay) + '></div>';
 
 			if (o.showSecond && o.secondGrid > 0) {
-				html += '<dd class="ui_tpicker_second ui_tpicker_second_' + o.secondGrid + '">' +
-						'<div id="ui_tpicker_second_' + dp_id + '"' +
-						((o.showSecond) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+				html += '<div style="padding-left: 1px"><table><tr>';
 
 				for (var s = o.secondMin; s <= secMax; s += parseInt(o.secondGrid,10)) {
 					secondGridSize++;
 					html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_id + '"'	+
-							((o.showSecond) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Milliseconds
 			html += '<dt class="ui_tpicker_millisec_label" id="ui_tpicker_millisec_label_' + dp_id + '"' +
-					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>';
+					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>'+
+					'<dd class="ui_tpicker_millisec"><div id="ui_tpicker_millisec_' + dp_id + '"'+
+							((o.showMillisec) ? '' : noDisplay) + '></div>';
 
 			if (o.showMillisec && o.millisecGrid > 0) {
-				html += '<dd class="ui_tpicker_millisec ui_tpicker_millisec_' + o.millisecGrid + '">' +
-						'<div id="ui_tpicker_millisec_' + dp_id + '"' +
-						((o.showMillisec) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+				html += '<div style="padding-left: 1px"><table><tr>';
 
 				for (var l = o.millisecMin; l <= millisecMax; l += parseInt(o.millisecGrid,10)) {
 					millisecGridSize++;
 					html += '<td>' + ((l < 10) ? '0' : '') + s + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_millisec" id="ui_tpicker_millisec_' + dp_id + '"'	+
-							((o.showMillisec) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Timezone
 			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
@@ -474,9 +471,13 @@ $.extend(Timepicker.prototype, {
 				slide: function(event, ui) {
 					tp_inst.hour_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
+				},
+				change: function(event, ui) {
+					tp_inst._onTimeChange();
 				}
 			});
 
+			
 			// Updated by Peter Medeiros:
 			// - Pass in Event and UI instance into slide function
 			this.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_id).slider({
@@ -486,8 +487,10 @@ $.extend(Timepicker.prototype, {
 				max: minMax,
 				step: o.stepMinute,
 				slide: function(event, ui) {
-					// update the global minute slider instance value with the current slider value
 					tp_inst.minute_slider.slider( "option", "value", ui.value);
+					tp_inst._onTimeChange();
+				},
+				change: function(event, ui) {
 					tp_inst._onTimeChange();
 				}
 			});
@@ -501,6 +504,9 @@ $.extend(Timepicker.prototype, {
 				slide: function(event, ui) {
 					tp_inst.second_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
+				},
+				change: function(event, ui) {
+					tp_inst._onTimeChange();
 				}
 			});
 
@@ -512,6 +518,9 @@ $.extend(Timepicker.prototype, {
 				step: o.stepMillisec,
 				slide: function(event, ui) {
 					tp_inst.millisec_slider.slider( "option", "value", ui.value);
+					tp_inst._onTimeChange();
+				},
+				change: function(event, ui) {
 					tp_inst._onTimeChange();
 				}
 			});
