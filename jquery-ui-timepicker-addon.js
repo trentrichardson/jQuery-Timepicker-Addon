@@ -54,10 +54,10 @@ function Timepicker() {
 		showMillisec: false,
 		showTimezone: false,
 		showTime: true,
-		stepHour: 0.05,
-		stepMinute: 0.05,
-		stepSecond: 0.05,
-		stepMillisec: 0.5,
+		stepHour: 1,
+		stepMinute: 1,
+		stepSecond: 1,
+		stepMillisec: 1,
 		hour: 0,
 		minute: 0,
 		second: 0,
@@ -343,10 +343,10 @@ $.extend(Timepicker.prototype, {
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
-			hourMax = (o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)).toFixed(0),
-            minMax  = (o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)).toFixed(0),
-            secMax  = (o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)).toFixed(0),
-			millisecMax  = (o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)).toFixed(0),
+			hourMax = parseInt((o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)) ,10),
+			minMax  = parseInt((o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)) ,10),
+			secMax  = parseInt((o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)) ,10),
+			millisecMax  = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)) ,10),
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
@@ -748,10 +748,10 @@ $.extend(Timepicker.prototype, {
 		}
 
 		if(adjustSliders !== undefined && adjustSliders === true){
-			var hourMax = (this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)).toFixed(0),
-                minMax  = (this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)).toFixed(0),
-                secMax  = (this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)).toFixed(0),
-				millisecMax  = (this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)).toFixed(0);
+			var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)) ,10),
+                minMax  = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)) ,10),
+                secMax  = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)) ,10),
+				millisecMax  = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)) ,10);
 
 			if(this.hour_slider)
 				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
