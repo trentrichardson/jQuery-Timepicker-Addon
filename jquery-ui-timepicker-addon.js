@@ -2,7 +2,7 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 0.9.8-dev
-* Last Modified: 10/02/2011
+* Last Modified: 12/02/2011
 * 
 * Copyright 2011 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -12,8 +12,8 @@
 * HERES THE CSS:
 * .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 * .ui-timepicker-div dl { text-align: left; }
-* .ui-timepicker-div dl dt { height: 25px; }
-* .ui-timepicker-div dl dd { margin: -25px 10px 10px 65px; }
+* .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+* .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 * .ui-timepicker-div td { font-size: 90%; }
 * .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 */
@@ -83,7 +83,9 @@ function Timepicker() {
 		altFieldTimeOnly: true,
 		showTimepicker: true,
 		timezoneIso8609: false,
-		timezoneList: null
+		timezoneList: null,
+		addSliderAccess: false,
+		sliderAccessArgs: null
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -362,10 +364,6 @@ $.extend(Timepicker.prototype, {
 				minuteGridSize = 0,
 				secondGridSize = 0,
 				millisecGridSize = 0,
-				sliderChange = function(event, ui) {
-						$(this).slider( "option", "value", ui.value);
-						tp_inst._onTimeChange();
-					},
 				size;
 
  			// Hours
@@ -471,9 +469,6 @@ $.extend(Timepicker.prototype, {
 				slide: function(event, ui) {
 					tp_inst.hour_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
-				},
-				change: function(event, ui) {
-					tp_inst._onTimeChange();
 				}
 			});
 
@@ -489,9 +484,6 @@ $.extend(Timepicker.prototype, {
 				slide: function(event, ui) {
 					tp_inst.minute_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
-				},
-				change: function(event, ui) {
-					tp_inst._onTimeChange();
 				}
 			});
 
@@ -504,9 +496,6 @@ $.extend(Timepicker.prototype, {
 				slide: function(event, ui) {
 					tp_inst.second_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
-				},
-				change: function(event, ui) {
-					tp_inst._onTimeChange();
 				}
 			});
 
@@ -518,9 +507,6 @@ $.extend(Timepicker.prototype, {
 				step: o.stepMillisec,
 				slide: function(event, ui) {
 					tp_inst.millisec_slider.slider( "option", "value", ui.value);
-					tp_inst._onTimeChange();
-				},
-				change: function(event, ui) {
 					tp_inst._onTimeChange();
 				}
 			});
@@ -648,6 +634,14 @@ $.extend(Timepicker.prototype, {
 			this.minute_slider.bind('slidestop',onSelectDelegate);
 			this.second_slider.bind('slidestop',onSelectDelegate);
 			this.millisec_slider.bind('slidestop',onSelectDelegate);
+			
+			// slideAccess integration: http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/
+			if (this._defaults.addSliderAccess){
+				var sliderAccessArgs = this._defaults.sliderAccessArgs;
+				setTimeout(function(){ // fix for inline mode
+					$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
+				},0);
+			}
 		}
 	},
 
