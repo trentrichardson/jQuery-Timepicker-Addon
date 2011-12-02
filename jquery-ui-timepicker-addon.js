@@ -643,18 +643,21 @@ $.extend(Timepicker.prototype, {
 
 					// fix any grids since sliders are shorter
 					var sliderAccessWidth = $tp.find('.ui-slider-access:eq(0)').outerWidth(true);
-					$tp.find('table:visible').each(function(){
-						var $g = $(this),
-							oldWidth = $g.outerWidth(),
-							oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
-							newWidth = oldWidth - sliderAccessWidth,
-							newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
+					if(sliderAccessWidth){
+						$tp.find('table:visible').each(function(){
+							var $g = $(this),
+								oldWidth = $g.outerWidth(),
+								oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
+								newWidth = oldWidth - sliderAccessWidth,
+								newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
 						
-						$g.css({ width: newWidth, marginLeft: newMarginLeft });
-					});
+							$g.css({ width: newWidth, marginLeft: newMarginLeft });
+						});
+					}
 				},0);
 			}
 			// end slideAccess integration
+			
 		}
 	},
 
