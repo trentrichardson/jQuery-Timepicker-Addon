@@ -435,7 +435,7 @@ $.extend(Timepicker.prototype, {
 
 				for (var l = o.millisecMin; l <= millisecMax; l += parseInt(o.millisecGrid,10)) {
 					millisecGridSize++;
-					html += '<td>' + ((l < 10) ? '0' : '') + s + '</td>';
+					html += '<td>' + ((l < 10) ? '0' : '') + l + '</td>';
 				}
 
 				html += '</tr></table></div>';
@@ -640,8 +640,21 @@ $.extend(Timepicker.prototype, {
 				var sliderAccessArgs = this._defaults.sliderAccessArgs;
 				setTimeout(function(){ // fix for inline mode
 					$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
+
+					// fix any grids since sliders are shorter
+					var sliderAccessWidth = $tp.find('.ui-slider-access:eq(0)').outerWidth(true);
+					$tp.find('table:visible').each(function(){
+						var $g = $(this),
+							oldWidth = $g.outerWidth(),
+							oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
+							newWidth = oldWidth - sliderAccessWidth,
+							newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
+						
+						$g.css({ width: newWidth, marginLeft: newMarginLeft });
+					});
 				},0);
 			}
+			// end slideAccess integration
 		}
 	},
 
