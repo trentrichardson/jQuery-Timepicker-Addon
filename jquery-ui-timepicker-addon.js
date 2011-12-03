@@ -1,8 +1,8 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 0.9.7
-* Last Modified: 10/02/2011
+* Version 0.9.8
+* Last Modified: 12/03/2011
 * 
 * Copyright 2011 Trent Richardson
 * Dual licensed under the MIT and GPL licenses.
@@ -12,15 +12,15 @@
 * HERES THE CSS:
 * .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 * .ui-timepicker-div dl { text-align: left; }
-* .ui-timepicker-div dl dt { height: 25px; }
-* .ui-timepicker-div dl dd { margin: -25px 10px 10px 65px; }
+* .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+* .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 * .ui-timepicker-div td { font-size: 90%; }
 * .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 */
 
 (function($) {
 
-$.extend($.ui, { timepicker: { version: "0.9.7" } });
+$.extend($.ui, { timepicker: { version: "0.9.8" } });
 
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
@@ -54,10 +54,10 @@ function Timepicker() {
 		showMillisec: false,
 		showTimezone: false,
 		showTime: true,
-		stepHour: 0.05,
-		stepMinute: 0.05,
-		stepSecond: 0.05,
-		stepMillisec: 0.5,
+		stepHour: 1,
+		stepMinute: 1,
+		stepSecond: 1,
+		stepMillisec: 1,
 		hour: 0,
 		minute: 0,
 		second: 0,
@@ -83,7 +83,9 @@ function Timepicker() {
 		altFieldTimeOnly: true,
 		showTimepicker: true,
 		timezoneIso8609: false,
-		timezoneList: null
+		timezoneList: null,
+		addSliderAccess: false,
+		sliderAccessArgs: null
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -341,10 +343,10 @@ $.extend(Timepicker.prototype, {
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
 			// - Example: if stepMinute is 15, then minMax is 45.
-			hourMax = (o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)).toFixed(0),
-            minMax  = (o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)).toFixed(0),
-            secMax  = (o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)).toFixed(0),
-			millisecMax  = (o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)).toFixed(0),
+			hourMax = parseInt((o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)) ,10),
+			minMax  = parseInt((o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)) ,10),
+			secMax  = parseInt((o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)) ,10),
+			millisecMax  = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)) ,10),
 			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
 
 		// Prevent displaying twice
@@ -365,10 +367,10 @@ $.extend(Timepicker.prototype, {
 				size;
 
  			// Hours
+			html += '<dd class="ui_tpicker_hour"><div id="ui_tpicker_hour_' + dp_id + '"' +
+						((o.showHour) ? '' : noDisplay) + '></div>';
 			if (o.showHour && o.hourGrid > 0) {
-				html += '<dd class="ui_tpicker_hour">' +
-						'<div id="ui_tpicker_hour_' + dp_id + '"' + ((o.showHour)   ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+				html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
 				for (var h = o.hourMin; h <= hourMax; h += parseInt(o.hourGrid,10)) {
 					hourGridSize++;
@@ -382,70 +384,63 @@ $.extend(Timepicker.prototype, {
 					html += '<td>' + tmph + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_hour" id="ui_tpicker_hour_' + dp_id + '"' +
-							((o.showHour) ? '' : noDisplay) + '></dd>';
-
-			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
-					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Minutes
+			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
+					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>'+
+					'<dd class="ui_tpicker_minute"><div id="ui_tpicker_minute_' + dp_id + '"' +
+							((o.showMinute) ? '' : noDisplay) + '></div>';
+
 			if (o.showMinute && o.minuteGrid > 0) {
-				html += '<dd class="ui_tpicker_minute ui_tpicker_minute_' + o.minuteGrid + '">' +
-						'<div id="ui_tpicker_minute_' + dp_id + '"' +
-						((o.showMinute) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+				html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
 				for (var m = o.minuteMin; m <= minMax; m += parseInt(o.minuteGrid,10)) {
 					minuteGridSize++;
 					html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_minute" id="ui_tpicker_minute_' + dp_id + '"' +
-							((o.showMinute) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Seconds
 			html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_id + '"' +
-					((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>';
+					((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>'+
+					'<dd class="ui_tpicker_second"><div id="ui_tpicker_second_' + dp_id + '"'+
+							((o.showSecond) ? '' : noDisplay) + '></div>';
 
 			if (o.showSecond && o.secondGrid > 0) {
-				html += '<dd class="ui_tpicker_second ui_tpicker_second_' + o.secondGrid + '">' +
-						'<div id="ui_tpicker_second_' + dp_id + '"' +
-						((o.showSecond) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+				html += '<div style="padding-left: 1px"><table><tr>';
 
 				for (var s = o.secondMin; s <= secMax; s += parseInt(o.secondGrid,10)) {
 					secondGridSize++;
 					html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_second" id="ui_tpicker_second_' + dp_id + '"'	+
-							((o.showSecond) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Milliseconds
 			html += '<dt class="ui_tpicker_millisec_label" id="ui_tpicker_millisec_label_' + dp_id + '"' +
-					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>';
+					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>'+
+					'<dd class="ui_tpicker_millisec"><div id="ui_tpicker_millisec_' + dp_id + '"'+
+							((o.showMillisec) ? '' : noDisplay) + '></div>';
 
 			if (o.showMillisec && o.millisecGrid > 0) {
-				html += '<dd class="ui_tpicker_millisec ui_tpicker_millisec_' + o.millisecGrid + '">' +
-						'<div id="ui_tpicker_millisec_' + dp_id + '"' +
-						((o.showMillisec) ? '' : noDisplay) + '></div>' +
-						'<div style="padding-left: 1px"><table><tr>';
+				html += '<div style="padding-left: 1px"><table><tr>';
 
 				for (var l = o.millisecMin; l <= millisecMax; l += parseInt(o.millisecGrid,10)) {
 					millisecGridSize++;
-					html += '<td>' + ((l < 10) ? '0' : '') + s + '</td>';
+					html += '<td>' + ((l < 10) ? '0' : '') + l + '</td>';
 				}
 
-				html += '</tr></table></div>' +
-						'</dd>';
-			} else html += '<dd class="ui_tpicker_millisec" id="ui_tpicker_millisec_' + dp_id + '"'	+
-							((o.showMillisec) ? '' : noDisplay) + '></dd>';
+				html += '</tr></table></div>';
+			}
+			html += '</dd>';
 
 			// Timezone
 			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
@@ -477,6 +472,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
+			
 			// Updated by Peter Medeiros:
 			// - Pass in Event and UI instance into slide function
 			this.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_id).slider({
@@ -486,7 +482,6 @@ $.extend(Timepicker.prototype, {
 				max: minMax,
 				step: o.stepMinute,
 				slide: function(event, ui) {
-					// update the global minute slider instance value with the current slider value
 					tp_inst.minute_slider.slider( "option", "value", ui.value);
 					tp_inst._onTimeChange();
 				}
@@ -639,6 +634,30 @@ $.extend(Timepicker.prototype, {
 			this.minute_slider.bind('slidestop',onSelectDelegate);
 			this.second_slider.bind('slidestop',onSelectDelegate);
 			this.millisec_slider.bind('slidestop',onSelectDelegate);
+			
+			// slideAccess integration: http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/
+			if (this._defaults.addSliderAccess){
+				var sliderAccessArgs = this._defaults.sliderAccessArgs;
+				setTimeout(function(){ // fix for inline mode
+					$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
+
+					// fix any grids since sliders are shorter
+					var sliderAccessWidth = $tp.find('.ui-slider-access:eq(0)').outerWidth(true);
+					if(sliderAccessWidth){
+						$tp.find('table:visible').each(function(){
+							var $g = $(this),
+								oldWidth = $g.outerWidth(),
+								oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
+								newWidth = oldWidth - sliderAccessWidth,
+								newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
+						
+							$g.css({ width: newWidth, marginLeft: newMarginLeft });
+						});
+					}
+				},0);
+			}
+			// end slideAccess integration
+			
 		}
 	},
 
@@ -732,10 +751,10 @@ $.extend(Timepicker.prototype, {
 		}
 
 		if(adjustSliders !== undefined && adjustSliders === true){
-			var hourMax = (this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)).toFixed(0),
-                minMax  = (this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)).toFixed(0),
-                secMax  = (this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)).toFixed(0),
-				millisecMax  = (this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)).toFixed(0);
+			var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)) ,10),
+                minMax  = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)) ,10),
+                secMax  = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)) ,10),
+				millisecMax  = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)) ,10);
 
 			if(this.hour_slider)
 				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
@@ -859,8 +878,8 @@ $.extend(Timepicker.prototype, {
 	// update our input with the new date time..
 	//########################################################################
 	_updateDateTime: function(dp_inst) {
-		dp_inst = this.inst || dp_inst,
-			dt = new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay),
+		dp_inst = this.inst || dp_inst;
+		var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
 			dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 			formatCfg = $.datepicker._getFormatConfig(dp_inst),
 			timeAvailable = dt !== null && this.timeDefined;
@@ -1204,7 +1223,7 @@ $.datepicker._formatDate = function(inst, day, month, year){
 	{
 		if(day)
 			var b = this._base_formatDate(inst, day, month, year);
-		tp_inst._updateDateTime();	
+		tp_inst._updateDateTime(inst);	
 		return tp_inst.$input.val();
 	}
 	return this._base_formatDate(inst);
@@ -1270,7 +1289,7 @@ function extendRemove(target, props) {
 }
 
 $.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "0.9.7";
+$.timepicker.version = "0.9.8";
 
 })(jQuery);
 
