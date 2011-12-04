@@ -1276,7 +1276,9 @@ $.datepicker._optionDatepicker = function(target, name, value) {
 		else if (onselect)
 			tp_inst._defaults.onSelect=onselect;
 	}
-	this._base_optionDatepicker(target, name, value);
+	if (value === undefined)
+		return this._base_optionDatepicker(target, name);
+	return this._base_optionDatepicker(target, name, value);
 };
 
 //#######################################################################################
