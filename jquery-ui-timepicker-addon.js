@@ -639,20 +639,22 @@ $.extend(Timepicker.prototype, {
 			if (this._defaults.addSliderAccess){
 				var sliderAccessArgs = this._defaults.sliderAccessArgs;
 				setTimeout(function(){ // fix for inline mode
-					$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
+					if($tp.find('.ui-slider-access').length == 0){
+						$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
 
-					// fix any grids since sliders are shorter
-					var sliderAccessWidth = $tp.find('.ui-slider-access:eq(0)').outerWidth(true);
-					if(sliderAccessWidth){
-						$tp.find('table:visible').each(function(){
-							var $g = $(this),
-								oldWidth = $g.outerWidth(),
-								oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
-								newWidth = oldWidth - sliderAccessWidth,
-								newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
+						// fix any grids since sliders are shorter
+						var sliderAccessWidth = $tp.find('.ui-slider-access:eq(0)').outerWidth(true);
+						if(sliderAccessWidth){
+							$tp.find('table:visible').each(function(){
+								var $g = $(this),
+									oldWidth = $g.outerWidth(),
+									oldMarginLeft = $g.css('marginLeft').toString().replace('%',''),
+									newWidth = oldWidth - sliderAccessWidth,
+									newMarginLeft = ((oldMarginLeft * newWidth)/oldWidth) + '%';
 						
-							$g.css({ width: newWidth, marginLeft: newMarginLeft });
-						});
+								$g.css({ width: newWidth, marginLeft: newMarginLeft });
+							});
+						}
 					}
 				},0);
 			}
