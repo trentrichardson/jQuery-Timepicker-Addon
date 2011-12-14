@@ -1069,7 +1069,7 @@ $.datepicker._gotoToday = function(id) {
 	this._base_gotoToday(id);
 	var now = new Date();
 	var tp_inst = this._get(inst, 'timepicker');
-	if (tp_inst._defaults.showTimezone && tp_inst.timezone_select) {
+	if (tp_inst && tp_inst._defaults.showTimezone && tp_inst.timezone_select) {
 		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
 		var tzsign = tzoffset > 0 ? '-' : '+';
 		tzoffset = Math.abs(tzoffset);
