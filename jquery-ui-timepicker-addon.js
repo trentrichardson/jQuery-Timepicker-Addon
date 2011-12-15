@@ -1207,10 +1207,15 @@ $.datepicker.parseDate = function(format, value, settings) {
 	try {
 		date = this._base_parseDate(format, value, settings);
 	} catch (err) {
-		// Hack!  The error message ends with a colon, a space, and
-		// the "extra" characters.  We rely on that instead of
-		// attempting to perfectly reproduce the parsing algorithm.
-		date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+		if (err.indexOf(":") >= 0) {
+			// Hack!  The error message ends with a colon, a space, and
+			// the "extra" characters.  We rely on that instead of
+			// attempting to perfectly reproduce the parsing algorithm.
+			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+		} else {
+			// The underlying error was not related to the time
+			throw err;
+		}
 	}
 	return date;
 };
