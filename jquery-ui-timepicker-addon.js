@@ -147,7 +147,7 @@ $.extend(Timepicker.prototype, {
 		tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
 			beforeShow: function(input, dp_inst) {
 				if ($.isFunction(o.beforeShow))
-					o.beforeShow(input, dp_inst, tp_inst);
+					return o.beforeShow(input, dp_inst, tp_inst);
 			},
 			onChangeMonthYear: function(year, month, dp_inst) {
 				// Update the time as well : this prevents the time from disappearing from the $input field.
