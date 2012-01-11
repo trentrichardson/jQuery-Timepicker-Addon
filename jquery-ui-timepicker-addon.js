@@ -88,7 +88,7 @@ function Timepicker() {
 		sliderAccessArgs: null
 	};
 	$.extend(this._defaults, this.regional['']);
-}
+};
 
 $.extend(Timepicker.prototype, {
 	$input: null,
@@ -1295,7 +1295,7 @@ function extendRemove(target, props) {
 		if (props[name] === null || props[name] === undefined)
 			target[name] = props[name];
 	return target;
-}
+};
 
 $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "0.9.9";
