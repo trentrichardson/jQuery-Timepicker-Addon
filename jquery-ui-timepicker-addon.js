@@ -88,7 +88,7 @@ function Timepicker() {
 		sliderAccessArgs: null
 	};
 	$.extend(this._defaults, this.regional['']);
-}
+};  //missing semicolon here
 
 $.extend(Timepicker.prototype, {
 	$input: null,
@@ -1073,7 +1073,7 @@ $.datepicker._gotoToday = function(id) {
 		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
 		var tzsign = tzoffset > 0 ? '-' : '+';
 		tzoffset = Math.abs(tzoffset);
-		var tzmin = tzoffset % 60
+		var tzmin = tzoffset % 60;  //missing semicolon here
 		tzoffset = tzsign + ('0' + (tzoffset - tzmin) / 60).slice(-2) + ('0' + tzmin).slice(-2);
 		if (tp_inst._defaults.timezoneIso8609)
 			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
@@ -1229,7 +1229,7 @@ $.datepicker._formatDate = function(inst, day, month, year){
 		return tp_inst.$input.val();
 	}
 	return this._base_formatDate(inst);
-}
+};  //missing semicolon here
 
 //#######################################################################################
 // override options setter to add time to maxDate(Time) and minDate(Time). MaxDate
@@ -1290,7 +1290,7 @@ function extendRemove(target, props) {
 		if (props[name] === null || props[name] === undefined)
 			target[name] = props[name];
 	return target;
-}
+};  //missing semicolon here
 
 $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "0.9.8";
