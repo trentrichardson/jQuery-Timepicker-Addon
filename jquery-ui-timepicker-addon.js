@@ -1210,6 +1210,7 @@ $.datepicker.parseDate = function(format, value, settings) {
 		// Hack!  The error message ends with a colon, a space, and
 		// the "extra" characters.  We rely on that instead of
 		// attempting to perfectly reproduce the parsing algorithm.
+		if (err.indexOf(':') < 0) throw err
 		date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
 	}
 	return date;
