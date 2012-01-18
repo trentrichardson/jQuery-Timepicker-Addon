@@ -9,7 +9,7 @@
 		secondText: 'Секунды',
 		millisecText: 'Миллисекунды',
 		timezoneText: 'Время зоны',
-		currentText: 'Теперь',
+		currentText: 'Сейчас',
 		closeText: 'Закрыть',
 		timeFormat: 'hh:mm tt',
 		amNames: ['AM', 'A'],
