@@ -247,7 +247,7 @@ $.extend(Timepicker.prototype, {
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
 			// escape special regex characters in the seperator
 			var specials = new RegExp("[.*+?|()\\[\\]{}\\\\]", "g");
-			regstr = '.{' + dp_dateFormat.length + ',}' + this._defaults.separator.replace(specials, "\\$&") + regstr;
+			regstr = '^.{' + dp_dateFormat.length + ',}?' + this._defaults.separator.replace(specials, "\\$&") + regstr;
 		}
 		
 		treg = timeString.match(new RegExp(regstr, 'i'));
