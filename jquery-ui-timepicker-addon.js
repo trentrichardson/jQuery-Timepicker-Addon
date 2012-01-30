@@ -872,6 +872,7 @@ $.extend(Timepicker.prototype, {
 			}
 		});
 
+		tmptime = $.trim(tmptime);
 		if (arguments.length) return tmptime;
 		else this.formattedTime = tmptime;
 	},
