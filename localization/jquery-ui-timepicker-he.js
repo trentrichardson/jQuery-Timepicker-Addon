@@ -2,7 +2,7 @@
 /* Written by Lior Lapid */
 (function($) {
 	$.timepicker.regional["he"] = {
-		timeOnlyTitle: "בחרית זמן",
+		timeOnlyTitle: "בחירת זמן",
 		timeText: "שעה",
 		hourText: "שעות",
 		minuteText: "דקות",
