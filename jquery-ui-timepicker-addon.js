@@ -314,7 +314,7 @@ $.extend(Timepicker.prototype, {
 	// pattern for standard and localized AM/PM markers
 	//########################################################################
 	_getPatternAmpm: function() {
-		var markers = [];
+		var markers = [],
 			o = this._defaults;
 		if (o.amNames)
 			$.merge(markers, o.amNames);
