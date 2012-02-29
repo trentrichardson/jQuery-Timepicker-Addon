@@ -1113,9 +1113,11 @@ $.datepicker._gotoToday = function(id) {
 //#######################################################################################
 // Disable & enable the Time in the datetimepicker
 //#######################################################################################
-$.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
-	var inst = this._getInst(target),
-	tp_inst = this._get(inst, 'timepicker');
+$.datepicker._disableTimepickerDatepicker = function(target) {
+	var inst = this._getInst(target);
+    if (!inst) return;
+    
+	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
 		tp_inst._defaults.showTimepicker = false;
@@ -1123,9 +1125,11 @@ $.datepicker._disableTimepickerDatepicker = function(target, date, withDate) {
 	}
 };
 
-$.datepicker._enableTimepickerDatepicker = function(target, date, withDate) {
-	var inst = this._getInst(target),
-	tp_inst = this._get(inst, 'timepicker');
+$.datepicker._enableTimepickerDatepicker = function(target) {
+	var inst = this._getInst(target)
+    if (!inst) return;
+    
+	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
 		tp_inst._defaults.showTimepicker = true;
@@ -1174,9 +1178,11 @@ $.datepicker._setTime = function(inst, date) {
 // Create new public method to set only time, callable as $().datepicker('setTime', date)
 //#######################################################################################
 $.datepicker._setTimeDatepicker = function(target, date, withDate) {
-	var inst = this._getInst(target),
-		tp_inst = this._get(inst, 'timepicker');
-
+	var inst = this._getInst(target);
+    if (!inst) return;
+    
+	var tp_inst = this._get(inst, 'timepicker');
+    
 	if (tp_inst) {
 		this._setDateFromField(inst);
 		var tp_date;
@@ -1199,8 +1205,10 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 //#######################################################################################
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
-	var inst = this._getInst(target),
-	tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
+	var inst = this._getInst(target);
+    if (!inst) return;
+    
+	var tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
 
 	this._updateDatepicker(inst);
 	this._base_setDateDatepicker.apply(this, arguments);
@@ -1212,8 +1220,10 @@ $.datepicker._setDateDatepicker = function(target, date) {
 //#######################################################################################
 $.datepicker._base_getDateDatepicker = $.datepicker._getDateDatepicker;
 $.datepicker._getDateDatepicker = function(target, noDefault) {
-	var inst = this._getInst(target),
-		tp_inst = this._get(inst, 'timepicker');
+	var inst = this._getInst(target);
+    if (!inst) return;
+    
+    var tp_inst = this._get(inst, 'timepicker');
 
 	if (tp_inst) {
 		this._setDateFromField(inst, noDefault);
@@ -1265,8 +1275,10 @@ $.datepicker._formatDate = function(inst, day, month, year){
 //#######################################################################################
 $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 $.datepicker._optionDatepicker = function(target, name, value) {
-	var inst = this._getInst(target),
-		tp_inst = this._get(inst, 'timepicker');
+	var inst = this._getInst(target);
+    if (!inst) return null;
+    
+	var tp_inst = this._get(inst, 'timepicker');
 	if (tp_inst) {
 		var min = null, max = null, onselect = null;
 		if (typeof name == 'string') { // if min/max was set with the string
