@@ -88,7 +88,7 @@ function Timepicker() {
 		separator: ' ',
 		altFieldTimeOnly: true,
 		showTimepicker: true,
-		timezoneIso8609: false,
+		timezoneIso8601: false,
 		timezoneList: null,
 		addSliderAccess: false,
 		sliderAccessArgs: null
@@ -176,7 +176,7 @@ $.extend(Timepicker.prototype, {
 			var timezoneList = [];
 			for (var i = -11; i <= 12; i++)
 				timezoneList.push((i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00');
-			if (tp_inst._defaults.timezoneIso8609)
+			if (tp_inst._defaults.timezoneIso8601)
 				timezoneList = $.map(timezoneList, function(val) {
 					return val == '+0000' ? 'Z' : (val.substring(0, 3) + ':' + val.substring(3));
 				});
@@ -284,16 +284,16 @@ $.extend(Timepicker.prototype, {
 				var tz = treg[order.z].toUpperCase();
 				switch (tz.length) {
 				case 1:	// Z
-					tz = this._defaults.timezoneIso8609 ? 'Z' : '+0000';
+					tz = this._defaults.timezoneIso8601 ? 'Z' : '+0000';
 					break;
 				case 5:	// +hhmm
-					if (this._defaults.timezoneIso8609)
+					if (this._defaults.timezoneIso8601)
 						tz = tz.substring(1) == '0000'
 						   ? 'Z'
 						   : tz.substring(0, 3) + ':' + tz.substring(3);
 					break;
 				case 6:	// +hh:mm
-					if (!this._defaults.timezoneIso8609)
+					if (!this._defaults.timezoneIso8601)
 						tz = tz == 'Z' || tz.substring(1) == '00:00'
 						   ? '+0000'
 						   : tz.replace(/:/, '');
@@ -1102,7 +1102,7 @@ $.datepicker._gotoToday = function(id) {
 		tzoffset = Math.abs(tzoffset);
 		var tzmin = tzoffset % 60;
 		tzoffset = tzsign + ('0' + (tzoffset - tzmin) / 60).slice(-2) + ('0' + tzmin).slice(-2);
-		if (tp_inst._defaults.timezoneIso8609)
+		if (tp_inst._defaults.timezoneIso8601)
 			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
 		tp_inst.timezone_select.val(tzoffset);
 	}
