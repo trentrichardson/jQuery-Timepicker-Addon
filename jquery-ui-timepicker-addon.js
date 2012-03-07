@@ -28,84 +28,6 @@ if ($.ui.timepicker.version) {
 
 $.extend($.ui, { timepicker: { version: "1.0.1" } });
 
-//#######################################################################################
-// Return regexp to parse possible am/pm time postfixes. 
-// amNames, pmNames - arrays of strings
-//#######################################################################################
-var getPatternAmpm = function(amNames, pmNames) {
-    var markers = [];
-    if (amNames)
-        $.merge(markers, amNames);
-    if (pmNames)
-        $.merge(markers, pmNames);
-    markers = $.map(markers, function(val) { return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&'); });
-    return '(' + markers.join('|') + ')?';
-}
-
-var getFormatPositions = function( timeFormat ) {
-    var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z)/g),
-        orders = { h: -1, m: -1, s: -1, l: -1, t: -1, z: -1 };
-
-    if (finds)
-        for (var i = 0; i < finds.length; i++)
-            if (orders[finds[i].toString().charAt(0)] == -1)
-                orders[finds[i].toString().charAt(0)] = i + 1;
-
-    return orders;
-}
-
-//#######################################################################################
-// Splits datetime string into date ans time substrings.
-// Throws exception when date can't be parsed
-// If only date is present, time substring eill be '' 
-//#######################################################################################
-var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
-{
-	try {
-		var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings);
-	} catch (err) {
-		if (err.indexOf(":") >= 0) {
-			// Hack!  The error message ends with a colon, a space, and
-			// the "extra" characters.  We rely on that instead of
-			// attempting to perfectly reproduce the parsing algorithm.
-            var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
-            var timeString = dateTimeString.substring(dateStringLength);
-
-            return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)]
-            
-		} else {
-			throw err;
-		}
-	}
-	return [dateTimeString, ''];
-}
-
-//#######################################################################################
-// Internal function to parse datetime interval
-// Returns: {date: Date, timeObj: Object}, where
-//   date is parsed date withowt time (type Date)
-//   timeObj = {hour: , minute: , second: , millisec: } - parsed time. Can be missed
-//#######################################################################################
-var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings)
-{
-    var date;
-    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
-	date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-    if (splitRes[1] != '')
-    {
-        var timeString = splitRes[1];
-        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
-        if ( timeString.indexOf(separator) != 0)
-            throw 'Missing time separator';
-        timeString = timeString.substring(separator.length);
-        var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
-        if (parsedTime === null)
-            throw 'Wrong time format';
-        return {date: date, timeObj: parsedTime};
-    }
-    else
-        return {date: date};
-}
 /* Time picker manager.
    Use the singleton instance of this class, $.timepicker, to interact with the time picker.
    Settings for (groups of) time pickers are maintained in an instance object,
@@ -332,21 +254,7 @@ $.extend(Timepicker.prototype, {
             return true;
         }
 	},
-
-	//########################################################################
-	// pattern for standard and localized AM/PM markers
-	//########################################################################
-	_getPatternAmpm: function() {
-        return getPatternAmpm(this._defaults.amNames, this._defaults.pmNames);
-	},
-
-	//########################################################################
-	// figure out position of time elements.. cause js cant do named captures
-	//########################################################################
-	_getFormatPositions: function() {
-        return getFormatPositions(this._defaults.timeFormat);
-	},
-
+	
 	//########################################################################
 	// generate and inject html for timepicker into ui datepicker
 	//########################################################################
@@ -954,6 +862,35 @@ $.datepicker.parseDateTime = function(dateFormat, timeFormat, dateTimeString, da
 }
 
 $.datepicker.parseTime = function(timeFormat, timeString, options) {
+    
+    //########################################################################
+	// pattern for standard and localized AM/PM markers
+	//########################################################################
+    var getPatternAmpm = function(amNames, pmNames) {
+        var markers = [];
+        if (amNames)
+            $.merge(markers, amNames);
+        if (pmNames)
+            $.merge(markers, pmNames);
+        markers = $.map(markers, function(val) { return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&'); });
+        return '(' + markers.join('|') + ')?';
+    }
+    
+    //########################################################################
+	// figure out position of time elements.. cause js cant do named captures
+	//########################################################################
+    var getFormatPositions = function( timeFormat ) {
+        var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z)/g),
+            orders = { h: -1, m: -1, s: -1, l: -1, t: -1, z: -1 };
+
+        if (finds)
+            for (var i = 0; i < finds.length; i++)
+                if (orders[finds[i].toString().charAt(0)] == -1)
+                    orders[finds[i].toString().charAt(0)] = i + 1;
+
+        return orders;
+    }    
+    
     var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
     
     var regstr = '^' + timeFormat.toString()
@@ -987,7 +924,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
             if (ampm == 'AM' && treg[order.h] == '12')
                 resTime.hour = 0; // 12am = 0 hour
             else if (ampm == 'PM' && treg[order.h] != '12')
-                resTime.hour = Number(treg[order.h]) + 12; // 12pm = 12 hour, any other pm = hour + 12
+                resTime.hour = parseInt(treg[order.h],10) + 12; // 12pm = 12 hour, any other pm = hour + 12
             else resTime.hour = Number(treg[order.h]);
         }
 
@@ -1408,6 +1345,59 @@ function extendRemove(target, props) {
 			target[name] = props[name];
 	return target;
 };
+
+//#######################################################################################
+// Splits datetime string into date ans time substrings.
+// Throws exception when date can't be parsed
+// If only date is present, time substring eill be '' 
+//#######################################################################################
+var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
+{
+	try {
+		var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings);
+	} catch (err) {
+		if (err.indexOf(":") >= 0) {
+			// Hack!  The error message ends with a colon, a space, and
+			// the "extra" characters.  We rely on that instead of
+			// attempting to perfectly reproduce the parsing algorithm.
+            var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
+            var timeString = dateTimeString.substring(dateStringLength);
+
+            return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)]
+            
+		} else {
+			throw err;
+		}
+	}
+	return [dateTimeString, ''];
+}
+
+//#######################################################################################
+// Internal function to parse datetime interval
+// Returns: {date: Date, timeObj: Object}, where
+//   date - parsed date without time (type Date)
+//   timeObj = {hour: , minute: , second: , millisec: } - parsed time. Optional
+//#######################################################################################
+var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings)
+{
+    var date;
+    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
+	date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
+    if (splitRes[1] != '')
+    {
+        var timeString = splitRes[1];
+        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
+        if ( timeString.indexOf(separator) != 0)
+            throw 'Missing time separator';
+        timeString = timeString.substring(separator.length);
+        var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+        if (parsedTime === null)
+            throw 'Wrong time format';
+        return {date: date, timeObj: parsedTime};
+    }
+    else
+        return {date: date};
+}
 
 $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "1.0.1";
