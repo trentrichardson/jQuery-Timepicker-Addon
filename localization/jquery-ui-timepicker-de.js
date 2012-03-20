@@ -14,7 +14,32 @@
 		timeFormat: 'hh:mm tt',
 		amNames: ['vorm.', 'AM', 'A'],
 		pmNames: ['nachm.', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		minusEleven: '-11h NUT: Niue Zeit',
+		minusTen: '-10h HST: Hawaiianische Standardzeit',
+		minusNine: '-09h HDT: Hawaiianische Sommerzeit',
+		minusEight: '-08h PST: Pazifische Standardzeit',
+		minusSeven: '-07h PDT: Pazifische Sommerzeit',
+		minusSix: '-06h CST: Zentrale Standardzeit (Amerika)',
+		minusFive: '-05h EST: Östliche Standardzeit (Amerika)',
+		minusFour: '-04h EDT: Östliche Sommerzeit (Amerika)',
+		minusThree: '-03h BRT: Brasilianische Standardzeit',
+		minusTwo: '-02h BRST: Brasilianische Sommerzeit',
+		minusOne: '-01h CVT: Kap Verde Zeit',
+		plusMinusZero: '±00h UTC: Koordinierte Weltzeit (Greenwich)',
+		plusOne: '+01h CET: Mitteleuropäische Standardzeit (MEZ)',
+		plusTwo: '+02h CEST: Mitteleuropäische Sommerzeit (MESZ)',
+		plusThree: '+03h AST: Arabische Zeit',
+		plusFour: '+04h MSK: Moskauer Zeit',
+		plusFive: '+05h PKT: Pakistanische Zeit',
+		plusSix: '+06h BST: Bangladesch Zeit',
+		plusSeven: '+07h ICT: Indochinesische Zeit',
+		plusEight: '+08h CST: Chinesische Standardzeit',
+		plusNine: '+09h JST: Japanische Zeit',
+		plusTen: '+10h AEST: Ost-Australische Standardzeit',
+		plusEleven: '+11h AEDT: Ost-Australische Sommerzeit',
+		plusTwelve: '+12h NZST: Neuseeländische Standardzeit',
+		plusThirteen: '+13h NZDT: Neuseeländische Sommerzeit'};
 	};
 	$.timepicker.setDefaults($.timepicker.regional['de']);
 })(jQuery);
