@@ -2,10 +2,10 @@
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
 * Version 1.0.1-dev
-* Last Modified: 02/05/2012
+* Last Modified: 03/20/2012
 *
 * Copyright 2012 Trent Richardson
-* Dual licensed under the MIT and GPL licenses.
+* You may use this project under MIT or GPL licenses.
 * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
 * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
 *
