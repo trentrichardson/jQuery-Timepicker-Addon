@@ -50,31 +50,33 @@ function Timepicker() {
 		secondText: 'Second',
 		millisecText: 'Millisecond',
 		timezoneText: 'Time Zone',
-		minusEleven: '-11h NUT: Niue Time',
-		minusTen: '-10h HST: Hawaii Standard Time',
-		minusNine: '-09h HDT: Hawaii Summer Time',
-		minusEight: '-08h PST: Pacific Standard Time',
-		minusSeven: '-07h PDT: Pacific Summer Time',
-		minusSix: '-06h CST: Central Standard Time (America)',
-		minusFive: '-05h EST: Eastern Standard Time (America)',
-		minusFour: '-04h EDT: Eastern Summer Time (America)',
-		minusThree: '-03h BRT: Brasilia Standard Time',
-		minusTwo: '-02h BRST: Brasilia Summer Time',
-		minusOne: '-01h CVT: Cape Verde Time',
-		plusMinusZero: '±00h UTC: Universal Coordinated Time (Greenwich)',
-		plusOne: '+01h CET: Central European Standard Time',
-		plusTwo: '+02h CEST: Central European Summer Time',
-		plusThree: '+03h AST: Arabia Time',
-		plusFour: '+04h MSK: Moscow Time',
-		plusFive: '+05h PKT: Pakistan Time',
-		plusSix: '+06h BST: Bangladesh Time',
-		plusSeven: '+07h ICT: Indochina Time',
-		plusEight: '+08h CST: China Standard Time',
-		plusNine: '+09h JST: Japan Time',
-		plusTen: '+10h AEST: Australian Eastern Standard Time',
-		plusEleven: '+11h AEDT: Australian Eastern Summer Time',
-		plusTwelve: '+12h NZST: New Zealand Standard Time',
-		plusThirteen: '+13h NZDT: New Zealand Summer Time'
+		timezoneLabels: {
+			'-1100': '-11h NUT: Niue Time',
+			'-1000': '-10h HST: Hawaii Standard Time',
+			'-0900': '-09h HDT: Hawaii Summer Time',
+			'-0800': '-08h PST: Pacific Standard Time',
+			'-0700': '-07h PDT: Pacific Summer Time',
+			'-0600': '-06h CST: Central Standard Time (America)',
+			'-0500': '-05h EST: Eastern Standard Time (America)',
+			'-0400': '-04h EDT: Eastern Summer Time (America)',
+			'-0300': '-03h BRT: Brasilia Standard Time',
+			'-0200': '-02h BRST: Brasilia Summer Time',
+			'-0100': '-01h CVT: Cape Verde Time',
+			'+0000': '±00h UTC: Universal Coordinated Time (Greenwich)',
+			'+0100': '+01h CET: Central European Standard Time',
+			'+0200': '+02h CEST: Central European Summer Time',
+			'+0300': '+03h AST: Arabia Time',
+			'+0400': '+04h MSK: Moscow Time',
+			'+0500': '+05h PKT: Pakistan Time',
+			'+0600': '+06h BST: Bangladesh Time',
+			'+0700': '+07h ICT: Indochina Time',
+			'+0800': '+08h CST: China Standard Time',
+			'+0900': '+09h JST: Japan Time',
+			'+1000': '+10h AEST: Australian Eastern Standard Time',
+			'+1100': '+11h AEDT: Australian Eastern Summer Time',
+			'+1200': '+12h NZST: New Zealand Standard Time',
+			'+1300': '+13h NZDT: New Zealand Summer Time'
+		}
 	};
 	this._defaults = { // Global defaults for all the datetime picker instances
 		showButtonPanel: true,
@@ -465,8 +467,8 @@ $.extend(Timepicker.prototype, {
 			$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
 					return $("<option />")
-						.val(typeof val == "object" ? val.value : val)
-						.text(typeof val == "object" ? o[val.label] : val);
+						.val(val)
+						.text(o.timezoneLabels[val]);
 				})
 			);
 			this.timezone_select.val((typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") ? this.timezone : o.timezone);
