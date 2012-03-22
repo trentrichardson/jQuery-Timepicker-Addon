@@ -68,7 +68,7 @@ function Timepicker() {
 		minute: 0,
 		second: 0,
 		millisec: 0,
-		timezone: '+0000',
+		timezone: null,
 		hourMin: 0,
 		minuteMin: 0,
 		secondMin: 0,
@@ -110,6 +110,7 @@ $.extend(Timepicker.prototype, {
 	minute: 0,
 	second: 0,
 	millisec: 0,
+	timezone: null,
 	hourMinOriginal: null,
 	minuteMinOriginal: null,
 	secondMinOriginal: null,
@@ -182,6 +183,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.timezoneList = timezoneList;
 		}
 
+		tp_inst.timezone = tp_inst._defaults.timezone;
 		tp_inst.hour = tp_inst._defaults.hour;
 		tp_inst.minute = tp_inst._defaults.minute;
 		tp_inst.second = tp_inst._defaults.second;
