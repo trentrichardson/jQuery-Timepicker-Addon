@@ -183,6 +183,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst._defaults.timezoneList = timezoneList;
 		}
 
+		tp_inst.timezone = tp_inst._defaults.timezone;
 		tp_inst.hour = tp_inst._defaults.hour;
 		tp_inst.minute = tp_inst._defaults.minute;
 		tp_inst.second = tp_inst._defaults.second;
