@@ -69,6 +69,7 @@ function Timepicker() {
 		second: 0,
 		millisec: 0,
 		timezone: null,
+		defaultTimezone: "+0000",
 		hourMin: 0,
 		minuteMin: 0,
 		secondMin: 0,
@@ -111,6 +112,7 @@ $.extend(Timepicker.prototype, {
 	second: 0,
 	millisec: 0,
 	timezone: null,
+	defaultTimezone: "+0000",
 	hourMinOriginal: null,
 	minuteMinOriginal: null,
 	secondMinOriginal: null,
@@ -448,7 +450,11 @@ $.extend(Timepicker.prototype, {
 			if (typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") {
 				this.timezone_select.val(this.timezone);
 			} else {
-				selectLocalTimeZone(tp_inst);
+				if (typeof this.hour != "undefined" && this.hour != null && this.hour != "") {
+					this.timezone_select.val(o.defaultTimezone);
+				} else {
+					selectLocalTimeZone(tp_inst);
+				}
 			}
 			this.timezone_select.change(function() {
 				tp_inst._onTimeChange();
