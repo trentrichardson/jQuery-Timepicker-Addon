@@ -1283,8 +1283,8 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 //#######################################################################################
 $.datepicker._base_parseDate = $.datepicker.parseDate;
 $.datepicker.parseDate = function(format, value, settings) {
-    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
-	return $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
+    var splitRes = splitDateTime(format, value, settings);
+	return $.datepicker._base_parseDate(format, splitRes[0], settings);
 };
 
 //#######################################################################################
