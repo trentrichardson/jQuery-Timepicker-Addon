@@ -785,6 +785,8 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_updateDateTime: function(dp_inst) {
 		dp_inst = this.inst || dp_inst;
+		selectLocalTimeZone(this);
+		this._onTimeChange();
 		var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
 			dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 			formatCfg = $.datepicker._getFormatConfig(dp_inst),
@@ -1405,7 +1407,8 @@ var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dat
 var selectLocalTimeZone = function(tp_inst)
 {
 	if (tp_inst && tp_inst._defaults.showTimezone && tp_inst.timezone_select) {
-		var now = new Date();
+		var date_inst = tp_inst.inst;
+		var now = (date_inst && date_inst.selectedYear && date_inst.selectedMonth && date_inst.selectedDay) ? new Date(date_inst.selectedYear, date_inst.selectedMonth, date_inst.selectedDay) : new Date();
 		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
 		var tzsign = tzoffset > 0 ? '-' : '+';
 		tzoffset = Math.abs(tzoffset);
