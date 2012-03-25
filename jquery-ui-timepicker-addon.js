@@ -1420,7 +1420,7 @@ var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dat
 //#######################################################################################
 var selectLocalTimeZone = function(tp_inst, date)
 {
-	if (tp_inst && tp_inst._defaults.showTimezone && tp_inst.timezone_select) {
+	if (tp_inst && tp_inst.timezone_select) {
 		tp_inst.useLocalTimezone = true;
 		var now = typeof date !== 'undefined' ? date : new Date();
 		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
