@@ -69,6 +69,7 @@ function Timepicker() {
 		second: 0,
 		millisec: 0,
 		timezone: null,
+		useLocalTimezone: false,
 		defaultTimezone: "+0000",
 		hourMin: 0,
 		minuteMin: 0,
@@ -112,7 +113,6 @@ $.extend(Timepicker.prototype, {
 	second: 0,
 	millisec: 0,
 	timezone: null,
-	useLocalTimezone: false,
 	defaultTimezone: "+0000",
 	hourMinOriginal: null,
 	minuteMinOriginal: null,
@@ -458,7 +458,7 @@ $.extend(Timepicker.prototype, {
 				}
 			}
 			this.timezone_select.change(function() {
-				tp_inst.useLocalTimezone = false;
+				tp_inst._defaults.useLocalTimezone = false;
 				tp_inst._onTimeChange();
 			});
 
@@ -1072,7 +1072,7 @@ $.datepicker._updateDatepicker = function(inst) {
 		if(tp_inst) {
 			tp_inst._addTimePicker(inst);
 
-			if (tp_inst.useLocalTimezone) { //checks daylight saving with the new date.
+			if (tp_inst._defaults.useLocalTimezone) { //checks daylight saving with the new date.
 				var date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay, 12);
 				selectLocalTimeZone(tp_inst, date);
 				tp_inst._onTimeChange();
@@ -1421,7 +1421,7 @@ var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dat
 var selectLocalTimeZone = function(tp_inst, date)
 {
 	if (tp_inst && tp_inst._defaults.showTimezone && tp_inst.timezone_select) {
-		tp_inst.useLocalTimezone = true;
+		tp_inst._defaults.useLocalTimezone = true;
 		var now = typeof date !== 'undefined' ? date : new Date();
 		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
 		var tzsign = tzoffset > 0 ? '-' : '+';
