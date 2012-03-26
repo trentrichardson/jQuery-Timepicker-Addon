@@ -449,7 +449,13 @@ $.extend(Timepicker.prototype, {
 				})
 			);
 			if (typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") {
-				this.timezone_select.val(this.timezone);
+				var local_date = new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12);
+				var local_timezone = timeZoneString(local_date);
+				if (local_timezone == this.timezone) {
+					selectLocalTimeZone(tp_inst);
+				} else {
+					this.timezone_select.val(this.timezone);
+				}
 			} else {
 				if (typeof this.hour != "undefined" && this.hour != null && this.hour != "") {
 					this.timezone_select.val(o.defaultTimezone);
@@ -1423,15 +1429,20 @@ var selectLocalTimeZone = function(tp_inst, date)
 	if (tp_inst && tp_inst.timezone_select) {
 		tp_inst._defaults.useLocalTimezone = true;
 		var now = typeof date !== 'undefined' ? date : new Date();
-		var tzoffset = now.getTimezoneOffset(); // If +0100, returns -60
-		var tzsign = tzoffset > 0 ? '-' : '+';
-		tzoffset = Math.abs(tzoffset);
-		var tzmin = tzoffset % 60;
-		tzoffset = tzsign + ('0' + (tzoffset - tzmin) / 60).slice(-2) + ('0' + tzmin).slice(-2);
+		var tzoffset = timeZoneString(now);
 		if (tp_inst._defaults.timezoneIso8601)
 			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
 		tp_inst.timezone_select.val(tzoffset);
 	}
+}
+
+// Input: Date Object
+// Output: String with timezone offset, e.g. '+0100'
+var timeZoneString = function(date)
+{
+	var off = date.getTimezoneOffset() * -10100 / 60;
+	var timezone = (off >= 0 ? '+' : '-') + Math.abs(off).toString().substr(1);
+	return timezone;
 }
 
 $.timepicker = new Timepicker(); // singleton instance
