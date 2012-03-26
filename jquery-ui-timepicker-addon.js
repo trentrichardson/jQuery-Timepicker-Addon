@@ -455,7 +455,7 @@ $.extend(Timepicker.prototype, {
 							((o.showTimezone) ? '' : noDisplay) + '></dd>';
 
 			html += '</dl></div>';
-			$tp = $(html);
+			var $tp = $(html);
 
 				// if we only want time picker...
 			if (o.timeOnly === true) {
@@ -915,7 +915,7 @@ $.fn.extend({
 	//########################################################################
 	datetimepicker: function(o) {
 		o = o || {};
-		tmp_args = arguments;
+		var tmp_args = arguments;
 
 		if (typeof(o) == 'string'){
 			if(o == 'getDate')
