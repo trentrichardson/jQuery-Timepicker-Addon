@@ -455,7 +455,7 @@ $.extend(Timepicker.prototype, {
 							((o.showTimezone) ? '' : noDisplay) + '></dd>';
 
 			html += '</dl></div>';
-			$tp = $(html);
+			var $tp = $(html);
 
 				// if we only want time picker...
 			if (o.timeOnly === true) {
