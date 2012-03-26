@@ -449,7 +449,13 @@ $.extend(Timepicker.prototype, {
 				})
 			);
 			if (typeof this.timezone != "undefined" && this.timezone != null && this.timezone != "") {
-				this.timezone_select.val(this.timezone);
+				var local_date = new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12);
+				var local_timezone = timeZoneString(local_date);
+				if (local_timezone == this.timezone) {
+					selectLocalTimeZone(tp_inst);
+				} else {
+					this.timezone_select.val(this.timezone);
+				}
 			} else {
 				if (typeof this.hour != "undefined" && this.hour != null && this.hour != "") {
 					this.timezone_select.val(o.defaultTimezone);
