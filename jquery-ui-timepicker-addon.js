@@ -235,6 +235,7 @@ $.extend(Timepicker.prototype, {
 	_parseTime: function(timeString, withDate) {
 		var regstr = this._defaults.timeFormat.toString()
 				.replace(/h{1,2}/ig, '(\\d?\\d)')
+				.replace(/:{1}/ig, '([:]?)')
 				.replace(/m{1,2}/ig, '(\\d?\\d)')
 				.replace(/s{1,2}/ig, '(\\d?\\d)')
 				.replace(/l{1}/ig, '(\\d?\\d?\\d)')
@@ -328,8 +329,8 @@ $.extend(Timepicker.prototype, {
 	// figure out position of time elements.. cause js cant do named captures
 	//########################################################################
 	_getFormatPositions: function() {
-		var finds = this._defaults.timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z)/g),
-			orders = { h: -1, m: -1, s: -1, l: -1, t: -1, z: -1 };
+		var finds = this._defaults.timeFormat.toLowerCase().match(/(h{1,2}|[:]{1}|m{1,2}|s{1,2}|l{1}|t{1,2}|z)/g),
+			orders = { h: -1, c:-1, m: -1, s: -1, l: -1, t: -1, z: -1 };
 
 		if (finds)
 			for (var i = 0; i < finds.length; i++)
