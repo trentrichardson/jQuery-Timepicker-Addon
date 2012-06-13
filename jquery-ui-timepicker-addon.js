@@ -1239,24 +1239,35 @@ $.datepicker._setTime = function(inst, date) {
 			minute = date ? date.getMinutes() : defaults.minute,
 			second = date ? date.getSeconds() : defaults.second,
 			millisec = date ? date.getMilliseconds() : defaults.millisec;
-
 		//check if within min/max times..
-		if ((hour < defaults.hourMin || hour > defaults.hourMax) || (minute < defaults.minuteMin || minute > defaults.minuteMax) || (second < defaults.secondMin || second > defaults.secondMax) || (millisec < defaults.millisecMin || millisec > defaults.millisecMax)) {
+		// correct check if within min/max times. 	
+		// Rewritten by Scott A. Woodward
+		var hourEq = hour === defaults.hourMin,
+			minuteEq = minute === defaults.minuteMin,
+			secondEq = second === defaults.secondMin;
+		var reset = false;
+		if(hour < defaults.hourMin || hour > defaults.hourMax)  
+			reset = true;
+		else if( (minute < defaults.minuteMin || minute > defaults.minuteMax) && hourEq)
+			reset = true;
+		else if( (second < defaults.secondMin || second > defaults.secondMax ) && hourEq && minuteEq)
+			reset = true;
+		else if( (millisec < defaults.millisecMin || millisec > defaults.millisecMax) && hourEq && minuteEq && secondEq)
+			reset = true;
+		if(reset) {
 			hour = defaults.hourMin;
 			minute = defaults.minuteMin;
 			second = defaults.secondMin;
 			millisec = defaults.millisecMin;
 		}
-
 		tp_inst.hour = hour;
 		tp_inst.minute = minute;
 		tp_inst.second = second;
 		tp_inst.millisec = millisec;
-
-		if (tp_inst.hour_slider) { tp_inst.hour_slider.slider('value', hour); }
-		if (tp_inst.minute_slider) { tp_inst.minute_slider.slider('value', minute); }
-		if (tp_inst.second_slider) { tp_inst.second_slider.slider('value', second); }
-		if (tp_inst.millisec_slider) { tp_inst.millisec_slider.slider('value', millisec); }
+		if (tp_inst.hour_slider) tp_inst.hour_slider.slider('value', hour);
+		if (tp_inst.minute_slider) tp_inst.minute_slider.slider('value', minute);
+		if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
+		if (tp_inst.millisec_slider) tp_inst.millisec_slider.slider('value', millisec);
 
 		tp_inst._onTimeChange();
 		tp_inst._updateDateTime(inst);
