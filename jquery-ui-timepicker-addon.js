@@ -827,9 +827,12 @@ $.extend(Timepicker.prototype, {
 			timeAvailable = dt !== null && this.timeDefined;
 		this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 		var formattedDateTime = this.formattedDate;
-		if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
-			return;
-        }
+		// remove following lines to force every changes in date picker to change the input value
+		// Bug descriptions: when an input field has a default value, and click on the field to pop up the date picker. 
+		// If the user manually empty the value in the input field, the date picker will never change selected value.
+		//if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
+		//	return;
+        //}
 
 		if (this._defaults.timeOnly === true) {
 			formattedDateTime = this.formattedTime;
