@@ -3,8 +3,8 @@ jQuery Timepicker Addon
 
 About
 -----
-Author: [Trent Richardson](http://trentrichardson.com)
-Documentation: [http://trentrichardson.com/examples/timepicker/](http://trentrichardson.com/examples/timepicker/)
+- Author: [Trent Richardson](http://trentrichardson.com)
+- Documentation: [http://trentrichardson.com/examples/timepicker/](http://trentrichardson.com/examples/timepicker/)
 
 Use
 ---
@@ -14,5 +14,6 @@ Use
 
 Contributing Code - Please Read!
 --------------------------------
-All code contributions and bug reports are much appreciated.  Please be sure to apply your fixes to the "dev" branch.
-Also note tabs are appreciated over spaces.
+- All code contributions and bug reports are much appreciated.
+- Please be sure to apply your fixes to the "dev" branch.
+- Also note tabs are appreciated over spaces.
