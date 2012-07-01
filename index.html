@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"> 
+	<head> 
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Adding a Timepicker to jQuery UI Datepicker</title> 
+		<meta name="Description" content="jQuery Timepicker Addon.  Add a timepicker to your jQuery UI Datepicker.  With options to show only time, format time, and much more." />
+		<meta name="Keywords" content="jQuery, UI, datepicker, timepicker, datetime, time, format" />
+		
+		<style type="text/css"> 
+			body,img,p,h1,h2,h3,h4,h5,h6,form,table,td,ul,li,dl,dt,dd,pre,blockquote,fieldset,label{
+				margin:0;
+				padding:0;
+				border:0;
+			}
+			body{ background-color: #363531; border-top: solid 4px #C60; font: 90% Arial, Helvetica, sans-serif; padding: 20px; }
+			h1,h2{ margin: 10px 0; }
+			p{ margin: 10px 0; }
+			
+			pre{ padding: 20px; background-color: #ffffcc; border: solid 1px #fff; }
+			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
+			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 40px 0; padding: 20px; }
+			.example-container p{ font-weight: bold; }
+			.example-container > dl dt{ font-weight: bold; height: 20px; }
+			.example-container > dl dd{ margin: -20px 0 10px 100px; border-bottom: solid 1px #fff; }
+			.example-container input{ width: 150px; }
+			.clear{ clear: both; }
+			#ui-datepicker-div, .ui-datepicker{ font-size: 80%; }			
+		</style> 
+		
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+		<script type="text/javascript">
+			
+			$(function(){
+				
+		
+				$('.example-container > pre').each(function(i){
+					eval($(this).text());
+				});
+			});
+			
+		</script>
+	</head> 
+	<body> 
+		<div class="wrapper">
+			<h1>Adding a Timepicker to jQuery UI Datepicker</h1> 
+			
+			<p>The timepicker addon adds a timepicker to jQuery UI Datepicker, thus the datepicker and slider components (jQueryUI) are required for using any of these.  In addition all datepicker options are still available through the timepicker addon.</p>
+			
+			<p>If you are interested in contributing to Timepicker Addon please <a href="http://github.com/trentrichardson/jQuery-Timepicker-Addon" title="Check out Timepicker on GitHub">check it out on GitHub</a>.  If you do make additions please keep in mind I enjoy tabs over spaces,.. But contributions are welcome in any form.</p>
+			
+			<p><a href="http://trentrichardson.com" title="Back to Blog">Back to Blog</a> or <a href="http://twitter.com/practicalweb" title="Follow Me on Twitter">Twitter</a></p>
+		
+			<a href="http://carbounce.com" title="Car Bounce" style="display: inline-block;width:380px;padding: 10px;background-color: #fbfbfb;border: dotted 4px #e8e8e8;color: #9EC45F;font-size: 16px;text-decoration:none;letter-spacing:1px;"><img src="http://carbounce.com/img/logo_small.png" alt="Car Bounce" align="left" style="margin-right: 20px;"/>Try my new app to keep you informed of your car's financing status and value.</a>	
+
+			<h2>Download</h2>
+			<p><a href="jquery-ui-timepicker-addon.js" title="Download Timepicker Addon">Download Timepicker Addon</a></p>
+			<p><a href="http://github.com/trentrichardson/jQuery-Timepicker-Addon" title="Check out Timepicker on GitHub">Download/Contribute on GitHub</a> (Find a bug? See if its fixed here)</p>
+			<p>There is a small bit of required CSS:</p>
+<pre>
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+</pre>
+	
+			<h2>Donation</h2>
+			<p>Has this Timepicker Addon been helpful to you?</p>
+			<div class="donation">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="C2QQHR7JQGD28">
+				<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</div>
+				
+				
+	<h2>Some Examples</h2>
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Add a simple timepicker to jQuery UI's datepicker</p>
+		<div>
+	 		<input type="text" name="example1" id="example1" value="" />
+		</div>
+	
+<pre>
+$('#example1').datetimepicker();
+</pre>
+	</div>
+
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Show time in AM/PM 12 hour format</p>
+		<div>
+		<input type="text" name="example2" id="example2" value="" />
+		</div>
+	
+<pre>
+$('#example2').datetimepicker({
+	ampm: true
+});
+</pre>
+	</div>
+
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Show only the time picker without date picker</p>
+		<div>
+			<input type="text" name="example3" id="example3" value="" />
+		</div>
+	
+<pre>
+$('#example3').timepicker({});
+</pre>
+	</div>
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Change the format (default is "hh:mm tt")</p>
+		<dl>
+			<dt>h</dt><dd>Hour with no leading 0</dd>
+			<dt>hh</dt><dd>Hour with leading 0</dd>
+			<dt>m</dt><dd>Minute with no leading 0</dd>
+			<dt>mm</dt><dd>Minute with leading 0</dd>
+			<dt>s</dt><dd>Second with no leading 0</dd>
+			<dt>ss</dt><dd>Second with leading 0</dd>
+			<dt>l</dt><dd>Milliseconds always with leading 0</dd>
+			<dt>t</dt><dd>a or p for AM/PM</dd>
+			<dt>T</dt><dd>A or P for AM/PM</dd>
+			<dt>tt</dt><dd>am or pm for AM/PM</dd>
+			<dt>TT</dt><dd>AM or PM for AM/PM</dd>
+		</dl>
+		<p>Also related to your timeFormat, but not required, is the separator option</p>
+		<dl>
+			<dt>separator</dt><dd>Place holder between date and time, default=" "</dd>
+		</dl>
+		<div>
+			<input type="text" name="example4" id="example4" value="" />
+		</div>
+	
+<pre>
+$('#example4').datetimepicker({
+	timeFormat: 'h:m',
+	separator: ' @ '
+});
+</pre>
+	</div>
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Show Seconds, Minutes, or Hours</p>
+		<dl>
+			<dt>showHour</dt><dd>Show the hour, default=true</dd>
+			<dt>showMinute</dt><dd>Show the minute, default=true</dd>
+			<dt>showSecond</dt><dd>Show the second, default=false</dd>
+			<dt>showMillisec</dt><dd>Show the millisecond, default=false</dd>
+		</dl>
+		<div>
+			<input type="text" name="example5" id="example5" value="" />
+		</div>
+	
+<pre>
+$('#example5').datetimepicker({
+	showSecond: true,
+	showMillisec: true,
+	timeFormat: 'hh:mm:ss:l'
+});
+</pre>
+	</div>
+	
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Hours, Minutes, Seconds in steps</p>
+
+		<dl>
+			<dt>stepHour</dt><dd>hour steps, default=0.05 (for smooth, 1 would jump to each hour)</dd>
+			<dt>stepMinute</dt><dd>minute steps, default=0.05</dd>
+			<dt>stepSecond</dt><dd>second steps, default=0.05</dd>
+			<dt>stepMillisec</dt><dd>second steps, default=0.5</dd>
+		</dl>
+		<div>
+			<input type="text" name="example6" id="example6" value="" />
+		</div>
+	
+<pre>
+$('#example6').datetimepicker({
+	showSecond: true,
+	timeFormat: 'hh:mm:ss',
+	stepHour: 2,
+	stepMinute: 10,
+	stepSecond: 10
+});
+</pre>
+	</div>
+	
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Default Hours, Minutes, Seconds</p>
+		<dl>
+			<dt>hour</dt><dd>default=0</dd>
+			<dt>minute</dt><dd>default=0</dd>
+			<dt>second</dt><dd>default=0</dd>
+			<dt>millisec</dt><dd>default=0</dd>
+		</dl>
+		<div>
+			<input type="text" name="example7" id="example7" value="" />
+		</div>
+	
+<pre>
+$('#example7').datetimepicker({
+	hour: 13,
+	minute: 15
+});
+</pre>
+	</div>
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>Set the time range.  For instance if you only want to allow the user to choose times between 8AM and 5PM.</p>
+		<dl>
+			<dt>hourMin</dt><dd>default=0</dd>
+			<dt>hourMax</dt><dd>default=23</dd>
+			<dt>minuteMin</dt><dd>default=0</dd>
+			<dt>minuteMax</dt><dd>default=59</dd>
+			<dt>secondMin</dt><dd>default=0</dd>
+			<dt>secondMax</dt><dd>default=59</dd>
+			<dt>millisecMin</dt><dd>default=0</dd>
+			<dt>millisecMax</dt><dd>default=999</dd>
+		</dl>
+
+
+
+		<div>
+			<input type="text" name="example8" id="example8" value="" />
+		</div>
+	
+<pre>
+
+
+
+$('#example8').timepicker({
+	ampm: true,
+	hourMin: 8,
+	hourMax: 16
+});
+</pre>
+	</div>
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>There is also localization support.  Read up on <a href="http://docs.jquery.com/UI/Datepicker/Localization" title="localization for datepicker" target="_BLANK">localization for datepicker</a> for adding support for more languages.  There are a few new definitions you will need to add to your language file:</p>
+		<dl>
+			<dt>timeOnlyTitle</dt><dd>default="Choose Time"</dd>
+			<dt>timeText</dt><dd>default="Time"</dd>
+			<dt>hourText</dt><dd>default="Hour"</dd>
+			<dt>minuteText</dt><dd>default="Minute"</dd>
+			<dt>secondText</dt><dd>default="Second"</dd>
+			<dt>millisecText</dt><dd>default="Milliecond"</dd>
+			<dt>currentText</dt><dd>default="Now"</dd>
+			<dt>closeText</dt><dd>default="Done"</dd>
+			<dt>ampm</dt><dd>default=false (true/false, Some regions do use this, some don't)</dd>
+		</dl>
+		<p>Or optionally you may add them as options as shown below with Russian.</p>
+		<div>
+			<input type="text" name="example9" id="example9" value="" />
+		</div>
+	
+<pre>
+$('#example9').timepicker({
+	timeOnlyTitle: 'Выберите время',
+	timeText: 'Время',
+	hourText: 'Часы',
+	minuteText: 'Минуты',
+	secondText: 'Секунды',
+	currentText: 'Теперь',
+	closeText: 'Закрыть'
+});
+</pre>
+
+		<div class="documentation">
+			<p>The first approach (as documented in the datepicker documentation and mentioned above) is to create your own regional objects per region, then use the setDefaults method to tie these together.  Setting datepicker and timepicker regionals separtely will help ensure proper wording when only using datepicker or timepicker.  Here is an example:</p>
+		
+<pre>
+$.datepicker.regional['ru'] = {
+	closeText: 'Закрыть',
+	prevText: '&#x3c;Пред',
+	nextText: 'След&#x3e;',
+	currentText: 'Сегодня',
+	monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь',
+	'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+	monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн',
+	'Июл','Авг','Сен','Окт','Ноя','Дек'],
+	dayNames: ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
+	dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
+	dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+	weekHeader: 'Не',
+	dateFormat: 'dd.mm.yy',
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ''
+};
+$.datepicker.setDefaults($.datepicker.regional['ru']);
+
+$.timepicker.regional['ru'] = {
+	timeOnlyTitle: 'Выберите время',
+	timeText: 'Время',
+	hourText: 'Часы',
+	minuteText: 'Минуты',
+	secondText: 'Секунды',
+	millisecText: 'миллисекунды',
+	currentText: 'Теперь',
+	closeText: 'Закрыть',
+	ampm: false
+};
+$.timepicker.setDefaults($.timepicker.regional['ru']);
+</pre>
+
+		</div>
+	</div>
+	
+	
+	
+<!-- ============= example -->
+	<div class="example-container">
+		<p>To show numbered grids under the sliders you may use the following options:</p>
+		<dl>
+			<dt>hourGrid</dt><dd>default=0</dd>
+			<dt>minuteGrid</dt><dd>default=0</dd>
+			<dt>secondGrid</dt><dd>default=0</dd>
+			<dt>millisecGrid</dt><dd>default=0</dd>
+		</dl>
+		<p>When using ampm option hours will be displayed with an "a" or "p": 04a, 12p, etc...</p>
+		<div>
+			<input type="text" name="example10" id="example10" value="" />
+		</div>
+	
+<pre>
+$('#example10').timepicker({
+	hourGrid: 4,
+	minuteGrid: 10
+});
+</pre>
+	</div>
+	
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>When showing more than one month:</p>
+		<div>
+			<input type="text" name="example11" id="example11" value="" />
+		</div>
+	
+<pre>
+$('#example11').datetimepicker({
+	numberOfMonths: 3
+});
+</pre>
+	</div>
+	
+		<!-- ============= example -->
+	<div class="example-container">
+		<p>With minDate and maxDate datepicker options:</p>
+		<div>
+			<input type="text" name="example12" id="example12" value="" />
+		</div>
+	
+<pre>
+$('#example12').datetimepicker({
+	numberOfMonths: 2,
+	minDate: 0,
+	maxDate: 30
+});
+</pre>
+	</div>
+	
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Get and Set Datetime:</p>
+		<div>
+			<input type="text" name="example13" id="example13" value="" /> 
+			<button id="example13_setdt" value="1">Set Datetime</button> 
+			<button id="example13_getdt" value="1">Get Datetime</button> 
+		</div>
+	
+<pre>
+var ex13 = $('#example13');
+
+ex13.datetimepicker();
+
+$('#example13_setdt').click(function(){
+	ex13.datetimepicker('setDate', (new Date()) );
+});
+
+$('#example13_getdt').click(function(){
+	alert(ex13.datetimepicker('getDate'));
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the datepicker minDate/maxDate options: (note: these must use Date objects)</p>
+		<div>
+			<input type="text" name="example14" id="example14" value="" />
+		</div>
+	
+<pre>
+$('#example14').datetimepicker({
+	minDate: new Date(2010, 11, 20, 8, 30),
+	maxDate: new Date(2010, 11, 31, 17, 30)
+});
+</pre>
+	</div>
+	
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Connect to the onSelect event (Use your browser's js console for this example).</p>
+		<div>
+			<input type="text" name="example15" id="example15" value="" />
+		</div>
+	
+<pre>
+$('#example15').datetimepicker({
+	showSecond: true,
+	showMillisec: true,
+	timeFormat: 'hh:mm:ss:l',
+	onSelect: function(dateText, inst){
+		if(window.console)
+			console.log(dateText);
+	}
+});
+</pre>
+	</div>
+	
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Create a datetime range with a start and end date.</p>
+		<div>
+			<input type="text" name="example16_start" id="example16_start" value="" /> <input type="text" name="example16_end" id="example16_end" value="" />
+		</div>
+	
+<pre>
+$('#example16_start').datetimepicker({
+    onClose: function(dateText, inst) {
+        var endDateTextBox = $('#example16_end');
+        if (endDateTextBox.val() != '') {
+            var testStartDate = new Date(dateText);
+            var testEndDate = new Date(endDateTextBox.val());
+            if (testStartDate > testEndDate)
+                endDateTextBox.val(dateText);
+        }
+        else {
+            endDateTextBox.val(dateText);
+        }
+    },
+    onSelect: function (selectedDateTime){
+        var start = $(this).datetimepicker('getDate');
+        $('#example16_end').datetimepicker('option', 'minDate', new Date(start.getTime()));
+    }
+});
+$('#example16_end').datetimepicker({
+    onClose: function(dateText, inst) {
+        var startDateTextBox = $('#example16_start');
+        if (startDateTextBox.val() != '') {
+            var testStartDate = new Date(startDateTextBox.val());
+            var testEndDate = new Date(dateText);
+            if (testStartDate > testEndDate)
+                startDateTextBox.val(dateText);
+        }
+        else {
+            startDateTextBox.val(dateText);
+        }
+    },
+    onSelect: function (selectedDateTime){
+        var end = $(this).datetimepicker('getDate');
+        $('#example16_start').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+    }
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the <a href="http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/" title="jQueryUI Slider Accessibility Addon">sliderAccess addon</a> to allow timepicker sliders to work on touch devices.</p>
+		<div>
+			<div id="example17"></div>
+		</div>
+	
+<pre>
+$('#example17').datetimepicker({
+	addSliderAccess: true,
+	sliderAccessArgs: { touchonly: false }
+});
+</pre>
+	</div>
+
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the utility function to format your own time. $.datepicker.formatTime(format, time, options)</p>
+		<dl>
+			<dt>format</dt><dd>required - string represenation of the time format to use</dd>
+			<dt>time</dt><dd>required - hash: { hour, minute, second, millisecond, timezone }</dd>
+			<dt>options</dt><dd>optional - hash of any options in regional translation (ampm, amNames, pmNames..)</dd>
+		</dl>
+		
+		<div>
+			<div id="example18"></div>
+		</div>
+	
+<pre>
+$('#example18').text(
+	$.datepicker.formatTime('hh:mm z', { hour: 14, minute: 36, timezone: '+2000' }, { ampm: false })
+);
+</pre>
+	</div>
+	
+			<h2>Version</h2>
+			<p>Version 1.0.1</p>
+
+			<p>Last updated on 07/01/2012</p>
+			<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
+			<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
+			<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
+				
+	 	</div>
+	 	<script type="text/javascript"> /*
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		*/</script> 
+		<script type="text/javascript"> /*
+		try {
+		var pageTracker = _gat._getTracker("UA-7602218-1");
+		pageTracker._trackPageview();
+		} catch(err) {}*/</script>
+	</body> 
+</html>

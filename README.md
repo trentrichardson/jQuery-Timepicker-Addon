@@ -1,6 +1,11 @@
 jQuery Timepicker Addon
 =======================
 
+About
+-----
+- Author: [Trent Richardson](http://trentrichardson.com)
+- Documentation: [http://trentrichardson.com/examples/timepicker/](http://trentrichardson.com/examples/timepicker/)
+
 Use
 ---
 - To use this plugin you must include jQuery and jQuery UI with datepicker and slider
@@ -9,4 +14,6 @@ Use
 
 Contributing Code - Please Read!
 --------------------------------
-All code contributions and bug reports are much appreciated.  Please be sure to apply your fixes to the "dev" branch.
+- All code contributions and bug reports are much appreciated.
+- Please be sure to apply your fixes to the "dev" branch.
+- Also note tabs are appreciated over spaces.
