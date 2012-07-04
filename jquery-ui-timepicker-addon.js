@@ -408,7 +408,7 @@ $.extend(Timepicker.prototype, {
 
 			this.hour_slider = $tp.find('#ui_tpicker_hour_'+ dp_id).slider({
 				orientation: "horizontal",
-				value: this.hour,
+				value: o.hour,
 				min: o.hourMin,
 				max: hourMax,
 				step: o.stepHour,
@@ -423,7 +423,7 @@ $.extend(Timepicker.prototype, {
 			// - Pass in Event and UI instance into slide function
 			this.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_id).slider({
 				orientation: "horizontal",
-				value: this.minute,
+				value: o.minute,
 				min: o.minuteMin,
 				max: minMax,
 				step: o.stepMinute,
@@ -435,7 +435,7 @@ $.extend(Timepicker.prototype, {
 
 			this.second_slider = $tp.find('#ui_tpicker_second_'+ dp_id).slider({
 				orientation: "horizontal",
-				value: this.second,
+				value: o.second,
 				min: o.secondMin,
 				max: secMax,
 				step: o.stepSecond,
