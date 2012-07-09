@@ -289,19 +289,17 @@ $.extend(Timepicker.prototype, {
 			hourMax = parseInt((o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)) ,10),
 			minMax  = parseInt((o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)) ,10),
 			secMax  = parseInt((o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)) ,10),
-			millisecMax  = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)) ,10),
-			dp_id = this.inst.id.toString().replace(/([^A-Za-z0-9_])/g, '');
+			millisecMax  = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)) ,10);
 
 		// Prevent displaying twice
-		//if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0) {
-		if ($dp.find("div#ui-timepicker-div-"+ dp_id).length === 0 && o.showTimepicker) {
+		if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
 			var noDisplay = ' style="display:none;"',
-				html =	'<div class="ui-timepicker-div" id="ui-timepicker-div-' + dp_id + '"><dl>' +
-						'<dt class="ui_tpicker_time_label" id="ui_tpicker_time_label_' + dp_id + '"' +
+				html =	'<div class="ui-timepicker-div"><dl>' +
+						'<dt class="ui_tpicker_time_label"' +
 						((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
-						'<dd class="ui_tpicker_time" id="ui_tpicker_time_' + dp_id + '"' +
+						'<dd class="ui_tpicker_time"' +
 						((o.showTime) ? '' : noDisplay) + '></dd>' +
-						'<dt class="ui_tpicker_hour_label" id="ui_tpicker_hour_label_' + dp_id + '"' +
+						'<dt class="ui_tpicker_hour_label"' +
 						((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
 				hourGridSize = 0,
 				minuteGridSize = 0,
@@ -310,7 +308,7 @@ $.extend(Timepicker.prototype, {
 				size = null;
 
             // Hours
-			html += '<dd class="ui_tpicker_hour"><div id="ui_tpicker_hour_' + dp_id + '"' +
+			html += '<dd class="ui_tpicker_hour"><div class="ui_tpicker_hour_slider"' +
 						((o.showHour) ? '' : noDisplay) + '></div>';
 			if (o.showHour && o.hourGrid > 0) {
 				html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
@@ -335,9 +333,9 @@ $.extend(Timepicker.prototype, {
 			html += '</dd>';
 
 			// Minutes
-			html += '<dt class="ui_tpicker_minute_label" id="ui_tpicker_minute_label_' + dp_id + '"' +
+			html += '<dt class="ui_tpicker_minute_label"' +
 					((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>'+
-					'<dd class="ui_tpicker_minute"><div id="ui_tpicker_minute_' + dp_id + '"' +
+					'<dd class="ui_tpicker_minute"><div class="ui_tpicker_minute_slider"' +
 							((o.showMinute) ? '' : noDisplay) + '></div>';
 
 			if (o.showMinute && o.minuteGrid > 0) {
@@ -353,9 +351,9 @@ $.extend(Timepicker.prototype, {
 			html += '</dd>';
 
 			// Seconds
-			html += '<dt class="ui_tpicker_second_label" id="ui_tpicker_second_label_' + dp_id + '"' +
+			html += '<dt class="ui_tpicker_second_label"' +
 					((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>'+
-					'<dd class="ui_tpicker_second"><div id="ui_tpicker_second_' + dp_id + '"'+
+					'<dd class="ui_tpicker_second"><div class="ui_tpicker_second_slider"'+
 							((o.showSecond) ? '' : noDisplay) + '></div>';
 
 			if (o.showSecond && o.secondGrid > 0) {
@@ -371,9 +369,9 @@ $.extend(Timepicker.prototype, {
 			html += '</dd>';
 
 			// Milliseconds
-			html += '<dt class="ui_tpicker_millisec_label" id="ui_tpicker_millisec_label_' + dp_id + '"' +
+			html += '<dt class="ui_tpicker_millisec_label"' +
 					((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>'+
-					'<dd class="ui_tpicker_millisec"><div id="ui_tpicker_millisec_' + dp_id + '"'+
+					'<dd class="ui_tpicker_millisec"><div class="ui_tpicker_millisec_slider"'+
 							((o.showMillisec) ? '' : noDisplay) + '></div>';
 
 			if (o.showMillisec && o.millisecGrid > 0) {
@@ -389,9 +387,9 @@ $.extend(Timepicker.prototype, {
 			html += '</dd>';
 
 			// Timezone
-			html += '<dt class="ui_tpicker_timezone_label" id="ui_tpicker_timezone_label_' + dp_id + '"' +
+			html += '<dt class="ui_tpicker_timezone_label"' +
 					((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
-			html += '<dd class="ui_tpicker_timezone" id="ui_tpicker_timezone_' + dp_id + '"'	+
+			html += '<dd class="ui_tpicker_timezone" '	+
 							((o.showTimezone) ? '' : noDisplay) + '></dd>';
 
 			html += '</dl></div>';
@@ -406,7 +404,7 @@ $.extend(Timepicker.prototype, {
 				$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 			}
 
-			this.hour_slider = $tp.find('#ui_tpicker_hour_'+ dp_id).slider({
+			this.hour_slider = $tp.find('.ui_tpicker_hour_slider').slider({
 				orientation: "horizontal",
 				value: this.hour,
 				min: o.hourMin,
@@ -421,7 +419,7 @@ $.extend(Timepicker.prototype, {
 
 			// Updated by Peter Medeiros:
 			// - Pass in Event and UI instance into slide function
-			this.minute_slider = $tp.find('#ui_tpicker_minute_'+ dp_id).slider({
+			this.minute_slider = $tp.find('.ui_tpicker_minute_slider').slider({
 				orientation: "horizontal",
 				value: this.minute,
 				min: o.minuteMin,
@@ -433,7 +431,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-			this.second_slider = $tp.find('#ui_tpicker_second_'+ dp_id).slider({
+			this.second_slider = $tp.find('.ui_tpicker_second_slider').slider({
 				orientation: "horizontal",
 				value: this.second,
 				min: o.secondMin,
@@ -445,7 +443,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-			this.millisec_slider = $tp.find('#ui_tpicker_millisec_'+ dp_id).slider({
+			this.millisec_slider = $tp.find('.ui_tpicker_millisec_slider').slider({
 				orientation: "horizontal",
 				value: this.millisec,
 				min: o.millisecMin,
@@ -457,7 +455,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select");
+			this.timezone_select = $tp.find('.ui_tpicker_timezone').append('<select></select>').find("select");
 			$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
 					return $("<option />")
@@ -579,7 +577,7 @@ $.extend(Timepicker.prototype, {
 			if ($buttonPanel.length) { $buttonPanel.before($tp); }
 			else { $dp.append($tp); }
 
-			this.$timeObj = $tp.find('#ui_tpicker_time_'+ dp_id);
+			this.$timeObj = $tp.find('.ui_tpicker_time');
 
 			if (this.inst !== null) {
 				var timeDefined = this.timeDefined;
