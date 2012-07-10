@@ -184,10 +184,7 @@ $.extend(Timepicker.prototype, {
 		if (tp_inst._defaults.timezoneList === null) {
 			var timezoneList = ['-1200','-1100','-1000','-0930','-0900','-0800','-0700','-0600','-0500','-0430','-0400','-0330','-0300','-0200','-0100','+0000','+0100','+0200','+0300',
 					'+0330','+0400','+0430','+0500','+0530','+0545','+0600','+0630','+0700','+0800','+0845','+0900','+0930','+1000','+1030','+1100','+1130','+1200','+1245','+1300','+1400'];
-			// var timezoneList = [];
-			// for (var i = -11; i <= 12; i++) {
-			// 	timezoneList.push((i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00');
-			// }
+			
 			if (tp_inst._defaults.timezoneIso8601) {
 				timezoneList = $.map(timezoneList, function(val) {
 					return val == '+0000' ? 'Z' : (val.substring(0, 3) + ':' + val.substring(3));
