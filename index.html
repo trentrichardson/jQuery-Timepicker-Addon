@@ -423,16 +423,62 @@ $('#example14').datetimepicker({
 });
 </pre>
 	</div>
+
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the utility function to format your own time. $.datepicker.formatTime(format, time, options)</p>
+		<dl>
+			<dt>timezoneList</dt><dd>An array of timezones, either with strings ['-0500','-0600',..] or objects [ { value: '-0500', label: 'EST'}, { value: '-0600', label: 'CST' },..]</dd>
+			<dt>timezoneIso8601</dt><dd>Formats the timezones in the timezone list in 8601 format
+		</dl>
+		
+		<div>
+			<input type="text" name="example15a" id="example15a" value="" />
+			<input type="text" name="example15b" id="example15b" value="" />
+			<input type="text" name="example15c" id="example15c" value="" />
+		</div>
 	
+<pre>
+$('#example15a').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true
+});
+
+$('#example15b').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true,
+	timezoneList: [ 
+			{ value: '-0500', label: 'Eastern'}, 
+			{ value: '-0600', label: 'Central' }, 
+			{ value: '-0700', label: 'Mountain' }, 
+			{ value: '-0800', label: 'Pacific' } 
+		]
+});
+
+$('#example15c').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true,
+	timezone: 'MT',
+	timezoneList: [ 
+			{ value: 'ET', label: 'Eastern'}, 
+			{ value: 'CT', label: 'Central' }, 
+			{ value: 'MT', label: 'Mountain' }, 
+			{ value: 'PT', label: 'Pacific' } 
+		]
+});
+</pre>
+	</div>
+
 	<!-- ============= example -->
 	<div class="example-container">
 		<p>Connect to the onSelect event (Use your browser's js console for this example).</p>
 		<div>
-			<input type="text" name="example15" id="example15" value="" />
+			<input type="text" name="example16" id="example15" value="" />
 		</div>
 	
 <pre>
-$('#example15').datetimepicker({
+$('#example16').datetimepicker({
 	showSecond: true,
 	showMillisec: true,
 	timeFormat: 'hh:mm:ss:l',
@@ -448,12 +494,12 @@ $('#example15').datetimepicker({
 	<div class="example-container">
 		<p>Create a datetime range with a start and end date.</p>
 		<div>
-			<input type="text" name="example16_start" id="example16_start" value="" /> <input type="text" name="example16_end" id="example16_end" value="" />
+			<input type="text" name="example17_start" id="example17_start" value="" /> <input type="text" name="example17_end" id="example17_end" value="" />
 		</div>
 	
 <pre>
-var startDateTextBox = $('#example16_start');
-var endDateTextBox = $('#example16_end');
+var startDateTextBox = $('#example17_start');
+var endDateTextBox = $('#example17_end');
 
 startDateTextBox.datetimepicker({ 
 	onClose: function(dateText, inst) {
@@ -494,11 +540,11 @@ endDateTextBox.datetimepicker({
 	<div class="example-container">
 		<p>Use the <a href="http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/" title="jQueryUI Slider Accessibility Addon">sliderAccess addon</a> to allow timepicker sliders to work on touch devices.</p>
 		<div>
-			<div id="example17"></div>
+			<div id="example18"></div>
 		</div>
 	
 <pre>
-$('#example17').datetimepicker({
+$('#example18').datetimepicker({
 	addSliderAccess: true,
 	sliderAccessArgs: { touchonly: false }
 });
@@ -516,15 +562,17 @@ $('#example17').datetimepicker({
 		</dl>
 		
 		<div>
-			<div id="example18"></div>
+			<div id="example19"></div>
 		</div>
 	
 <pre>
-$('#example18').text(
+$('#example19').text(
 	$.datepicker.formatTime('hh:mm z', { hour: 14, minute: 36, timezone: '+2000' }, { ampm: false })
 );
 </pre>
 	</div>
+
+
 	
 			<h2>Version</h2>
 			<p>Version 1.0.2</p>

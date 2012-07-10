@@ -41,8 +41,8 @@ function Timepicker() {
 		currentText: 'Now',
 		closeText: 'Done',
 		ampm: false,
-		amNames: ['AM', 'A'],
-		pmNames: ['PM', 'P'],
+		amNames: ['am', 'a'],
+		pmNames: ['pm', 'p'],
 		timeFormat: 'hh:mm tt',
 		timeSuffix: '',
 		timeOnlyTitle: 'Choose Time',
@@ -185,12 +185,12 @@ $.extend(Timepicker.prototype, {
 			var timezoneList = [];
 			for (var i = -11; i <= 12; i++) {
 				timezoneList.push((i >= 0 ? '+' : '-') + ('0' + Math.abs(i).toString()).slice(-2) + '00');
-            }
+			}
 			if (tp_inst._defaults.timezoneIso8601) {
 				timezoneList = $.map(timezoneList, function(val) {
 					return val == '+0000' ? 'Z' : (val.substring(0, 3) + ':' + val.substring(3));
 				});
-            }
+			}
 			tp_inst._defaults.timezoneList = timezoneList;
 		}
 
@@ -952,7 +952,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 			.replace(/s{1,2}/ig, '(\\d?\\d)')
 			.replace(/l{1}/ig, '(\\d?\\d?\\d)')
 			.replace(/t{1,2}/ig, getPatternAmpm(o.amNames, o.pmNames))
-			.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d)?')
+			.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d|\\S+)?')
 			.replace(/\s/g, '\\s?') + o.timeSuffix + '$',
 		order = getFormatPositions(timeFormat),
 		ampm = '',
@@ -1063,7 +1063,7 @@ $.datepicker.formatTime = function(format, time, options) {
 					if (match.length == 1) {
 						ampmName = ampmName.charAt(0);
                     }
-					return match.charAt(0) == 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
+					return match.charAt(0) === 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
 				}
 				return '';
 		}
