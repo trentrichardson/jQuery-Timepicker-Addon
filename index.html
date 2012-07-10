@@ -21,7 +21,7 @@
 			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 40px 0; padding: 20px; }
 			.example-container p{ font-weight: bold; }
 			.example-container > dl dt{ font-weight: bold; height: 20px; }
-			.example-container > dl dd{ margin: -20px 0 10px 100px; border-bottom: solid 1px #fff; }
+			.example-container > dl dd{ margin: -20px 0 10px 140px; border-bottom: solid 1px #fff; }
 			.example-container input{ width: 150px; }
 			.clear{ clear: both; }
 			#ui-datepicker-div, .ui-datepicker{ font-size: 80%; }			
@@ -164,6 +164,7 @@ $('#example4').datetimepicker({
 			<dt>showMinute</dt><dd>Show the minute, default=true</dd>
 			<dt>showSecond</dt><dd>Show the second, default=false</dd>
 			<dt>showMillisec</dt><dd>Show the millisecond, default=false</dd>
+			<dt>showTimezone</dt><dd>Show the timezone, default=false</dd>
 		</dl>
 		<div>
 			<input type="text" name="example5" id="example5" value="" />
@@ -427,12 +428,15 @@ $('#example14').datetimepicker({
 
 	<!-- ============= example -->
 	<div class="example-container">
-		<p>Use the utility function to format your own time. $.datepicker.formatTime(format, time, options)</p>
+		<p>The following demonstrates how to use timezones and timezone options.</p>
 		<dl>
 			<dt>timezoneList</dt><dd>An array of timezones, either with strings ['-0500','-0600',..] or objects [ { value: '-0500', label: 'EST'}, { value: '-0600', label: 'CST' },..]</dd>
-			<dt>timezoneIso8601</dt><dd>Formats the timezones in the timezone list in 8601 format
+			<dt>defaultTimezone</dt><dd>The default selected timezone in the dropdown. default='+0000'</dd>
+			<dt>useLocalTimezone</dt><dd>Use the local timezone of the client's browser. default=false</dd>
+			<dt>timezoneIso8601</dt><dd>Formats the timezones in the timezone list in 8601 format</dd>
 		</dl>
-		
+		<p>The third example here demonstrates using the abbreviation for timezones.  If this is used defaultTimezone must match the value (abbreviation).  Do note that useLocalTimezone may not function properly when using abbreviations as it will only work with '+0000' formats.</p>
+		<p>Daylight savings time may be interpreted as a timezone.  Create your own timezoneList and specify entries for Daylight Savings or use useLocalTimezone to help get the correct offset.</p>
 		<div>
 			<input type="text" name="example15a" id="example15a" value="" />
 			<input type="text" name="example15b" id="example15b" value="" />
