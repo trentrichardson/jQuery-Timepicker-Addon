@@ -650,21 +650,29 @@ $.extend(Timepicker.prototype, {
 					if (this.minute <= this._defaults.minuteMin) {
 						this.minute = this._defaults.minuteMin;
 						this._defaults.secondMin = minDateTime.getSeconds();
-					} else if (this.second <= this._defaults.secondMin){
-						this.second = this._defaults.secondMin;
-						this._defaults.millisecMin = minDateTime.getMilliseconds();
-					} else {
-						if(this.millisec < this._defaults.millisecMin) {
-							this.millisec = this._defaults.millisecMin;
-                        }
+						if (this.second <= this._defaults.secondMin){
+							this.second = this._defaults.secondMin;
+							this._defaults.millisecMin = minDateTime.getMilliseconds();
+						}
+						else {
+							if(this.millisec < this._defaults.millisecMin) {
+								this.millisec = this._defaults.millisecMin;
+							}
+							this._defaults.millisecMin = this.millisecMinOriginal;
+						}
+					}
+					else {
+						this._defaults.secondMin = this.secondMinOriginal;
 						this._defaults.millisecMin = this.millisecMinOriginal;
 					}
-				} else {
+				}
+				else {
 					this._defaults.minuteMin = this.minuteMinOriginal;
 					this._defaults.secondMin = this.secondMinOriginal;
 					this._defaults.millisecMin = this.millisecMinOriginal;
 				}
-			}else{
+			}
+			else {
 				this._defaults.hourMin = this.hourMinOriginal;
 				this._defaults.minuteMin = this.minuteMinOriginal;
 				this._defaults.secondMin = this.secondMinOriginal;
