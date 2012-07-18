@@ -253,8 +253,8 @@ $.extend(Timepicker.prototype, {
 		if (!this.inst) {
 			this.inst = $.datepicker._getInst(this.$input[0]);
 		}
-		
-		if (withDate || !this._defaults.timeOnly) 
+
+		if (withDate || !this._defaults.timeOnly)
 		{
 			var dp_dateFormat = $.datepicker._get(this.inst, 'dateFormat');
 			try {
@@ -275,7 +275,7 @@ $.extend(Timepicker.prototype, {
 			return true;
 		}
 	},
-	
+
 	//########################################################################
 	// generate and inject html for timepicker into ui datepicker
 	//########################################################################
@@ -828,7 +828,7 @@ $.extend(Timepicker.prototype, {
 		this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 		var formattedDateTime = this.formattedDate;
 		// remove following lines to force every changes in date picker to change the input value
-		// Bug descriptions: when an input field has a default value, and click on the field to pop up the date picker. 
+		// Bug descriptions: when an input field has a default value, and click on the field to pop up the date picker.
 		// If the user manually empty the value in the input field, the date picker will never change selected value.
 		//if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
 		//	return;
@@ -913,7 +913,7 @@ $.datepicker.parseDateTime = function(dateFormat, timeFormat, dateTimeString, da
 };
 
 $.datepicker.parseTime = function(timeFormat, timeString, options) {
-	
+
 	//########################################################################
 	// pattern for standard and localized AM/PM markers
 	//########################################################################
@@ -928,7 +928,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 		markers = $.map(markers, function(val) { return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&'); });
 		return '(' + markers.join('|') + ')?';
 	};
-   
+
 	//########################################################################
 	// figure out position of time elements.. cause js cant do named captures
 	//########################################################################
@@ -945,9 +945,9 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
         }
 		return orders;
 	};
-    
+
 	var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
-    
+
 	var regstr = '^' + timeFormat.toString()
 			.replace(/h{1,2}/ig, '(\\d?\\d)')
 			.replace(/m{1,2}/ig, '(\\d?\\d)')
@@ -963,14 +963,14 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 	treg = timeString.match(new RegExp(regstr, 'i'));
 
 	var resTime = {hour: 0, minute: 0, second: 0, millisec: 0};
-    
+
 	if (treg) {
 		if (order.t !== -1) {
 			if (treg[order.t] === undefined || treg[order.t].length === 0) {
 				ampm = '';
 				resTime.ampm = '';
 			} else {
-				ampm = $.inArray(treg[order.t], o.amNames) !== -1 ? 'AM' : 'PM';
+				ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames) !== -1 ? 'AM' : 'PM';
 				resTime.ampm = o[ampm == 'AM' ? 'amNames' : 'pmNames'][0];
 			}
 		}
@@ -1208,7 +1208,7 @@ $.datepicker._gotoToday = function(id) {
 $.datepicker._disableTimepickerDatepicker = function(target) {
 	var inst = this._getInst(target);
     if (!inst) { return; }
-    
+
 	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
@@ -1220,7 +1220,7 @@ $.datepicker._disableTimepickerDatepicker = function(target) {
 $.datepicker._enableTimepickerDatepicker = function(target) {
 	var inst = this._getInst(target);
     if (!inst) { return; }
-    
+
 	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
@@ -1243,13 +1243,13 @@ $.datepicker._setTime = function(inst, date) {
 			second = date ? date.getSeconds() : defaults.second,
 			millisec = date ? date.getMilliseconds() : defaults.millisec;
 		//check if within min/max times..
-		// correct check if within min/max times. 	
+		// correct check if within min/max times.
 		// Rewritten by Scott A. Woodward
 		var hourEq = hour === defaults.hourMin,
 			minuteEq = minute === defaults.minuteMin,
 			secondEq = second === defaults.secondMin;
 		var reset = false;
-		if(hour < defaults.hourMin || hour > defaults.hourMax)  
+		if(hour < defaults.hourMin || hour > defaults.hourMax)
 			reset = true;
 		else if( (minute < defaults.minuteMin || minute > defaults.minuteMax) && hourEq)
 			reset = true;
@@ -1283,9 +1283,9 @@ $.datepicker._setTime = function(inst, date) {
 $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 	var inst = this._getInst(target);
     if (!inst) { return; }
-    
+
 	var tp_inst = this._get(inst, 'timepicker');
-    
+
 	if (tp_inst) {
 		this._setDateFromField(inst);
 		var tp_date;
@@ -1310,7 +1310,7 @@ $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
 	var inst = this._getInst(target);
     if (!inst) { return; }
-    
+
 	var tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
 
 	this._updateDatepicker(inst);
@@ -1325,7 +1325,7 @@ $.datepicker._base_getDateDatepicker = $.datepicker._getDateDatepicker;
 $.datepicker._getDateDatepicker = function(target, noDefault) {
 	var inst = this._getInst(target);
     if (!inst) { return; }
-    
+
     var tp_inst = this._get(inst, 'timepicker');
 
 	if (tp_inst) {
@@ -1367,7 +1367,7 @@ $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 $.datepicker._optionDatepicker = function(target, name, value) {
 	var inst = this._getInst(target);
     if (!inst) { return null; }
-    
+
 	var tp_inst = this._get(inst, 'timepicker');
 	if (tp_inst) {
 		var min = null, max = null, onselect = null;
@@ -1447,7 +1447,7 @@ function extendRemove(target, props) {
 //#######################################################################################
 // Splits datetime string into date ans time substrings.
 // Throws exception when date can't be parsed
-// If only date is present, time substring eill be '' 
+// If only date is present, time substring eill be ''
 //#######################################################################################
 var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
 {
@@ -1462,7 +1462,7 @@ var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
             var timeString = dateTimeString.substring(dateStringLength);
 
             return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
-            
+
 		} else {
 			throw err;
 		}
@@ -1484,7 +1484,7 @@ var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dat
     if (splitRes[1] !== '')
     {
         var timeString = splitRes[1];
-        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
+        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;
         if ( timeString.indexOf(separator) !== 0) {
             throw 'Missing time separator';
         }
