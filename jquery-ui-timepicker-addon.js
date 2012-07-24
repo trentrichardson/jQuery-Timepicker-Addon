@@ -41,8 +41,8 @@ function Timepicker() {
 		currentText: 'Now',
 		closeText: 'Done',
 		ampm: false,
-		amNames: ['am', 'a'],
-		pmNames: ['pm', 'p'],
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		timeFormat: 'hh:mm tt',
 		timeSuffix: '',
 		timeOnlyTitle: 'Choose Time',
@@ -975,7 +975,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 				ampm = '';
 				resTime.ampm = '';
 			} else {
-				ampm = $.inArray(treg[order.t], o.amNames) !== -1 ? 'AM' : 'PM';
+				ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames) !== -1 ? 'AM' : 'PM';
 				resTime.ampm = o[ampm == 'AM' ? 'amNames' : 'pmNames'][0];
 			}
 		}
@@ -1055,7 +1055,7 @@ $.datepicker.formatTime = function(format, time, options) {
 			hour = 12;
         }
 	}
-	tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz])/g, function(match) {
+	tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
 		switch (match.toLowerCase()) {
 			case 'hh': return ('0' + hour).slice(-2);
 			case 'h':  return hour;
@@ -1073,6 +1073,8 @@ $.datepicker.formatTime = function(format, time, options) {
 					return match.charAt(0) === 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
 				}
 				return '';
+			default:
+				return match.replace(/\'/g, "") || "'";
 		}
 	});
 
