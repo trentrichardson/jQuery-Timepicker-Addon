@@ -1050,7 +1050,7 @@ $.datepicker.formatTime = function(format, time, options) {
 			hour = 12;
         }
 	}
-	tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz])/g, function(match) {
+	tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
 		switch (match.toLowerCase()) {
 			case 'hh': return ('0' + hour).slice(-2);
 			case 'h':  return hour;
@@ -1068,6 +1068,8 @@ $.datepicker.formatTime = function(format, time, options) {
 					return match.charAt(0) == 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
 				}
 				return '';
+                        default:
+                                return match.replace(/\'/g, "") || "'";
 		}
 	});
 
