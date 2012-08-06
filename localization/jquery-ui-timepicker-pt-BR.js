@@ -2,9 +2,9 @@
 /* Written by Diogo Damiani (diogodamiani@gmail.com) */
 (function ($) {
 	$.timepicker.regional['pt-BR'] = {
-		timeOnlyTitle: 'Escolha a hora',
-		timeText: 'Hora',
-		hourText: 'Horas',
+		timeOnlyTitle: 'Escolha a horário',
+		timeText: 'Horário',
+		hourText: 'Hora',
 		minuteText: 'Minutos',
 		secondText: 'Segundos',
 		millisecText: 'Milissegundos',

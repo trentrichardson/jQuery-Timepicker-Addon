@@ -21,7 +21,7 @@
 			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 40px 0; padding: 20px; }
 			.example-container p{ font-weight: bold; }
 			.example-container > dl dt{ font-weight: bold; height: 20px; }
-			.example-container > dl dd{ margin: -20px 0 10px 100px; border-bottom: solid 1px #fff; }
+			.example-container > dl dd{ margin: -20px 0 10px 140px; border-bottom: solid 1px #fff; }
 			.example-container input{ width: 150px; }
 			.clear{ clear: both; }
 			#ui-datepicker-div, .ui-datepicker{ font-size: 80%; }			
@@ -164,6 +164,7 @@ $('#example4').datetimepicker({
 			<dt>showMinute</dt><dd>Show the minute, default=true</dd>
 			<dt>showSecond</dt><dd>Show the second, default=false</dd>
 			<dt>showMillisec</dt><dd>Show the millisecond, default=false</dd>
+			<dt>showTimezone</dt><dd>Show the timezone, default=false</dd>
 		</dl>
 		<div>
 			<input type="text" name="example5" id="example5" value="" />
@@ -423,16 +424,65 @@ $('#example14').datetimepicker({
 });
 </pre>
 	</div>
+
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>The following demonstrates how to use timezones and timezone options.</p>
+		<dl>
+			<dt>timezoneList</dt><dd>An array of timezones, either with strings ['-0500','-0600',..] or objects [ { value: '-0500', label: 'EST'}, { value: '-0600', label: 'CST' },..]</dd>
+			<dt>defaultTimezone</dt><dd>The default selected timezone in the dropdown. default='+0000'</dd>
+			<dt>useLocalTimezone</dt><dd>Use the local timezone of the client's browser. default=false</dd>
+			<dt>timezoneIso8601</dt><dd>Formats the timezones in the timezone list in 8601 format</dd>
+		</dl>
+		<p>The third example here demonstrates using the abbreviation for timezones.  If this is used defaultTimezone must match the value (abbreviation).  Do note that useLocalTimezone may not function properly when using abbreviations as it will only work with '+0000' formats.</p>
+		<p>Daylight savings time may be interpreted as a timezone.  Create your own timezoneList and specify entries for Daylight Savings or use useLocalTimezone to help get the correct offset.</p>
+		<div>
+			<input type="text" name="example15a" id="example15a" value="" />
+			<input type="text" name="example15b" id="example15b" value="" />
+			<input type="text" name="example15c" id="example15c" value="" />
+		</div>
 	
+<pre>
+$('#example15a').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true
+});
+
+$('#example15b').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true,
+	timezoneList: [ 
+			{ value: '-0500', label: 'Eastern'}, 
+			{ value: '-0600', label: 'Central' }, 
+			{ value: '-0700', label: 'Mountain' }, 
+			{ value: '-0800', label: 'Pacific' } 
+		]
+});
+
+$('#example15c').datetimepicker({
+	timeFormat: 'hh:mm z',
+	showTimezone: true,
+	timezone: 'MT',
+	timezoneList: [ 
+			{ value: 'ET', label: 'Eastern'}, 
+			{ value: 'CT', label: 'Central' }, 
+			{ value: 'MT', label: 'Mountain' }, 
+			{ value: 'PT', label: 'Pacific' } 
+		]
+});
+</pre>
+	</div>
+
 	<!-- ============= example -->
 	<div class="example-container">
 		<p>Connect to the onSelect event (Use your browser's js console for this example).</p>
 		<div>
-			<input type="text" name="example15" id="example15" value="" />
+			<input type="text" name="example16" id="example15" value="" />
 		</div>
 	
 <pre>
-$('#example15').datetimepicker({
+$('#example16').datetimepicker({
 	showSecond: true,
 	showMillisec: true,
 	timeFormat: 'hh:mm:ss:l',
@@ -448,45 +498,44 @@ $('#example15').datetimepicker({
 	<div class="example-container">
 		<p>Create a datetime range with a start and end date.</p>
 		<div>
-			<input type="text" name="example16_start" id="example16_start" value="" /> <input type="text" name="example16_end" id="example16_end" value="" />
+			<input type="text" name="example17_start" id="example17_start" value="" /> <input type="text" name="example17_end" id="example17_end" value="" />
 		</div>
 	
 <pre>
-$('#example16_start').datetimepicker({
-    onClose: function(dateText, inst) {
-        var endDateTextBox = $('#example16_end');
-        if (endDateTextBox.val() != '') {
-            var testStartDate = new Date(dateText);
-            var testEndDate = new Date(endDateTextBox.val());
-            if (testStartDate > testEndDate)
-                endDateTextBox.val(dateText);
-        }
-        else {
-            endDateTextBox.val(dateText);
-        }
-    },
-    onSelect: function (selectedDateTime){
-        var start = $(this).datetimepicker('getDate');
-        $('#example16_end').datetimepicker('option', 'minDate', new Date(start.getTime()));
-    }
+var startDateTextBox = $('#example17_start');
+var endDateTextBox = $('#example17_end');
+
+startDateTextBox.datetimepicker({ 
+	onClose: function(dateText, inst) {
+		if (endDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				endDateTextBox.datetimepicker('setDate', testStartDate);
+		}
+		else {
+			endDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		endDateTextBox.datetimepicker('option', 'minDate', startDateTextBox.datetimepicker('getDate') );
+	}
 });
-$('#example16_end').datetimepicker({
-    onClose: function(dateText, inst) {
-        var startDateTextBox = $('#example16_start');
-        if (startDateTextBox.val() != '') {
-            var testStartDate = new Date(startDateTextBox.val());
-            var testEndDate = new Date(dateText);
-            if (testStartDate > testEndDate)
-                startDateTextBox.val(dateText);
-        }
-        else {
-            startDateTextBox.val(dateText);
-        }
-    },
-    onSelect: function (selectedDateTime){
-        var end = $(this).datetimepicker('getDate');
-        $('#example16_start').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
-    }
+endDateTextBox.datetimepicker({ 
+	onClose: function(dateText, inst) {
+		if (startDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				startDateTextBox.datetimepicker('setDate', testEndDate);
+		}
+		else {
+			startDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		startDateTextBox.datetimepicker('option', 'maxDate', endDateTextBox.datetimepicker('getDate') );
+	}
 });
 </pre>
 	</div>
@@ -495,11 +544,11 @@ $('#example16_end').datetimepicker({
 	<div class="example-container">
 		<p>Use the <a href="http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/" title="jQueryUI Slider Accessibility Addon">sliderAccess addon</a> to allow timepicker sliders to work on touch devices.</p>
 		<div>
-			<div id="example17"></div>
+			<div id="example18"></div>
 		</div>
 	
 <pre>
-$('#example17').datetimepicker({
+$('#example18').datetimepicker({
 	addSliderAccess: true,
 	sliderAccessArgs: { touchonly: false }
 });
@@ -517,18 +566,20 @@ $('#example17').datetimepicker({
 		</dl>
 		
 		<div>
-			<div id="example18"></div>
+			<div id="example19"></div>
 		</div>
 	
 <pre>
-$('#example18').text(
+$('#example19').text(
 	$.datepicker.formatTime('hh:mm z', { hour: 14, minute: 36, timezone: '+2000' }, { ampm: false })
 );
 </pre>
 	</div>
+
+
 	
 			<h2>Version</h2>
-			<p>Version 1.0.1</p>
+			<p>Version 1.0.2</p>
 
 			<p>Last updated on 07/01/2012</p>
 			<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
