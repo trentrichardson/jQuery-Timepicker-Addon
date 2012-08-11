@@ -251,7 +251,7 @@ $.extend(Timepicker.prototype, {
 	_parseTime: function(timeString, withDate) {
 		if (!this.inst) {
 			this.inst = $.datepicker._getInst(this.$input[0]);
-        }
+		}
 		
 		if (withDate || !this._defaults.timeOnly) 
 		{
@@ -1038,7 +1038,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 //########################################################################
 $.datepicker.formatTime = function(format, time, options) {
 	options = options || {};
-	options = $.extend($.timepicker._defaults, options);
+	options = $.extend({}, $.timepicker._defaults, options);
 	time = $.extend({hour:0, minute:0, second:0, millisec:0, timezone:'+0000'}, time);
 
 	var tmptime = format;
