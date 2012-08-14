@@ -1092,8 +1092,6 @@ $.datepicker._selectDate = function (id, dateStr) {
 	var inst = this._getInst($(id)[0]),
 		tp_inst = this._get(inst, 'timepicker');
 
-	inst.drawMonth += inst.settings.showCurrentAtPos;
-
 	if (tp_inst) {
 		tp_inst._limitMinMaxDateTime(inst, true);
 		inst.inline = inst.stay_open = true;
