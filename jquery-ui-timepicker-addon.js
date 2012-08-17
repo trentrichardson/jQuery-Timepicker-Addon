@@ -1535,4 +1535,109 @@ var timeZoneString = function(date)
 $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "1.0.2";
 
+/**
+ * Calls `timepicker()` on the `startTime` and `endTime` elements, and configures them to
+ * enforce date range limits.
+ * n.b. The input value must be correctly formatted (reformatting is not supported)
+ * @param  Element startTime
+ * @param  Element endTime
+ * @param  obj options Options for the timepicker() call
+ * @return jQuery
+ */
+$.timepicker.timeRange = function( startTime, endTime, options ) {
+	return $.timepicker.handleRange('timepicker', startTime, endTime, options);
+}
+
+/**
+ * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to
+ * enforce date range limits.
+ * @param  Element startTime
+ * @param  Element endTime
+ * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+ *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+ * @param  string method Can be used to specify the type of picker to be added
+ * @return jQuery
+ */
+$.timepicker.dateTimeRange = function( startTime, endTime, options ) {
+	$.timepicker.dateRange(startTime, endTime, options, 'datetimepicker');
+}
+
+/**
+ * Calls `method` on the `startTime` and `endTime` elements, and configures them to
+ * enforce date range limits.
+ * @param  Element startTime
+ * @param  Element endTime
+ * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+ *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+ * @param  string method Can be used to specify the type of picker to be added
+ * @return jQuery
+ */
+$.timepicker.dateRange = function( startTime, endTime, options, method ) {
+	method = method || 'datepicker';
+	$.timepicker.handleRange(method, startTime, endTime, options);
+}
+
+/**
+ * Calls `method` on the `startTime` and `endTime` elements, and configures them to
+ * enforce date range limits.
+ * @param  string method Can be used to specify the type of picker to be added
+ * @param  Element startTime
+ * @param  Element endTime
+ * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+ *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+ * @return jQuery
+ */
+$.timepicker.handleRange = function( method, startTime, endTime, options ) {
+	$.fn[method].call(startTime, $.extend({}, {
+			onClose: function(dateText, inst) {
+				checkDates(this, endTime, dateText);
+			},
+			onSelect: function (selectedDateTime) {
+				selected(this, endTime, 'minDate');
+			}
+		}, options)
+	);
+	$.fn[method].call(endTime, $.extend({}, {
+			onClose: function(dateText, inst) {
+				checkDates(this, startTime, dateText);
+			},
+			onSelect: function (selectedDateTime) {
+				selected(this, startTime, 'maxDate');
+			}
+		}, options)
+	);
+	// timepicker doesn't provide access to its 'timeFormat' option, 
+	// nor could I get datepicker.formatTime() to behave with times, so I
+	// have disabled reformatting for timepicker
+	if( method != 'timepicker' && options.reformat ) {
+		$([startTime, endTime]).each(function() {
+			var format = $(this)[method].call($(this), 'option', 'dateFormat'),
+				date = new Date($(this).val());
+			if( $(this).val() && date ) {
+				$(this).val($.datepicker.formatDate(format, date));
+			}
+		});
+	}
+	checkDates(startTime, endTime, startTime.val());
+	function checkDates(changed, other, dateText) {
+		if( other.val() && (new Date(startTime.val()) > new Date(endTime.val())) ) {
+			other.val(dateText);
+		}
+	}
+	selected(startTime, endTime, 'minDate');
+	selected(endTime, startTime, 'maxDate');
+	function selected(changed, other, option) {
+		if( !$(changed).val() ) {
+			return;
+		}
+		var date = $(changed)[method].call($(changed), 'getDate');
+		// timepicker doesn't implement 'getDate' and returns a jQuery
+		if( date.getTime ) {
+			$(other)[method].call($(other), 'option', option, date);
+		}
+	}
+	return $([startTime.get(0), endTime.get(0)]);
+};
+
+
 })(jQuery);
