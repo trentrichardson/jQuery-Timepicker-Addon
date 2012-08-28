@@ -280,7 +280,7 @@ $.extend(Timepicker.prototype, {
 	//########################################################################
 	_injectTimePicker: function() {
 		var $dp = this.inst.dpDiv,
-			o = this._defaults,
+			o = this.inst.settings,
 			tp_inst = this,
 			// Added by Peter Medeiros:
 			// - Figure out what the hour/minute/second max should be based on the step values.
