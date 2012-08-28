@@ -1439,102 +1439,10 @@ $.datepicker._optionDatepicker = function(target, name, value) {
 	return this._base_optionDatepicker(target, name, value);
 };
 
-//#######################################################################################
-// jQuery extend now ignores nulls!
-//#######################################################################################
-function extendRemove(target, props) {
-	$.extend(target, props);
-	for (var name in props) {
-		if (props[name] === null || props[name] === undefined) {
-			target[name] = props[name];
-        }
-    }
-	return target;
-}
 
 //#######################################################################################
-// Splits datetime string into date ans time substrings.
-// Throws exception when date can't be parsed
-// If only date is present, time substring eill be '' 
+// Changes by simonvwade to better handle time range limits
 //#######################################################################################
-var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
-{
-	try {
-		var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings);
-	} catch (err) {
-		if (err.indexOf(":") >= 0) {
-			// Hack!  The error message ends with a colon, a space, and
-			// the "extra" characters.  We rely on that instead of
-			// attempting to perfectly reproduce the parsing algorithm.
-            var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
-            var timeString = dateTimeString.substring(dateStringLength);
-
-            return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
-            
-		} else {
-			throw err;
-		}
-	}
-	return [dateTimeString, ''];
-};
-
-//#######################################################################################
-// Internal function to parse datetime interval
-// Returns: {date: Date, timeObj: Object}, where
-//   date - parsed date without time (type Date)
-//   timeObj = {hour: , minute: , second: , millisec: } - parsed time. Optional
-//#######################################################################################
-var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings)
-{
-    var date;
-    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
-	date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-    if (splitRes[1] !== '')
-    {
-        var timeString = splitRes[1];
-        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
-        if ( timeString.indexOf(separator) !== 0) {
-            throw 'Missing time separator';
-        }
-        timeString = timeString.substring(separator.length);
-        var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
-        if (parsedTime === null) {
-            throw 'Wrong time format';
-        }
-        return {date: date, timeObj: parsedTime};
-    } else {
-        return {date: date};
-    }
-};
-
-//#######################################################################################
-// Internal function to set timezone_select to the local timezone
-//#######################################################################################
-var selectLocalTimeZone = function(tp_inst, date)
-{
-	if (tp_inst && tp_inst.timezone_select) {
-		tp_inst._defaults.useLocalTimezone = true;
-		var now = typeof date !== 'undefined' ? date : new Date();
-		var tzoffset = timeZoneString(now);
-		if (tp_inst._defaults.timezoneIso8601) {
-			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
-        }
-		tp_inst.timezone_select.val(tzoffset);
-	}
-};
-
-// Input: Date Object
-// Output: String with timezone offset, e.g. '+0100'
-var timeZoneString = function(date)
-{
-	var off = date.getTimezoneOffset() * -10100 / 60;
-	var timezone = (off >= 0 ? '+' : '-') + Math.abs(off).toString().substr(1);
-	return timezone;
-};
-
-$.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "1.0.2";
-
 /**
  * Calls `timepicker()` on the `startTime` and `endTime` elements, and configures them to
  * enforce date range limits.
@@ -1638,6 +1546,102 @@ $.timepicker.handleRange = function( method, startTime, endTime, options ) {
 	}
 	return $([startTime.get(0), endTime.get(0)]);
 };
+
+//#######################################################################################
+// jQuery extend now ignores nulls!
+//#######################################################################################
+function extendRemove(target, props) {
+	$.extend(target, props);
+	for (var name in props) {
+		if (props[name] === null || props[name] === undefined) {
+			target[name] = props[name];
+        }
+    }
+	return target;
+}
+
+//#######################################################################################
+// Splits datetime string into date ans time substrings.
+// Throws exception when date can't be parsed
+// If only date is present, time substring eill be '' 
+//#######################################################################################
+var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
+{
+	try {
+		var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings);
+	} catch (err) {
+		if (err.indexOf(":") >= 0) {
+			// Hack!  The error message ends with a colon, a space, and
+			// the "extra" characters.  We rely on that instead of
+			// attempting to perfectly reproduce the parsing algorithm.
+            var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
+            var timeString = dateTimeString.substring(dateStringLength);
+
+            return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
+            
+		} else {
+			throw err;
+		}
+	}
+	return [dateTimeString, ''];
+};
+
+//#######################################################################################
+// Internal function to parse datetime interval
+// Returns: {date: Date, timeObj: Object}, where
+//   date - parsed date without time (type Date)
+//   timeObj = {hour: , minute: , second: , millisec: } - parsed time. Optional
+//#######################################################################################
+var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings)
+{
+    var date;
+    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
+	date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
+    if (splitRes[1] !== '')
+    {
+        var timeString = splitRes[1];
+        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
+        if ( timeString.indexOf(separator) !== 0) {
+            throw 'Missing time separator';
+        }
+        timeString = timeString.substring(separator.length);
+        var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+        if (parsedTime === null) {
+            throw 'Wrong time format';
+        }
+        return {date: date, timeObj: parsedTime};
+    } else {
+        return {date: date};
+    }
+};
+
+//#######################################################################################
+// Internal function to set timezone_select to the local timezone
+//#######################################################################################
+var selectLocalTimeZone = function(tp_inst, date)
+{
+	if (tp_inst && tp_inst.timezone_select) {
+		tp_inst._defaults.useLocalTimezone = true;
+		var now = typeof date !== 'undefined' ? date : new Date();
+		var tzoffset = timeZoneString(now);
+		if (tp_inst._defaults.timezoneIso8601) {
+			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
+        }
+		tp_inst.timezone_select.val(tzoffset);
+	}
+};
+
+// Input: Date Object
+// Output: String with timezone offset, e.g. '+0100'
+var timeZoneString = function(date)
+{
+	var off = date.getTimezoneOffset() * -10100 / 60;
+	var timezone = (off >= 0 ? '+' : '-') + Math.abs(off).toString().substr(1);
+	return timezone;
+};
+
+$.timepicker = new Timepicker(); // singleton instance
+$.timepicker.version = "1.0.2";
 
 
 })(jQuery);
