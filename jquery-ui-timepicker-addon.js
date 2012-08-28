@@ -230,6 +230,10 @@ $.extend(Timepicker.prototype, {
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
         }
+        tp_inst.$input.bind('focus', function() {
+			tp_inst._onFocus();
+        });
+
 		return tp_inst;
 	},
 
@@ -748,22 +752,6 @@ $.extend(Timepicker.prototype, {
 	// on time change is also called when the time is updated in the text field
 	//########################################################################
 	_onTimeChange: function() {
-        if( !this.$input.val() && this._defaults.defaultValue ) {
-        	this.$input.val(this._defaults.defaultValue);
-        	var inst = $.datepicker._getInst(this.$input.get(0)),
-        		tp_inst = $.datepicker._get(inst, 'timepicker');
-    		if (tp_inst) {
-    			if (tp_inst._defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
-    				try {
-    					$.datepicker._updateDatepicker(inst);
-    				}
-    				catch (err) {
-    					$.datepicker.log(err);
-    				}
-    			}
-    		}
-        }
-
 		var hour   = (this.hour_slider) ? this.hour_slider.slider('value') : false,
 			minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
 			second = (this.second_slider) ? this.second_slider.slider('value') : false,
@@ -878,6 +866,24 @@ $.extend(Timepicker.prototype, {
 		}
 
 		this.$input.trigger("change");
+	},
+
+	_onFocus: function() {
+		if( !this.$input.val() && this._defaults.defaultValue ) {
+			this.$input.val(this._defaults.defaultValue);
+			var inst = $.datepicker._getInst(this.$input.get(0)),
+			tp_inst = $.datepicker._get(inst, 'timepicker');
+			if (tp_inst) {
+				if (tp_inst._defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
+					try {
+						$.datepicker._updateDatepicker(inst);
+					}
+					catch (err) {
+						$.datepicker.log(err);
+					}
+				}
+			}
+		}
 	}
 
 });
