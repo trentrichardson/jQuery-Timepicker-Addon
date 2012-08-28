@@ -96,7 +96,7 @@ function Timepicker() {
 		timezoneList: null,
 		addSliderAccess: false,
 		sliderAccessArgs: null,
-		defaultValue: null,
+		defaultValue: null
 	};
 	$.extend(this._defaults, this.regional['']);
 }
