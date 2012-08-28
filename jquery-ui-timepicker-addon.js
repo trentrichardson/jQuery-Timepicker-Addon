@@ -95,7 +95,8 @@ function Timepicker() {
 		timezoneIso8601: false,
 		timezoneList: null,
 		addSliderAccess: false,
-		sliderAccessArgs: null
+		sliderAccessArgs: null,
+		defaultValue: null
 	};
 	$.extend(this._defaults, this.regional['']);
 }
@@ -229,6 +230,10 @@ $.extend(Timepicker.prototype, {
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
         }
+        tp_inst.$input.bind('focus', function() {
+			tp_inst._onFocus();
+        });
+
 		return tp_inst;
 	},
 
@@ -861,6 +866,24 @@ $.extend(Timepicker.prototype, {
 		}
 
 		this.$input.trigger("change");
+	},
+
+	_onFocus: function() {
+		if( !this.$input.val() && this._defaults.defaultValue ) {
+			this.$input.val(this._defaults.defaultValue);
+			var inst = $.datepicker._getInst(this.$input.get(0)),
+			tp_inst = $.datepicker._get(inst, 'timepicker');
+			if (tp_inst) {
+				if (tp_inst._defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
+					try {
+						$.datepicker._updateDatepicker(inst);
+					}
+					catch (err) {
+						$.datepicker.log(err);
+					}
+				}
+			}
+		}
 	}
 
 });
@@ -1591,23 +1614,23 @@ $.timepicker.dateRange = function( startTime, endTime, options, method ) {
  * @return jQuery
  */
 $.timepicker.handleRange = function( method, startTime, endTime, options ) {
-	$.fn[method].call(startTime, $.extend({}, {
+	$.fn[method].call(startTime, $.extend({
 			onClose: function(dateText, inst) {
 				checkDates(this, endTime, dateText);
 			},
 			onSelect: function (selectedDateTime) {
 				selected(this, endTime, 'minDate');
 			}
-		}, options)
+		}, options, options.start)
 	);
-	$.fn[method].call(endTime, $.extend({}, {
+	$.fn[method].call(endTime, $.extend({
 			onClose: function(dateText, inst) {
 				checkDates(this, startTime, dateText);
 			},
 			onSelect: function (selectedDateTime) {
 				selected(this, startTime, 'maxDate');
 			}
-		}, options)
+		}, options, options.end)
 	);
 	// timepicker doesn't provide access to its 'timeFormat' option, 
 	// nor could I get datepicker.formatTime() to behave with times, so I
