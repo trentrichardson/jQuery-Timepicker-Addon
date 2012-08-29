@@ -91,6 +91,8 @@ function Timepicker() {
 		alwaysSetTime: true,
 		separator: ' ',
 		altFieldTimeOnly: true,
+		altSeparator: null,
+		altTimeSuffix: null,
 		showTimepicker: true,
 		timezoneIso8601: false,
 		timezoneList: null,
@@ -859,8 +861,21 @@ $.extend(Timepicker.prototype, {
 			this.$altInput.val(this.formattedTime);
 			this.$input.val(this.formattedDate);
 		} else if(this.$altInput) {
-			this.$altInput.val(formattedDateTime);
 			this.$input.val(formattedDateTime);
+			var altFormattedDateTime = '',
+				altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
+				altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+			if (this._defaults.altFormat)
+				altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
+			else
+				altFormattedDateTime = this.formattedDate;
+			if (altFormattedDateTime)
+				altFormattedDateTime += altSeparator;
+			if (this._defaults.altTimeFormat)
+				altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
+			else
+				altFormattedDateTime += this.formattedTime + altTimeSuffix;
+			this.$altInput.val(altFormattedDateTime);
 		} else {
 			this.$input.val(formattedDateTime);
 		}
