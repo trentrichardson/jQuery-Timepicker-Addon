@@ -1565,9 +1565,10 @@ var selectLocalTimeZone = function(tp_inst, date)
 // Output: String with timezone offset, e.g. '+0100'
 var timeZoneString = function(date)
 {
-	var off = date.getTimezoneOffset() * -10100 / 60;
-	var timezone = (off >= 0 ? '+' : '-') + Math.abs(off).toString().substr(1);
-	return timezone;
+	var off = date.getTimezoneOffset() * -1,
+		minutes = off % 60,
+		hours = (off-minutes) / 60;
+	return (off >= 0 ? '+' : '-') + ('0'+(hours*101).toString()).substr(-2) + ('0'+(minutes*101).toString()).substr(-2);
 };
 
 $.timepicker = new Timepicker(); // singleton instance
