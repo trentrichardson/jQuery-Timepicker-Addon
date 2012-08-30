@@ -471,7 +471,7 @@ $.extend(Timepicker.prototype, {
 			);
 			if (typeof(this.timezone) != "undefined" && this.timezone !== null && this.timezone !== "") {
 				var local_date = new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12);
-				var local_timezone = timeZoneString(local_date);
+				var local_timezone = $.timepicker.timeZoneOffsetString(local_date);
 				if (local_timezone == this.timezone) {
 					selectLocalTimeZone(tp_inst);
 				} else {
@@ -1553,7 +1553,7 @@ var selectLocalTimeZone = function(tp_inst, date)
 	if (tp_inst && tp_inst.timezone_select) {
 		tp_inst._defaults.useLocalTimezone = true;
 		var now = typeof date !== 'undefined' ? date : new Date();
-		var tzoffset = timeZoneString(now);
+		var tzoffset = $.timepicker.timeZoneOffsetString(now);
 		if (tp_inst._defaults.timezoneIso8601) {
 			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
         }
@@ -1561,18 +1561,20 @@ var selectLocalTimeZone = function(tp_inst, date)
 	}
 };
 
-// Input: Date Object
-// Output: String with timezone offset, e.g. '+0100'
-var timeZoneString = function(date)
-{
+$.timepicker = new Timepicker(); // singleton instance
+$.timepicker.version = "1.0.2";
+
+/**
+ * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
+ * @param  date
+ * @return string
+ */
+$.timepicker.timeZoneOffsetString = function(date) {
 	var off = date.getTimezoneOffset() * -1,
 		minutes = off % 60,
 		hours = (off-minutes) / 60;
 	return (off >= 0 ? '+' : '-') + ('0'+(hours*101).toString()).substr(-2) + ('0'+(minutes*101).toString()).substr(-2);
 };
-
-$.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "1.0.2";
 
 //#######################################################################################
 // Changes by simonvwade to better handle time range limits
