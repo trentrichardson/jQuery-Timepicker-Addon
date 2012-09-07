@@ -1031,8 +1031,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 // options = essentially the regional[].. amNames, pmNames, ampm
 //########################################################################
 $.datepicker.formatTime = function(format, time, options) {
-	options = options || {};
-	options = $.extend($.timepicker._defaults, options);
+	options = $.extend({}, $.timepicker._defaults, options);
 	time = $.extend({hour:0, minute:0, second:0, millisec:0, timezone:'+0000'}, time);
 
 	var tmptime = format;
