@@ -1,7 +1,7 @@
 /*
 * jQuery timepicker addon
 * By: Trent Richardson [http://trentrichardson.com]
-* Version 1.0.2-dev
+* Version 1.0.2
 * Last Modified: 07/01/2012
 *
 * Copyright 2012 Trent Richardson
@@ -1562,7 +1562,6 @@ var selectLocalTimeZone = function(tp_inst, date)
 };
 
 $.timepicker = new Timepicker(); // singleton instance
-$.timepicker.version = "1.0.2";
 
 /**
  * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
@@ -1682,5 +1681,7 @@ $.timepicker.handleRange = function( method, startTime, endTime, options ) {
 	}
 	return $([startTime.get(0), endTime.get(0)]);
 };
+
+$.timepicker.version = "1.0.2";
 
 })(jQuery);
