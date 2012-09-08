@@ -19,7 +19,7 @@
 			pre{ padding: 20px; background-color: #ffffcc; border: solid 1px #fff; }
 			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
 			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 40px 0; padding: 20px; }
-			.example-container p{ font-weight: bold; }
+			.example-container p{  }
 			.example-container > dl dt{ font-weight: bold; height: 20px; }
 			.example-container > dl dd{ margin: -20px 0 10px 140px; border-bottom: solid 1px #fff; }
 			.example-container input{ width: 150px; }
@@ -139,7 +139,7 @@ $('#example3').timepicker({});
 			<dt>T</dt><dd>A or P for AM/PM</dd>
 			<dt>tt</dt><dd>am or pm for AM/PM</dd>
 			<dt>TT</dt><dd>AM or PM for AM/PM</dd>
-			<dt>z</dt><dd>Timezone</dd>
+			<dt>z</dt><dd>Timezone (as defined by <a href="#example15a" title="timezoneList">timezoneList</a>)</dd>
 		</dl>
 		<p>Also related to your timeFormat, but not required, is the separator option</p>
 		<dl>
@@ -316,18 +316,24 @@ $.datepicker.regional['ru'] = {
 };
 $.datepicker.setDefaults($.datepicker.regional['ru']);
 
+
 $.timepicker.regional['ru'] = {
 	timeOnlyTitle: 'Выберите время',
 	timeText: 'Время',
 	hourText: 'Часы',
 	minuteText: 'Минуты',
 	secondText: 'Секунды',
-	millisecText: 'миллисекунды',
-	currentText: 'Теперь',
+	millisecText: 'Миллисекунды',
+	timezoneText: 'Часовой пояс',
+	currentText: 'Сейчас',
 	closeText: 'Закрыть',
+	timeFormat: 'hh:mm tt',
+	amNames: ['AM', 'A'],
+	pmNames: ['PM', 'P'],
 	ampm: false
 };
 $.timepicker.setDefaults($.timepicker.regional['ru']);
+
 </pre>
 
 		</div>
@@ -479,7 +485,7 @@ $('#example15c').datetimepicker({
 	<div class="example-container">
 		<p>Connect to the onSelect event (Use your browser's js console for this example).</p>
 		<div>
-			<input type="text" name="example16" id="example15" value="" />
+			<input type="text" name="example16" id="example16" value="" />
 		</div>
 	
 <pre>
@@ -582,7 +588,7 @@ $('#example19').text(
 			<h2>Version</h2>
 			<p>Version 1.0.2</p>
 
-			<p>Last updated on 07/01/2012</p>
+			<p>Last updated on 09/8/2012</p>
 			<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
 			<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
 			<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
