@@ -5,6 +5,7 @@ About
 -----
 - Author: [Trent Richardson](http://trentrichardson.com)
 - Documentation: [http://trentrichardson.com/examples/timepicker/](http://trentrichardson.com/examples/timepicker/)
+- Twitter: [@practicalweb](http://twitter.com/practicalweb)
 
 Use
 ---
