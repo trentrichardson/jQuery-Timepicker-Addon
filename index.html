@@ -12,7 +12,7 @@
 				padding:0;
 				border:0;
 			}
-			body{ background-color: #f4f4f4; border-top: solid 5px #333; font: 90% Arial, Helvetica, sans-serif; padding: 20px; }
+			body{ background-color: #777; border-top: solid 10px #7b94b2; font: 90% Arial, Helvetica, sans-serif; padding: 20px; }
 			h1,h2,h3{ margin: 10px 0; }
 			h1{}
 			h2{ color: #f66; }
@@ -24,7 +24,7 @@
 			dl.defs{ margin: 10px 0 10px 40px; }
 			dl.defs dt{ font-weight: bold; line-height: 20px; margin: 10px 0 0 0; }
 			dl.defs dd{ margin: -20px 0 10px 160px; padding-bottom: 10px; border-bottom: solid 1px #eee;}
-			pre{ font-size: 12px; padding: 0 0 0 10px; margin: 10px 0; border-left: solid 5px #fbebaf; overflow: auto; }
+			pre{ font-size: 12px; padding: 0 0 0 10px; margin: 10px 0; border-left: solid 5px #9EC45F; overflow: auto; }
 
 			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
 			#tabs{ margin: 20px -20px; border: none; }
@@ -781,7 +781,7 @@ $('#utility_example_2').text(
 						<p>Use the utility function to parses a formatted time. $.datepicker.parseTime(format, timeString, options)</p>
 						<dl class="defs">
 							<dt>format</dt><dd>required - string represenation of the time format to use</dd>
-							<dt>time</dt><dd>required - hash: { hour, minute, second, millisecond, timezone }</dd>
+							<dt>time</dt><dd>required - time string matching the format given in parameter 1</dd>
 							<dt>options</dt><dd>optional - hash of any options in regional translation (ampm, amNames, pmNames..)</dd>
 						</dl>
 						<p>Returns an object with hours, minutes, seconds, milliseconds, timezone.</p>
