@@ -18,7 +18,7 @@
 * .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 */
 
-/*jslint evil: true, maxlen: 300, white: false, undef: false, nomen: false, onevar: false */
+/*jslint evil: true, white: true, undef: false, nomen: true */
 
 (function($) {
 
@@ -162,22 +162,22 @@ $.extend(Timepicker.prototype, {
 			beforeShow: function(input, dp_inst) {
 				if ($.isFunction(o.beforeShow)) {
 					return o.beforeShow(input, dp_inst, tp_inst);
-                }
+				}
 			},
 			onChangeMonthYear: function(year, month, dp_inst) {
 				// Update the time as well : this prevents the time from disappearing from the $input field.
 				tp_inst._updateDateTime(dp_inst);
 				if ($.isFunction(o.onChangeMonthYear)) {
 					o.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
-                }
+				}
 			},
 			onClose: function(dateText, dp_inst) {
 				if (tp_inst.timeDefined === true && $input.val() !== '') {
 					tp_inst._updateDateTime(dp_inst);
-                }
+				}
 				if ($.isFunction(o.onClose)) {
 					o.onClose.call($input[0], dateText, dp_inst, tp_inst);
-                }
+				}
 			},
 			timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		});
@@ -208,7 +208,7 @@ $.extend(Timepicker.prototype, {
 			tp_inst.$altInput = $(o.altField)
 				.css({ cursor: 'pointer' })
 				.focus(function(){ $input.trigger("focus"); });
-        }
+		}
 
 		if(tp_inst._defaults.minDate===0 || tp_inst._defaults.minDateTime===0)
 		{
@@ -222,19 +222,19 @@ $.extend(Timepicker.prototype, {
 		// datepicker needs minDate/maxDate, timepicker needs minDateTime/maxDateTime..
 		if(tp_inst._defaults.minDate !== undefined && tp_inst._defaults.minDate instanceof Date) {
 			tp_inst._defaults.minDateTime = new Date(tp_inst._defaults.minDate.getTime());
-        }
+		}
 		if(tp_inst._defaults.minDateTime !== undefined && tp_inst._defaults.minDateTime instanceof Date) {
 			tp_inst._defaults.minDate = new Date(tp_inst._defaults.minDateTime.getTime());
-        }
+		}
 		if(tp_inst._defaults.maxDate !== undefined && tp_inst._defaults.maxDate instanceof Date) {
 			tp_inst._defaults.maxDateTime = new Date(tp_inst._defaults.maxDate.getTime());
-        }
+		}
 		if(tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
 			tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
-        }
-        tp_inst.$input.bind('focus', function() {
+		}
+		tp_inst.$input.bind('focus', function() {
 			tp_inst._onFocus();
-        });
+		});
 
 		return tp_inst;
 	},
@@ -258,7 +258,7 @@ $.extend(Timepicker.prototype, {
 	_parseTime: function(timeString, withDate) {
 		if (!this.inst) {
 			this.inst = $.datepicker._getInst(this.$input[0]);
-        }
+		}
 		
 		if (withDate || !this._defaults.timeOnly) 
 		{
@@ -325,11 +325,11 @@ $.extend(Timepicker.prototype, {
 					if (tmph < 10) { tmph = '0' + tmph; }
 					if (o.ampm) {
 						if (h === 0) {
-                            tmph = 12 +'a';
-                        } else {
-                            if (h < 12) { tmph += 'a'; }
-						    else { tmph += 'p'; }
-                        }
+							tmph = 12 +'a';
+						} else {
+							if (h < 12) { tmph += 'a'; }
+							else { tmph += 'p'; }
+						}
 					}
 					html += '<td>' + tmph + '</td>';
 				}
@@ -410,7 +410,7 @@ $.extend(Timepicker.prototype, {
 				$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 			}
 
-			this.hour_slider = $tp.find('.ui_tpicker_hour_slider').slider({
+			this.hour_slider = $tp.find('.ui_tpicker_hour_slider').prop('slide',null).slider({
 				orientation: "horizontal",
 				value: this.hour,
 				min: o.hourMin,
@@ -425,7 +425,7 @@ $.extend(Timepicker.prototype, {
 
 			// Updated by Peter Medeiros:
 			// - Pass in Event and UI instance into slide function
-			this.minute_slider = $tp.find('.ui_tpicker_minute_slider').slider({
+			this.minute_slider = $tp.find('.ui_tpicker_minute_slider').prop('slide',null).slider({
 				orientation: "horizontal",
 				value: this.minute,
 				min: o.minuteMin,
@@ -437,7 +437,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-			this.second_slider = $tp.find('.ui_tpicker_second_slider').slider({
+			this.second_slider = $tp.find('.ui_tpicker_second_slider').prop('slide',null).slider({
 				orientation: "horizontal",
 				value: this.second,
 				min: o.secondMin,
@@ -449,7 +449,7 @@ $.extend(Timepicker.prototype, {
 				}
 			});
 
-			this.millisec_slider = $tp.find('.ui_tpicker_millisec_slider').slider({
+			this.millisec_slider = $tp.find('.ui_tpicker_millisec_slider').prop('slide',null).slider({
 				orientation: "horizontal",
 				value: this.millisec,
 				min: o.millisecMin,
@@ -728,22 +728,22 @@ $.extend(Timepicker.prototype, {
 
 		if(adjustSliders !== undefined && adjustSliders === true){
 			var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)) ,10),
-                minMax  = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)) ,10),
-                secMax  = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)) ,10),
+				minMax  = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)) ,10),
+				secMax  = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)) ,10),
 				millisecMax  = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)) ,10);
 
 			if(this.hour_slider) {
 				this.hour_slider.slider("option", { min: this._defaults.hourMin, max: hourMax }).slider('value', this.hour);
-            }
+			}
 			if(this.minute_slider) {
 				this.minute_slider.slider("option", { min: this._defaults.minuteMin, max: minMax }).slider('value', this.minute);
-            }
+			}
 			if(this.second_slider){
 				this.second_slider.slider("option", { min: this._defaults.secondMin, max: secMax }).slider('value', this.second);
-            }
+			}
 			if(this.millisec_slider) {
 				this.millisec_slider.slider("option", { min: this._defaults.millisecMin, max: millisecMax }).slider('value', this.millisec);
-            }
+			}
 		}
 
 	},
@@ -779,7 +779,7 @@ $.extend(Timepicker.prototype, {
 		var hasChanged = (hour != this.hour || minute != this.minute ||
 				second != this.second || millisec != this.millisec ||
 				(this.ampm.length > 0 &&
-				    (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) ||
+					(hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) ||
 				((this.timezone == null && timezone != this.defaultTimezone) || (this.timezone != null && timezone != this.timezone)));
 
 		if (hasChanged) {
@@ -928,20 +928,20 @@ $.fn.extend({
 		if (typeof(o) == 'string'){
 			if(o == 'getDate') {
 				return $.fn.datepicker.apply($(this[0]), tmp_args);
-            }
+			}
 			else {
 				return this.each(function() {
 					var $t = $(this);
 					$t.datepicker.apply($t, tmp_args);
 				});
-            }
+			}
 		}
 		else {
 			return this.each(function() {
 				var $t = $(this);
 				$t.datepicker($.timepicker._newInst($t, o)._defaults);
 			});
-        }
+		}
 	}
 });
 
@@ -965,10 +965,10 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 		var markers = [];
 		if (amNames) {
 			$.merge(markers, amNames);
-        }
+		}
 		if (pmNames) {
 			$.merge(markers, pmNames);
-        }
+		}
 		markers = $.map(markers, function(val) { return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&'); });
 		return '(' + markers.join('|') + ')?';
 	};
@@ -984,14 +984,14 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 			for (var i = 0; i < finds.length; i++) {
 				if (orders[finds[i].toString().charAt(0)] == -1) {
 					orders[finds[i].toString().charAt(0)] = i + 1;
-                }
-            }
-        }
+				}
+			}
+		}
 		return orders;
 	};
-    
+	
 	var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
-    
+	
 	var regstr = '^' + timeFormat.toString()
 			.replace(/h{1,2}/ig, '(\\d?\\d)')
 			.replace(/m{1,2}/ig, '(\\d?\\d)')
@@ -1007,7 +1007,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 	treg = timeString.match(new RegExp(regstr, 'i'));
 
 	var resTime = {hour: 0, minute: 0, second: 0, millisec: 0};
-    
+	
 	if (treg) {
 		if (order.t !== -1) {
 			if (treg[order.t] === undefined || treg[order.t].length === 0) {
@@ -1023,11 +1023,11 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 			if (ampm == 'AM' && treg[order.h] == '12') {
 				resTime.hour = 0; // 12am = 0 hour
 			} else {
-                if (ampm == 'PM' && treg[order.h] != '12') {
-                    resTime.hour = parseInt(treg[order.h],10) + 12; // 12pm = 12 hour, any other pm = hour + 12
-                }
-                else { resTime.hour = Number(treg[order.h]); }
-            }
+				if (ampm == 'PM' && treg[order.h] != '12') {
+					resTime.hour = parseInt(treg[order.h],10) + 12; // 12pm = 12 hour, any other pm = hour + 12
+				}
+				else { resTime.hour = Number(treg[order.h]); }
+			}
 		}
 
 		if (order.m !== -1) { resTime.minute = Number(treg[order.m]); }
@@ -1044,7 +1044,7 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 						tz = tz.substring(1) == '0000' ?
 							'Z' :
 							tz.substring(0, 3) + ':' + tz.substring(3);
-                    }
+					}
 					break;
 				case 6:	// +hh:mm
 					if (!o.timezoneIso8601) {
@@ -1052,10 +1052,10 @@ $.datepicker.parseTime = function(timeFormat, timeString, options) {
 							'+0000' :
 							tz.replace(/:/, '');
 					} else {
-                        if (tz.substring(1) == '00:00') {
-                            tz = 'Z';
-                        }
-                    }
+						if (tz.substring(1) == '00:00') {
+							tz = 'Z';
+						}
+					}
 					break;
 			}
 			resTime.timezone = tz;
@@ -1088,11 +1088,11 @@ $.datepicker.formatTime = function(format, time, options) {
 			ampmName = options.pmNames[0];
 			if(hour > 12) {
 				hour = hour % 12;
-            }
+			}
 		}
 		if (hour === 0) {
 			hour = 12;
-        }
+		}
 	}
 	tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
 		switch (match.toLowerCase()) {
@@ -1108,7 +1108,7 @@ $.datepicker.formatTime = function(format, time, options) {
 				if (options.ampm) {
 					if (match.length == 1) {
 						ampmName = ampmName.charAt(0);
-                    }
+					}
 					return match.charAt(0) === 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
 				}
 				return '';
@@ -1253,8 +1253,8 @@ $.datepicker._gotoToday = function(id) {
 //#######################################################################################
 $.datepicker._disableTimepickerDatepicker = function(target) {
 	var inst = this._getInst(target);
-    if (!inst) { return; }
-    
+	if (!inst) { return; }
+	
 	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
@@ -1265,8 +1265,8 @@ $.datepicker._disableTimepickerDatepicker = function(target) {
 
 $.datepicker._enableTimepickerDatepicker = function(target) {
 	var inst = this._getInst(target);
-    if (!inst) { return; }
-    
+	if (!inst) { return; }
+	
 	var tp_inst = this._get(inst, 'timepicker');
 	$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 	if (tp_inst) {
@@ -1328,10 +1328,10 @@ $.datepicker._setTime = function(inst, date) {
 //#######################################################################################
 $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 	var inst = this._getInst(target);
-    if (!inst) { return; }
-    
+	if (!inst) { return; }
+	
 	var tp_inst = this._get(inst, 'timepicker');
-    
+	
 	if (tp_inst) {
 		this._setDateFromField(inst);
 		var tp_date;
@@ -1355,8 +1355,8 @@ $.datepicker._setTimeDatepicker = function(target, date, withDate) {
 $.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
 $.datepicker._setDateDatepicker = function(target, date) {
 	var inst = this._getInst(target);
-    if (!inst) { return; }
-    
+	if (!inst) { return; }
+	
 	var tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
 
 	this._updateDatepicker(inst);
@@ -1370,9 +1370,9 @@ $.datepicker._setDateDatepicker = function(target, date) {
 $.datepicker._base_getDateDatepicker = $.datepicker._getDateDatepicker;
 $.datepicker._getDateDatepicker = function(target, noDefault) {
 	var inst = this._getInst(target);
-    if (!inst) { return; }
-    
-    var tp_inst = this._get(inst, 'timepicker');
+	if (!inst) { return; }
+	
+	var tp_inst = this._get(inst, 'timepicker');
 
 	if (tp_inst) {
 		this._setDateFromField(inst, noDefault);
@@ -1389,7 +1389,7 @@ $.datepicker._getDateDatepicker = function(target, noDefault) {
 //#######################################################################################
 $.datepicker._base_parseDate = $.datepicker.parseDate;
 $.datepicker.parseDate = function(format, value, settings) {
-    var splitRes = splitDateTime(format, value, settings);
+	var splitRes = splitDateTime(format, value, settings);
 	return $.datepicker._base_parseDate(format, splitRes[0], settings);
 };
 
@@ -1412,68 +1412,68 @@ $.datepicker._formatDate = function(inst, day, month, year){
 $.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 $.datepicker._optionDatepicker = function(target, name, value) {
 	var inst = this._getInst(target);
-    if (!inst) { return null; }
-    
+	if (!inst) { return null; }
+	
 	var tp_inst = this._get(inst, 'timepicker');
 	if (tp_inst) {
 		var min = null, max = null, onselect = null;
 		if (typeof name == 'string') { // if min/max was set with the string
 			if (name === 'minDate' || name === 'minDateTime' ) {
 				min = value;
-            }
+			}
 			else {
-                if (name === 'maxDate' || name === 'maxDateTime') {
-                    max = value;
-                }
-                else {
-                    if (name === 'onSelect') {
-                        onselect = value;
-                    }
-                }
-            }
+				if (name === 'maxDate' || name === 'maxDateTime') {
+					max = value;
+				}
+				else {
+					if (name === 'onSelect') {
+						onselect = value;
+					}
+				}
+			}
 		} else {
-            if (typeof name == 'object') { //if min/max was set with the JSON
-                if (name.minDate) {
-                    min = name.minDate;
-                } else {
-                    if (name.minDateTime) {
-                        min = name.minDateTime;
-                    } else {
-                        if (name.maxDate) {
-                            max = name.maxDate;
-                        } else {
-                            if (name.maxDateTime) {
-                                max = name.maxDateTime;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+			if (typeof name == 'object') { //if min/max was set with the JSON
+				if (name.minDate) {
+					min = name.minDate;
+				} else {
+					if (name.minDateTime) {
+						min = name.minDateTime;
+					} else {
+						if (name.maxDate) {
+							max = name.maxDate;
+						} else {
+							if (name.maxDateTime) {
+								max = name.maxDateTime;
+							}
+						}
+					}
+				}
+			}
+		}
 		if(min) { //if min was set
 			if (min === 0) {
 				min = new Date();
-            } else {
+			} else {
 				min = new Date(min);
-            }
+			}
 
 			tp_inst._defaults.minDate = min;
 			tp_inst._defaults.minDateTime = min;
 		} else if (max) { //if max was set
 			if(max===0) {
 				max=new Date();
-            } else {
+			} else {
 				max= new Date(max);
-            }
+			}
 			tp_inst._defaults.maxDate = max;
 			tp_inst._defaults.maxDateTime = max;
 		} else if (onselect) {
 			tp_inst._defaults.onSelect = onselect;
-        }
+		}
 	}
 	if (value === undefined) {
 		return this._base_optionDatepicker(target, name);
-    }
+	}
 	return this._base_optionDatepicker(target, name, value);
 };
 
@@ -1485,8 +1485,8 @@ function extendRemove(target, props) {
 	for (var name in props) {
 		if (props[name] === null || props[name] === undefined) {
 			target[name] = props[name];
-        }
-    }
+		}
+	}
 	return target;
 }
 
@@ -1504,11 +1504,11 @@ var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
 			// Hack!  The error message ends with a colon, a space, and
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
-            var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
-            var timeString = dateTimeString.substring(dateStringLength);
+			var dateStringLength = dateTimeString.length-(err.length-err.indexOf(':')-2);
+			var timeString = dateTimeString.substring(dateStringLength);
 
-            return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
-            
+			return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
+			
 		} else {
 			throw err;
 		}
@@ -1524,25 +1524,25 @@ var splitDateTime = function(dateFormat, dateTimeString, dateSettings)
 //#######################################################################################
 var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings)
 {
-    var date;
-    var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
+	var date;
+	var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
 	date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-    if (splitRes[1] !== '')
-    {
-        var timeString = splitRes[1];
-        var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
-        if ( timeString.indexOf(separator) !== 0) {
-            throw 'Missing time separator';
-        }
-        timeString = timeString.substring(separator.length);
-        var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
-        if (parsedTime === null) {
-            throw 'Wrong time format';
-        }
-        return {date: date, timeObj: parsedTime};
-    } else {
-        return {date: date};
-    }
+	if (splitRes[1] !== '')
+	{
+		var timeString = splitRes[1];
+		var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;            
+		if ( timeString.indexOf(separator) !== 0) {
+			throw 'Missing time separator';
+		}
+		timeString = timeString.substring(separator.length);
+		var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+		if (parsedTime === null) {
+			throw 'Wrong time format';
+		}
+		return {date: date, timeObj: parsedTime};
+	} else {
+		return {date: date};
+	}
 };
 
 //#######################################################################################
@@ -1556,7 +1556,7 @@ var selectLocalTimeZone = function(tp_inst, date)
 		var tzoffset = $.timepicker.timeZoneOffsetString(now);
 		if (tp_inst._defaults.timezoneIso8601) {
 			tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
-        }
+		}
 		tp_inst.timezone_select.val(tzoffset);
 	}
 };
