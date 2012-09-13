@@ -867,7 +867,7 @@
 		* bind to sliders slidestop, and grid click.
 		*/
 		_onSelectHandler: function() {
-			var onSelect = this._defaults.onSelect;
+			var onSelect = this._defaults.onSelect || this.inst.settings.onSelect;
 			var inputEl = this.$input ? this.$input[0] : null;
 			if (onSelect && inputEl) {
 				onSelect.apply(inputEl, [this.formattedDateTime, this]);
