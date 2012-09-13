@@ -1607,16 +1607,24 @@
 	* Throws exception when date can't be parsed
 	* If only date is present, time substring eill be '' 
 	*/
-	var splitDateTime = function(dateFormat, dateTimeString, dateSettings) {
+	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings);
+			var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings),
+				separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;
+			if (dateTimeString.indexOf(separator) > 0) {
+				var dta = dateTimeString.split(separator);
+				if (dta.length == 2) {
+					return dta;
+				}
+			}
+
 		} catch (err) {
 			if (err.indexOf(":") >= 0) {
 				// Hack!  The error message ends with a colon, a space, and
 				// the "extra" characters.  We rely on that instead of
 				// attempting to perfectly reproduce the parsing algorithm.
-				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2);
-				var timeString = dateTimeString.substring(dateStringLength);
+				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2),
+					timeString = dateTimeString.substring(dateStringLength);
 
 				return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
 
@@ -1635,16 +1643,12 @@
 	*/
 	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
 		var date;
-		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings);
+		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
 		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
 		if (splitRes[1] !== '') {
-			var timeString = splitRes[1];
-			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;
-			if (timeString.indexOf(separator) !== 0) {
-				throw 'Missing time separator';
-			}
-			timeString = timeString.substring(separator.length);
-			var parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+			var timeString = splitRes[1],
+				parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+
 			if (parsedTime === null) {
 				throw 'Wrong time format';
 			}
