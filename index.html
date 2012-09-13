@@ -24,7 +24,7 @@
 			dl.defs{ margin: 10px 0 10px 40px; }
 			dl.defs dt{ font-weight: bold; line-height: 20px; margin: 10px 0 0 0; }
 			dl.defs dd{ margin: -20px 0 10px 160px; padding-bottom: 10px; border-bottom: solid 1px #eee;}
-			pre{ font-size: 12px; padding: 0 0 0 10px; margin: 10px 0; border-left: solid 5px #9EC45F; overflow: auto; }
+			pre{ font-size: 12px; line-height: 16px; padding: 5px 5px 5px 10px; margin: 10px 0; background-color: #e4f4d4; border-left: solid 5px #9EC45F; overflow: auto; }
 
 			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
 			#tabs{ margin: 20px -20px; border: none; }
@@ -468,7 +468,7 @@ $('#basic_example_1').datetimepicker();
 					 		<input type="text" name="basic_example_2" id="basic_example_2" value="" />
 						</div>					
 <pre>
-$('#basic_example_2').timepicker({});
+$('#basic_example_2').timepicker();
 </pre>
 					</div>
 
@@ -581,7 +581,7 @@ $('#slider_example_2').datetimepicker({
 					<div class="example-container">
 						<p>Add sliderAccess plugin for touch devices:</p>
 						<div>
-					 		<div id="slider_example_3"></div>
+					 		<input type="text" name="slider_example_3" id="slider_example_3" value="" />
 						</div>					
 <pre>
 $('#slider_example_3').datetimepicker({
@@ -632,6 +632,7 @@ $('#alt_example_2').datetimepicker({
 $('#alt_example_3').datetimepicker({
 	altField: "#alt_example_3_alt",
 	altFieldTimeOnly: false,
+	altFormat: "yy-mm-dd",
 	altTimeFormat: "h:m",
 	altSeparator: " @ "
 });

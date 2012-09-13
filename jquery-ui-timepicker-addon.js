@@ -909,10 +909,10 @@ $.fn.extend({
 	//########################################################################
 	timepicker: function(o) {
 		o = o || {};
-		var tmp_args = arguments;
-
+		var tmp_args = Array.prototype.slice.call(arguments);
+		
 		if (typeof o == 'object') { tmp_args[0] = $.extend(o, { timeOnly: true }); }
-
+		
 		return $(this).each(function() {
 			$.fn.datetimepicker.apply($(this), tmp_args);
 		});
