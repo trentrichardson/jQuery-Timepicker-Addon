@@ -18,7 +18,7 @@
 * .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 */
 
-/*jslint evil: true, white: true, undef: false, nomen: true */
+/*jslint evil: true, white: false, undef: false, nomen: false, onevar: false */
 
 (function($) {
 
@@ -912,7 +912,7 @@ $.fn.extend({
 		var tmp_args = Array.prototype.slice.call(arguments);
 		
 		if (typeof o == 'object') { tmp_args[0] = $.extend(o, { timeOnly: true }); }
-		
+
 		return $(this).each(function() {
 			$.fn.datetimepicker.apply($(this), tmp_args);
 		});
