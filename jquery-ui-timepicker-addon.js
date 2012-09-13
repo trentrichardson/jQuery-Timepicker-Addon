@@ -2,7 +2,7 @@
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
  * Version 1.0.3-dev
- * Last Modified: 07/01/2012
+ * Last Modified: 09/12/2012
  *
  * Copyright 2012 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -203,7 +203,9 @@
 			});
 
 			if (tp_inst._defaults.timezoneList === null) {
-				var timezoneList = ['-1200', '-1100', '-1000', '-0930', '-0900', '-0800', '-0700', '-0600', '-0500', '-0430', '-0400', '-0330', '-0300', '-0200', '-0100', '+0000', '+0100', '+0200', '+0300', '+0330', '+0400', '+0430', '+0500', '+0530', '+0545', '+0600', '+0630', '+0700', '+0800', '+0845', '+0900', '+0930', '+1000', '+1030', '+1100', '+1130', '+1200', '+1245', '+1300', '+1400'];
+				var timezoneList = ['-1200', '-1100', '-1000', '-0930', '-0900', '-0800', '-0700', '-0600', '-0500', '-0430', '-0400', '-0330', '-0300', '-0200', '-0100', '+0000', 
+									'+0100', '+0200', '+0300', '+0330', '+0400', '+0430', '+0500', '+0530', '+0545', '+0600', '+0630', '+0700', '+0800', '+0845', '+0900', '+0930', 
+									'+1000', '+1030', '+1100', '+1130', '+1200', '+1245', '+1300', '+1400'];
 
 				if (tp_inst._defaults.timezoneIso8601) {
 					timezoneList = $.map(timezoneList, function(val) {
@@ -315,7 +317,8 @@
 			// Prevent displaying twice
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
 				var noDisplay = ' style="display:none;"',
-					html = '<div class="ui-timepicker-div"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' + '<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>' + '<dt class="ui_tpicker_hour_label"' + ((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
+					html = '<div class="ui-timepicker-div"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' + 
+								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>' + '<dt class="ui_tpicker_hour_label"' + ((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
 					hourGridSize = 0,
 					minuteGridSize = 0,
 					secondGridSize = 0,
@@ -352,7 +355,8 @@
 				html += '</dd>';
 
 				// Minutes
-				html += '<dt class="ui_tpicker_minute_label"' + ((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>' + '<dd class="ui_tpicker_minute"><div class="ui_tpicker_minute_slider"' + ((o.showMinute) ? '' : noDisplay) + '></div>';
+				html += '<dt class="ui_tpicker_minute_label"' + ((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>' + 
+							'<dd class="ui_tpicker_minute"><div class="ui_tpicker_minute_slider"' + ((o.showMinute) ? '' : noDisplay) + '></div>';
 
 				if (o.showMinute && o.minuteGrid > 0) {
 					html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
@@ -367,7 +371,8 @@
 				html += '</dd>';
 
 				// Seconds
-				html += '<dt class="ui_tpicker_second_label"' + ((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>' + '<dd class="ui_tpicker_second"><div class="ui_tpicker_second_slider"' + ((o.showSecond) ? '' : noDisplay) + '></div>';
+				html += '<dt class="ui_tpicker_second_label"' + ((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>' + 
+							'<dd class="ui_tpicker_second"><div class="ui_tpicker_second_slider"' + ((o.showSecond) ? '' : noDisplay) + '></div>';
 
 				if (o.showSecond && o.secondGrid > 0) {
 					html += '<div style="padding-left: 1px"><table><tr>';
@@ -382,7 +387,8 @@
 				html += '</dd>';
 
 				// Milliseconds
-				html += '<dt class="ui_tpicker_millisec_label"' + ((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>' + '<dd class="ui_tpicker_millisec"><div class="ui_tpicker_millisec_slider"' + ((o.showMillisec) ? '' : noDisplay) + '></div>';
+				html += '<dt class="ui_tpicker_millisec_label"' + ((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>' + 
+							'<dd class="ui_tpicker_millisec"><div class="ui_tpicker_millisec_slider"' + ((o.showMillisec) ? '' : noDisplay) + '></div>';
 
 				if (o.showMillisec && o.millisecGrid > 0) {
 					html += '<div style="padding-left: 1px"><table><tr>';
@@ -813,7 +819,9 @@
 
 			// If the update was done in the input field, the input field should not be updated.
 			// If the update was done using the sliders, update the input field.
-			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec || (this.ampm.length > 0 && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) || ((this.timezone === null && timezone != this.defaultTimezone) || (this.timezone !== null && timezone != this.timezone)));
+			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec 
+								|| (this.ampm.length > 0 && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) 
+								|| ((this.timezone === null && timezone != this.defaultTimezone) || (this.timezone !== null && timezone != this.timezone)));
 
 			if (hasChanged) {
 
@@ -1061,7 +1069,15 @@
 
 		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
 
-		var regstr = '^' + timeFormat.toString().replace(/h{1,2}/ig, '(\\d?\\d)').replace(/m{1,2}/ig, '(\\d?\\d)').replace(/s{1,2}/ig, '(\\d?\\d)').replace(/l{1}/ig, '(\\d?\\d?\\d)').replace(/t{1,2}/ig, getPatternAmpm(o.amNames, o.pmNames)).replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d|\\S+)?').replace(/\s/g, '\\s?') + o.timeSuffix + '$',
+		var regstr = '^' + timeFormat.toString()
+									.replace(/h{1,2}/ig, '(\\d?\\d)')
+									.replace(/m{1,2}/ig, '(\\d?\\d)')
+									.replace(/s{1,2}/ig, '(\\d?\\d)')
+									.replace(/l{1}/ig, '(\\d?\\d?\\d)')
+									.replace(/t{1,2}/ig, getPatternAmpm(o.amNames, o.pmNames))
+									.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d|\\S+)?')
+									.replace(/\s/g, '\\s?') + 
+									o.timeSuffix + '$',
 			order = getFormatPositions(timeFormat),
 			ampm = '',
 			treg;
@@ -1274,7 +1290,19 @@
 			if ($.datepicker._get(inst, 'constrainInput')) {
 				var ampm = tp_inst._defaults.ampm,
 					dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
-					datetimeChars = tp_inst._defaults.timeFormat.toString().replace(/[hms]/g, '').replace(/TT/g, ampm ? 'APM' : '').replace(/Tt/g, ampm ? 'AaPpMm' : '').replace(/tT/g, ampm ? 'AaPpMm' : '').replace(/T/g, ampm ? 'AP' : '').replace(/tt/g, ampm ? 'apm' : '').replace(/t/g, ampm ? 'ap' : '') + " " + tp_inst._defaults.separator + tp_inst._defaults.timeSuffix + (tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') + (tp_inst._defaults.amNames.join('')) + (tp_inst._defaults.pmNames.join('')) + dateChars,
+					datetimeChars = tp_inst._defaults.timeFormat.toString()
+											.replace(/[hms]/g, '')
+											.replace(/TT/g, ampm ? 'APM' : '')
+											.replace(/Tt/g, ampm ? 'AaPpMm' : '')
+											.replace(/tT/g, ampm ? 'AaPpMm' : '')
+											.replace(/T/g, ampm ? 'AP' : '')
+											.replace(/tt/g, ampm ? 'apm' : '')
+											.replace(/t/g, ampm ? 'ap' : '') + 
+											" " + tp_inst._defaults.separator + 
+											tp_inst._defaults.timeSuffix + 
+											(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') + 
+											(tp_inst._defaults.amNames.join('')) + (tp_inst._defaults.pmNames.join('')) + 
+											dateChars,
 					chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
 				return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 			}
