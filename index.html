@@ -740,7 +740,7 @@ endDateTextBox.datetimepicker({
 					<div class="example-container">
 						<p>Get and Set Datetime:</p>
 						<div>
-							<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
+							<input type="text" name="utility_example_1" id="utility_example_1" value="08/25/2012 08:41 pm" /> 
 							<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
 							<button id="utility_example_1_getdt" value="1">Get Datetime</button> 
 						</div>
@@ -748,7 +748,9 @@ endDateTextBox.datetimepicker({
 <pre>
 var ex13 = $('#utility_example_1');
 
-ex13.datetimepicker();
+ex13.datetimepicker({
+	ampm: true
+});
 
 $('#utility_example_1_setdt').click(function(){
 	ex13.datetimepicker('setDate', (new Date()) );

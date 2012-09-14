@@ -142,6 +142,7 @@
 		formattedTime: '',
 		formattedDateTime: '',
 		timezoneList: null,
+		units: ['hour','minute','second','millisec'],
 
 		/* 
 		* Override the default settings for all instances of the time picker.
@@ -306,106 +307,72 @@
 			var $dp = this.inst.dpDiv,
 				o = this.inst.settings,
 				tp_inst = this,
-				// Added by Peter Medeiros:
-				// - Figure out what the hour/minute/second max should be based on the step values.
-				// - Example: if stepMinute is 15, then minMax is 45.
-				hourMax = parseInt((o.hourMax - ((o.hourMax - o.hourMin) % o.stepHour)), 10),
-				minMax = parseInt((o.minuteMax - ((o.minuteMax - o.minuteMin) % o.stepMinute)), 10),
-				secMax = parseInt((o.secondMax - ((o.secondMax - o.secondMin) % o.stepSecond)), 10),
-				millisecMax = parseInt((o.millisecMax - ((o.millisecMax - o.millisecMin) % o.stepMillisec)), 10);
+				litem = '',
+				uitem = '',
+				max = {},
+				gridSize = {},
+				size = null;
 
 			// Prevent displaying twice
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
 				var noDisplay = ' style="display:none;"',
 					html = '<div class="ui-timepicker-div"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' + 
-								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>' + '<dt class="ui_tpicker_hour_label"' + ((o.showHour) ? '' : noDisplay) + '>' + o.hourText + '</dt>',
-					hourGridSize = 0,
-					minuteGridSize = 0,
-					secondGridSize = 0,
-					millisecGridSize = 0,
-					size = null;
+								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>';
 
-				// Hours
-				html += '<dd class="ui_tpicker_hour"><div class="ui_tpicker_hour_slider"' + ((o.showHour) ? '' : noDisplay) + '></div>';
-				if (o.showHour && o.hourGrid > 0) {
-					html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+				// Create the markup
+				for(var i=0,l=this.units.length; i<l; i++){
+					litem = this.units[i];
+					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
+					// Added by Peter Medeiros:
+					// - Figure out what the hour/minute/second max should be based on the step values.
+					// - Example: if stepMinute is 15, then minMax is 45.
+					max[litem] = parseInt((o[litem+'Max'] - ((o[litem+'Max'] - o[litem+'Min']) % o['step'+uitem])), 10);
+					gridSize[litem] = 0;
 
-					for (var h = o.hourMin; h <= hourMax; h += parseInt(o.hourGrid, 10)) {
-						hourGridSize++;
-						var tmph = (o.ampm && h > 12) ? h - 12 : h;
-						if (tmph < 10) {
-							tmph = '0' + tmph;
-						}
-						if (o.ampm) {
-							if (h === 0) {
-								tmph = 12 + 'a';
-							} else {
-								if (h < 12) {
-									tmph += 'a';
-								} else {
-									tmph += 'p';
+					html += '<dt class="ui_tpicker_'+ litem +'_label"' + ((o['show'+uitem]) ? '' : noDisplay) + '>' + o[litem +'Text'] + '</dt>' + 
+								'<dd class="ui_tpicker_'+ litem +'"><div class="ui_tpicker_'+ litem +'_slider"' + ((o['show'+uitem]) ? '' : noDisplay) + '></div>';
+
+					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
+						html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
+
+						if(litem == 'hour'){
+							for (var h = o[litem+'Min']; h <= max[litem]; h += parseInt(o[litem+'Grid'], 10)) {
+								gridSize[litem]++;
+								var tmph = (o.ampm && h > 12) ? h - 12 : h;
+								if (tmph < 10) {
+									tmph = '0' + tmph;
 								}
+								if (o.ampm) {
+									if (h === 0) {
+										tmph = 12 + 'a';
+									} else {
+										if (h < 12) {
+											tmph += 'a';
+										} else {
+											tmph += 'p';
+										}
+									}
+								}
+								html += '<td data-for="'+litem+'">' + tmph + '</td>';
 							}
 						}
-						html += '<td>' + tmph + '</td>';
+						else{
+							for (var m = o[litem+'Min']; m <= max[litem]; m += parseInt(o[litem+'Grid'], 10)) {
+								gridSize[litem]++;
+								html += '<td data-for="'+litem+'">' + ((m < 10) ? '0' : '') + m + '</td>';
+							}
+						}
+
+						html += '</tr></table></div>';
 					}
-
-					html += '</tr></table></div>';
+					html += '</dd>';
 				}
-				html += '</dd>';
-
-				// Minutes
-				html += '<dt class="ui_tpicker_minute_label"' + ((o.showMinute) ? '' : noDisplay) + '>' + o.minuteText + '</dt>' + 
-							'<dd class="ui_tpicker_minute"><div class="ui_tpicker_minute_slider"' + ((o.showMinute) ? '' : noDisplay) + '></div>';
-
-				if (o.showMinute && o.minuteGrid > 0) {
-					html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
-
-					for (var m = o.minuteMin; m <= minMax; m += parseInt(o.minuteGrid, 10)) {
-						minuteGridSize++;
-						html += '<td>' + ((m < 10) ? '0' : '') + m + '</td>';
-					}
-
-					html += '</tr></table></div>';
-				}
-				html += '</dd>';
-
-				// Seconds
-				html += '<dt class="ui_tpicker_second_label"' + ((o.showSecond) ? '' : noDisplay) + '>' + o.secondText + '</dt>' + 
-							'<dd class="ui_tpicker_second"><div class="ui_tpicker_second_slider"' + ((o.showSecond) ? '' : noDisplay) + '></div>';
-
-				if (o.showSecond && o.secondGrid > 0) {
-					html += '<div style="padding-left: 1px"><table><tr>';
-
-					for (var s = o.secondMin; s <= secMax; s += parseInt(o.secondGrid, 10)) {
-						secondGridSize++;
-						html += '<td>' + ((s < 10) ? '0' : '') + s + '</td>';
-					}
-
-					html += '</tr></table></div>';
-				}
-				html += '</dd>';
-
-				// Milliseconds
-				html += '<dt class="ui_tpicker_millisec_label"' + ((o.showMillisec) ? '' : noDisplay) + '>' + o.millisecText + '</dt>' + 
-							'<dd class="ui_tpicker_millisec"><div class="ui_tpicker_millisec_slider"' + ((o.showMillisec) ? '' : noDisplay) + '></div>';
-
-				if (o.showMillisec && o.millisecGrid > 0) {
-					html += '<div style="padding-left: 1px"><table><tr>';
-
-					for (var l = o.millisecMin; l <= millisecMax; l += parseInt(o.millisecGrid, 10)) {
-						millisecGridSize++;
-						html += '<td>' + ((l < 10) ? '0' : '') + l + '</td>';
-					}
-
-					html += '</tr></table></div>';
-				}
-				html += '</dd>';
-
+				
 				// Timezone
 				html += '<dt class="ui_tpicker_timezone_label"' + ((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
 				html += '<dd class="ui_tpicker_timezone" ' + ((o.showTimezone) ? '' : noDisplay) + '></dd>';
 
+				// Create the elements from string
 				html += '</dl></div>';
 				var $tp = $(html);
 
@@ -414,31 +381,36 @@
 					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + o.timeOnlyTitle + '</div>' + '</div>');
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 				}
-
+				
+				// Updated by Peter Medeiros:
+				// - Pass in Event and UI instance into slide function
 				this.hour_slider = $tp.find('.ui_tpicker_hour_slider').prop('slide', null).slider({
 					orientation: "horizontal",
 					value: this.hour,
 					min: o.hourMin,
-					max: hourMax,
+					max: max.hour,
 					step: o.stepHour,
 					slide: function(event, ui) {
 						tp_inst.hour_slider.slider("option", "value", ui.value);
 						tp_inst._onTimeChange();
+					},
+					stop: function(event, ui) {
+						tp_inst._onSelectHandler();
 					}
 				});
 
-
-				// Updated by Peter Medeiros:
-				// - Pass in Event and UI instance into slide function
 				this.minute_slider = $tp.find('.ui_tpicker_minute_slider').prop('slide', null).slider({
 					orientation: "horizontal",
 					value: this.minute,
 					min: o.minuteMin,
-					max: minMax,
+					max: max.minute,
 					step: o.stepMinute,
 					slide: function(event, ui) {
 						tp_inst.minute_slider.slider("option", "value", ui.value);
 						tp_inst._onTimeChange();
+					},
+					stop: function(event, ui) {
+						tp_inst._onSelectHandler();
 					}
 				});
 
@@ -446,11 +418,14 @@
 					orientation: "horizontal",
 					value: this.second,
 					min: o.secondMin,
-					max: secMax,
+					max: max.second,
 					step: o.stepSecond,
 					slide: function(event, ui) {
 						tp_inst.second_slider.slider("option", "value", ui.value);
 						tp_inst._onTimeChange();
+					},
+					stop: function(event, ui) {
+						tp_inst._onSelectHandler();
 					}
 				});
 
@@ -458,14 +433,85 @@
 					orientation: "horizontal",
 					value: this.millisec,
 					min: o.millisecMin,
-					max: millisecMax,
+					max: max.millisec,
 					step: o.stepMillisec,
 					slide: function(event, ui) {
 						tp_inst.millisec_slider.slider("option", "value", ui.value);
 						tp_inst._onTimeChange();
+					},
+					stop: function(event, ui) {
+						tp_inst._onSelectHandler();
 					}
 				});
 
+				// add sliders, adjust grids, add events
+				for(var i=0,l=tp_inst.units.length; i<l; i++){
+					litem = tp_inst.units[i];
+					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
+					
+					/* 
+						Something fishy happens when assigning to tp_inst['hour_slider'] instead of tp_inst.hour_slider, I think 
+						it is because it is assigned as a prototype. Clicking the slider will always change to the previous value 
+						not the new one clicked. Ideally this works and reduces the 80+ lines of code above
+					// add the slider
+					tp_inst[litem+'_slider'] = $tp.find('.ui_tpicker_'+litem+'_slider').prop('slide', null).slider({
+						orientation: "horizontal",
+						value: tp_inst[litem],
+						min: o[litem+'Min'],
+						max: max[litem],
+						step: o['step'+uitem],
+						slide: function(event, ui) {
+							tp_inst[litem+'_slider'].slider("option", "value", ui.value);
+							tp_inst._onTimeChange();
+						},
+						stop: function(event, ui) {
+							//Emulate datepicker onSelect behavior. Call on slidestop.
+							tp_inst._onSelectHandler();
+						}
+					});
+					*/
+
+					// adjust the grid and add click event
+					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
+						size = 100 * gridSize[litem] * o[litem+'Grid'] / (max[litem] - o[litem+'Min']);
+						$tp.find('.ui_tpicker_'+litem+' table').css({
+							width: size + "%",
+							marginLeft: (size / (-2 * gridSize[litem])) + "%",
+							borderCollapse: 'collapse'
+						}).find("td").click(function(e){
+								var $t = $(this),
+									h = $t.html()
+									f = $t.data('for'); // loses scope, so we use data-for
+
+								if (f == 'hour' && o.ampm) {
+									var ap = h.substring(2).toLowerCase(),
+										aph = parseInt(h.substring(0, 2), 10);
+									if (ap == 'a') {
+										if (aph == 12) {
+											h = 0;
+										} else {
+											h = aph;
+										}
+									} else if (aph == 12) {
+										h = 12;
+									} else {
+										h = aph + 12;
+									}
+								}
+								tp_inst[f+'_slider'].slider("option", "value", parseInt(h,10));
+								tp_inst._onTimeChange();
+								tp_inst._onSelectHandler();
+							})
+						.css({
+								cursor: 'pointer',
+								width: (100 / gridSize[litem]) + '%',
+								textAlign: 'center',
+								overflow: 'hidden'
+							});
+					} // end if grid > 0
+				} // end for loop
+
+				// Add timezone options
 				this.timezone_select = $tp.find('.ui_tpicker_timezone').append('<select></select>').find("select");
 				$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
@@ -490,103 +536,9 @@
 					tp_inst._defaults.useLocalTimezone = false;
 					tp_inst._onTimeChange();
 				});
-
-				// Add grid functionality
-				if (o.showHour && o.hourGrid > 0) {
-					size = 100 * hourGridSize * o.hourGrid / (hourMax - o.hourMin);
-
-					$tp.find(".ui_tpicker_hour table").css({
-						width: size + "%",
-						marginLeft: (size / (-2 * hourGridSize)) + "%",
-						borderCollapse: 'collapse'
-					}).find("td").each(function(index) {
-						$(this).click(function() {
-							var h = $(this).html();
-							if (o.ampm) {
-								var ap = h.substring(2).toLowerCase(),
-									aph = parseInt(h.substring(0, 2), 10);
-								if (ap == 'a') {
-									if (aph == 12) {
-										h = 0;
-									} else {
-										h = aph;
-									}
-								} else if (aph == 12) {
-									h = 12;
-								} else {
-									h = aph + 12;
-								}
-							}
-							tp_inst.hour_slider.slider("option", "value", h);
-							tp_inst._onTimeChange();
-							tp_inst._onSelectHandler();
-						}).css({
-							cursor: 'pointer',
-							width: (100 / hourGridSize) + '%',
-							textAlign: 'center',
-							overflow: 'hidden'
-						});
-					});
-				}
-
-				if (o.showMinute && o.minuteGrid > 0) {
-					size = 100 * minuteGridSize * o.minuteGrid / (minMax - o.minuteMin);
-					$tp.find(".ui_tpicker_minute table").css({
-						width: size + "%",
-						marginLeft: (size / (-2 * minuteGridSize)) + "%",
-						borderCollapse: 'collapse'
-					}).find("td").each(function(index) {
-						$(this).click(function() {
-							tp_inst.minute_slider.slider("option", "value", $(this).html());
-							tp_inst._onTimeChange();
-							tp_inst._onSelectHandler();
-						}).css({
-							cursor: 'pointer',
-							width: (100 / minuteGridSize) + '%',
-							textAlign: 'center',
-							overflow: 'hidden'
-						});
-					});
-				}
-
-				if (o.showSecond && o.secondGrid > 0) {
-					$tp.find(".ui_tpicker_second table").css({
-						width: size + "%",
-						marginLeft: (size / (-2 * secondGridSize)) + "%",
-						borderCollapse: 'collapse'
-					}).find("td").each(function(index) {
-						$(this).click(function() {
-							tp_inst.second_slider.slider("option", "value", $(this).html());
-							tp_inst._onTimeChange();
-							tp_inst._onSelectHandler();
-						}).css({
-							cursor: 'pointer',
-							width: (100 / secondGridSize) + '%',
-							textAlign: 'center',
-							overflow: 'hidden'
-						});
-					});
-				}
-
-				if (o.showMillisec && o.millisecGrid > 0) {
-					$tp.find(".ui_tpicker_millisec table").css({
-						width: size + "%",
-						marginLeft: (size / (-2 * millisecGridSize)) + "%",
-						borderCollapse: 'collapse'
-					}).find("td").each(function(index) {
-						$(this).click(function() {
-							tp_inst.millisec_slider.slider("option", "value", $(this).html());
-							tp_inst._onTimeChange();
-							tp_inst._onSelectHandler();
-						}).css({
-							cursor: 'pointer',
-							width: (100 / millisecGridSize) + '%',
-							textAlign: 'center',
-							overflow: 'hidden'
-						});
-					});
-				}
-
+				// End timezone options
+				
+				// inject timepicker into datepicker
 				var $buttonPanel = $dp.find('.ui-datepicker-buttonpane');
 				if ($buttonPanel.length) {
 					$buttonPanel.before($tp);
@@ -601,15 +553,6 @@
 					this._onTimeChange();
 					this.timeDefined = timeDefined;
 				}
-
-				//Emulate datepicker onSelect behavior. Call on slidestop.
-				var onSelectDelegate = function() {
-					tp_inst._onSelectHandler();
-				};
-				this.hour_slider.bind('slidestop', onSelectDelegate);
-				this.minute_slider.bind('slidestop', onSelectDelegate);
-				this.second_slider.bind('slidestop', onSelectDelegate);
-				this.millisec_slider.bind('slidestop', onSelectDelegate);
 
 				// slideAccess integration: http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/
 				if (this._defaults.addSliderAccess) {
@@ -635,7 +578,7 @@
 								});
 							}
 						}
-					}, 0);
+					}, 10);
 				}
 				// end slideAccess integration
 
@@ -1609,13 +1552,18 @@
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			var date = $.datepicker._base_parseDate(dateFormat, dateTimeString, dateSettings),
-				separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator;
-			if (dateTimeString.indexOf(separator) > 0) {
-				var dta = dateTimeString.split(separator);
-				if (dta.length == 2) {
-					return dta;
-				}
+			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
+				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
+				timeParts = format.split(separator), // how many occurances of separator may be in our format?
+				timePartsLen = timeParts.length,
+				allParts = dateTimeString.split(separator),
+				allPartsLen = allParts.length;
+
+			if (allPartsLen > 0) {
+				return [
+						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
+						allParts.splice(timePartsLen*-1).join(separator)
+					];
 			}
 
 		} catch (err) {
@@ -1626,7 +1574,7 @@
 				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2),
 					timeString = dateTimeString.substring(dateStringLength);
 
-				return [dateTimeString.substring(0, dateStringLength), dateTimeString.substring(dateStringLength)];
+				return [$.trim(dateTimeString.substring(0, dateStringLength)), $.trim(dateTimeString.substring(dateStringLength))];
 
 			} else {
 				throw err;
