@@ -1426,7 +1426,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 
 		if (tp_inst) {
-			this._setDateFromField(inst, noDefault);
+			//this._setDateFromField(inst, noDefault); // This keeps setting to today when it shouldn't
 			var date = this._getDate(inst);
 			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
@@ -1548,16 +1548,25 @@
 	/*
 	* Splits datetime string into date ans time substrings.
 	* Throws exception when date can't be parsed
-	* If only date is present, time substring eill be '' 
+	* Returns [dateString, timeString]
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
+			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
+			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
+				ampm = timeSettings && timeSettings.ampm ? timeSettings.ampm : $.timepicker._defaults.ampm,
 				timeParts = format.split(separator), // how many occurances of separator may be in our format?
 				timePartsLen = timeParts.length,
 				allParts = dateTimeString.split(separator),
 				allPartsLen = allParts.length;
+
+			// because our default ampm=false, but our default format has tt, we need to filter this out
+			if(!ampm){
+				timeParts = $.trim(format.replace(/t/gi,'')).split(separator);
+				timePartsLen = timeParts.length;
+			}
 
 			if (allPartsLen > 0) {
 				return [

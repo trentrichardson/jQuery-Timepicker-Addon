@@ -599,8 +599,8 @@ $('#slider_example_3').datetimepicker({
 					<div class="example-container">
 						<p>Alt field in the simplest form:</p>
 						<div>
-					 		<input type="text" name="alt_example_1" id="alt_example_1" value="" />
-					 		<input type="text" name="alt_example_1_alt" id="alt_example_1_alt" value="" />
+					 		<input type="text" name="alt_example_1" id="alt_example_1" value="09/15/2012" />
+					 		<input type="text" name="alt_example_1_alt" id="alt_example_1_alt" value="10:15" />
 						</div>					
 <pre>
 $('#alt_example_1').datetimepicker({
@@ -736,11 +736,12 @@ endDateTextBox.datetimepicker({
 
 					
 					<h3 id="utility_examples">Utilities</h3>
+					
 					<!-- ============= example -->
 					<div class="example-container">
 						<p>Get and Set Datetime:</p>
 						<div>
-							<input type="text" name="utility_example_1" id="utility_example_1" value="08/25/2012 08:41 pm" /> 
+							<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
 							<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
 							<button id="utility_example_1_getdt" value="1">Get Datetime</button> 
 						</div>
@@ -749,6 +750,8 @@ endDateTextBox.datetimepicker({
 var ex13 = $('#utility_example_1');
 
 ex13.datetimepicker({
+	dateFormat: "D MM d, yy",
+	separator: ' @ ',
 	ampm: true
 });
 
