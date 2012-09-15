@@ -16,7 +16,7 @@
 			h1,h2,h3{ margin: 10px 0; }
 			h1{}
 			h2{ color: #f66; }
-			h3{ color: #7b94b2; }
+			h3{ color: #6b84a2; }
 			p{ margin: 10px 0; }
 			a{ color: #7b94b2; }
 			ul,ol{ margin: 10px 0 10px 40px; }
@@ -24,7 +24,7 @@
 			dl.defs{ margin: 10px 0 10px 40px; }
 			dl.defs dt{ font-weight: bold; line-height: 20px; margin: 10px 0 0 0; }
 			dl.defs dd{ margin: -20px 0 10px 160px; padding-bottom: 10px; border-bottom: solid 1px #eee;}
-			pre{ font-size: 12px; padding: 0 0 0 10px; margin: 10px 0; border-left: solid 5px #9EC45F; overflow: auto; }
+			pre{ font-size: 12px; line-height: 16px; padding: 5px 5px 5px 10px; margin: 10px 0; background-color: #e4f4d4; border-left: solid 5px #9EC45F; overflow: auto; }
 
 			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
 			#tabs{ margin: 20px -20px; border: none; }
@@ -114,6 +114,9 @@
 						<li>Timepicker</li>
 					</ol>
 
+					<h3>Highly Recommended</h3>
+					<p><a href="http://trentrichardson.com" title="Subscribe to TrentRichardson.com via email">Subscribe to my blog via email</a>.  I post an article for nearly every timepicker update, so you know when a new one is released.</p>
+
 					<h3>Version</h3>
 					<p>Version 1.0.3</p>
 
@@ -130,7 +133,7 @@
 				<div id="tp-options">
 					<h2>Options</h2>
 
-					<p>The timepicker does inherit all options from datepicker, however there are many options that are shared by them both and many timepicker only options:</p>
+					<p>The timepicker does inherit all options from datepicker.  However, there are many options that are shared by them both, and many timepicker only options:</p>
 
 					<h3>Localization Options</h3>
 					<dl class="defs">
@@ -150,7 +153,7 @@
 							<dd><em>Default: ['PM', 'P'], A Localization Setting</em> - Array of strings to try and parse against to determine PM.</dd>
 
 						<dt>timeFormat</dt>
-							<dd><em>Default: "hh:mm tt", A Localization Setting</em> - String of format tokens to be replaced with the time. <a href="#tp-formatting" title="Formatting">See Formatting</a>.</dd>
+							<dd><em>Default: "hh:mm tt", A Localization Setting</em> - String of format tokens to be replaced with the time. <a href="#tp-formatting" title="Formatting" onclick="$('#tabs').tabs('select',2);">See Formatting</a>.</dd>
 
 						<dt>timeSuffix</dt>
 							<dd><em>Default: "", A Localization Setting</em> - String to place after the formatted time.</dd>
@@ -468,7 +471,7 @@ $('#basic_example_1').datetimepicker();
 					 		<input type="text" name="basic_example_2" id="basic_example_2" value="" />
 						</div>					
 <pre>
-$('#basic_example_2').timepicker({});
+$('#basic_example_2').timepicker();
 </pre>
 					</div>
 
@@ -581,7 +584,7 @@ $('#slider_example_2').datetimepicker({
 					<div class="example-container">
 						<p>Add sliderAccess plugin for touch devices:</p>
 						<div>
-					 		<div id="slider_example_3"></div>
+					 		<input type="text" name="slider_example_3" id="slider_example_3" value="" />
 						</div>					
 <pre>
 $('#slider_example_3').datetimepicker({
@@ -632,6 +635,7 @@ $('#alt_example_2').datetimepicker({
 $('#alt_example_3').datetimepicker({
 	altField: "#alt_example_3_alt",
 	altFieldTimeOnly: false,
+	altFormat: "yy-mm-dd",
 	altTimeFormat: "h:m",
 	altSeparator: " @ "
 });
@@ -736,7 +740,7 @@ endDateTextBox.datetimepicker({
 					<div class="example-container">
 						<p>Get and Set Datetime:</p>
 						<div>
-							<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
+							<input type="text" name="utility_example_1" id="utility_example_1" value="08/25/2012 08:41 pm" /> 
 							<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
 							<button id="utility_example_1_getdt" value="1">Get Datetime</button> 
 						</div>
@@ -744,7 +748,9 @@ endDateTextBox.datetimepicker({
 <pre>
 var ex13 = $('#utility_example_1');
 
-ex13.datetimepicker();
+ex13.datetimepicker({
+	ampm: true
+});
 
 $('#utility_example_1_setdt').click(function(){
 	ex13.datetimepicker('setDate', (new Date()) );
@@ -790,9 +796,9 @@ $('#utility_example_2').text(
 						</div>
 					
 <pre>
-$('#utility_example_3').text(
-	JSON.stringify( $.datepicker.parseTime('hh:mm:ss:l z', "14:36:21:765 +2000", { ampm: false }) )
-);
+$('#utility_example_3').text(JSON.stringify( 
+	$.datepicker.parseTime('hh:mm:ss:l z', "14:36:21:765 +2000", { ampm: false }) 
+));
 </pre>
 					</div>
 
