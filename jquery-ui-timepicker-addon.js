@@ -480,7 +480,7 @@
 							borderCollapse: 'collapse'
 						}).find("td").click(function(e){
 								var $t = $(this),
-									h = $t.html()
+									h = $t.html(),
 									f = $t.data('for'); // loses scope, so we use data-for
 
 								if (f == 'hour' && o.ampm) {
