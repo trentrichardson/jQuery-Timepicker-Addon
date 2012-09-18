@@ -1405,7 +1405,11 @@
 		var tp_inst = this._get(inst, 'timepicker');
 
 		if (tp_inst) {
-			//this._setDateFromField(inst, noDefault); // This keeps setting to today when it shouldn't
+			// if it hasn't yet been defined, grab from field
+			if(inst.lastVal === undefined){
+				this._setDateFromField(inst, noDefault);
+			}
+
 			var date = this._getDate(inst);
 			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
