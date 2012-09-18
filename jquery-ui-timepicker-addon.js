@@ -1571,7 +1571,7 @@
 			if (allPartsLen > 0) {
 				return [
 						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
-						allParts.splice(timePartsLen*-1).join(separator)
+						allParts.splice(0,timePartsLen).join(separator)
 					];
 			}
 
