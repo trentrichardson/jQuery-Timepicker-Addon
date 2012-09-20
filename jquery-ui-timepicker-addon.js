@@ -1551,7 +1551,7 @@
 				timePartsLen = timeParts.length;
 			}
 
-			if (allPartsLen > 0) {
+			if (allPartsLen > 1) {
 				return [
 						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
 						allParts.splice(0,timePartsLen).join(separator)
