@@ -1425,8 +1425,16 @@
 	*/
 	$.datepicker._base_parseDate = $.datepicker.parseDate;
 	$.datepicker.parseDate = function(format, value, settings) {
-		var splitRes = splitDateTime(format, value, settings);
-		return $.datepicker._base_parseDate(format, splitRes[0], settings);
+		var date;
+		try {
+			date = this._base_parseDate(format, value, settings);
+		} catch (err) {
+			// Hack!  The error message ends with a colon, a space, and
+			// the "extra" characters.  We rely on that instead of
+			// attempting to perfectly reproduce the parsing algorithm.
+			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+		}
+		return date;
 	};
 
 	/*
@@ -1551,7 +1559,7 @@
 				timePartsLen = timeParts.length;
 			}
 
-			if (allPartsLen > 0) {
+			if (allPartsLen > 1) {
 				return [
 						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
 						allParts.splice(0,timePartsLen).join(separator)
