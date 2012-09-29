@@ -1,8 +1,8 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.0.3
- * Last Modified: 09/15/2012
+ * Version 1.0.4
+ * Last Modified: 09/29/2012
  *
  * Copyright 2012 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -35,7 +35,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.0.3"
+			version: "1.0.4"
 		}
 	});
 
@@ -1149,7 +1149,7 @@
 			case 'l':
 				return ('00' + time.millisec).slice(-3);
 			case 'z':
-				return time.timezone;
+				return time.timezone === null? options.defaultTimezone : time.timezone;
 			case 't':
 			case 'tt':
 				if (options.ampm) {
@@ -1328,37 +1328,16 @@
 	$.datepicker._setTime = function(inst, date) {
 		var tp_inst = this._get(inst, 'timepicker');
 		if (tp_inst) {
-			var defaults = tp_inst._defaults,
-				// calling _setTime with no date sets time to defaults
-				hour = date ? date.getHours() : defaults.hour,
-				minute = date ? date.getMinutes() : defaults.minute,
-				second = date ? date.getSeconds() : defaults.second,
-				millisec = date ? date.getMilliseconds() : defaults.millisec;
-			//check if within min/max times..
-			// correct check if within min/max times. 	
-			// Rewritten by Scott A. Woodward
-			var hourEq = hour === defaults.hourMin,
-				minuteEq = minute === defaults.minuteMin,
-				secondEq = second === defaults.secondMin;
-			var reset = false;
-			if (hour < defaults.hourMin || hour > defaults.hourMax) reset = true;
-			else if ((minute < defaults.minuteMin || minute > defaults.minuteMax) && hourEq) reset = true;
-			else if ((second < defaults.secondMin || second > defaults.secondMax) && hourEq && minuteEq) reset = true;
-			else if ((millisec < defaults.millisecMin || millisec > defaults.millisecMax) && hourEq && minuteEq && secondEq) reset = true;
-			if (reset) {
-				hour = defaults.hourMin;
-				minute = defaults.minuteMin;
-				second = defaults.secondMin;
-				millisec = defaults.millisecMin;
-			}
-			tp_inst.hour = hour;
-			tp_inst.minute = minute;
-			tp_inst.second = second;
-			tp_inst.millisec = millisec;
-			if (tp_inst.hour_slider) tp_inst.hour_slider.slider('value', hour);
-			if (tp_inst.minute_slider) tp_inst.minute_slider.slider('value', minute);
-			if (tp_inst.second_slider) tp_inst.second_slider.slider('value', second);
-			if (tp_inst.millisec_slider) tp_inst.millisec_slider.slider('value', millisec);
+			var defaults = tp_inst._defaults;
+
+			// calling _setTime with no date sets time to defaults
+			tp_inst.hour = date ? date.getHours() : defaults.hour;
+			tp_inst.minute = date ? date.getMinutes() : defaults.minute;
+			tp_inst.second = date ? date.getSeconds() : defaults.second;
+			tp_inst.millisec = date ? date.getMilliseconds() : defaults.millisec;
+
+			//check if within min/max times.. 
+			tp_inst._limitMinMaxDateTime(inst, true);
 
 			tp_inst._onTimeChange();
 			tp_inst._updateDateTime(inst);
@@ -1426,7 +1405,11 @@
 		var tp_inst = this._get(inst, 'timepicker');
 
 		if (tp_inst) {
-			//this._setDateFromField(inst, noDefault); // This keeps setting to today when it shouldn't
+			// if it hasn't yet been defined, grab from field
+			if(inst.lastVal === undefined){
+				this._setDateFromField(inst, noDefault);
+			}
+
 			var date = this._getDate(inst);
 			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
@@ -1442,8 +1425,16 @@
 	*/
 	$.datepicker._base_parseDate = $.datepicker.parseDate;
 	$.datepicker.parseDate = function(format, value, settings) {
-		var splitRes = splitDateTime(format, value, settings);
-		return $.datepicker._base_parseDate(format, splitRes[0], settings);
+		var date;
+		try {
+			date = this._base_parseDate(format, value, settings);
+		} catch (err) {
+			// Hack!  The error message ends with a colon, a space, and
+			// the "extra" characters.  We rely on that instead of
+			// attempting to perfectly reproduce the parsing algorithm.
+			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+		}
+		return date;
 	};
 
 	/*
@@ -1568,10 +1559,10 @@
 				timePartsLen = timeParts.length;
 			}
 
-			if (allPartsLen > 0) {
+			if (allPartsLen > 1) {
 				return [
 						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
-						allParts.splice(timePartsLen*-1).join(separator)
+						allParts.splice(0,timePartsLen).join(separator)
 					];
 			}
 
@@ -1759,6 +1750,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.0.3";
+	$.timepicker.version = "1.0.4";
 
 })(jQuery);
