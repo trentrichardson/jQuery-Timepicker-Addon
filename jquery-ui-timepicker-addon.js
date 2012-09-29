@@ -1149,7 +1149,7 @@
 			case 'l':
 				return ('00' + time.millisec).slice(-3);
 			case 'z':
-				return time.timezone;
+				return time.timezone === null? options.defaultTimezone : time.timezone;
 			case 't':
 			case 'tt':
 				if (options.ampm) {
