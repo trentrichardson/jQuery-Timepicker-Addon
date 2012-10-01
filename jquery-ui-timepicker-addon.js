@@ -2,7 +2,7 @@
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
  * Version 1.0.5-dev
- * Last Modified: 09/29/2012
+ * Last Modified: 10/1/2012
  *
  * Copyright 2012 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -159,7 +159,9 @@
 		*/
 		_newInst: function($input, o) {
 			var tp_inst = new Timepicker(),
-				inlineSettings = {};
+				inlineSettings = {},
+                fns = {},
+		        overrides, i;
 
 			for (var attrName in this._defaults) {
 				if(this._defaults.hasOwnProperty(attrName)){
@@ -173,29 +175,37 @@
 					}
 				}
 			}
-			tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, {
-				beforeShow: function(input, dp_inst) {
-					if ($.isFunction(o.beforeShow)) {
-						return o.beforeShow(input, dp_inst, tp_inst);
-					}
-				},
-				onChangeMonthYear: function(year, month, dp_inst) {
-					// Update the time as well : this prevents the time from disappearing from the $input field.
-					tp_inst._updateDateTime(dp_inst);
-					if ($.isFunction(o.onChangeMonthYear)) {
-						o.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
-					}
-				},
-				onClose: function(dateText, dp_inst) {
-					if (tp_inst.timeDefined === true && $input.val() !== '') {
-						tp_inst._updateDateTime(dp_inst);
-					}
-					if ($.isFunction(o.onClose)) {
-						o.onClose.call($input[0], dateText, dp_inst, tp_inst);
-					}
-				},
-				timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
-			});
+		    overrides = {
+		        beforeShow: function (input, dp_inst) {
+		            if ($.isFunction(tp_inst._defaults.evnts.beforeShow)) {
+		                return tp_inst._defaults.evnts.beforeShow.call($input[0], input, dp_inst, tp_inst);
+		            }
+		        },
+		        onChangeMonthYear: function (year, month, dp_inst) {
+		            // Update the time as well : this prevents the time from disappearing from the $input field.
+		            tp_inst._updateDateTime(dp_inst);
+		            if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
+		                tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
+		            }
+		        },
+		        onClose: function (dateText, dp_inst) {
+		            if (tp_inst.timeDefined === true && $input.val() !== '') {
+		                tp_inst._updateDateTime(dp_inst);
+		            }
+		            if ($.isFunction(tp_inst._defaults.evnts.onClose)) {
+		                tp_inst._defaults.evnts.onClose.call($input[0], dateText, dp_inst, tp_inst);
+		            }
+		        }
+		    };
+		    for (i in overrides) {
+		        if (overrides.hasOwnProperty(i)) {
+		            fns[i] = o[i] || null;
+		        }
+		    }
+		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, overrides, {
+		        evnts:fns,
+		        timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
+		    });
 			tp_inst.amNames = $.map(tp_inst._defaults.amNames, function(val) {
 				return val.toUpperCase();
 			});
@@ -1455,7 +1465,8 @@
 	*/
 	$.datepicker._base_optionDatepicker = $.datepicker._optionDatepicker;
 	$.datepicker._optionDatepicker = function(target, name, value) {
-		var inst = this._getInst(target);
+		var inst = this._getInst(target),
+	        name_clone;
 		if (!inst) {
 			return null;
 		}
@@ -1464,38 +1475,47 @@
 		if (tp_inst) {
 			var min = null,
 				max = null,
-				onselect = null;
-			if (typeof name == 'string') { // if min/max was set with the string
-				if (name === 'minDate' || name === 'minDateTime') {
-					min = value;
-				} else {
-					if (name === 'maxDate' || name === 'maxDateTime') {
-						max = value;
-					} else {
-						if (name === 'onSelect') {
-							onselect = value;
-						}
-					}
-				}
-			} else {
-				if (typeof name == 'object') { //if min/max was set with the JSON
-					if (name.minDate) {
-						min = name.minDate;
-					} else {
-						if (name.minDateTime) {
-							min = name.minDateTime;
-						} else {
-							if (name.maxDate) {
-								max = name.maxDate;
-							} else {
-								if (name.maxDateTime) {
-									max = name.maxDateTime;
-								}
-							}
-						}
-					}
-				}
-			}
+				onselect = null,
+				overrides = tp_inst._defaults.evnts,
+				fns = {},
+				prop;
+		    if (typeof name == 'string') { // if min/max was set with the string
+		        if (name === 'minDate' || name === 'minDateTime') {
+		            min = value;
+		        } else if (name === 'maxDate' || name === 'maxDateTime') {
+		            max = value;
+		        } else if (name === 'onSelect') {
+		            onselect = value;
+		        } else if (overrides.hasOwnProperty(name)) {
+		            if (typeof (value) === 'undefined') {
+		                return overrides[name];
+		            }
+		            fns[name] = value;
+		        }
+		    } else if (typeof name == 'object') { //if min/max was set with the JSON
+		        if (name.minDate) {
+		            min = name.minDate;
+		        } else if (name.minDateTime) {
+		            min = name.minDateTime;
+		        } else if (name.maxDate) {
+		            max = name.maxDate;
+		        } else if (name.maxDateTime) {
+		            max = name.maxDateTime;
+		        }
+		        for (prop in overrides) {
+		            if (overrides.hasOwnProperty(prop) && name[prop]) {
+		                fns[prop] = name[prop];
+		            }
+		        }
+		    }
+		    for (prop in fns) {
+		        if (fns.hasOwnProperty(prop)) {
+		            overrides[prop] = fns[prop];
+		            if (!name_clone) { name_clone = $.extend({}, name); }
+		            delete name_clone[prop];
+		        }
+		    }
+		    if (name_clone && isEmptyObject(name_clone)) { return; }
 			if (min) { //if min was set
 				if (min === 0) {
 					min = new Date();
@@ -1520,9 +1540,21 @@
 		if (value === undefined) {
 			return this._base_optionDatepicker(target, name);
 		}
-		return this._base_optionDatepicker(target, name, value);
+		return this._base_optionDatepicker(target, name_clone || name, value);
 	};
-
+	/*
+	* jQuery isEmptyObject does not check hasOwnProperty - if someone has added to the object prototype,
+	* it will return false for all objects
+	*/
+	function isEmptyObject (obj) {
+		var prop;
+		for (prop in obj) {
+			if (obj.hasOwnProperty(obj)) {
+				return false;
+			}
+		}
+		return true;
+	}
 	/*
 	* jQuery extend now ignores nulls!
 	*/
