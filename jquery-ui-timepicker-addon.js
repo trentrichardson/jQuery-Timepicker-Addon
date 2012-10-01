@@ -1491,6 +1491,7 @@
 		                return overrides[name];
 		            }
 		            fns[name] = value;
+					name_clone = {}; //empty results in exiting function after overrides updated
 		        }
 		    } else if (typeof name == 'object') { //if min/max was set with the JSON
 		        if (name.minDate) {
