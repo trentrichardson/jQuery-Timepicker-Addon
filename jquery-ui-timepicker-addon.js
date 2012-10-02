@@ -834,8 +834,10 @@
 
 		/*
 		* Small abstraction to control types
+		* We can add more, just be sure to follow the pattern: create, options, value
 		*/
 		_controls: {
+			// slider methods
 			slider: {
 				create: function(tp_inst, obj, unit, val, min, max, step){
 					return obj.prop('slide', null).slider({
@@ -864,6 +866,7 @@
 					return obj.slider('value');
 				}
 			},
+			// select methods
 			select: {
 				create: function(tp_inst, obj, unit, val, min, max, step){
 					var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
@@ -894,8 +897,7 @@
 				},
 				options: function(tp_inst, obj, opts, val){
 					var o = {},
-						$t = obj.find('select');
-
+						$t = obj.children('select');
 					if(typeof(opts) == 'string'){
 						if(val == undefined)
 							return $t.data(opts);
@@ -911,7 +913,7 @@
 					return $t.val();
 				}
 			}
-		}
+		} // end _controls
 
 	});
 
