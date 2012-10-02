@@ -903,8 +903,7 @@
 							return $t.data(opts);
 						o[opts] = val;	
 					}
-
-					tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
 				value: function(tp_inst, obj, val){
 					var $t = obj.children('select');
