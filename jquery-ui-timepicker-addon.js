@@ -1274,22 +1274,21 @@
 		if(tp_inst){
 			var altField = tp_inst._defaults.altField;
 			if (altField) { // update alternate field too
-				var altFormat = tp_inst._defaults.altFormat || tp_inst._defaults.dateFormat;
-				var date = this._getDate(inst);
-				var formatCfg = $.datepicker._getFormatConfig(inst);
-				var altFormattedDateTime = '', altSeparator = tp_inst._defaults.altSeparator ? tp_inst._defaults.altSeparator : tp_inst._defaults.separator, altTimeSuffix = tp_inst._defaults.altTimeSuffix ? tp_inst._defaults.altTimeSuffix : tp_inst._defaults.timeSuffix;
-				if (tp_inst._defaults.altFormat)
-					altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, (date === null ? new Date() : date), formatCfg);
-				else
-					altFormattedDateTime = tp_inst.formattedDate;
-				if (altFormattedDateTime)
-					altFormattedDateTime += altSeparator;
-				if (tp_inst._defaults.altTimeFormat)
-					altFormattedDateTime += $.datepicker.formatTime(tp_inst._defaults.altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
-				else
-					altFormattedDateTime += tp_inst.formattedTime + altTimeSuffix;
-
-				$(altField).each(function() { $(this).val(altFormattedDateTime); });
+				var altFormat = tp_inst._defaults.altFormat || tp_inst._defaults.dateFormat,
+					date = this._getDate(inst),
+					formatCfg = $.datepicker._getFormatConfig(inst),
+					altFormattedDateTime = '', 
+					altSeparator = tp_inst._defaults.altSeparator ? tp_inst._defaults.altSeparator : tp_inst._defaults.separator, 
+					altTimeSuffix = tp_inst._defaults.altTimeSuffix ? tp_inst._defaults.altTimeSuffix : tp_inst._defaults.timeSuffix,
+					altTimeFormat = tp_inst._defaults.altTimeFormat !== undefined ? tp_inst._defaults.altTimeFormat : tp_inst._defaults.timeFormat;
+				
+				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
+				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly){
+					if(tp_inst._defaults.altFormat)
+						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, (date === null ? new Date() : date), formatCfg) + altSeparator + altFormattedDateTime;
+					else altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
+				}
+				$(altField).val(altFormattedDateTime);
 			}
 		}
 		else{
