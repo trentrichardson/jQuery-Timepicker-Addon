@@ -393,77 +393,11 @@
 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
 				}
 				
-				// Updated by Peter Medeiros:
-				// - Pass in Event and UI instance into slide function
-				this.hour_slider = $tp.find('.ui_tpicker_hour_slider').prop('slide', null).slider({
-					orientation: "horizontal",
-					value: this.hour,
-					min: o.hourMin,
-					max: max.hour,
-					step: o.stepHour,
-					slide: function(event, ui) {
-						tp_inst.hour_slider.slider("option", "value", ui.value);
-						tp_inst._onTimeChange();
-					},
-					stop: function(event, ui) {
-						tp_inst._onSelectHandler();
-					}
-				});
-
-				this.minute_slider = $tp.find('.ui_tpicker_minute_slider').prop('slide', null).slider({
-					orientation: "horizontal",
-					value: this.minute,
-					min: o.minuteMin,
-					max: max.minute,
-					step: o.stepMinute,
-					slide: function(event, ui) {
-						tp_inst.minute_slider.slider("option", "value", ui.value);
-						tp_inst._onTimeChange();
-					},
-					stop: function(event, ui) {
-						tp_inst._onSelectHandler();
-					}
-				});
-
-				this.second_slider = $tp.find('.ui_tpicker_second_slider').prop('slide', null).slider({
-					orientation: "horizontal",
-					value: this.second,
-					min: o.secondMin,
-					max: max.second,
-					step: o.stepSecond,
-					slide: function(event, ui) {
-						tp_inst.second_slider.slider("option", "value", ui.value);
-						tp_inst._onTimeChange();
-					},
-					stop: function(event, ui) {
-						tp_inst._onSelectHandler();
-					}
-				});
-
-				this.millisec_slider = $tp.find('.ui_tpicker_millisec_slider').prop('slide', null).slider({
-					orientation: "horizontal",
-					value: this.millisec,
-					min: o.millisecMin,
-					max: max.millisec,
-					step: o.stepMillisec,
-					slide: function(event, ui) {
-						tp_inst.millisec_slider.slider("option", "value", ui.value);
-						tp_inst._onTimeChange();
-					},
-					stop: function(event, ui) {
-						tp_inst._onSelectHandler();
-					}
-				});
-
 				// add sliders, adjust grids, add events
 				for(var i=0,l=tp_inst.units.length; i<l; i++){
 					litem = tp_inst.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
 					
-					/* 
-						Something fishy happens when assigning to tp_inst['hour_slider'] instead of tp_inst.hour_slider, I think 
-						it is because it is assigned as a prototype. Clicking the slider will always change to the previous value 
-						not the new one clicked. Ideally this works and reduces the 80+ lines of code above
 					// add the slider
 					tp_inst[litem+'_slider'] = $tp.find('.ui_tpicker_'+litem+'_slider').prop('slide', null).slider({
 						orientation: "horizontal",
@@ -472,15 +406,14 @@
 						max: max[litem],
 						step: o['step'+uitem],
 						slide: function(event, ui) {
-							tp_inst[litem+'_slider'].slider("option", "value", ui.value);
+							$(this).slider("option", "value", ui.value);
 							tp_inst._onTimeChange();
 						},
 						stop: function(event, ui) {
 							//Emulate datepicker onSelect behavior. Call on slidestop.
 							tp_inst._onSelectHandler();
 						}
-					});
-					*/
+					});					
 
 					// adjust the grid and add click event
 					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
