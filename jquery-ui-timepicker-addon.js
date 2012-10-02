@@ -717,7 +717,6 @@
 				this.ampm = ampm;
 			}
 
-			//this._formatTime();
 			this.formattedTime = $.datepicker.formatTime(this._defaults.timeFormat, this, this._defaults);
 			if (this.$timeObj) {
 				this.$timeObj.text(this.formattedTime + o.timeSuffix);
@@ -737,29 +736,6 @@
 			var inputEl = this.$input ? this.$input[0] : null;
 			if (onSelect && inputEl) {
 				onSelect.apply(inputEl, [this.formattedDateTime, this]);
-			}
-		},
-
-		/*
-		* left for any backwards compatibility
-		*/
-		_formatTime: function(time, format) {
-			time = time || {
-				hour: this.hour,
-				minute: this.minute,
-				second: this.second,
-				millisec: this.millisec,
-				ampm: this.ampm,
-				timezone: this.timezone
-			};
-			var tmptime = (format || this._defaults.timeFormat).toString();
-
-			tmptime = $.datepicker.formatTime(tmptime, time, this._defaults);
-
-			if (arguments.length) {
-				return tmptime;
-			} else {
-				this.formattedTime = tmptime;
 			}
 		},
 
@@ -881,7 +857,7 @@
 							sel += ' '+ ((i<12)? tp_inst._defaults.amNames[0] : tp_inst._defaults.pmNames[0])[ul]();
 						}
 						else if(unit == 'millisec') sel += i;
-						else sel += ('0'+ i.toString()).substr(-2)
+						else sel += ('0'+ i.toString()).substr(-2);
 						sel += '</option>';
 					}
 					sel += '</select>';
@@ -899,7 +875,7 @@
 					var o = {},
 						$t = obj.children('select');
 					if(typeof(opts) == 'string'){
-						if(val == undefined)
+						if(val === undefined)
 							return $t.data(opts);
 						o[opts] = val;	
 					}
@@ -1265,7 +1241,7 @@
 	$.datepicker._base_updateAlternate = $.datepicker._updateAlternate;
 	/* Update any alternate field to synchronise with the main field. */
 	$.datepicker._updateAlternate = function(inst) {
-		tp_inst = this._get(inst, 'timepicker');
+		var tp_inst = this._get(inst, 'timepicker');
 		if(tp_inst){
 			var altField = tp_inst._defaults.altField;
 			if (altField) { // update alternate field too
