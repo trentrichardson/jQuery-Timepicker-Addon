@@ -222,6 +222,9 @@
 					<h3>Time Field Settings</h3>
 					<dl class="defs">
 
+						<dt>controlType</dt>
+							<dd><em>Default: 'slider'</em> - Whether to use 'slider' or 'select'. If 'slider' is unavailable through jQueryUI, 'select' will be used.</dd>
+
 						<dt>showHour</dt>
 							<dd><em>Default: true</em> - Whether to show the hour slider.</dd>
 
@@ -597,6 +600,19 @@ $('#slider_example_2').datetimepicker({
 $('#slider_example_3').datetimepicker({
 	addSliderAccess: true,
 	sliderAccessArgs: { touchonly: false }
+});</pre>
+					</div>
+
+					<!-- ============= example -->
+					<div class="example-container">
+						<p>Use dropdowns instead of sliders</p>
+						<div>
+					 		<input type="text" name="slider_example_4" id="slider_example_4" value="" />
+						</div>					
+<pre>
+$('#slider_example_4').datetimepicker({
+	controlType: 'select',
+	ampm: true
 });</pre>
 					</div>
 

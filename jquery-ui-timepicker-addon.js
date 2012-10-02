@@ -101,6 +101,7 @@
 			timezoneList: null,
 			addSliderAccess: false,
 			sliderAccessArgs: null,
+			controlType: 'slider',
 			defaultValue: null
 		};
 		$.extend(this._defaults, this.regional['']);
@@ -136,6 +137,7 @@
 		formattedDateTime: '',
 		timezoneList: null,
 		units: ['hour','minute','second','millisec'],
+		control: null,
 
 		/* 
 		* Override the default settings for all instances of the time picker.
@@ -206,6 +208,11 @@
 				return val.toUpperCase();
 			});
 
+			// select control type will always be available
+			if(tp_inst._defaults.controlType == 'slider' && $.fn.slider === undefined){
+				tp_inst._defaults.controlType = 'select';
+			}
+
 			if (tp_inst._defaults.timezoneList === null) {
 				var timezoneList = ['-1200', '-1100', '-1000', '-0930', '-0900', '-0800', '-0700', '-0600', '-0500', '-0430', '-0400', '-0330', '-0300', '-0200', '-0100', '+0000', 
 									'+0100', '+0200', '+0300', '+0330', '+0400', '+0430', '+0500', '+0530', '+0545', '+0600', '+0630', '+0700', '+0800', '+0845', '+0900', '+0930', 
@@ -219,6 +226,7 @@
 				tp_inst._defaults.timezoneList = timezoneList;
 			}
 
+			tp_inst.control = tp_inst._controls[tp_inst._defaults.controlType];
 			tp_inst.timezone = tp_inst._defaults.timezone;
 			tp_inst.hour = tp_inst._defaults.hour;
 			tp_inst.minute = tp_inst._defaults.minute;
@@ -391,21 +399,7 @@
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
 					
 					// add the slider
-					tp_inst[litem+'_slider'] = $tp.find('.ui_tpicker_'+litem+'_slider').prop('slide', null).slider({
-						orientation: "horizontal",
-						value: tp_inst[litem],
-						min: o[litem+'Min'],
-						max: max[litem],
-						step: o['step'+uitem],
-						slide: function(event, ui) {
-							$(this).slider("option", "value", ui.value);
-							tp_inst._onTimeChange();
-						},
-						stop: function(event, ui) {
-							//Emulate datepicker onSelect behavior. Call on slidestop.
-							tp_inst._onSelectHandler();
-						}
-					});					
+					tp_inst[litem+'_slider'] = tp_inst.control.create(tp_inst, $tp.find('.ui_tpicker_'+litem+'_slider'), litem, tp_inst[litem], o[litem+'Min'], max[litem], o['step'+uitem]);
 
 					// adjust the grid and add click event
 					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
@@ -434,7 +428,8 @@
 										h = aph + 12;
 									}
 								}
-								tp_inst[f+'_slider'].slider("option", "value", parseInt(h,10));
+								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], parseInt(h,10));
+
 								tp_inst._onTimeChange();
 								tp_inst._onSelectHandler();
 							})
@@ -626,28 +621,20 @@
 					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
 
 				if (this.hour_slider) {
-					this.hour_slider.slider("option", {
-						min: this._defaults.hourMin,
-						max: hourMax
-					}).slider('value', this.hour);
+					this.control.options(this, this.hour_slider, { min: this._defaults.hourMin, max: hourMax });
+					this.control.value(this, this.hour_slider, this.hour);
 				}
 				if (this.minute_slider) {
-					this.minute_slider.slider("option", {
-						min: this._defaults.minuteMin,
-						max: minMax
-					}).slider('value', this.minute);
+					this.control.options(this, this.minute_slider, { min: this._defaults.minuteMin, max: minMax });
+					this.control.value(this, this.minute_slider, this.minute);
 				}
 				if (this.second_slider) {
-					this.second_slider.slider("option", {
-						min: this._defaults.secondMin,
-						max: secMax
-					}).slider('value', this.second);
+					this.control.options(this, this.second_slider, { min: this._defaults.secondMin, max: secMax });
+					this.control.value(this, this.second_slider, this.second);
 				}
 				if (this.millisec_slider) {
-					this.millisec_slider.slider("option", {
-						min: this._defaults.millisecMin,
-						max: millisecMax
-					}).slider('value', this.millisec);
+					this.control.options(this, this.millisec_slider, { min: this._defaults.millisecMin, max: millisecMax });
+					this.control.value(this, this.millisec_slider, this.millisec);
 				}
 			}
 
@@ -658,10 +645,10 @@
 		* on time change is also called when the time is updated in the text field
 		*/
 		_onTimeChange: function() {
-			var hour = (this.hour_slider) ? this.hour_slider.slider('value') : false,
-				minute = (this.minute_slider) ? this.minute_slider.slider('value') : false,
-				second = (this.second_slider) ? this.second_slider.slider('value') : false,
-				millisec = (this.millisec_slider) ? this.millisec_slider.slider('value') : false,
+			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider) : false,
+				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider) : false,
+				second = (this.second_slider) ? this.control.value(this, this.second_slider) : false,
+				millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider) : false,
 				timezone = (this.timezone_select) ? this.timezone_select.val() : false,
 				o = this._defaults;
 
@@ -841,6 +828,87 @@
 							$.datepicker.log(err);
 						}
 					}
+				}
+			}
+		},
+
+		/*
+		* Small abstraction to control types
+		*/
+		_controls: {
+			slider: {
+				create: function(tp_inst, obj, unit, val, min, max, step){
+					return obj.prop('slide', null).slider({
+						orientation: "horizontal",
+						value: val,
+						min: min,
+						max: max,
+						step: step,
+						slide: function(event, ui) {
+							tp_inst.control.value(tp_inst, $(this), ui.value);
+							tp_inst._onTimeChange();
+						},
+						stop: function(event, ui) {
+							tp_inst._onSelectHandler();
+						}
+					});	
+				},
+				options: function(tp_inst, obj, opts, val){
+					if(typeof(opts) == 'string' && val !== undefined)
+							return obj.slider(opts, val);
+					return obj.slider(opts);
+				},
+				value: function(tp_inst, obj, val){
+					if(val !== undefined)
+						return obj.slider('value', val);
+					return obj.slider('value');
+				}
+			},
+			select: {
+				create: function(tp_inst, obj, unit, val, min, max, step){
+					var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
+						ul = tp_inst._defaults.timeFormat.indexOf('t') !== -1? 'toLowerCase':'toUpperCase';
+
+					for(var i=min; i<=max; i+=step){
+						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
+						if(unit == 'hour' && tp_inst._defaults.ampm){
+							if(i === 0 || i === 12)
+								sel += '12';
+							else sel += ('0'+ (i%12).toString()).substr(-2);
+							sel += ' '+ ((i<12)? tp_inst._defaults.amNames[0] : tp_inst._defaults.pmNames[0])[ul]();
+						}
+						else if(unit == 'millisec') sel += i;
+						else sel += ('0'+ i.toString()).substr(-2)
+						sel += '</option>';
+					}
+					sel += '</select>';
+
+					obj.children('select').remove();
+
+					$(sel).appendTo(obj).change(function(e){
+						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
+					});
+
+					return obj;
+				},
+				options: function(tp_inst, obj, opts, val){
+					var o = {},
+						$t = obj.find('select');
+
+					if(typeof(opts) == 'string'){
+						if(val == undefined)
+							return $t.data(opts);
+						o[opts] = val;	
+					}
+
+					tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+				},
+				value: function(tp_inst, obj, val){
+					var $t = obj.children('select');
+					if(val !== undefined)
+						return $t.val(val);
+					return $t.val();
 				}
 			}
 		}
