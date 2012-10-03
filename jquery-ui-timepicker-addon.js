@@ -1145,7 +1145,7 @@
 				hour = 12;
 			}
 		}
-		tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
+		tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function(match) {
 			switch (match.toLowerCase()) {
 			case 'hh':
 				return ('0' + hour).slice(-2);
