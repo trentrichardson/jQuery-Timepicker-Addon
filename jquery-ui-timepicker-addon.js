@@ -997,7 +997,7 @@
 
 		// figure out position of time elements.. cause js cant do named captures
 		var getFormatPositions = function(timeFormat) {
-			var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z)/g),
+			var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z|'.*?')/g),
 				orders = {
 					h: -1,
 					m: -1,
@@ -1020,14 +1020,20 @@
 		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
 
 		var regstr = '^' + timeFormat.toString()
-									.replace(/h{1,2}/ig, '(\\d?\\d)')
-									.replace(/m{1,2}/ig, '(\\d?\\d)')
-									.replace(/s{1,2}/ig, '(\\d?\\d)')
-									.replace(/l{1}/ig, '(\\d?\\d?\\d)')
-									.replace(/t{1,2}/ig, getPatternAmpm(o.amNames, o.pmNames))
-									.replace(/z{1}/ig, '(z|[-+]\\d\\d:?\\d\\d|\\S+)?')
-									.replace(/\s/g, '\\s?') + 
-									o.timeSuffix + '$',
+				.replace(/(hh?|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
+						switch (match.charAt(0).toLowerCase()) {
+							case 'h': return '(\\d?\\d)';
+							case 'm': return '(\\d?\\d)';
+							case 's': return '(\\d?\\d)';
+							case 'l': return '(\\d?\\d?\\d)';
+							case 'z': return '(z|[-+]\\d\\d:?\\d\\d|\\S+)?';
+							case 't': return getPatternAmpm(o.amNames, o.pmNames);
+							default:    // literal escaped in quotes
+								return '(' + match.replace(/\'/g, "").replace(/(\.|\$|\^|\\|\/|\(|\)|\[|\]|\?|\+|\*)/g, function (m) { return "\\" + m; }) + ')?';
+						}
+					})
+				.replace(/\s/g, '\\s?') +
+				o.timeSuffix + '$',
 			order = getFormatPositions(timeFormat),
 			ampm = '',
 			treg;

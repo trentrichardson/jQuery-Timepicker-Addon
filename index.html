@@ -368,6 +368,7 @@
 						<dt>tt</dt><dd>am or pm for AM/PM</dd>
 						<dt>TT</dt><dd>AM or PM for AM/PM</dd>
 						<dt>z</dt><dd>Timezone as defined by timezoneList</dd>
+						<dt>'...'</dt><dd>Literal text (Uses single quotes)</dd>
 					</dl>
 
 					<p>Formats are used in the following ways:</p>
@@ -377,6 +378,8 @@
 						<li>$.datepicker.formatTime(format, timeObj, options) utility method</li>
 						<li>$.datepicker.parseTime(format, timeStr, options) utility method</li>
 					</ul>
+
+					<p>For help with  formatting the date portion, visit the datepicker documentation for <a href="http://docs.jquery.com/UI/Datepicker/formatDate" title="jQuery UI Datepicker Formatting">formatting dates</a>.</p>
 				</div>
 
 				<!-- ############################################################################# -->
@@ -437,7 +440,8 @@ $.timepicker.regional['ru'] = {
 	timeFormat: 'hh:mm tt',
 	amNames: ['AM', 'A'],
 	pmNames: ['PM', 'P'],
-	ampm: false
+	ampm: false,
+	isRTL: false
 };
 $.timepicker.setDefaults($.timepicker.regional['ru']);
 </pre>
@@ -493,7 +497,7 @@ $('#basic_example_2').timepicker();
 						</div>					
 <pre>
 $('#basic_example_3').datetimepicker({
-	timeFormat: "h:m",
+	timeFormat: "h:m t",
 	ampm: true
 });
 </pre>
