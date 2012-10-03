@@ -406,7 +406,8 @@
 						size = 100 * gridSize[litem] * o[litem+'Grid'] / (max[litem] - o[litem+'Min']);
 						$tp.find('.ui_tpicker_'+litem+' table').css({
 							width: size + "%",
-							marginLeft: (size / (-2 * gridSize[litem])) + "%",
+							marginLeft: o.isRTL? '0' : ((size / (-2 * gridSize[litem])) + "%"),
+							marginRight: o.isRTL? ((size / (-2 * gridSize[litem])) + "%") : '0',
 							borderCollapse: 'collapse'
 						}).find("td").click(function(e){
 								var $t = $(this),
@@ -487,7 +488,10 @@
 
 				// slideAccess integration: http://trentrichardson.com/2011/11/11/jquery-ui-sliders-and-touch-accessibility/
 				if (this._defaults.addSliderAccess) {
-					var sliderAccessArgs = this._defaults.sliderAccessArgs;
+					var sliderAccessArgs = this._defaults.sliderAccessArgs,
+						rtl = this._defaults.isRTL;
+					sliderAccessArgs.isRTL = rtl;
+						
 					setTimeout(function() { // fix for inline mode
 						if ($tp.find('.ui-slider-access').length === 0) {
 							$tp.find('.ui-slider:visible').sliderAccess(sliderAccessArgs);
@@ -498,14 +502,12 @@
 								$tp.find('table:visible').each(function() {
 									var $g = $(this),
 										oldWidth = $g.outerWidth(),
-										oldMarginLeft = $g.css('marginLeft').toString().replace('%', ''),
+										oldMarginLeft = $g.css(rtl? 'marginRight':'marginLeft').toString().replace('%', ''),
 										newWidth = oldWidth - sliderAccessWidth,
-										newMarginLeft = ((oldMarginLeft * newWidth) / oldWidth) + '%';
-
-									$g.css({
-										width: newWidth,
-										marginLeft: newMarginLeft
-									});
+										newMarginLeft = ((oldMarginLeft * newWidth) / oldWidth) + '%',
+										css = { width: newWidth, marginRight: 0, marginLeft: 0 };
+									css[rtl? 'marginRight':'marginLeft'] = newMarginLeft;
+									$g.css(css);
 								});
 							}
 						}
@@ -816,14 +818,15 @@
 			// slider methods
 			slider: {
 				create: function(tp_inst, obj, unit, val, min, max, step){
+					var rtl = tp_inst._defaults.isRTL; // if rtl go -60->0 instead of 0->60
 					return obj.prop('slide', null).slider({
 						orientation: "horizontal",
-						value: val,
-						min: min,
-						max: max,
+						value: rtl? val*-1 : val,
+						min: rtl? max*-1 : min,
+						max: rtl? min*-1 : max,
 						step: step,
 						slide: function(event, ui) {
-							tp_inst.control.value(tp_inst, $(this), ui.value);
+							tp_inst.control.value(tp_inst, $(this), rtl? ui.value*-1:ui.value);
 							tp_inst._onTimeChange();
 						},
 						stop: function(event, ui) {
@@ -832,11 +835,34 @@
 					});	
 				},
 				options: function(tp_inst, obj, opts, val){
+					if(tp_inst._defaults.isRTL){
+						if(typeof(opts) == 'string'){
+							if(opts == 'min' || opts == 'max'){
+								if(val !== undefined)
+									return obj.slider(opts, val*-1);
+								return Math.abs(obj.slider(opts));
+							}
+							return obj.slider(opts);
+						}
+						var min = opts.min, 
+							max = opts.max;
+						opts.min = opts.max = null;
+						if(min !== undefined)
+							opts.max = min * -1;
+						if(max !== undefined)
+							opts.min = max * -1;
+						return obj.slider(opts);
+					}
 					if(typeof(opts) == 'string' && val !== undefined)
 							return obj.slider(opts, val);
 					return obj.slider(opts);
 				},
 				value: function(tp_inst, obj, val){
+					if(tp_inst._defaults.isRTL){
+						if(val !== undefined)
+							return obj.slider('value', val*-1);
+						return Math.abs(obj.slider('value'));
+					}
 					if(val !== undefined)
 						return obj.slider('value', val);
 					return obj.slider('value');

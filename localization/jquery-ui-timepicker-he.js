@@ -14,7 +14,8 @@
 		timeFormat: "hh:mm tt",
 		amNames: ['לפנה"צ', 'AM', 'A'],
 		pmNames: ['אחה"צ', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional["he"]);
 })(jQuery);

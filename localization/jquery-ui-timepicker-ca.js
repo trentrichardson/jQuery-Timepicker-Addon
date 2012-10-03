@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['ca']);
 })(jQuery);

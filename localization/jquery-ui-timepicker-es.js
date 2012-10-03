@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['es']);
 })(jQuery);

@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm tt',
 		amNames: ['午前', 'AM', 'A'],
 		pmNames: ['午後', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['ja']);
 })(jQuery);
