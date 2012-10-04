@@ -15,7 +15,7 @@
 		amNames: ['לפנה"צ', 'AM', 'A'],
 		pmNames: ['אחה"צ', 'PM', 'P'],
 		ampm: false,
-		isRTL: false
+		isRTL: true
 	};
 	$.timepicker.setDefaults($.timepicker.regional["he"]);
 })(jQuery);
