@@ -872,18 +872,20 @@
 			select: {
 				create: function(tp_inst, obj, unit, val, min, max, step){
 					var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
-						ul = tp_inst._defaults.timeFormat.indexOf('t') !== -1? 'toLowerCase':'toUpperCase';
+						ul = tp_inst._defaults.timeFormat.indexOf('t') !== -1? 'toLowerCase':'toUpperCase',
+						m = 0;
 
-					for(var i=min; i<=max; i+=step){
+					for(var i=min; i<=max; i+=step){						
 						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
 						if(unit == 'hour' && tp_inst._defaults.ampm){
-							if(i === 0 || i === 12)
-								sel += '12';
-							else sel += ('0'+ (i%12).toString()).substr(-2);
-							sel += ' '+ ((i<12)? tp_inst._defaults.amNames[0] : tp_inst._defaults.pmNames[0])[ul]();
+							m = i%12;
+							if(i === 0 || i === 12) sel += '12';
+							else if(m < 10) sel += '0'+ m.toString();
+							else sel += m;
+							sel += ' '+ ((i < 12)? tp_inst._defaults.amNames[0] : tp_inst._defaults.pmNames[0])[ul]();
 						}
-						else if(unit == 'millisec') sel += i;
-						else sel += ('0'+ i.toString()).substr(-2);
+						else if(unit == 'millisec' || i >= 10) sel += i;
+						else sel += '0'+ i.toString();
 						sel += '</option>';
 					}
 					sel += '</select>';
