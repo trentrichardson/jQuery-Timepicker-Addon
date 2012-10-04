@@ -208,9 +208,16 @@
 				return val.toUpperCase();
 			});
 
-			// select control type will always be available
-			if(tp_inst._defaults.controlType == 'slider' && $.fn.slider === undefined){
-				tp_inst._defaults.controlType = 'select';
+			// controlType is string - key to our this._controls
+			if(typeof(tp_inst._defaults.controlType) === 'string'){
+				if(tp_inst._defaults.controlType == 'slider' && $.fn.slider === undefined){
+					tp_inst._defaults.controlType = 'select';
+				}
+				tp_inst.control = tp_inst._controls[tp_inst._defaults.controlType];
+			}
+			// controlType is an object and must implement create, options, value methods
+			else{ 
+				tp_inst.control = tp_inst._defaults.controlType;
 			}
 
 			if (tp_inst._defaults.timezoneList === null) {
@@ -226,7 +233,6 @@
 				tp_inst._defaults.timezoneList = timezoneList;
 			}
 
-			tp_inst.control = tp_inst._controls[tp_inst._defaults.controlType];
 			tp_inst.timezone = tp_inst._defaults.timezone;
 			tp_inst.hour = tp_inst._defaults.hour;
 			tp_inst.minute = tp_inst._defaults.minute;
@@ -907,6 +913,7 @@
 							return $t.data(opts);
 						o[opts] = val;	
 					}
+					else o = opts;
 					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
 				value: function(tp_inst, obj, val){
