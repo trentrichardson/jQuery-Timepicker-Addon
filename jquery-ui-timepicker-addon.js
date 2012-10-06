@@ -1,7 +1,7 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.0.5
+ * Version 1.0.6-dev
  * Last Modified: 10/06/2012
  *
  * Copyright 2012 Trent Richardson
@@ -27,7 +27,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.0.5"
+			version: "1.0.6"
 		}
 	});
 
@@ -1826,6 +1826,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.0.5";
+	$.timepicker.version = "1.0.6";
 
 })(jQuery);
