@@ -31,11 +31,12 @@
 											upText: '+',
 											downText: '-',
 											buttonset: true,
-											buttonsetTag: 'span'
+											buttonsetTag: 'span',
+											isRTL: false
 										}, options),
 							$buttons = $('<'+ o.buttonsetTag +' class="ui-slider-access">'+
-											'<button data-icon="'+ o.downIcon +'" data-step="-'+ o.step +'">'+ o.downText +'</button>'+
-											'<button data-icon="'+ o.upIcon +'" data-step="'+ o.step +'">'+ o.upText +'</button>'+
+											'<button data-icon="'+ o.downIcon +'" data-step="'+ (o.isRTL? o.step : o.step*-1) +'">'+ o.downText +'</button>'+
+											'<button data-icon="'+ o.upIcon +'" data-step="'+ (o.isRTL? o.step*-1 : o.step) +'">'+ o.upText +'</button>'+
 										'</'+ o.buttonsetTag +'>');
 
 						$buttons.children('button').each(function(j, jobj){
@@ -73,8 +74,8 @@
 
 						// adjust the width so we don't break the original layout
 						var bOuterWidth = $buttons.css({
-									marginLeft: (o.where == 'after'? 10:0), 
-									marginRight: (o.where == 'before'? 10:0)
+									marginLeft: ((o.where == 'after' && !o.isRTL) || (o.where == 'before' && o.isRTL)? 10:0), 
+									marginRight: ((o.where == 'before' && !o.isRTL) || (o.where == 'after' && o.isRTL)? 10:0)
 								}).outerWidth(true) + 5;
 						var tOuterWidth = $t.outerWidth(true);
 						$t.css('display','inline-block').width(tOuterWidth-bOuterWidth);

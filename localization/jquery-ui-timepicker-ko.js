@@ -14,7 +14,8 @@
 		timeFormat: 'tt h:mm',
 		amNames: ['오전', 'AM', 'A'],
 		pmNames: ['오후', 'PM', 'P'],
-		ampm: true
+		ampm: true,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['ko']);
 })(jQuery);

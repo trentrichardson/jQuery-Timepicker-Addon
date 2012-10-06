@@ -14,7 +14,8 @@
 		timeFormat: 'h:m',
 		amNames: ['dop.', 'AM', 'A'],
 		pmNames: ['odp.', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['cs']);
 })(jQuery);

@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm tt',
 		amNames: ['上午', 'AM', 'A'],
 		pmNames: ['下午', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['zh-TW']);
 })(jQuery);

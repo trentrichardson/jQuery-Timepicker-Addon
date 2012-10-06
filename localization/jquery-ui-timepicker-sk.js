@@ -14,7 +14,8 @@
 		timeFormat: 'h:m',
 		amNames: ['dop.', 'AM', 'A'],
 		pmNames: ['pop.', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['sk']);
 })(jQuery);

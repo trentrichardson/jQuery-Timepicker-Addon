@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm',
 		amNames: ['ap.', 'AM', 'A'],
 		pmNames: ['ip.', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['fi']);
 })(jQuery);

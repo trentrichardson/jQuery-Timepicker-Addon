@@ -14,7 +14,8 @@
 		timeFormat: 'hh:mm',
 		amNames: ['priešpiet', 'AM', 'A'],
 		pmNames: ['popiet', 'PM', 'P'],
-		ampm: false
+		ampm: false,
+		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['lt']);
 })(jQuery);
