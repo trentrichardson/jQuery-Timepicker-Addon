@@ -2,13 +2,13 @@
 /* Written by Diogo Damiani (diogodamiani@gmail.com) */
 (function ($) {
 	$.timepicker.regional['pt-BR'] = {
-		timeOnlyTitle: 'Escolha a horário',
-		timeText: 'Horário',
+		timeOnlyTitle: 'Escolha a horÃ¡io',
+		timeText: 'HorÃ¡rio',
 		hourText: 'Hora',
 		minuteText: 'Minutos',
 		secondText: 'Segundos',
 		millisecText: 'Milissegundos',
-		timezoneText: 'Fuso horário',
+		timezoneText: 'Fuso horÃ¡rio',
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'hh:mm',
@@ -17,11 +17,11 @@
 		ampm: false,
 		isRTL: false,
 		dateFormat: 'dd/mm/yy',
-	    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-	    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-	    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-	    showOtherMonths: true,
-	    selectOtherMonths: true
+	    	dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+	    	monthNames: ['Janeiro','Fevereiro','Marï¿½o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+	    	dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+	    	showOtherMonths: true,
+	    	selectOtherMonths: true
 	};
 	$.timepicker.setDefaults($.timepicker.regional['pt-BR']);
 })(jQuery);
