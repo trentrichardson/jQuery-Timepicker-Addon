@@ -18,7 +18,7 @@
 		isRTL: false,
 		dateFormat: 'dd/mm/yy',
 	    	dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-	    	monthNames: ['Janeiro','Fevereiro','Mar�o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+	    	monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
 	    	dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
 	    	showOtherMonths: true,
 	    	selectOtherMonths: true
