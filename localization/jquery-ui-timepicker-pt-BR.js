@@ -15,7 +15,13 @@
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		ampm: false,
-		isRTL: false
+		isRTL: false,
+		dateFormat: 'dd/mm/yy',
+	    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+	    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+	    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+	    showOtherMonths: true,
+	    selectOtherMonths: true
 	};
 	$.timepicker.setDefaults($.timepicker.regional['pt-BR']);
 })(jQuery);
