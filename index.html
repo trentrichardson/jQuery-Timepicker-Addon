@@ -620,6 +620,49 @@ $('#slider_example_4').datetimepicker({
 });</pre>
 					</div>
 
+					<!-- ============= example -->
+					<div class="example-container">
+						<p>Create your own control by implementing the create, options, and value methods. If you want to use your new control for all instances use the $.timepicker.setDefaults({controlType:myControl}). Here we implement jQueryUI's spinner control (jQueryUI 1.9+).</p>
+						<div>
+					 		<input type="text" name="slider_example_5" id="slider_example_5" value="" />
+						</div>					
+<pre>var myControl=  {
+	create: function(tp_inst, obj, unit, val, min, max, step){
+		$('&lt;input class="ui-timepicker-input" value="'+val+'" style="width:50%"&gt;')
+			.appendTo(obj)
+			.spinner({
+				min: min,
+				max: max,
+				step: step,
+				change: function(e,ui){ // key events
+						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
+					},
+				spin: function(e,ui){ // spin events
+						tp_inst.control.value(tp_inst, obj, unit, ui.value);
+						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
+					}
+			});
+		return obj;
+	},
+	options: function(tp_inst, obj, unit, opts, val){
+		if(typeof(opts) == 'string' && val !== undefined)
+				return obj.find('.ui-timepicker-input').spinner(opts, val);
+		return obj.find('.ui-timepicker-input').spinner(opts);
+	},
+	value: function(tp_inst, obj, unit, val){
+		if(val !== undefined)
+			return obj.find('.ui-timepicker-input').spinner('value', val);
+		return obj.find('.ui-timepicker-input').spinner('value');
+	}
+};
+
+$('#slider_example_5').datetimepicker({
+	controlType: myControl
+});</pre>
+					</div>
+
 					<h3 id="alt_examples">Alternate Fields</h3>
 
 					<!-- ============= example -->
