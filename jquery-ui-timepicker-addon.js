@@ -1349,7 +1349,7 @@
 	/*
 	* Format the given date/time for a different timezone.
 	*/
-	$.datepicker._formatDateForTimezone(dateToFormat, offset) {
+	$.datepicker._formatDateForTimezone = function(dateToFormat, offset) {
 		var nowLocal = dateToFormat;
 		//convert the +0000 formated offset into hours
 		var offsetInt = parseInt(offset, 10) / 100;
@@ -1400,7 +1400,7 @@
 		if (tp_inst) {
 			var defaults = tp_inst._defaults;
 			
-			//format the date for a the staticTimezone if neccessary
+			//format the date for the staticTimezone if neccessary
 			if(defaults.useStaticTimezone == true) {
 				date = $.datepicker._formatDateForTimezone(date, defaults.staticTimezone);
 			}
