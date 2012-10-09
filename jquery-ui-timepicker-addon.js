@@ -435,7 +435,7 @@
 										h = aph + 12;
 									}
 								}
-								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], parseInt(h,10));
+								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], litem, parseInt(h,10));
 
 								tp_inst._onTimeChange();
 								tp_inst._onSelectHandler();
@@ -629,20 +629,20 @@
 					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
 
 				if (this.hour_slider) {
-					this.control.options(this, this.hour_slider, { min: this._defaults.hourMin, max: hourMax });
-					this.control.value(this, this.hour_slider, this.hour);
+					this.control.options(this, this.hour_slider, 'hour', { min: this._defaults.hourMin, max: hourMax });
+					this.control.value(this, this.hour_slider, 'hour', this.hour);
 				}
 				if (this.minute_slider) {
-					this.control.options(this, this.minute_slider, { min: this._defaults.minuteMin, max: minMax });
-					this.control.value(this, this.minute_slider, this.minute);
+					this.control.options(this, this.minute_slider, 'minute', { min: this._defaults.minuteMin, max: minMax });
+					this.control.value(this, this.minute_slider, 'minute', this.minute);
 				}
 				if (this.second_slider) {
-					this.control.options(this, this.second_slider, { min: this._defaults.secondMin, max: secMax });
-					this.control.value(this, this.second_slider, this.second);
+					this.control.options(this, this.second_slider, 'second', { min: this._defaults.secondMin, max: secMax });
+					this.control.value(this, this.second_slider, 'second', this.second);
 				}
 				if (this.millisec_slider) {
-					this.control.options(this, this.millisec_slider, { min: this._defaults.millisecMin, max: millisecMax });
-					this.control.value(this, this.millisec_slider, this.millisec);
+					this.control.options(this, this.millisec_slider, 'millisec', { min: this._defaults.millisecMin, max: millisecMax });
+					this.control.value(this, this.millisec_slider, 'millisec', this.millisec);
 				}
 			}
 
@@ -653,10 +653,10 @@
 		* on time change is also called when the time is updated in the text field
 		*/
 		_onTimeChange: function() {
-			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider) : false,
-				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider) : false,
-				second = (this.second_slider) ? this.control.value(this, this.second_slider) : false,
-				millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider) : false,
+			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider, 'hour') : false,
+				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
+				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
+				millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider, 'millisec') : false,
 				timezone = (this.timezone_select) ? this.timezone_select.val() : false,
 				o = this._defaults;
 
@@ -832,7 +832,7 @@
 						max: rtl? min*-1 : max,
 						step: step,
 						slide: function(event, ui) {
-							tp_inst.control.value(tp_inst, $(this), rtl? ui.value*-1:ui.value);
+							tp_inst.control.value(tp_inst, $(this), unit, rtl? ui.value*-1:ui.value);
 							tp_inst._onTimeChange();
 						},
 						stop: function(event, ui) {
@@ -840,7 +840,7 @@
 						}
 					});	
 				},
-				options: function(tp_inst, obj, opts, val){
+				options: function(tp_inst, obj, unit, opts, val){
 					if(tp_inst._defaults.isRTL){
 						if(typeof(opts) == 'string'){
 							if(opts == 'min' || opts == 'max'){
@@ -863,7 +863,7 @@
 							return obj.slider(opts, val);
 					return obj.slider(opts);
 				},
-				value: function(tp_inst, obj, val){
+				value: function(tp_inst, obj, unit, val){
 					if(tp_inst._defaults.isRTL){
 						if(val !== undefined)
 							return obj.slider('value', val*-1);
@@ -905,7 +905,7 @@
 
 					return obj;
 				},
-				options: function(tp_inst, obj, opts, val){
+				options: function(tp_inst, obj, unit, opts, val){
 					var o = {},
 						$t = obj.children('select');
 					if(typeof(opts) == 'string'){
@@ -916,7 +916,7 @@
 					else o = opts;
 					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
-				value: function(tp_inst, obj, val){
+				value: function(tp_inst, obj, unit, val){
 					var $t = obj.children('select');
 					if(val !== undefined)
 						return $t.val(val);
