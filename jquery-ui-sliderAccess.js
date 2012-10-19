@@ -60,6 +60,8 @@
 											$t.slider('value', newval);
 
 											$t.slider("option", "slide").call($t, null, { value: newval });
+											$t.slider("option", "stop").call($t, null, { value: newval });
+
 										});
 						});
 						
