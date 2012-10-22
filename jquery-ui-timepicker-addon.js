@@ -304,6 +304,13 @@
 					}
 					$.extend(this, parseRes.timeObj);
 				} catch (err) {
+                    if ($.datepicker._get(this.inst, 'debug')) {
+                        console.error("Error parsing the date/time string: " + err +
+                                "\ndate/time string = " + timeString +
+                                "\ntimeFormat = " + this._defaults.timeFormat +
+                                "\ndateFormat = " + dp_dateFormat
+                                );
+                    }
 					return false;
 				}
 				return true;
@@ -761,7 +768,7 @@
 
 			/*
 			* remove following lines to force every changes in date picker to change the input value
-			* Bug descriptions: when an input field has a default value, and click on the field to pop up the date picker. 
+			* Bug descriptions: when an input field has a default value, and click on the field to pop up the date picker.
 			* If the user manually empty the value in the input field, the date picker will never change selected value.
 			*/
 			//if (dp_inst.lastVal !== undefined && (dp_inst.lastVal.length > 0 && this.$input.val().length === 0)) {
@@ -1486,6 +1493,9 @@
 			// Hack!  The error message ends with a colon, a space, and
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
+            if ($.datepicker._get(this.inst, 'debug')) {
+                console.error("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
+            }
 			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
 		}
 		return date;
@@ -1619,7 +1629,7 @@
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
+			// The idea is to get the number separator occurences in datetime and the time format requested (since time has
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
@@ -1643,6 +1653,17 @@
 			}
 
 		} catch (err) {
+            if ($.datepicker._get(this.inst, 'debug')) {
+                console.error('Could not split the date from the time. Please check the following datetimepicker options options' +
+                        "\nthrown error: " + err +
+                        "\ndateTimeString" + dateTimeString +
+                        "\ndateFormat = " + dateFormat +
+                        "\nseparator = " + timeSettings.separator +
+                        "\ntimeFormat = " + timeSettings.timeFormat +
+                        "\nampm = " + timeSettings.ampm
+                        );
+            }
+
 			if (err.indexOf(":") >= 0) {
 				// Hack!  The error message ends with a colon, a space, and
 				// the "extra" characters.  We rely on that instead of
