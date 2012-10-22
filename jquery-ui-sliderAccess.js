@@ -50,7 +50,9 @@
 												curr = $t.slider('value'),
 												newval = curr += step*1,
 												minval = $t.slider('option','min'),
-												maxval = $t.slider('option','max');
+												maxval = $t.slider('option','max'),
+												slidee = $t.slider("option", "slide") || function(){},
+												stope = $t.slider("option", "stop") || function(){};
 
 											e.preventDefault();
 											
@@ -59,8 +61,8 @@
 											
 											$t.slider('value', newval);
 
-											$t.slider("option", "slide").call($t, null, { value: newval });
-											$t.slider("option", "stop").call($t, null, { value: newval });
+											slidee.call($t, null, { value: newval });
+											stope.call($t, null, { value: newval });
 										});
 						});
 						
