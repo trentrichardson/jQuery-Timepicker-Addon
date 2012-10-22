@@ -102,8 +102,7 @@
 			addSliderAccess: false,
 			sliderAccessArgs: null,
 			controlType: 'slider',
-			defaultValue: null,
-			firebugDebug: false
+			defaultValue: null
 		};
 		$.extend(this._defaults, this.regional['']);
 	}
@@ -305,8 +304,12 @@
 					}
 					$.extend(this, parseRes.timeObj);
 				} catch (err) {
-                    if (this._defaults.firebugDebug) {
-                        console.error("Error parsing the time string: " + err + ". timeString = " + timeString + ". timeFormat = " + this._defaults.timeFormat);
+                    if ($.datepicker._get(this.inst, 'debug')) {
+                        console.error("Error parsing the date/time string: " + err +
+                                "\ndate/time string = " + timeString +
+                                "\ntimeFormat = " + this._defaults.timeFormat +
+                                "\ndateFormat = " + dp_dateFormat
+                                );
                     }
 					return false;
 				}
@@ -1490,8 +1493,8 @@
 			// Hack!  The error message ends with a colon, a space, and
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
-            if (this._defaults.firebugDebug) {
-                console.error("Error parsing the date string: " + err + ". date string = " + value + ". date format = " + format);
+            if ($.datepicker._get(this.inst, 'debug')) {
+                console.error("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
             }
 			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
 		}
@@ -1620,13 +1623,13 @@
 	}
 
 	/*
-	* Splits datetime string into date ans time substrings.
+	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
 	* Returns [dateString, timeString]
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			// The idea is to get the number separator occurances in datetime and the time format requested (since time has
+			// The idea is to get the number separator occurences in datetime and the time format requested (since time has
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
@@ -1650,6 +1653,17 @@
 			}
 
 		} catch (err) {
+            if ($.datepicker._get(this.inst, 'debug')) {
+                console.error('Could not split the date from the time. Please check the following datetimepicker options options' +
+                        "\nthrown error: " + err +
+                        "\ndateTimeString" + dateTimeString +
+                        "\ndateFormat = " + dateFormat +
+                        "\nseparator = " + timeSettings.separator +
+                        "\ntimeFormat = " + timeSettings.timeFormat +
+                        "\nampm = " + timeSettings.ampm
+                        );
+            }
+
 			if (err.indexOf(":") >= 0) {
 				// Hack!  The error message ends with a colon, a space, and
 				// the "extra" characters.  We rely on that instead of
