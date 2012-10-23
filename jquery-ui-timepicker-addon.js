@@ -304,6 +304,10 @@
 					}
 					$.extend(this, parseRes.timeObj);
 				} catch (err) {
+					$.datepicker.log("Error parsing the date/time string: " + err +
+									"\ndate/time string = " + timeString +
+									"\ntimeFormat = " + this._defaults.timeFormat +
+									"\ndateFormat = " + dp_dateFormat);
 					return false;
 				}
 				return true;
@@ -1487,6 +1491,7 @@
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
 			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
+			$.datepicker.log("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
 		}
 		return date;
 	};
@@ -1643,6 +1648,14 @@
 			}
 
 		} catch (err) {
+			$.datepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
+					"\nthrown error: " + err +
+					"\ndateTimeString" + dateTimeString +
+					"\ndateFormat = " + dateFormat +
+					"\nseparator = " + timeSettings.separator +
+					"\ntimeFormat = " + timeSettings.timeFormat +
+					"\nampm = " + timeSettings.ampm);
+
 			if (err.indexOf(":") >= 0) {
 				// Hack!  The error message ends with a colon, a space, and
 				// the "extra" characters.  We rely on that instead of
