@@ -201,6 +201,9 @@
 
 						<dt>altTimeFormat</dt>
 							<dd><em>Default: (timeFormat option)</em> - The time format to use with the altField.</dd>
+
+						<dt>altAmpm</dt>
+							<dd><em>Default: (ampm option)</em> - Whether or not to use am/pm calculations with the altField.</dd>
 					</dl>
 
 					<h3>Timezone Options</h3>
@@ -703,11 +706,13 @@ $('#alt_example_2').datetimepicker({
 						</div>					
 <pre>
 $('#alt_example_3').datetimepicker({
+	ampm: true,
 	altField: "#alt_example_3_alt",
 	altFieldTimeOnly: false,
 	altFormat: "yy-mm-dd",
-	altTimeFormat: "h:m",
-	altSeparator: " @ "
+	altTimeFormat: "h:m t",
+	altSeparator: " @ ",
+	altAmpm: false
 });
 </pre>
 					</div>
