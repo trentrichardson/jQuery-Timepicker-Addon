@@ -76,6 +76,8 @@
 			timezone: null,
 			useLocalTimezone: false,
 			defaultTimezone: "+0000",
+			useStaticTimezone: false,
+			staticTimezone: "+0000",
 			hourMin: 0,
 			minuteMin: 0,
 			secondMin: 0,
@@ -1353,6 +1355,20 @@
 		this._setTime(inst, now);
 		$('.ui-datepicker-today', $dp).click();
 	};
+	
+	/*
+	* Format the given date/time for a different timezone.
+	*/
+	$.datepicker._formatDateForTimezone = function(dateToFormat, offset) {
+		var nowLocal = dateToFormat;
+		//convert the +0000 formated offset into hours
+		var offsetInt = parseInt(offset, 10) / 100;
+		//convert to milliseconds, add local timezone offset, and get UTC time in milliseconds
+		nowUTC = nowLocal.getTime() + (nowLocal.getTimezoneOffset() * 60000);
+		//create new Date object for different timzone using the supplied offset
+		nowNew = new Date(nowUTC + (3600000 * offsetInt));
+		return nowNew;
+	}
 
 	/*
 	* Disable & enable the Time in the datetimepicker
@@ -1393,6 +1409,11 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		if (tp_inst) {
 			var defaults = tp_inst._defaults;
+			
+			//format the date for the staticTimezone if neccessary
+			if(defaults.useStaticTimezone == true) {
+				date = $.datepicker._formatDateForTimezone(date, defaults.staticTimezone);
+			}
 
 			// calling _setTime with no date sets time to defaults
 			tp_inst.hour = date ? date.getHours() : defaults.hour;
