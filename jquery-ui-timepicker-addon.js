@@ -1130,6 +1130,26 @@
 		return false;
 	};
 
+	_convert24to12 = function(hour) {
+		if (hour > 12) {
+			hour = hour - 12;
+		}
+
+		if (hour == 0) {
+			hour = 12;
+		}
+
+		var result;
+		if (hour < 10) {
+			result = "0" + hour;
+		}
+		else {
+			result = String(hour);
+		}
+
+		return result;
+	};
+
 	/*
 	* Public utility to format the time
 	* format = string format of the time
@@ -1154,16 +1174,14 @@
 		if (options.ampm) {
 			if (hour > 11) {
 				ampmName = options.pmNames[0];
-				if (hour > 12) {
-					hour = hour % 12;
-				}
-			}
-			if (hour === 0) {
-				hour = 12;
 			}
 		}
-		tmptime = tmptime.replace(/(?:hh?|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function(match) {
-			switch (match.toLowerCase()) {
+		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
+		switch (match) {
+			case 'HH':
+				return _convert24to12(hour).slice(-2);
+			case 'H':
+				return _convert24to12(hour);
 			case 'hh':
 				return ('0' + hour).slice(-2);
 			case 'h':
