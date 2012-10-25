@@ -147,9 +147,6 @@
 						<dt>closeText</dt>
 							<dd><em>Default: "Done", A Localization Setting</em> - Text for the Close button.</dd>
 
-						<dt>ampm</dt>
-							<dd><em>Default: false, A Localization Setting</em> - Whether or not to use am/pm calculations.</dd>
-
 						<dt>amNames</dt>
 							<dd><em>Default: ['AM', 'A'], A Localization Setting</em> - Array of strings to try and parse against to determine AM.</dd>
 
@@ -224,12 +221,6 @@
 
 						<dt>controlType</dt>
 							<dd><em>Default: 'slider'</em> - Whether to use 'slider' or 'select'. If 'slider' is unavailable through jQueryUI, 'select' will be used. For advanced usage you may pass an object which implements "create", "options", "value" methods to use controls other than sliders or selects.  See the _controls property in the source code for more details.</dd>
-
-						<dt>pickerTimeFormat</dt>
-							<dd><em>Default: (timeFormat option)</em> - How to format the time displayed within the timepicker.</dd>
-						
-						<dt>pickerTimeSuffix</dt>
-							<dd><em>Default: (timeSuffix option)</em> - String to place after the formatted time within the timepicker.</dd>
 
 						<dt>showHour</dt>
 							<dd><em>Default: true</em> - Whether to show the hour slider.</dd>
@@ -329,6 +320,12 @@
 
 						<dt>separator</dt>
 							<dd><em>Default: " "</em> - When formatting the time this string is placed between the formatted date and formatted time.</dd>
+
+						<dt>pickerTimeFormat</dt>
+							<dd><em>Default: (timeFormat option)</em> - How to format the time displayed within the timepicker.</dd>
+						
+						<dt>pickerTimeSuffix</dt>
+							<dd><em>Default: (timeSuffix option)</em> - String to place after the formatted time within the timepicker.</dd>
 
 						<dt>showTimepicker</dt>
 							<dd><em>Default: true</em> - Whether to show the timepicker within the datepicker.</dd>
@@ -445,10 +442,9 @@ $.timepicker.regional['ru'] = {
 	timezoneText: 'Часовой пояс',
 	currentText: 'Сейчас',
 	closeText: 'Закрыть',
-	timeFormat: 'hh:mm tt',
+	timeFormat: 'HH:mm',
 	amNames: ['AM', 'A'],
 	pmNames: ['PM', 'P'],
-	ampm: false,
 	isRTL: false
 };
 $.timepicker.setDefaults($.timepicker.regional['ru']);
@@ -717,8 +713,7 @@ $('#alt_example_3').datetimepicker({
 	altFieldTimeOnly: false,
 	altFormat: "yy-mm-dd",
 	altTimeFormat: "h:m t",
-	altSeparator: " @ ",
-	altAmpm: false
+	altSeparator: " @ "
 });
 </pre>
 					</div>
@@ -748,7 +743,6 @@ $('#alt_example_4').datetimepicker({
 						</div>					
 <pre>
 $('#rest_example_1').timepicker({
-	ampm: true,
 	hourMin: 8,
 	hourMax: 16
 });
@@ -847,8 +841,7 @@ var ex13 = $('#utility_example_1');
 
 ex13.datetimepicker({
 	dateFormat: "D MM d, yy",
-	separator: ' @ ',
-	ampm: true
+	separator: ' @ '
 });
 
 $('#utility_example_1_setdt').click(function(){
@@ -876,7 +869,7 @@ $('#utility_example_1_getdt').click(function(){
 					
 <pre>
 $('#utility_example_2').text(
-	$.datepicker.formatTime('hh:mm z', { hour: 14, minute: 36, timezone: '+2000' }, { ampm: false })
+	$.datepicker.formatTime('HH:mm z', { hour: 14, minute: 36, timezone: '+2000' }, {})
 );
 </pre>
 					</div>
@@ -896,7 +889,7 @@ $('#utility_example_2').text(
 					
 <pre>
 $('#utility_example_3').text(JSON.stringify( 
-	$.datepicker.parseTime('hh:mm:ss:l z', "14:36:21:765 +2000", { ampm: false }) 
+	$.datepicker.parseTime('HH:mm:ss:l z', "14:36:21:765 +2000", {}) 
 ));
 </pre>
 					</div>

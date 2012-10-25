@@ -42,7 +42,7 @@
 		this.regional[''] = { // Default regional settings
 			currentText: 'Now',
 			closeText: 'Done',
-			ampm: false,
+			//ampm: false,
 			amNames: ['AM', 'A'],
 			pmNames: ['PM', 'P'],
 			timeFormat: 'HH:mm',
@@ -95,7 +95,7 @@
 			separator: ' ',
 			altFieldTimeOnly: true,
 			altTimeFormat: null,
-			altAmpm: null,
+			//altAmpm: null,
 			altSeparator: null,
 			altTimeSuffix: null,
 			pickerTimeFormat: null,
