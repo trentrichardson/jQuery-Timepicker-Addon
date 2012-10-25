@@ -2,7 +2,7 @@
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
  * Version 1.1.0-dev
- * Last Modified: 10/09/2012
+ * Last Modified: 10/25/2012
  *
  * Copyright 2012 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -104,7 +104,8 @@
 			addSliderAccess: false,
 			sliderAccessArgs: null,
 			controlType: 'slider',
-			defaultValue: null
+			defaultValue: null,
+			strict: true
 		};
 		$.extend(this._defaults, this.regional['']);
 	}
@@ -1023,98 +1024,126 @@
 
 		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
 
-		var regstr = '^' + timeFormat.toString()
-				.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
-						switch (match.charAt(0).toLowerCase()) {
-							case 'h': return '(\\d?\\d)';
-							case 'm': return '(\\d?\\d)';
-							case 's': return '(\\d?\\d)';
-							case 'l': return '(\\d?\\d?\\d)';
-							case 'z': return '(z|[-+]\\d\\d:?\\d\\d|\\S+)?';
-							case 't': return getPatternAmpm(o.amNames, o.pmNames);
-							default:    // literal escaped in quotes
-								return '(' + match.replace(/\'/g, "").replace(/(\.|\$|\^|\\|\/|\(|\)|\[|\]|\?|\+|\*)/g, function (m) { return "\\" + m; }) + ')?';
-						}
-					})
-				.replace(/\s/g, '\\s?') +
-				o.timeSuffix + '$',
-			order = getFormatPositions(timeFormat),
-			ampm = '',
-			treg;
+		var strictParse = function(f, s, o){
+			var regstr = '^' + f.toString()
+					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
+							switch (match.charAt(0).toLowerCase()) {
+								case 'h': return '(\\d?\\d)';
+								case 'm': return '(\\d?\\d)';
+								case 's': return '(\\d?\\d)';
+								case 'l': return '(\\d?\\d?\\d)';
+								case 'z': return '(z|[-+]\\d\\d:?\\d\\d|\\S+)?';
+								case 't': return getPatternAmpm(o.amNames, o.pmNames);
+								default:    // literal escaped in quotes
+									return '(' + match.replace(/\'/g, "").replace(/(\.|\$|\^|\\|\/|\(|\)|\[|\]|\?|\+|\*)/g, function (m) { return "\\" + m; }) + ')?';
+							}
+						})
+					.replace(/\s/g, '\\s?') +
+					o.timeSuffix + '$',
+				order = getFormatPositions(f),
+				ampm = '',
+				treg;
 
-		treg = timeString.match(new RegExp(regstr, 'i'));
+			treg = s.match(new RegExp(regstr, 'i'));
 
-		var resTime = {
-			hour: 0,
-			minute: 0,
-			second: 0,
-			millisec: 0
-		};
+			var resTime = {
+				hour: 0,
+				minute: 0,
+				second: 0,
+				millisec: 0
+			};
 
-		if (treg) {
-			if (order.t !== -1) {
-				if (treg[order.t] === undefined || treg[order.t].length === 0) {
-					ampm = '';
-					resTime.ampm = '';
-				} else {
-					ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames) !== -1 ? 'AM' : 'PM';
-					resTime.ampm = o[ampm == 'AM' ? 'amNames' : 'pmNames'][0];
-				}
-			}
-
-			if (order.h !== -1) {
-				if (ampm == 'AM' && treg[order.h] == '12') {
-					resTime.hour = 0; // 12am = 0 hour
-				} else {
-					if (ampm == 'PM' && treg[order.h] != '12') {
-						resTime.hour = parseInt(treg[order.h], 10) + 12; // 12pm = 12 hour, any other pm = hour + 12
+			if (treg) {
+				if (order.t !== -1) {
+					if (treg[order.t] === undefined || treg[order.t].length === 0) {
+						ampm = '';
+						resTime.ampm = '';
 					} else {
-						resTime.hour = Number(treg[order.h]);
+						ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames) !== -1 ? 'AM' : 'PM';
+						resTime.ampm = o[ampm == 'AM' ? 'amNames' : 'pmNames'][0];
 					}
 				}
-			}
 
-			if (order.m !== -1) {
-				resTime.minute = Number(treg[order.m]);
-			}
-			if (order.s !== -1) {
-				resTime.second = Number(treg[order.s]);
-			}
-			if (order.l !== -1) {
-				resTime.millisec = Number(treg[order.l]);
-			}
-			if (order.z !== -1 && treg[order.z] !== undefined) {
-				var tz = treg[order.z].toUpperCase();
-				switch (tz.length) {
-				case 1:
-					// Z
-					tz = o.timezoneIso8601 ? 'Z' : '+0000';
-					break;
-				case 5:
-					// +hhmm
-					if (o.timezoneIso8601) {
-						tz = tz.substring(1) == '0000' ? 'Z' : tz.substring(0, 3) + ':' + tz.substring(3);
-					}
-					break;
-				case 6:
-					// +hh:mm
-					if (!o.timezoneIso8601) {
-						tz = tz == 'Z' || tz.substring(1) == '00:00' ? '+0000' : tz.replace(/:/, '');
+				if (order.h !== -1) {
+					if (ampm == 'AM' && treg[order.h] == '12') {
+						resTime.hour = 0; // 12am = 0 hour
 					} else {
-						if (tz.substring(1) == '00:00') {
-							tz = 'Z';
+						if (ampm == 'PM' && treg[order.h] != '12') {
+							resTime.hour = parseInt(treg[order.h], 10) + 12; // 12pm = 12 hour, any other pm = hour + 12
+						} else {
+							resTime.hour = Number(treg[order.h]);
 						}
 					}
-					break;
 				}
-				resTime.timezone = tz;
+
+				if (order.m !== -1) {
+					resTime.minute = Number(treg[order.m]);
+				}
+				if (order.s !== -1) {
+					resTime.second = Number(treg[order.s]);
+				}
+				if (order.l !== -1) {
+					resTime.millisec = Number(treg[order.l]);
+				}
+				if (order.z !== -1 && treg[order.z] !== undefined) {
+					var tz = treg[order.z].toUpperCase();
+					switch (tz.length) {
+					case 1:
+						// Z
+						tz = o.timezoneIso8601 ? 'Z' : '+0000';
+						break;
+					case 5:
+						// +hhmm
+						if (o.timezoneIso8601) {
+							tz = tz.substring(1) == '0000' ? 'Z' : tz.substring(0, 3) + ':' + tz.substring(3);
+						}
+						break;
+					case 6:
+						// +hh:mm
+						if (!o.timezoneIso8601) {
+							tz = tz == 'Z' || tz.substring(1) == '00:00' ? '+0000' : tz.replace(/:/, '');
+						} else {
+							if (tz.substring(1) == '00:00') {
+								tz = 'Z';
+							}
+						}
+						break;
+					}
+					resTime.timezone = tz;
+				}
+
+
+				return resTime;
 			}
+			return false;
+		};// end strictParse
 
-
-			return resTime;
+		var looseParse = function(f,s,o){
+			try{
+				var d = new Date('2012-01-01 '+ s);
+				return {
+					hour: d.getHours(),
+					minutes: d.getMinutes(),
+					seconds: d.getSeconds(),
+					millisec: d.getMilliseconds(),
+					timezone: d.getTimezoneOffset()
+				};
+			}
+			catch(err){
+				try{
+					return strictParse(f,s,o);
+				}
+				catch(err2){
+					$.datepicker.log("Unable to parse \ntimeString: "+ s +"\ntimeFormat: "+ f);
+				}				
+			}
+			return false;
+		}; // end looseParse
+		
+		if(o.strict !== undefined && o.strict === false){
+			return looseParse(timeFormat, timeString, o);
 		}
-
-		return false;
+		return strictParse(timeFormat, timeString, o);
 	};
 
 	/*

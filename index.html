@@ -124,7 +124,7 @@
 					<h3>Version</h3>
 					<p>Version 1.1.0</p>
 
-					<p>Last updated on 10/09/2012</p>
+					<p>Last updated on 10/25/2012</p>
 					<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
 					<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
 					<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
@@ -344,6 +344,9 @@
 
 						<dt>maxDateTime</dt>
 							<dd><em>Default: null</em> - Date object of the maximum datetime allowed. Also Available as maxDate.</dd>
+
+						<dt>strict</dt>
+							<dd><em>Default: true</em> - Requires the time to exactly match the timeFormat when parsing. False will attempt to allow Javascript Date() to parse the time string.</dd>
 					</dl>
 
 				</div>
@@ -356,7 +359,7 @@
 
 					<h2>Formatting Your Time</h2>
 
-					<p>The default format is "HH:mm".  To use 12 hour time use something similar to: "hh:mm tt".</p>
+					<p>The default format is "HH:mm".  To use 12 hour time use something similar to: "hh:mm tt".  When both "t" and lower case "h" are present in the timeFormat, 12 hour time will be used.</p>
 
 					<dl class="defs">
 						<dt>H</dt><dd>Hour with no leading 0 (24 hour)</dd>
