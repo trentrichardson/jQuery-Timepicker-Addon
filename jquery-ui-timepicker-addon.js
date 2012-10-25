@@ -1150,15 +1150,11 @@
 			hour = 12;
 		}
 
-		var result;
 		if (hour < 10) {
-			result = "0" + hour;
-		}
-		else {
-			result = String(hour);
+			hour = "0" + hour;
 		}
 
-		return result;
+		return String(hour);
 	};
 
 	/*
@@ -1181,11 +1177,11 @@
 		var tmptime = format,
 			ampmName = options.amNames[0],
 			hour = parseInt(time.hour, 10);
-		if (options.ampm) {
-			if (hour > 11) {
-				ampmName = options.pmNames[0];
-			}
+			
+		if (hour > 11) {
+			ampmName = options.pmNames[0];
 		}
+
 		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
 		switch (match) {
 			case 'HH':

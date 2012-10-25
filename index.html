@@ -365,8 +365,10 @@
 					<p>The default format is "hh:mm tt", however ampm is turned off by default, so you will see "hh:mm"</p>
 
 					<dl class="defs">
-						<dt>h</dt><dd>Hour with no leading 0</dd>
-						<dt>hh</dt><dd>Hour with leading 0</dd>
+						<dt>H</dt><dd>Hour with no leading 0 (24 hour)</dd>
+						<dt>HH</dt><dd>Hour with leading 0 (24 hour)</dd>
+						<dt>h</dt><dd>Hour with no leading 0 (12 hour)</dd>
+						<dt>hh</dt><dd>Hour with leading 0 (12 hour)</dd>
 						<dt>m</dt><dd>Minute with no leading 0</dd>
 						<dt>mm</dt><dd>Minute with leading 0</dd>
 						<dt>s</dt><dd>Second with no leading 0</dd>
@@ -507,8 +509,8 @@ $('#basic_example_2').timepicker();
 <pre>
 $('#basic_example_3').datetimepicker({
 	timeFormat: "h:m t",
-	pickerTimeFormat: "HH:mm",
-	ampm: true
+	pickerTimeFormat: "HH:mm"//,
+	//ampm: true
 });
 </pre>
 					</div>
