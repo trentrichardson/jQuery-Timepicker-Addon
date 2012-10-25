@@ -42,7 +42,6 @@
 		this.regional[''] = { // Default regional settings
 			currentText: 'Now',
 			closeText: 'Done',
-			//ampm: false,
 			amNames: ['AM', 'A'],
 			pmNames: ['PM', 'P'],
 			timeFormat: 'HH:mm',
@@ -95,7 +94,6 @@
 			separator: ' ',
 			altFieldTimeOnly: true,
 			altTimeFormat: null,
-			//altAmpm: null,
 			altSeparator: null,
 			altTimeSuffix: null,
 			pickerTimeFormat: null,
@@ -363,7 +361,7 @@
 						if(litem == 'hour'){
 							for (var h = o[litem+'Min']; h <= max[litem]; h += parseInt(o[litem+'Grid'], 10)) {
 								gridSize[litem]++;
-								var tmph = $.datepicker.formatTime(_useAmpm(o.pickerTimeFormat || o.timeFormat)? 'hht':'HH', {hour:h}, o);									
+								var tmph = $.datepicker.formatTime(useAmpm(o.pickerTimeFormat || o.timeFormat)? 'hht':'HH', {hour:h}, o);									
 								html += '<td data-for="'+litem+'">' + tmph + '</td>';
 							}
 						}
@@ -650,7 +648,9 @@
 				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
 				millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider, 'millisec') : false,
 				timezone = (this.timezone_select) ? this.timezone_select.val() : false,
-				o = this._defaults;
+				o = this._defaults,
+				pickerTimeFormat = o.pickerTimeFormat || o.timeFormat,
+				pickerTimeSuffix = o.pickerTimeSuffix || o.timeSuffix;
 
 			if (typeof(hour) == 'object') {
 				hour = false;
@@ -713,20 +713,18 @@
 
 				this._limitMinMaxDateTime(this.inst, true);
 			}
-			if (o.ampm) {
+			if (useAmpm(o.timeFormat)) {
 				this.ampm = ampm;
 			}
 
 			// Updates the time within the timepicker
-			this.formattedTime = $.datepicker.formatTime(this._defaults.timeFormat, this, this._defaults);
+			this.formattedTime = $.datepicker.formatTime(o.timeFormat, this, o);
 			if (this.$timeObj) {
-				var pickerTimeFormat = this._defaults.pickerTimeFormat || this._defaults.timeFormat,
-					pickerTimeSuffix = this._defaults.pickerTimeSuffix || this._defaults.timeSuffix;
-				if(pickerTimeFormat === this._defaults.timeFormat){
+				if(pickerTimeFormat === o.timeFormat){
 					this.$timeObj.text(this.formattedTime + pickerTimeSuffix);
 				}
 				else{
-					this.$timeObj.text($.datepicker.formatTime(pickerTimeFormat, this, this._defaults) + pickerTimeSuffix);
+					this.$timeObj.text($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
 			}
 
@@ -885,7 +883,7 @@
 
 					for(var i=min; i<=max; i+=step){						
 						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
-						if(unit == 'hour' && _useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
+						if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
 							sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
 						else if(unit == 'millisec' || i >= 10) sel += i;
 						else sel += '0'+ i.toString();
@@ -1026,7 +1024,7 @@
 		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
 
 		var regstr = '^' + timeFormat.toString()
-				.replace(/(hh?|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
+				.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
 						switch (match.charAt(0).toLowerCase()) {
 							case 'h': return '(\\d?\\d)';
 							case 'm': return '(\\d?\\d)';
@@ -1151,9 +1149,9 @@
 			case 'H':
 				return hour;
 			case 'hh':
-				return _convert24to12(hour).slice(-2);
+				return convert24to12(hour).slice(-2);
 			case 'h':
-				return _convert24to12(hour);
+				return convert24to12(hour);
 			case 'mm':
 				return ('0' + time.minute).slice(-2);
 			case 'm':
@@ -1246,7 +1244,7 @@
 
 		if (tp_inst) {
 			if ($.datepicker._get(inst, 'constrainInput')) {
-				var ampm = tp_inst._defaults.ampm,
+				var ampm = useAmpm(tp_inst._defaults.timeFormat),
 					dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 					datetimeChars = tp_inst._defaults.timeFormat.toString()
 											.replace(/[hms]/g, '')
@@ -1584,7 +1582,7 @@
 	* jQuery isEmptyObject does not check hasOwnProperty - if someone has added to the object prototype,
 	* it will return false for all objects
 	*/
-	function isEmptyObject (obj) {
+	var isEmptyObject = function(obj) {
 		var prop;
 		for (prop in obj) {
 			if (obj.hasOwnProperty(obj)) {
@@ -1592,11 +1590,12 @@
 			}
 		}
 		return true;
-	}
+	};
+
 	/*
 	* jQuery extend now ignores nulls!
 	*/
-	function extendRemove(target, props) {
+	var extendRemove = function(target, props) {
 		$.extend(target, props);
 		for (var name in props) {
 			if (props[name] === null || props[name] === undefined) {
@@ -1604,21 +1603,21 @@
 			}
 		}
 		return target;
-	}
+	};
 
 	/*
 	* Determine by the time format if should use ampm
 	* Returns true if should use ampm, false if not
 	*/
-	var _useAmpm = function(timeFormat){
+	var useAmpm = function(timeFormat){
 		return (timeFormat.indexOf('t') !== -1 && timeFormat.indexOf('h') !== -1);
-	}
+	};
 
 	/*
 	* Converts 24 hour format into 12 hour
 	* Returns 12 hour with leading 0
 	*/
-	var _convert24to12 = function(hour) {
+	var convert24to12 = function(hour) {
 		if (hour > 12) {
 			hour = hour - 12;
 		}
@@ -1645,17 +1644,10 @@
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
-				ampm = timeSettings && timeSettings.ampm ? timeSettings.ampm : $.timepicker._defaults.ampm,
 				timeParts = format.split(separator), // how many occurances of separator may be in our format?
 				timePartsLen = timeParts.length,
 				allParts = dateTimeString.split(separator),
 				allPartsLen = allParts.length;
-
-			// because our default ampm=false, but our default format has tt, we need to filter this out
-			if(!ampm){
-				timeParts = $.trim(format.replace(/t/gi,'')).split(separator);
-				timePartsLen = timeParts.length;
-			}
 
 			if (allPartsLen > 1) {
 				return [
@@ -1670,8 +1662,7 @@
 					"\ndateTimeString" + dateTimeString +
 					"\ndateFormat = " + dateFormat +
 					"\nseparator = " + timeSettings.separator +
-					"\ntimeFormat = " + timeSettings.timeFormat +
-					"\nampm = " + timeSettings.ampm);
+					"\ntimeFormat = " + timeSettings.timeFormat);
 
 			if (err.indexOf(":") >= 0) {
 				// Hack!  The error message ends with a colon, a space, and

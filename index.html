@@ -356,7 +356,7 @@
 
 					<h2>Formatting Your Time</h2>
 
-					<p>The default format is "hh:mm tt", however ampm is turned off by default, so you will see "hh:mm"</p>
+					<p>The default format is "HH:mm".  To use 12 hour time use something similar to: "hh:mm tt".</p>
 
 					<dl class="defs">
 						<dt>H</dt><dd>Hour with no leading 0 (24 hour)</dd>
@@ -380,6 +380,7 @@
 					<ul>
 						<li>timeFormat option</li>
 						<li>altTimeFormat option</li>
+						<li>pickerTimeFormat option</li>
 						<li>$.datepicker.formatTime(format, timeObj, options) utility method</li>
 						<li>$.datepicker.parseTime(format, timeStr, options) utility method</li>
 					</ul>
@@ -501,8 +502,7 @@ $('#basic_example_2').timepicker();
 						</div>					
 <pre>
 $('#basic_example_3').datetimepicker({
-	timeFormat: "h:m t",
-	pickerTimeFormat: "HH:mm"
+	timeFormat: "hh:mm tt"
 });
 </pre>
 					</div>
