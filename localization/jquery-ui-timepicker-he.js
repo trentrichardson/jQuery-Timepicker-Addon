@@ -11,10 +11,9 @@
 		timezoneText: "אזור זמן",
 		currentText: "עכשיו",
 		closeText:"סגור",
-		timeFormat: "hh:mm tt",
+		timeFormat: "HH:mm",
 		amNames: ['לפנה"צ', 'AM', 'A'],
 		pmNames: ['אחה"צ', 'PM', 'P'],
-		ampm: false,
 		isRTL: true
 	};
 	$.timepicker.setDefaults($.timepicker.regional["he"]);
