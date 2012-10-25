@@ -983,48 +983,49 @@
 	/*
 	* Public utility to parse time
 	*/
-	$.datepicker.parseTime = function(timeFormat, timeString, options) {
-		
-		// pattern for standard and localized AM/PM markers
-		var getPatternAmpm = function(amNames, pmNames) {
-			var markers = [];
-			if (amNames) {
-				$.merge(markers, amNames);
-			}
-			if (pmNames) {
-				$.merge(markers, pmNames);
-			}
-			markers = $.map(markers, function(val) {
-				return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&');
-			});
-			return '(' + markers.join('|') + ')?';
-		};
-
-		// figure out position of time elements.. cause js cant do named captures
-		var getFormatPositions = function(timeFormat) {
-			var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z|'.*?')/g),
-				orders = {
-					h: -1,
-					m: -1,
-					s: -1,
-					l: -1,
-					t: -1,
-					z: -1
-				};
-
-			if (finds) {
-				for (var i = 0; i < finds.length; i++) {
-					if (orders[finds[i].toString().charAt(0)] == -1) {
-						orders[finds[i].toString().charAt(0)] = i + 1;
-					}
-				}
-			}
-			return orders;
-		};
-
+	$.datepicker.parseTime = function(timeFormat, timeString, options) {		
 		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
 
+		// Strict parse requires the timeString to match the timeFormat exactly
 		var strictParse = function(f, s, o){
+
+			// pattern for standard and localized AM/PM markers
+			var getPatternAmpm = function(amNames, pmNames) {
+				var markers = [];
+				if (amNames) {
+					$.merge(markers, amNames);
+				}
+				if (pmNames) {
+					$.merge(markers, pmNames);
+				}
+				markers = $.map(markers, function(val) {
+					return val.replace(/[.*+?|()\[\]{}\\]/g, '\\$&');
+				});
+				return '(' + markers.join('|') + ')?';
+			};
+
+			// figure out position of time elements.. cause js cant do named captures
+			var getFormatPositions = function(timeFormat) {
+				var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z|'.*?')/g),
+					orders = {
+						h: -1,
+						m: -1,
+						s: -1,
+						l: -1,
+						t: -1,
+						z: -1
+					};
+
+				if (finds) {
+					for (var i = 0; i < finds.length; i++) {
+						if (orders[finds[i].toString().charAt(0)] == -1) {
+							orders[finds[i].toString().charAt(0)] = i + 1;
+						}
+					}
+				}
+				return orders;
+			};
+
 			var regstr = '^' + f.toString()
 					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
 							switch (match.charAt(0).toLowerCase()) {
@@ -1118,6 +1119,7 @@
 			return false;
 		};// end strictParse
 
+		// First try JS Date, if that fails, use strictParse
 		var looseParse = function(f,s,o){
 			try{
 				var d = new Date('2012-01-01 '+ s);
@@ -1126,7 +1128,7 @@
 					minutes: d.getMinutes(),
 					seconds: d.getSeconds(),
 					millisec: d.getMilliseconds(),
-					timezone: d.getTimezoneOffset()
+					timezone: $.timepicker.timeZoneOffsetString(d)
 				};
 			}
 			catch(err){
