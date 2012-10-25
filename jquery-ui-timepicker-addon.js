@@ -98,6 +98,8 @@
 			altAmpm: null,
 			altSeparator: null,
 			altTimeSuffix: null,
+			pickerTimeFormat: null,
+			pickerTimeSuffix: null,
 			showTimepicker: true,
 			timezoneIso8601: false,
 			timezoneList: null,
@@ -731,10 +733,19 @@
 				this.ampm = ampm;
 			}
 
+			// Updates the time within the timepicker
 			this.formattedTime = $.datepicker.formatTime(this._defaults.timeFormat, this, this._defaults);
 			if (this.$timeObj) {
-				this.$timeObj.text(this.formattedTime + o.timeSuffix);
+				var pickerTimeFormat = this._defaults.pickerTimeFormat || this._defaults.timeFormat,
+					pickerTimeSuffix = this._defaults.pickerTimeSuffix || this._defaults.timeSuffix;
+				if(pickerTimeFormat === this._defaults.timeFormat){
+					this.$timeObj.text(this.formattedTime + pickerTimeSuffix);
+				}
+				else{
+					this.$timeObj.text($.datepicker.formatTime(pickerTimeFormat, this, this._defaults) + pickerTimeSuffix);
+				}
 			}
+
 			this.timeDefined = true;
 			if (hasChanged) {
 				this._updateDateTime();
@@ -1167,10 +1178,9 @@
 			timezone: '+0000'
 		}, time);
 
-		var tmptime = format;
-		var ampmName = options.amNames[0];
-
-		var hour = parseInt(time.hour, 10);
+		var tmptime = format,
+			ampmName = options.amNames[0],
+			hour = parseInt(time.hour, 10);
 		if (options.ampm) {
 			if (hour > 11) {
 				ampmName = options.pmNames[0];
@@ -1179,13 +1189,13 @@
 		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
 		switch (match) {
 			case 'HH':
-				return _convert24to12(hour).slice(-2);
-			case 'H':
-				return _convert24to12(hour);
-			case 'hh':
 				return ('0' + hour).slice(-2);
-			case 'h':
+			case 'H':
 				return hour;
+			case 'hh':
+				return _convert24to12(hour).slice(-2);
+			case 'h':
+				return _convert24to12(hour);
 			case 'mm':
 				return ('0' + time.minute).slice(-2);
 			case 'm':
@@ -1198,15 +1208,14 @@
 				return ('00' + time.millisec).slice(-3);
 			case 'z':
 				return time.timezone === null? options.defaultTimezone : time.timezone;
+			case 'T': 
+				return ampmName.charAt(0).toUpperCase();
+			case 'TT': 
+				return ampmName.toUpperCase();
 			case 't':
+				return ampmName.charAt(0).toLowerCase();
 			case 'tt':
-				if (options.ampm) {
-					if (match.length == 1) {
-						ampmName = ampmName.charAt(0);
-					}
-					return match.charAt(0) === 'T' ? ampmName.toUpperCase() : ampmName.toLowerCase();
-				}
-				return '';
+				return ampmName.toLowerCase();
 			default:
 				return match.replace(/\'/g, "") || "'";
 			}

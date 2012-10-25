@@ -157,7 +157,7 @@
 							<dd><em>Default: ['PM', 'P'], A Localization Setting</em> - Array of strings to try and parse against to determine PM.</dd>
 
 						<dt>timeFormat</dt>
-							<dd><em>Default: "hh:mm tt", A Localization Setting</em> - String of format tokens to be replaced with the time. <a href="#tp-formatting" title="Formatting" onclick="$('#tabs').tabs('select',2);">See Formatting</a>.</dd>
+							<dd><em>Default: "HH:mm", A Localization Setting</em> - String of format tokens to be replaced with the time. <a href="#tp-formatting" title="Formatting" onclick="$('#tabs').tabs('select',2);">See Formatting</a>.</dd>
 
 						<dt>timeSuffix</dt>
 							<dd><em>Default: "", A Localization Setting</em> - String to place after the formatted time.</dd>
@@ -227,6 +227,12 @@
 
 						<dt>controlType</dt>
 							<dd><em>Default: 'slider'</em> - Whether to use 'slider' or 'select'. If 'slider' is unavailable through jQueryUI, 'select' will be used. For advanced usage you may pass an object which implements "create", "options", "value" methods to use controls other than sliders or selects.  See the _controls property in the source code for more details.</dd>
+
+						<dt>pickerTimeFormat</dt>
+							<dd><em>Default: (timeFormat option)</em> - How to format the time displayed within the timepicker.</dd>
+						
+						<dt>pickerTimeSuffix</dt>
+							<dd><em>Default: (timeSuffix option)</em> - String to place after the formatted time within the timepicker.</dd>
 
 						<dt>showHour</dt>
 							<dd><em>Default: true</em> - Whether to show the hour slider.</dd>
@@ -501,6 +507,7 @@ $('#basic_example_2').timepicker();
 <pre>
 $('#basic_example_3').datetimepicker({
 	timeFormat: "h:m t",
+	pickerTimeFormat: "HH:mm",
 	ampm: true
 });
 </pre>
