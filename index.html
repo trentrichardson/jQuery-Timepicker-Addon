@@ -201,9 +201,6 @@
 
 						<dt>altTimeFormat</dt>
 							<dd><em>Default: (timeFormat option)</em> - The time format to use with the altField.</dd>
-
-						<dt>altAmpm</dt>
-							<dd><em>Default: (ampm option)</em> - Whether or not to use am/pm calculations with the altField.</dd>
 					</dl>
 
 					<h3>Timezone Options</h3>
@@ -509,8 +506,7 @@ $('#basic_example_2').timepicker();
 <pre>
 $('#basic_example_3').datetimepicker({
 	timeFormat: "h:m t",
-	pickerTimeFormat: "HH:mm"//,
-	//ampm: true
+	pickerTimeFormat: "HH:mm"
 });
 </pre>
 					</div>
@@ -584,7 +580,8 @@ $('#timezone_example_3').datetimepicker({
 <pre>
 $('#slider_example_1').timepicker({
 	hourGrid: 4,
-	minuteGrid: 10
+	minuteGrid: 10,
+	timeFormat: 'hh:mm tt'
 });
 </pre>
 					</div>
@@ -628,7 +625,7 @@ $('#slider_example_3').datetimepicker({
 <pre>
 $('#slider_example_4').datetimepicker({
 	controlType: 'select',
-	ampm: true
+	timeFormat: 'hh:mm tt'
 });</pre>
 					</div>
 

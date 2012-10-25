@@ -45,7 +45,7 @@
 			ampm: false,
 			amNames: ['AM', 'A'],
 			pmNames: ['PM', 'P'],
-			timeFormat: 'hh:mm tt',
+			timeFormat: 'HH:mm',
 			timeSuffix: '',
 			timeOnlyTitle: 'Choose Time',
 			timeText: 'Time',
@@ -363,21 +363,7 @@
 						if(litem == 'hour'){
 							for (var h = o[litem+'Min']; h <= max[litem]; h += parseInt(o[litem+'Grid'], 10)) {
 								gridSize[litem]++;
-								var tmph = (o.ampm && h > 12) ? h - 12 : h;
-								if (tmph < 10) {
-									tmph = '0' + tmph;
-								}
-								if (o.ampm) {
-									if (h === 0) {
-										tmph = 12 + 'a';
-									} else {
-										if (h < 12) {
-											tmph += 'a';
-										} else {
-											tmph += 'p';
-										}
-									}
-								}
+								var tmph = $.datepicker.formatTime(_useAmpm(o.pickerTimeFormat || o.timeFormat)? 'hht':'HH', {hour:h}, o);									
 								html += '<td data-for="'+litem+'">' + tmph + '</td>';
 							}
 						}
@@ -426,24 +412,22 @@
 						}).find("td").click(function(e){
 								var $t = $(this),
 									h = $t.html(),
+									n = parseInt(h.replace(/[^0-9]/g),10),
+									ap = h.replace(/[^apm]/ig),
 									f = $t.data('for'); // loses scope, so we use data-for
 
-								if (f == 'hour' && o.ampm) {
-									var ap = h.substring(2).toLowerCase(),
-										aph = parseInt(h.substring(0, 2), 10);
-									if (ap == 'a') {
-										if (aph == 12) {
-											h = 0;
-										} else {
-											h = aph;
+								if(f == 'hour'){
+									if(ap.indexOf('p') !== -1 && n < 12){
+										n += 12;
+									}
+									else{
+										if(ap.indexOf('a') !== -1 && n === 12){
+											n = 0;
 										}
-									} else if (aph == 12) {
-										h = 12;
-									} else {
-										h = aph + 12;
 									}
 								}
-								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], litem, parseInt(h,10));
+								
+								tp_inst.control.value(tp_inst, tp_inst[f+'_slider'], litem, n);
 
 								tp_inst._onTimeChange();
 								tp_inst._onSelectHandler();
@@ -802,13 +786,12 @@
 				this.$input.val(formattedDateTime);
 				var altFormattedDateTime = '',
 					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
-					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix,
-					altOpts = $.extend({}, this._defaults, { ampm: (this._defaults.altAmpm !== null ? this._defaults.altAmpm : this._defaults.ampm) });
+					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
 
 				if (this._defaults.altFormat) altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
 				else altFormattedDateTime = this.formattedDate;
 				if (altFormattedDateTime) altFormattedDateTime += altSeparator;
-				if (this._defaults.altTimeFormat) altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, altOpts) + altTimeSuffix;
+				if (this._defaults.altTimeFormat) altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
 				else altFormattedDateTime += this.formattedTime + altTimeSuffix;
 				this.$altInput.val(altFormattedDateTime);
 			} else {
@@ -902,13 +885,8 @@
 
 					for(var i=min; i<=max; i+=step){						
 						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
-						if(unit == 'hour' && tp_inst._defaults.ampm){
-							m = i%12;
-							if(i === 0 || i === 12) sel += '12';
-							else if(m < 10) sel += '0'+ m.toString();
-							else sel += m;
-							sel += ' '+ ((i < 12)? tp_inst._defaults.amNames[0] : tp_inst._defaults.pmNames[0])[ul]();
-						}
+						if(unit == 'hour' && _useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
+							sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
 						else if(unit == 'millisec' || i >= 10) sel += i;
 						else sel += '0'+ i.toString();
 						sel += '</option>';
@@ -1141,22 +1119,6 @@
 		return false;
 	};
 
-	_convert24to12 = function(hour) {
-		if (hour > 12) {
-			hour = hour - 12;
-		}
-
-		if (hour == 0) {
-			hour = 12;
-		}
-
-		if (hour < 10) {
-			hour = "0" + hour;
-		}
-
-		return String(hour);
-	};
-
 	/*
 	* Public utility to format the time
 	* format = string format of the time
@@ -1177,7 +1139,7 @@
 		var tmptime = format,
 			ampmName = options.amNames[0],
 			hour = parseInt(time.hour, 10);
-			
+
 		if (hour > 11) {
 			ampmName = options.pmNames[0];
 		}
@@ -1323,11 +1285,9 @@
 					altFormattedDateTime = '', 
 					altSeparator = tp_inst._defaults.altSeparator ? tp_inst._defaults.altSeparator : tp_inst._defaults.separator, 
 					altTimeSuffix = tp_inst._defaults.altTimeSuffix ? tp_inst._defaults.altTimeSuffix : tp_inst._defaults.timeSuffix,
-					altTimeFormat = tp_inst._defaults.altTimeFormat !== null ? tp_inst._defaults.altTimeFormat : tp_inst._defaults.timeFormat,
-					altAmpm = tp_inst._defaults.altAmpm !== null ? tp_inst._defaults.altAmpm : tp_inst._defaults.ampm,
-					altOpts = $.extend({}, tp_inst._defaults, { ampm: altAmpm });
+					altTimeFormat = tp_inst._defaults.altTimeFormat !== null ? tp_inst._defaults.altTimeFormat : tp_inst._defaults.timeFormat;
 				
-				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, altOpts) + altTimeSuffix;
+				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
 				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly){
 					if(tp_inst._defaults.altFormat)
 						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, (date === null ? new Date() : date), formatCfg) + altSeparator + altFormattedDateTime;
@@ -1645,6 +1605,34 @@
 		}
 		return target;
 	}
+
+	/*
+	* Determine by the time format if should use ampm
+	* Returns true if should use ampm, false if not
+	*/
+	var _useAmpm = function(timeFormat){
+		return (timeFormat.indexOf('t') !== -1 && timeFormat.indexOf('h') !== -1);
+	}
+
+	/*
+	* Converts 24 hour format into 12 hour
+	* Returns 12 hour with leading 0
+	*/
+	var _convert24to12 = function(hour) {
+		if (hour > 12) {
+			hour = hour - 12;
+		}
+
+		if (hour == 0) {
+			hour = 12;
+		}
+
+		if (hour < 10) {
+			hour = "0" + hour;
+		}
+
+		return String(hour);
+	};
 
 	/*
 	* Splits datetime string into date ans time substrings.
