@@ -105,7 +105,7 @@
 			sliderAccessArgs: null,
 			controlType: 'slider',
 			defaultValue: null,
-			strict: true
+			parse: 'strict'
 		};
 		$.extend(this._defaults, this.regional['']);
 	}
@@ -1142,7 +1142,10 @@
 			return false;
 		}; // end looseParse
 		
-		if(o.strict !== undefined && o.strict === false){
+		if(typeof o.parse === "function"){
+			return o.parse(timeFormat, timeString, o)
+		}
+		if(o.parse === 'loose'){
 			return looseParse(timeFormat, timeString, o);
 		}
 		return strictParse(timeFormat, timeString, o);
