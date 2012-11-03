@@ -11,10 +11,9 @@
 		timezoneText: 'Zeitzone',
 		currentText: 'Jetzt',
 		closeText: 'Fertig',
-		timeFormat: 'hh:mm tt',
+		timeFormat: 'HH:mm',
 		amNames: ['vorm.', 'AM', 'A'],
 		pmNames: ['nachm.', 'PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['de']);

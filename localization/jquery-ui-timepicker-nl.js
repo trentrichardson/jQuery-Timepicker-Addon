@@ -11,10 +11,9 @@
 		timezoneText: 'Tijdzone',
 		currentText: 'Vandaag',
 		closeText: 'Sluiten',
-		timeFormat: 'hh:mm tt',
+		timeFormat: 'HH:mm',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['nl']);

@@ -11,10 +11,9 @@
 		timezoneText: 'Időzóna',
 		currentText: 'Most',
 		closeText: 'Kész',
-		timeFormat: 'hh:mm tt',
+		timeFormat: 'HH:mm',
 		amNames: ['de.', 'AM', 'A'],
 		pmNames: ['du.', 'PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['hu']);

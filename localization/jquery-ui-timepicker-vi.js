@@ -11,10 +11,9 @@
 		timezoneText: 'Múi giờ',
 		currentText: 'Hiện thời',
 		closeText: 'Đóng',
-		timeFormat: 'h:m',
+		timeFormat: 'H:m',
 		amNames: ['SA', 'AM', 'A'],
 		pmNames: ['CH', 'PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['vi']);

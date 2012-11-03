@@ -11,10 +11,9 @@
 		timezoneText: 'Zona Waktu',
 		currentText: 'Sekarang',
 		closeText: 'OK',
-		timeFormat: 'hh:mm tt',
+		timeFormat: 'HH:mm',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['id']);

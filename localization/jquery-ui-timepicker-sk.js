@@ -11,10 +11,9 @@
 		timezoneText: 'Časové pásmo',
 		currentText: 'Teraz',
 		closeText: 'Zavrieť',
-		timeFormat: 'h:m',
+		timeFormat: 'H:m',
 		amNames: ['dop.', 'AM', 'A'],
 		pmNames: ['pop.', 'PM', 'P'],
-		ampm: false,
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['sk']);

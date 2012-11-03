@@ -1,8 +1,8 @@
 /*
  * jQuery UI Slider Access
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 0.2
- * Last Modified: 12/02/2011
+ * Version 0.3
+ * Last Modified: 10/20/2012
  * 
  * Copyright 2011 Trent Richardson
  * Dual licensed under the MIT and GPL licenses.
@@ -50,7 +50,9 @@
 												curr = $t.slider('value'),
 												newval = curr += step*1,
 												minval = $t.slider('option','min'),
-												maxval = $t.slider('option','max');
+												maxval = $t.slider('option','max'),
+												slidee = $t.slider("option", "slide") || function(){},
+												stope = $t.slider("option", "stop") || function(){};
 
 											e.preventDefault();
 											
@@ -59,7 +61,8 @@
 											
 											$t.slider('value', newval);
 
-											$t.slider("option", "slide").call($t, null, { value: newval });
+											slidee.call($t, null, { value: newval });
+											stope.call($t, null, { value: newval });
 										});
 						});
 						
