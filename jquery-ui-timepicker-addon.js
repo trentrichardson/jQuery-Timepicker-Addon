@@ -1183,7 +1183,7 @@
 			case 'H':
 				return hour;
 			case 'hh':
-				return convert24to12(hour).slice(-2);
+				return ('0' + convert24to12(hour)).slice(-2);
 			case 'h':
 				return convert24to12(hour);
 			case 'mm':
@@ -1649,7 +1649,7 @@
 
 	/*
 	* Converts 24 hour format into 12 hour
-	* Returns 12 hour with leading 0
+	* Returns 12 hour without leading 0
 	*/
 	var convert24to12 = function(hour) {
 		if (hour > 12) {
@@ -1658,10 +1658,6 @@
 
 		if (hour == 0) {
 			hour = 12;
-		}
-
-		if (hour < 10) {
-			hour = "0" + hour;
 		}
 
 		return String(hour);
