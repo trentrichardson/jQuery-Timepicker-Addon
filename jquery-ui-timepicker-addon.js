@@ -1,8 +1,8 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.1.0
- * Last Modified: 11/03/2012
+ * Version 1.1.1
+ * Last Modified: 11/07/2012
  *
  * Copyright 2012 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -27,7 +27,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.1.0"
+			version: "1.1.1"
 		}
 	});
 
@@ -1183,7 +1183,7 @@
 			case 'H':
 				return hour;
 			case 'hh':
-				return convert24to12(hour).slice(-2);
+				return ('0' + convert24to12(hour)).slice(-2);
 			case 'h':
 				return convert24to12(hour);
 			case 'mm':
@@ -1649,7 +1649,7 @@
 
 	/*
 	* Converts 24 hour format into 12 hour
-	* Returns 12 hour with leading 0
+	* Returns 12 hour without leading 0
 	*/
 	var convert24to12 = function(hour) {
 		if (hour > 12) {
@@ -1658,10 +1658,6 @@
 
 		if (hour == 0) {
 			hour = 12;
-		}
-
-		if (hour < 10) {
-			hour = "0" + hour;
 		}
 
 		return String(hour);
@@ -1881,6 +1877,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.1.0";
+	$.timepicker.version = "1.1.1";
 
 })(jQuery);
