@@ -1320,9 +1320,9 @@
 					altTimeFormat = tp_inst._defaults.altTimeFormat !== null ? tp_inst._defaults.altTimeFormat : tp_inst._defaults.timeFormat;
 				
 				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
-				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly){
+				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly && date !== null){
 					if(tp_inst._defaults.altFormat)
-						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, (date === null ? new Date() : date), formatCfg) + altSeparator + altFormattedDateTime;
+						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, date, formatCfg) + altSeparator + altFormattedDateTime;
 					else altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
 				}
 				$(altField).val(altFormattedDateTime);
