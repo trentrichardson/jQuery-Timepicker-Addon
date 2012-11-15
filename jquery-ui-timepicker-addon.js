@@ -464,6 +464,7 @@
 				this.timezone_select.change(function() {
 					tp_inst._defaults.useLocalTimezone = false;
 					tp_inst._onTimeChange();
+					tp_inst._onSelectHandler();
 				});
 				// End timezone options
 				
