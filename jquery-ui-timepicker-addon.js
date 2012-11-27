@@ -1768,7 +1768,7 @@
 		var off = date.getTimezoneOffset() * -1,
 			minutes = off % 60,
 			hours = (off - minutes) / 60;
-		return (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).substr(-2) + ('0' + (minutes * 101).toString()).substr(-2);
+		return (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + ('0' + (minutes * 101).toString()).slice(-2);
 	};
 
 	/**
