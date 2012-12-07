@@ -671,7 +671,7 @@ $('#slider_example_4').datetimepicker({
 				spin: function(e,ui){ // spin events
 						tp_inst.control.value(tp_inst, obj, unit, ui.value);
 						tp_inst._onTimeChange();
-						//tp_inst._onSelectHandler();
+						tp_inst._onSelectHandler();
 					}
 			});
 		return obj;
