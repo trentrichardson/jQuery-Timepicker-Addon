@@ -2,13 +2,13 @@
 /* Written by Diogo Damiani (diogodamiani@gmail.com) */
 (function ($) {
 	$.timepicker.regional['pt-BR'] = {
-		timeOnlyTitle: 'Escolha a horário',
-		timeText: 'Horário',
+		timeOnlyTitle: 'Escolha o hor&aacute;rio',
+		timeText: 'Hor&aacute;rio',
 		hourText: 'Hora',
 		minuteText: 'Minutos',
 		secondText: 'Segundos',
 		millisecText: 'Milissegundos',
-		timezoneText: 'Fuso horário',
+		timezoneText: 'Fuso hor&aacute;rio',
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'HH:mm',
