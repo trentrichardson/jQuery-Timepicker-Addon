@@ -619,21 +619,21 @@
 					secMax = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)), 10),
 					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
 
-				if (this.hour_slider) {
+ 				if (this.hour_slider) {
 					this.control.options(this, this.hour_slider, 'hour', { min: this._defaults.hourMin, max: hourMax });
-					this.control.value(this, this.hour_slider, 'hour', this.hour);
+					this.control.value(this, this.hour_slider, 'hour', this.hour - this.hour % this._defaults.stepHour);
 				}
 				if (this.minute_slider) {
 					this.control.options(this, this.minute_slider, 'minute', { min: this._defaults.minuteMin, max: minMax });
-					this.control.value(this, this.minute_slider, 'minute', this.minute);
+					this.control.value(this, this.minute_slider, 'minute', this.minute - this.minute % this._defaults.stepMinute);
 				}
 				if (this.second_slider) {
 					this.control.options(this, this.second_slider, 'second', { min: this._defaults.secondMin, max: secMax });
-					this.control.value(this, this.second_slider, 'second', this.second);
+					this.control.value(this, this.second_slider, 'second', this.second - this.second % this._defaults.stepSecond);
 				}
 				if (this.millisec_slider) {
 					this.control.options(this, this.millisec_slider, 'millisec', { min: this._defaults.millisecMin, max: millisecMax });
-					this.control.value(this, this.millisec_slider, 'millisec', this.millisec);
+					this.control.value(this, this.millisec_slider, 'millisec', this.millisec - this.millisec % this._defaults.stepMillisec);
 				}
 			}
 
