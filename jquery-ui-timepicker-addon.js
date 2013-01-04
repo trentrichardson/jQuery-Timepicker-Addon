@@ -1,7 +1,7 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.1.1
+ * Version 1.1.2-dev
  * Last Modified: 11/07/2012
  *
  * Copyright 2012 Trent Richardson
@@ -27,7 +27,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.1.1"
+			version: "1.1.2"
 		}
 	});
 
@@ -464,6 +464,7 @@
 				this.timezone_select.change(function() {
 					tp_inst._defaults.useLocalTimezone = false;
 					tp_inst._onTimeChange();
+					tp_inst._onSelectHandler();
 				});
 				// End timezone options
 				
@@ -621,19 +622,19 @@
 
 				if (this.hour_slider) {
 					this.control.options(this, this.hour_slider, 'hour', { min: this._defaults.hourMin, max: hourMax });
-					this.control.value(this, this.hour_slider, 'hour', this.hour);
+					this.control.value(this, this.hour_slider, 'hour', this.hour - (this.hour % this._defaults.stepHour));
 				}
 				if (this.minute_slider) {
 					this.control.options(this, this.minute_slider, 'minute', { min: this._defaults.minuteMin, max: minMax });
-					this.control.value(this, this.minute_slider, 'minute', this.minute);
+					this.control.value(this, this.minute_slider, 'minute', this.minute - (this.minute % this._defaults.stepMinute));
 				}
 				if (this.second_slider) {
 					this.control.options(this, this.second_slider, 'second', { min: this._defaults.secondMin, max: secMax });
-					this.control.value(this, this.second_slider, 'second', this.second);
+					this.control.value(this, this.second_slider, 'second', this.second - (this.second % this._defaults.stepSecond));
 				}
 				if (this.millisec_slider) {
 					this.control.options(this, this.millisec_slider, 'millisec', { min: this._defaults.millisecMin, max: millisecMax });
-					this.control.value(this, this.millisec_slider, 'millisec', this.millisec);
+					this.control.value(this, this.millisec_slider, 'millisec', this.millisec - (this.millisec % this._defaults.stepMillisec));
 				}
 			}
 
@@ -1320,9 +1321,9 @@
 					altTimeFormat = tp_inst._defaults.altTimeFormat !== null ? tp_inst._defaults.altTimeFormat : tp_inst._defaults.timeFormat;
 				
 				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
-				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly){
+				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly && date !== null){
 					if(tp_inst._defaults.altFormat)
-						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, (date === null ? new Date() : date), formatCfg) + altSeparator + altFormattedDateTime;
+						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, date, formatCfg) + altSeparator + altFormattedDateTime;
 					else altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
 				}
 				$(altField).val(altFormattedDateTime);
@@ -1767,7 +1768,7 @@
 		var off = date.getTimezoneOffset() * -1,
 			minutes = off % 60,
 			hours = (off - minutes) / 60;
-		return (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).substr(-2) + ('0' + (minutes * 101).toString()).substr(-2);
+		return (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + ('0' + (minutes * 101).toString()).slice(-2);
 	};
 
 	/**
@@ -1877,6 +1878,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.1.1";
+	$.timepicker.version = "1.1.2";
 
 })(jQuery);
