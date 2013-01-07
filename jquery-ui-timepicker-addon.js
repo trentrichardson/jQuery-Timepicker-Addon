@@ -237,10 +237,14 @@
 			}
 
 			tp_inst.timezone = tp_inst._defaults.timezone;
-			tp_inst.hour = tp_inst._defaults.hour;
-			tp_inst.minute = tp_inst._defaults.minute;
-			tp_inst.second = tp_inst._defaults.second;
-			tp_inst.millisec = tp_inst._defaults.millisec;
+			tp_inst.hour = tp_inst._defaults.hour < tp_inst._defaults.hourMin? tp_inst._defaults.hourMin : 
+							tp_inst._defaults.hour > tp_inst._defaults.hourMax? tp_inst._defaults.hourMax : tp_inst._defaults.hour;
+			tp_inst.minute = tp_inst._defaults.minute < tp_inst._defaults.minuteMin? tp_inst._defaults.minuteMin : 
+							tp_inst._defaults.minute > tp_inst._defaults.minuteMax? tp_inst._defaults.minuteMax : tp_inst._defaults.minute;
+			tp_inst.second = tp_inst._defaults.second < tp_inst._defaults.secondMin? tp_inst._defaults.secondMin : 
+							tp_inst._defaults.second > tp_inst._defaults.secondMax? tp_inst._defaults.secondMax : tp_inst._defaults.second;
+			tp_inst.millisec = tp_inst._defaults.millisec < tp_inst._defaults.millisecMin? tp_inst._defaults.millisecMin : 
+							tp_inst._defaults.millisec > tp_inst._defaults.millisecMax? tp_inst._defaults.millisecMax : tp_inst._defaults.millisec;
 			tp_inst.ampm = '';
 			tp_inst.$input = $input;
 
@@ -396,11 +400,6 @@
 				for(var i=0,l=tp_inst.units.length; i<l; i++){
 					litem = tp_inst.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
-					
-					if(tp_inst[litem] < o[litem+'Min'])
-						tp_inst[litem] = o[litem+'Min'];
-					else if(tp_inst[litem] > max[litem])
-						tp_inst[litem] = max[litem];
 
 					// add the slider
 					tp_inst[litem+'_slider'] = tp_inst.control.create(tp_inst, $tp.find('.ui_tpicker_'+litem+'_slider'), litem, tp_inst[litem], o[litem+'Min'], max[litem], o['step'+uitem]);
