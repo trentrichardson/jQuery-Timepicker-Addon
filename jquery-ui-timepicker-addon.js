@@ -397,6 +397,11 @@
 					litem = tp_inst.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
 					
+					if(tp_inst[litem] < o[litem+'Min'])
+						tp_inst[litem] = o[litem+'Min'];
+					else if(tp_inst[litem] > max[litem])
+						tp_inst[litem] = max[litem];
+
 					// add the slider
 					tp_inst[litem+'_slider'] = tp_inst.control.create(tp_inst, $tp.find('.ui_tpicker_'+litem+'_slider'), litem, tp_inst[litem], o[litem+'Min'], max[litem], o['step'+uitem]);
 
