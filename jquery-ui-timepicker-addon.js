@@ -596,13 +596,17 @@
 						if (this.minute >= this._defaults.minuteMax) {
 							this.minute = this._defaults.minuteMax;
 							this._defaults.secondMax = maxDateTime.getSeconds();
-						} else if (this.second >= this._defaults.secondMax) {
-							this.second = this._defaults.secondMax;
-							this._defaults.millisecMax = maxDateTime.getMilliseconds();
-						} else {
-							if (this.millisec > this._defaults.millisecMax) {
-								this.millisec = this._defaults.millisecMax;
+							if (this.second >= this._defaults.secondMax) {
+								this.second = this._defaults.secondMax;
+								this._defaults.millisecMax = maxDateTime.getMilliseconds();
+							} else {
+								if (this.millisec > this._defaults.millisecMax) {
+									this.millisec = this._defaults.millisecMax;
+								}
+								this._defaults.millisecMax = this.millisecMaxOriginal;
 							}
+						} else {
+							this._defaults.secondMax = this.secondMaxOriginal;
 							this._defaults.millisecMax = this.millisecMaxOriginal;
 						}
 					} else {
