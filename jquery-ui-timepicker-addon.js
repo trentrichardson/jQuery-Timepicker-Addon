@@ -1039,9 +1039,9 @@
 					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
 							var ml = match.length;
 							switch (match.charAt(0).toLowerCase()) {
-								case 'h': return ml === 1? '(\\d?\\d)':'(\\d\\d)';
-								case 'm': return ml === 1? '(\\d?\\d)':'(\\d\\d)';
-								case 's': return ml === 1? '(\\d?\\d)':'(\\d\\d)';
+								case 'h': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
+								case 'm': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
+								case 's': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
 								case 'l': return '(\\d?\\d?\\d)';
 								case 'z': return '(z|[-+]\\d\\d:?\\d\\d|\\S+)?';
 								case 't': return getPatternAmpm(o.amNames, o.pmNames);
