@@ -1132,7 +1132,7 @@
 		// First try JS Date, if that fails, use strictParse
 		var looseParse = function(f,s,o){
 			try{
-				var d = new Date('2012-01-01 '+ s);
+				var d = new Date('2012-01-01T'+ s);
 				return {
 					hour: d.getHours(),
 					minutes: d.getMinutes(),
