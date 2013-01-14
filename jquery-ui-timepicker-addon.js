@@ -1132,11 +1132,21 @@
 		// First try JS Date, if that fails, use strictParse
 		var looseParse = function(f,s,o){
 			try{
-				var d = new Date('2012-01-01T'+ s);
+				var d = new Date('2012-01-01 '+ s);
+				if(isNaN(d.getTime())){
+					d = new Date('2012-01-01T'+ s);
+					if(isNaN(d.getTime())){
+						d = new Date('01/01/2012 '+ s);
+						if(isNaN(d.getTime())){
+							throw "Unable to parse time with native Date: "+ s;
+						}
+					}
+				}
+
 				return {
 					hour: d.getHours(),
-					minutes: d.getMinutes(),
-					seconds: d.getSeconds(),
+					minute: d.getMinutes(),
+					second: d.getSeconds(),
 					millisec: d.getMilliseconds(),
 					timezone: $.timepicker.timeZoneOffsetString(d)
 				};

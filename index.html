@@ -361,8 +361,8 @@
 							<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
 <pre>{
 	hour: 19,
-	minutes: 10,
-	seconds: 23,
+	minute: 10,
+	second: 23,
 	millisec: 45,
 	timezone: '-0400'
 }</pre>
@@ -525,7 +525,8 @@ $('#basic_example_2').timepicker();
 						</div>					
 <pre>
 $('#basic_example_3').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	parse: 'loose'
 });
 </pre>
 					</div>
