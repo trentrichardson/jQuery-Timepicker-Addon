@@ -35,11 +35,11 @@
 			.example-container input{ border: solid 1px #aaa; padding: 4px; width: 175px; }
 		</style> 
 		
-		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
 		<script type="text/javascript">
@@ -122,7 +122,7 @@
 
 					
 					<h3>Version</h3>
-					<p>Version 1.1.1</p>
+					<p>Version 1.1.2</p>
 
 
 					<p>Last updated on 11/07/2012</p>
@@ -363,8 +363,8 @@
 							<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
 <pre>{
 	hour: 19,
-	minutes: 10,
-	seconds: 23,
+	minute: 10,
+	second: 23,
 	millisec: 45,
 	timezone: '-0400'
 }</pre>
@@ -665,7 +665,9 @@ $('#slider_example_4').datetimepicker({
 				max: max,
 				step: step,
 				change: function(e,ui){ // key events
-						tp_inst._onTimeChange();
+						// don't call if api was used and not key press
+						if(e.originalEvent !== undefined)
+							tp_inst._onTimeChange();
 						tp_inst._onSelectHandler();
 					},
 				spin: function(e,ui){ // spin events
