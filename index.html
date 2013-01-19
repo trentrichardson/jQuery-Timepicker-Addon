@@ -35,11 +35,11 @@
 			.example-container input{ border: solid 1px #aaa; padding: 4px; width: 175px; }
 		</style> 
 		
-		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.0/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
 		<script type="text/javascript">
@@ -122,11 +122,9 @@
 
 					
 					<h3>Version</h3>
-					<p>Version 1.1.1</p>
+					<p>Version 1.1.2</p>
 
-
-					<p>Last updated on 11/07/2012</p>
-
+					<p>Last updated on 01/19/2013</p>
 					<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
 					<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
 					<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
@@ -363,8 +361,8 @@
 							<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
 <pre>{
 	hour: 19,
-	minutes: 10,
-	seconds: 23,
+	minute: 10,
+	second: 23,
 	millisec: 45,
 	timezone: '-0400'
 }</pre>
@@ -665,7 +663,9 @@ $('#slider_example_4').datetimepicker({
 				max: max,
 				step: step,
 				change: function(e,ui){ // key events
-						tp_inst._onTimeChange();
+						// don't call if api was used and not key press
+						if(e.originalEvent !== undefined)
+							tp_inst._onTimeChange();
 						tp_inst._onSelectHandler();
 					},
 				spin: function(e,ui){ // spin events
@@ -733,7 +733,6 @@ $('#alt_example_2').datetimepicker({
 						</div>					
 <pre>
 $('#alt_example_3').datetimepicker({
-	ampm: true,
 	altField: "#alt_example_3_alt",
 	altFieldTimeOnly: false,
 	altFormat: "yy-mm-dd",
