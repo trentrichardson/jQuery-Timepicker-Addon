@@ -37,7 +37,7 @@
 	* Settings for (groups of) time pickers are maintained in an instance object,
 	* allowing multiple different settings on the same page.
 	*/
-	function Timepicker() {
+	var Timepicker = function() {
 		this.regional = []; // Available regional settings, indexed by language code
 		this.regional[''] = { // Default regional settings
 			currentText: 'Now',
