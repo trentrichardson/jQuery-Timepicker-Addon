@@ -311,7 +311,7 @@
 					}
 					$.extend(this, parseRes.timeObj);
 				} catch (err) {
-					$.datepicker.log("Error parsing the date/time string: " + err +
+					$.timepicker.log("Error parsing the date/time string: " + err +
 									"\ndate/time string = " + timeString +
 									"\ntimeFormat = " + this._defaults.timeFormat +
 									"\ndateFormat = " + dp_dateFormat);
@@ -826,7 +826,7 @@
 						try {
 							$.datepicker._updateDatepicker(inst);
 						} catch (err) {
-							$.datepicker.log(err);
+							$.timepicker.log(err);
 						}
 					}
 				}
@@ -1163,7 +1163,7 @@
 					return strictParse(f,s,o);
 				}
 				catch(err2){
-					$.datepicker.log("Unable to parse \ntimeString: "+ s +"\ntimeFormat: "+ f);
+					$.timepicker.log("Unable to parse \ntimeString: "+ s +"\ntimeFormat: "+ f);
 				}				
 			}
 			return false;
@@ -1373,7 +1373,7 @@
 				try {
 					$.datepicker._updateDatepicker(inst);
 				} catch (err) {
-					$.datepicker.log(err);
+					$.timepicker.log(err);
 				}
 			}
 		}
@@ -1539,7 +1539,7 @@
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
 			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
-			$.datepicker.log("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
+			$.timepicker.log("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
 		}
 		return date;
 	};
@@ -1714,7 +1714,7 @@
 			}
 
 		} catch (err) {
-			$.datepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
+			$.timepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
 					"\nthrown error: " + err +
 					"\ndateTimeString" + dateTimeString +
 					"\ndateFormat = " + dateFormat +
@@ -1899,6 +1899,16 @@
 			}
 		}
 		return $([startTime.get(0), endTime.get(0)]);
+	};
+
+	/**
+	 * Log error or data to the console during error or debugging
+	 * @param  Object err pass any type object to log to the console during error or debugging
+	 * @return void
+	 */
+	$.timepicker.log = function(err){
+		if(window.console)
+			console.log(err);
 	};
 
 	/*
