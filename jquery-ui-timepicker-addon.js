@@ -4,7 +4,7 @@
  * Version 1.1.3-dev
  * Last Modified: 01/19/2013
  *
- * Copyright 2012 Trent Richardson
+ * Copyright 2013 Trent Richardson
  * You may use this project under MIT or GPL licenses.
  * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
