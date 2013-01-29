@@ -767,6 +767,13 @@
 				timeAvailable = dt !== null && this.timeDefined;
 			this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 			var formattedDateTime = this.formattedDate;
+			
+			// if a slider was changed but datepicker doesn't have a value yet, set it
+			if(dp_inst.lastVal==""){
+                dp_inst.currentYear=dp_inst.selectedYear;
+                dp_inst.currentMonth=dp_inst.selectedMonth;
+                dp_inst.currentDay=dp_inst.selectedDay;
+            }
 
 			/*
 			* remove following lines to force every changes in date picker to change the input value
