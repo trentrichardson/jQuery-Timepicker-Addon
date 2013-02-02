@@ -108,7 +108,7 @@
 			parse: 'strict'
 		};
 		$.extend(this._defaults, this.regional['']);
-	}
+	};
 
 	$.extend(Timepicker.prototype, {
 		$input: null,
