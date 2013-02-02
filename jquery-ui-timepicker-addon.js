@@ -1,10 +1,10 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.1.2
- * Last Modified: 01/19/2013
+ * Version 1.2
+ * Last Modified: 02/02/2013
  *
- * Copyright 2012 Trent Richardson
+ * Copyright 2013 Trent Richardson
  * You may use this project under MIT or GPL licenses.
  * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
@@ -27,7 +27,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.1.2"
+			version: "1.2"
 		}
 	});
 
@@ -37,7 +37,7 @@
 	* Settings for (groups of) time pickers are maintained in an instance object,
 	* allowing multiple different settings on the same page.
 	*/
-	function Timepicker() {
+	var Timepicker = function() {
 		this.regional = []; // Available regional settings, indexed by language code
 		this.regional[''] = { // Default regional settings
 			currentText: 'Now',
@@ -108,7 +108,7 @@
 			parse: 'strict'
 		};
 		$.extend(this._defaults, this.regional['']);
-	}
+	};
 
 	$.extend(Timepicker.prototype, {
 		$input: null,
@@ -311,7 +311,7 @@
 					}
 					$.extend(this, parseRes.timeObj);
 				} catch (err) {
-					$.datepicker.log("Error parsing the date/time string: " + err +
+					$.timepicker.log("Error parsing the date/time string: " + err +
 									"\ndate/time string = " + timeString +
 									"\ntimeFormat = " + this._defaults.timeFormat +
 									"\ndateFormat = " + dp_dateFormat);
@@ -767,6 +767,13 @@
 				timeAvailable = dt !== null && this.timeDefined;
 			this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
 			var formattedDateTime = this.formattedDate;
+			
+			// if a slider was changed but datepicker doesn't have a value yet, set it
+			if(dp_inst.lastVal==""){
+                dp_inst.currentYear=dp_inst.selectedYear;
+                dp_inst.currentMonth=dp_inst.selectedMonth;
+                dp_inst.currentDay=dp_inst.selectedDay;
+            }
 
 			/*
 			* remove following lines to force every changes in date picker to change the input value
@@ -819,7 +826,7 @@
 						try {
 							$.datepicker._updateDatepicker(inst);
 						} catch (err) {
-							$.datepicker.log(err);
+							$.timepicker.log(err);
 						}
 					}
 				}
@@ -1156,7 +1163,7 @@
 					return strictParse(f,s,o);
 				}
 				catch(err2){
-					$.datepicker.log("Unable to parse \ntimeString: "+ s +"\ntimeFormat: "+ f);
+					$.timepicker.log("Unable to parse \ntimeString: "+ s +"\ntimeFormat: "+ f);
 				}				
 			}
 			return false;
@@ -1366,7 +1373,7 @@
 				try {
 					$.datepicker._updateDatepicker(inst);
 				} catch (err) {
-					$.datepicker.log(err);
+					$.timepicker.log(err);
 				}
 			}
 		}
@@ -1532,7 +1539,7 @@
 			// the "extra" characters.  We rely on that instead of
 			// attempting to perfectly reproduce the parsing algorithm.
 			date = this._base_parseDate(format, value.substring(0,value.length-(err.length-err.indexOf(':')-2)), settings);
-			$.datepicker.log("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
+			$.timepicker.log("Error parsing the date string: " + err + "\ndate string = " + value + "\ndate format = " + format);
 		}
 		return date;
 	};
@@ -1707,7 +1714,7 @@
 			}
 
 		} catch (err) {
-			$.datepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
+			$.timepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
 					"\nthrown error: " + err +
 					"\ndateTimeString" + dateTimeString +
 					"\ndateFormat = " + dateFormat +
@@ -1894,9 +1901,19 @@
 		return $([startTime.get(0), endTime.get(0)]);
 	};
 
+	/**
+	 * Log error or data to the console during error or debugging
+	 * @param  Object err pass any type object to log to the console during error or debugging
+	 * @return void
+	 */
+	$.timepicker.log = function(err){
+		if(window.console)
+			console.log(err);
+	};
+
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.1.2";
+	$.timepicker.version = "1.2";
 
 })(jQuery);
