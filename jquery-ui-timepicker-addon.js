@@ -339,7 +339,9 @@
 				uitem = '',
 				max = {},
 				gridSize = {},
-				size = null;
+				size = null,
+				i=0,
+				l=0;
 
 			// Prevent displaying twice
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
@@ -348,7 +350,7 @@
 								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>';
 
 				// Create the markup
-				for(var i=0,l=this.units.length; i<l; i++){
+				for(i=0,l=this.units.length; i<l; i++){
 					litem = this.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
 					// Added by Peter Medeiros:
@@ -397,7 +399,7 @@
 				}
 				
 				// add sliders, adjust grids, add events
-				for(var i=0,l=tp_inst.units.length; i<l; i++){
+				for(i=0,l=tp_inst.units.length; i<l; i++){
 					litem = tp_inst.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
 
@@ -434,8 +436,7 @@
 
 								tp_inst._onTimeChange();
 								tp_inst._onSelectHandler();
-							})
-						.css({
+							}).css({
 								cursor: 'pointer',
 								width: (100 / gridSize[litem]) + '%',
 								textAlign: 'center',
@@ -769,7 +770,7 @@
 			var formattedDateTime = this.formattedDate;
 			
 			// if a slider was changed but datepicker doesn't have a value yet, set it
-			if(dp_inst.lastVal==""){
+			if(dp_inst.lastVal===""){
                 dp_inst.currentYear=dp_inst.selectedYear;
                 dp_inst.currentMonth=dp_inst.selectedMonth;
                 dp_inst.currentDay=dp_inst.selectedDay;
@@ -803,11 +804,23 @@
 					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
 					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
 
-				if (this._defaults.altFormat) altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
-				else altFormattedDateTime = this.formattedDate;
-				if (altFormattedDateTime) altFormattedDateTime += altSeparator;
-				if (this._defaults.altTimeFormat) altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
-				else altFormattedDateTime += this.formattedTime + altTimeSuffix;
+				if (this._defaults.altFormat){
+					altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
+				}
+				else{
+					altFormattedDateTime = this.formattedDate;
+				}
+
+				if (altFormattedDateTime){
+					altFormattedDateTime += altSeparator;
+				}
+
+				if(this._defaults.altTimeFormat){
+					altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
+				}
+				else{
+					altFormattedDateTime += this.formattedTime + altTimeSuffix;
+				}
 				this.$altInput.val(altFormattedDateTime);
 			} else {
 				this.$input.val(formattedDateTime);
@@ -861,8 +874,9 @@
 					if(tp_inst._defaults.isRTL){
 						if(typeof(opts) == 'string'){
 							if(opts == 'min' || opts == 'max'){
-								if(val !== undefined)
+								if(val !== undefined){
 									return obj.slider(opts, val*-1);
+								}
 								return Math.abs(obj.slider(opts));
 							}
 							return obj.slider(opts);
@@ -870,24 +884,29 @@
 						var min = opts.min, 
 							max = opts.max;
 						opts.min = opts.max = null;
-						if(min !== undefined)
+						if(min !== undefined){
 							opts.max = min * -1;
-						if(max !== undefined)
+						}
+						if(max !== undefined){
 							opts.min = max * -1;
+						}
 						return obj.slider(opts);
 					}
-					if(typeof(opts) == 'string' && val !== undefined)
+					if(typeof(opts) == 'string' && val !== undefined){
 							return obj.slider(opts, val);
+					}
 					return obj.slider(opts);
 				},
 				value: function(tp_inst, obj, unit, val){
 					if(tp_inst._defaults.isRTL){
-						if(val !== undefined)
+						if(val !== undefined){
 							return obj.slider('value', val*-1);
+						}
 						return Math.abs(obj.slider('value'));
 					}
-					if(val !== undefined)
+					if(val !== undefined){
 						return obj.slider('value', val);
+					}
 					return obj.slider('value');
 				}
 			},
@@ -900,10 +919,11 @@
 
 					for(var i=min; i<=max; i+=step){						
 						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
-						if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat))
+						if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat)){
 							sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
-						else if(unit == 'millisec' || i >= 10) sel += i;
-						else sel += '0'+ i.toString();
+						}
+						else if(unit == 'millisec' || i >= 10){ sel += i; }
+						else {sel += '0'+ i.toString(); }
 						sel += '</option>';
 					}
 					sel += '</select>';
@@ -921,17 +941,19 @@
 					var o = {},
 						$t = obj.children('select');
 					if(typeof(opts) == 'string'){
-						if(val === undefined)
+						if(val === undefined){
 							return $t.data(opts);
+						}
 						o[opts] = val;	
 					}
-					else o = opts;
+					else{ o = opts; }
 					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
 				value: function(tp_inst, obj, unit, val){
 					var $t = obj.children('select');
-					if(val !== undefined)
+					if(val !== undefined){
 						return $t.val(val);
+					}
 					return $t.val();
 				}
 			}
@@ -1170,7 +1192,7 @@
 		}; // end looseParse
 		
 		if(typeof o.parse === "function"){
-			return o.parse(timeFormat, timeString, o)
+			return o.parse(timeFormat, timeString, o);
 		}
 		if(o.parse === 'loose'){
 			return looseParse(timeFormat, timeString, o);
@@ -1348,9 +1370,12 @@
 				
 				altFormattedDateTime += $.datepicker.formatTime(altTimeFormat, tp_inst, tp_inst._defaults) + altTimeSuffix;
 				if(!tp_inst._defaults.timeOnly && !tp_inst._defaults.altFieldTimeOnly && date !== null){
-					if(tp_inst._defaults.altFormat)
+					if(tp_inst._defaults.altFormat){
 						altFormattedDateTime = $.datepicker.formatDate(tp_inst._defaults.altFormat, date, formatCfg) + altSeparator + altFormattedDateTime;
-					else altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
+					}
+					else{
+						altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
+					}
 				}
 				$(altField).val(altFormattedDateTime);
 			}
@@ -1683,7 +1708,7 @@
 			hour = hour - 12;
 		}
 
-		if (hour == 0) {
+		if (hour === 0) {
 			hour = 12;
 		}
 
@@ -1907,8 +1932,9 @@
 	 * @return void
 	 */
 	$.timepicker.log = function(err){
-		if(window.console)
+		if(window.console){
 			console.log(err);
+		}
 	};
 
 	/*
