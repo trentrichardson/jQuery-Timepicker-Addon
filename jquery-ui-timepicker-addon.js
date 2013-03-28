@@ -1699,7 +1699,7 @@
 	* Returns true if should use ampm, false if not
 	*/
 	var useAmpm = function(timeFormat){
-		return (timeFormat.indexOf('t') !== -1 && timeFormat.indexOf('h') !== -1);
+		return ((timeFormat.indexOf('t') !== -1 || timeFormat.indexOf('T') !== -1) && timeFormat.indexOf('h') !== -1);
 	};
 
 	/*
