@@ -913,12 +913,13 @@
 			// select methods
 			select: {
 				create: function(tp_inst, obj, unit, val, min, max, step){
-					var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">';
+					var sel = '<select class="ui-timepicker-select" data-unit="'+ unit +'" data-min="'+ min +'" data-max="'+ max +'" data-step="'+ step +'">',
+						format = tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat;
 
 					for(var i=min; i<=max; i+=step){						
 						sel += '<option value="'+ i +'"'+ (i==val? ' selected':'') +'>';
-						if(unit == 'hour' && useAmpm(tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat)){
-							sel += $.datepicker.formatTime("hh TT", {hour:i}, tp_inst._defaults);
+						if(unit == 'hour'){
+							sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig,'')), {hour:i}, tp_inst._defaults);
 						}
 						else if(unit == 'millisec' || i >= 10){ sel += i; }
 						else {sel += '0'+ i.toString(); }
