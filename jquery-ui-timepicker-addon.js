@@ -52,6 +52,7 @@
 			minuteText: 'Minute',
 			secondText: 'Second',
 			millisecText: 'Millisecond',
+			microsecText: 'Microsecond',
 			timezoneText: 'Time Zone',
 			isRTL: false
 		};
@@ -62,16 +63,19 @@
 			showMinute: true,
 			showSecond: false,
 			showMillisec: false,
+			showMicrosec: false,
 			showTimezone: false,
 			showTime: true,
 			stepHour: 1,
 			stepMinute: 1,
 			stepSecond: 1,
 			stepMillisec: 1,
+			stepMicrosec: 1,
 			hour: 0,
 			minute: 0,
 			second: 0,
 			millisec: 0,
+			microsec: 0,
 			timezone: null,
 			useLocalTimezone: false,
 			defaultTimezone: "+0000",
@@ -79,10 +83,12 @@
 			minuteMin: 0,
 			secondMin: 0,
 			millisecMin: 0,
+			microsecMin: 0,
 			hourMax: 23,
 			minuteMax: 59,
 			secondMax: 59,
 			millisecMax: 999,
+			microsecMax: 999,
 			minDateTime: null,
 			maxDateTime: null,
 			onSelect: null,
@@ -90,6 +96,7 @@
 			minuteGrid: 0,
 			secondGrid: 0,
 			millisecGrid: 0,
+			microsecGrid: 0,
 			alwaysSetTime: true,
 			separator: ' ',
 			altFieldTimeOnly: true,
@@ -119,27 +126,31 @@
 		minute_slider: null,
 		second_slider: null,
 		millisec_slider: null,
+		microsec_slider: null,
 		timezone_select: null,
 		hour: 0,
 		minute: 0,
 		second: 0,
 		millisec: 0,
+		microsec: 0,
 		timezone: null,
 		defaultTimezone: "+0000",
 		hourMinOriginal: null,
 		minuteMinOriginal: null,
 		secondMinOriginal: null,
 		millisecMinOriginal: null,
+		microsecMinOriginal: null,
 		hourMaxOriginal: null,
 		minuteMaxOriginal: null,
 		secondMaxOriginal: null,
 		millisecMaxOriginal: null,
+		microsecMaxOriginal: null,
 		ampm: '',
 		formattedDate: '',
 		formattedTime: '',
 		formattedDateTime: '',
 		timezoneList: null,
-		units: ['hour','minute','second','millisec'],
+		units: ['hour','minute','second','millisec', 'microsec'],
 		control: null,
 
 		/* 
@@ -245,6 +256,8 @@
 							tp_inst._defaults.second > tp_inst._defaults.secondMax? tp_inst._defaults.secondMax : tp_inst._defaults.second;
 			tp_inst.millisec = tp_inst._defaults.millisec < tp_inst._defaults.millisecMin? tp_inst._defaults.millisecMin : 
 							tp_inst._defaults.millisec > tp_inst._defaults.millisecMax? tp_inst._defaults.millisecMax : tp_inst._defaults.millisec;
+			tp_inst.microsec = tp_inst._defaults.microsec < tp_inst._defaults.microsecMin? tp_inst._defaults.microsecMin : 
+							tp_inst._defaults.microsec > tp_inst._defaults.microsecMax? tp_inst._defaults.microsecMax : tp_inst._defaults.microsec;
 			tp_inst.ampm = '';
 			tp_inst.$input = $input;
 
@@ -537,11 +550,12 @@
 				var minDateTime = $.datepicker._get(dp_inst, 'minDateTime'),
 					minDateTimeDate = new Date(minDateTime.getFullYear(), minDateTime.getMonth(), minDateTime.getDate(), 0, 0, 0, 0);
 
-				if (this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null || this.millisecMinOriginal === null) {
+				if (this.hourMinOriginal === null || this.minuteMinOriginal === null || this.secondMinOriginal === null || this.millisecMinOriginal === null || this.microsecMinOriginal === null) {
 					this.hourMinOriginal = o.hourMin;
 					this.minuteMinOriginal = o.minuteMin;
 					this.secondMinOriginal = o.secondMin;
 					this.millisecMinOriginal = o.millisecMin;
+					this.microsecMinOriginal = o.microsecMin;
 				}
 
 				if (dp_inst.settings.timeOnly || minDateTimeDate.getTime() == dp_date.getTime()) {
@@ -555,26 +569,36 @@
 							if (this.second <= this._defaults.secondMin) {
 								this.second = this._defaults.secondMin;
 								this._defaults.millisecMin = minDateTime.getMilliseconds();
-							} else {
-								if (this.millisec < this._defaults.millisecMin) {
+								if(this.millisec <= this._default.millisecMin) {
 									this.millisec = this._defaults.millisecMin;
+									this._defaults.microsecMin = minDateTime.getMicroseconds();
+								} else {
+									if (this.microsec < this._defaults.microsecMin) {
+										this.microsec = this._defaults.microsecMin;
+									}
+									this._defaults.microsecMin = this.microsecMinOriginal;
 								}
+							} else {
 								this._defaults.millisecMin = this.millisecMinOriginal;
+								this._defaults.microsecMin = this.microsecMinOriginal;
 							}
 						} else {
 							this._defaults.secondMin = this.secondMinOriginal;
 							this._defaults.millisecMin = this.millisecMinOriginal;
+							this._defaults.microsecMin = this.microsecMinOriginal;
 						}
 					} else {
 						this._defaults.minuteMin = this.minuteMinOriginal;
 						this._defaults.secondMin = this.secondMinOriginal;
 						this._defaults.millisecMin = this.millisecMinOriginal;
+						this._defaults.microsecMin = this.microsecMinOriginal;
 					}
 				} else {
 					this._defaults.hourMin = this.hourMinOriginal;
 					this._defaults.minuteMin = this.minuteMinOriginal;
 					this._defaults.secondMin = this.secondMinOriginal;
 					this._defaults.millisecMin = this.millisecMinOriginal;
+					this._defaults.microsecMin = this.microsecMinOriginal;
 				}
 			}
 
@@ -582,11 +606,12 @@
 				var maxDateTime = $.datepicker._get(dp_inst, 'maxDateTime'),
 					maxDateTimeDate = new Date(maxDateTime.getFullYear(), maxDateTime.getMonth(), maxDateTime.getDate(), 0, 0, 0, 0);
 
-				if (this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null) {
+				if (this.hourMaxOriginal === null || this.minuteMaxOriginal === null || this.secondMaxOriginal === null || this.millisecMaxOriginal === null) {
 					this.hourMaxOriginal = o.hourMax;
 					this.minuteMaxOriginal = o.minuteMax;
 					this.secondMaxOriginal = o.secondMax;
 					this.millisecMaxOriginal = o.millisecMax;
+					this.microsecMaxOriginal = o.microsecMax;
 				}
 
 				if (dp_inst.settings.timeOnly || maxDateTimeDate.getTime() == dp_date.getTime()) {
@@ -600,26 +625,36 @@
 							if (this.second >= this._defaults.secondMax) {
 								this.second = this._defaults.secondMax;
 								this._defaults.millisecMax = maxDateTime.getMilliseconds();
-							} else {
-								if (this.millisec > this._defaults.millisecMax) {
-									this.millisec = this._defaults.millisecMax;
+								if (this.millisecond >= this._defaults.millisecondMax) {
+									this.millisecond = this._defaults.millisecondMax;
+									this._defaults.microsecMax = maxDateTime.getMicroseconds();
+								} else {
+									if (this.microsec > this._defaults.microsecMax) {
+										this.microsec = this._defaults.microsecMax;
+									}
+									this._defaults.microsecMax = this.microsecMaxOriginal;
 								}
+							} else {
 								this._defaults.millisecMax = this.millisecMaxOriginal;
+								this._defaults.microsecMax = this.microsecMaxOriginal;
 							}
 						} else {
 							this._defaults.secondMax = this.secondMaxOriginal;
 							this._defaults.millisecMax = this.millisecMaxOriginal;
+							this._defaults.microsecMax = this.microsecMaxOriginal;
 						}
 					} else {
 						this._defaults.minuteMax = this.minuteMaxOriginal;
 						this._defaults.secondMax = this.secondMaxOriginal;
 						this._defaults.millisecMax = this.millisecMaxOriginal;
+						this._defaults.microsecMax = this.microsecMaxOriginal;
 					}
 				} else {
 					this._defaults.hourMax = this.hourMaxOriginal;
 					this._defaults.minuteMax = this.minuteMaxOriginal;
 					this._defaults.secondMax = this.secondMaxOriginal;
 					this._defaults.millisecMax = this.millisecMaxOriginal;
+					this._defaults.microsecMax = this.microsecMaxOriginal;
 				}
 			}
 
@@ -628,6 +663,7 @@
 					minMax = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)), 10),
 					secMax = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)), 10),
 					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
+					microsecMax = parseInt((this._defaults.microsecMax - ((this._defaults.microsecMax - this._defaults.microsecMin) % this._defaults.stepMicrosec)), 10);
 
 				if (this.hour_slider) {
 					this.control.options(this, this.hour_slider, 'hour', { min: this._defaults.hourMin, max: hourMax });
@@ -645,6 +681,10 @@
 					this.control.options(this, this.millisec_slider, 'millisec', { min: this._defaults.millisecMin, max: millisecMax });
 					this.control.value(this, this.millisec_slider, 'millisec', this.millisec - (this.millisec % this._defaults.stepMillisec));
 				}
+				if (this.microsec_slider) {
+					this.control.options(this, this.microsec_slider, 'microsec', { min: this._defaults.microsecMin, max: microsecMax });
+					this.control.value(this, this.microsec_slider, 'microsec', this.microsec - (this.microsec % this._defaults.stepMicrosec));
+				}
 			}
 
 		},
@@ -658,6 +698,7 @@
 				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
 				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
 				millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider, 'millisec') : false,
+				microsec = (this.microsec_slider) ? this.control.value(this, this.microsec_slider, 'microsec') : false,
 				timezone = (this.timezone_select) ? this.timezone_select.val() : false,
 				o = this._defaults,
 				pickerTimeFormat = o.pickerTimeFormat || o.timeFormat,
@@ -675,6 +716,9 @@
 			if (typeof(millisec) == 'object') {
 				millisec = false;
 			}
+			if (typeof(microsec) == 'object') {
+				microsec = false;
+			}
 			if (typeof(timezone) == 'object') {
 				timezone = false;
 			}
@@ -691,12 +735,15 @@
 			if (millisec !== false) {
 				millisec = parseInt(millisec, 10);
 			}
+			if (microsec !== false) {
+				microsec = parseInt(microsec, 10);
+			}
 
 			var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
 
 			// If the update was done in the input field, the input field should not be updated.
 			// If the update was done using the sliders, update the input field.
-			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec 
+			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec || microsec != this.microsec 
 								|| (this.ampm.length > 0 && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) 
 								|| ((this.timezone === null && timezone != this.defaultTimezone) || (this.timezone !== null && timezone != this.timezone)));
 
@@ -713,6 +760,9 @@
 				}
 				if (millisec !== false) {
 					this.millisec = millisec;
+				}
+				if (microsec !== false) {
+					this.microsec = microsec;
 				}
 				if (timezone !== false) {
 					this.timezone = timezone;
@@ -921,7 +971,7 @@
 						if(unit == 'hour'){
 							sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig,'')), {hour:i}, tp_inst._defaults);
 						}
-						else if(unit == 'millisec' || i >= 10){ sel += i; }
+						else if(unit == 'millisec' || unit == 'microsec' || i >= 10){ sel += i; }
 						else {sel += '0'+ i.toString(); }
 						sel += '</option>';
 					}
@@ -1011,7 +1061,7 @@
 		var parseRes = parseDateTimeInternal(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings);
 		if (parseRes.timeObj) {
 			var t = parseRes.timeObj;
-			parseRes.date.setHours(t.hour, t.minute, t.second, t.millisec);
+			parseRes.date.setHours(t.hour, t.minute, t.second, t.millisec, t.microsec);
 		}
 
 		return parseRes.date;
@@ -1043,12 +1093,13 @@
 
 			// figure out position of time elements.. cause js cant do named captures
 			var getFormatPositions = function(timeFormat) {
-				var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|t{1,2}|z|'.*?')/g),
+				var finds = timeFormat.toLowerCase().match(/(h{1,2}|m{1,2}|s{1,2}|l{1}|c{1}|t{1,2}|z|'.*?')/g),
 					orders = {
 						h: -1,
 						m: -1,
 						s: -1,
 						l: -1,
+						c: -1,
 						t: -1,
 						z: -1
 					};
@@ -1064,13 +1115,14 @@
 			};
 
 			var regstr = '^' + f.toString()
-					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lz]|'.*?')/g, function (match) {
+					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lcz]|'.*?')/g, function (match) {
 							var ml = match.length;
 							switch (match.charAt(0).toLowerCase()) {
 								case 'h': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
 								case 'm': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
 								case 's': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
 								case 'l': return '(\\d?\\d?\\d)';
+								case 'c': return '(\\d?\\d?\\d)';
 								case 'z': return '(z|[-+]\\d\\d:?\\d\\d|\\S+)?';
 								case 't': return getPatternAmpm(o.amNames, o.pmNames);
 								default:    // literal escaped in quotes
@@ -1089,7 +1141,8 @@
 				hour: 0,
 				minute: 0,
 				second: 0,
-				millisec: 0
+				millisec: 0,
+				microsec: 0
 			};
 
 			if (treg) {
@@ -1123,6 +1176,9 @@
 				}
 				if (order.l !== -1) {
 					resTime.millisec = Number(treg[order.l]);
+				}
+				if (order.c !== -1) {
+					resTime.microsec = Number(treg[order.c]);
 				}
 				if (order.z !== -1 && treg[order.z] !== undefined) {
 					var tz = treg[order.z].toUpperCase();
@@ -1176,6 +1232,7 @@
 					minute: d.getMinutes(),
 					second: d.getSeconds(),
 					millisec: d.getMilliseconds(),
+					microsec: d.getMicroseconds(),
 					timezone: $.timepicker.timeZoneOffsetString(d)
 				};
 			}
@@ -1213,6 +1270,7 @@
 			minute: 0,
 			second: 0,
 			millisec: 0,
+			microsec: 0,
 			timezone: '+0000'
 		}, time);
 
@@ -1224,7 +1282,7 @@
 			ampmName = options.pmNames[0];
 		}
 
-		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lz]|('.*?'|".*?"))/g, function(match) {
+		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lcz]|('.*?'|".*?"))/g, function(match) {
 		switch (match) {
 			case 'HH':
 				return ('0' + hour).slice(-2);
@@ -1244,6 +1302,8 @@
 				return time.second;
 			case 'l':
 				return ('00' + time.millisec).slice(-3);
+			case 'c':
+				return ('00' + time.microsec).slice(-3);
 			case 'z':
 				return time.timezone === null? options.defaultTimezone : time.timezone;
 			case 'T': 
@@ -1465,6 +1525,7 @@
 			tp_inst.minute = date ? date.getMinutes() : defaults.minute;
 			tp_inst.second = date ? date.getSeconds() : defaults.second;
 			tp_inst.millisec = date ? date.getMilliseconds() : defaults.millisec;
+			tp_inst.microsec = date ? date.getMicroseconds() : defaults.microsec;
 
 			//check if within min/max times.. 
 			tp_inst._limitMinMaxDateTime(inst, true);
@@ -1492,7 +1553,7 @@
 				if (typeof date == "string") {
 					tp_inst._parseTime(date, withDate);
 					tp_date = new Date();
-					tp_date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
+					tp_date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec, tp_inst.microsec);
 				} else {
 					tp_date = new Date(date.getTime());
 				}
@@ -1542,7 +1603,7 @@
 
 			var date = this._getDate(inst);
 			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
-				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
+				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec, tp_inst.microsec);
 			}
 			return date;
 		}
@@ -1770,7 +1831,7 @@
 	* Internal function to parse datetime interval
 	* Returns: {date: Date, timeObj: Object}, where
 	*   date - parsed date without time (type Date)
-	*   timeObj = {hour: , minute: , second: , millisec: } - parsed time. Optional
+	*   timeObj = {hour: , minute: , second: , millisec: , microsec: } - parsed time. Optional
 	*/
 	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
 		var date;
