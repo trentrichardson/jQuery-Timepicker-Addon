@@ -208,11 +208,11 @@
 					<h3>Timezone Options</h3>
 					<dl class="defs">
 
-						<dt>useLocalTimezone</dt>
+						<!-- <dt>useLocalTimezone</dt>
 							<dd><em>Default: false</em> - Whether to default timezone to the browser's set timezone.</dd>
 
 						<dt>defaultTimezone</dt>
-							<dd><em>Default: "+0000"</em> - If not set, the default timezone used.</dd>
+							<dd><em>Default: "+0000"</em> - If not set, the default timezone used.</dd> -->
 
 						<dt>timezoneIso8601</dt>
 							<dd><em>Default: false</em> - Whether to follow the ISO 8601 standard.</dd>
@@ -869,8 +869,9 @@ endDateTextBox.datetimepicker({
 var ex13 = $('#utility_example_1');
 
 ex13.datetimepicker({
-	dateFormat: "D MM d, yy",
-	separator: ' @ '
+	timeFormat: 'hh:mm tt z',
+	separator: ' @ ',
+	showTimezone: true
 });
 
 $('#utility_example_1_setdt').click(function(){

@@ -73,8 +73,6 @@
 			second: 0,
 			millisec: 0,
 			timezone: null,
-			useLocalTimezone: false,
-			defaultTimezone: "+0000",
 			hourMin: 0,
 			minuteMin: 0,
 			secondMin: 0,
@@ -125,7 +123,6 @@
 		second: 0,
 		millisec: 0,
 		timezone: null,
-		defaultTimezone: "+0000",
 		hourMinOriginal: null,
 		minuteMinOriginal: null,
 		secondMinOriginal: null,
@@ -158,8 +155,8 @@
 		_newInst: function($input, o) {
 			var tp_inst = new Timepicker(),
 				inlineSettings = {},
-                fns = {},
-		        overrides, i;
+            	fns = {},
+		    	overrides, i;
 
 			for (var attrName in this._defaults) {
 				if(this._defaults.hasOwnProperty(attrName)){
@@ -173,6 +170,7 @@
 					}
 				}
 			}
+
 		    overrides = {
 		        beforeShow: function (input, dp_inst) {
 		            if ($.isFunction(tp_inst._defaults.evnts.beforeShow)) {
@@ -200,6 +198,7 @@
 		            fns[i] = o[i] || null;
 		        }
 		    }
+
 		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, overrides, {
 		        evnts:fns,
 		        timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
@@ -236,7 +235,7 @@
 				tp_inst._defaults.timezoneList = timezoneList;
 			}
 
-			tp_inst.timezone = tp_inst._defaults.timezone;
+			tp_inst.timezone = tp_inst._defaults.timezone !== null? tp_inst._defaults.timezone : $.timepicker.timeZoneOffsetString((new Date()).getTimezoneOffset());
 			tp_inst.hour = tp_inst._defaults.hour < tp_inst._defaults.hourMin? tp_inst._defaults.hourMin : 
 							tp_inst._defaults.hour > tp_inst._defaults.hourMax? tp_inst._defaults.hourMax : tp_inst._defaults.hour;
 			tp_inst.minute = tp_inst._defaults.minute < tp_inst._defaults.minuteMin? tp_inst._defaults.minuteMin : 
@@ -453,7 +452,7 @@
 				}));
 				if (typeof(this.timezone) != "undefined" && this.timezone !== null && this.timezone !== "") {
 					var local_date = new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12);
-					var local_timezone = $.timepicker.timeZoneOffsetString(local_date);
+					var local_timezone = $.timepicker.timeZoneOffsetString(local_date.getTimezoneOffset());
 					if (local_timezone == this.timezone) {
 						selectLocalTimeZone(tp_inst);
 					} else {
@@ -461,13 +460,12 @@
 					}
 				} else {
 					if (typeof(this.hour) != "undefined" && this.hour !== null && this.hour !== "") {
-						this.timezone_select.val(o.defaultTimezone);
+						this.timezone_select.val(o.timezone);
 					} else {
 						selectLocalTimeZone(tp_inst);
 					}
 				}
 				this.timezone_select.change(function() {
-					tp_inst._defaults.useLocalTimezone = false;
 					tp_inst._onTimeChange();
 					tp_inst._onSelectHandler();
 				});
@@ -698,7 +696,7 @@
 			// If the update was done using the sliders, update the input field.
 			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec 
 								|| (this.ampm.length > 0 && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) 
-								|| ((this.timezone === null && timezone != this.defaultTimezone) || (this.timezone !== null && timezone != this.timezone)));
+								|| (this.timezone !== null && timezone != this.timezone));
 
 			if (hasChanged) {
 
@@ -1176,7 +1174,7 @@
 					minute: d.getMinutes(),
 					second: d.getSeconds(),
 					millisec: d.getMilliseconds(),
-					timezone: $.timepicker.timeZoneOffsetString(d)
+					timezone: $.timepicker.timeZoneOffsetString(d.getTimezoneOffset())
 				};
 			}
 			catch(err){
@@ -1245,7 +1243,7 @@
 			case 'l':
 				return ('00' + time.millisec).slice(-3);
 			case 'z':
-				return time.timezone === null? options.defaultTimezone : time.timezone;
+				return time.timezone === null? options.timezone : time.timezone;
 			case 'T': 
 				return ampmName.charAt(0).toUpperCase();
 			case 'TT': 
@@ -1306,12 +1304,6 @@
 			var tp_inst = this._get(inst, 'timepicker');
 			if (tp_inst) {
 				tp_inst._addTimePicker(inst);
-
-//				if (tp_inst._defaults.useLocalTimezone) { //checks daylight saving with the new date.
-//					var date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay, 12);
-//					selectLocalTimeZone(tp_inst, date);
-//					tp_inst._onTimeChange();
-//				}
 			}
 		}
 	};
@@ -1543,6 +1535,13 @@
 			var date = this._getDate(inst);
 			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
+
+				// This is important if you are using the timezone option, javascript's Date 
+				// object will only return the timezone offset for the current locale, so we 
+				// adjust it accordingly.  If not using timezone option this won't matter..
+				if(tp_inst.timezone != null){
+					date = $.timepicker.timeZoneAdjust(date, tp_inst.timezone);
+				}
 			}
 			return date;
 		}
@@ -1799,9 +1798,8 @@
 	*/
 	var selectLocalTimeZone = function(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
-			tp_inst._defaults.useLocalTimezone = true;
 			var now = typeof date !== 'undefined' ? date : new Date();
-			var tzoffset = $.timepicker.timeZoneOffsetString(now);
+			var tzoffset = $.timepicker.timeZoneOffsetString(now.getTimezoneOffset());
 			if (tp_inst._defaults.timezoneIso8601) {
 				tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
 			}
@@ -1817,13 +1815,52 @@
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
 	 * @param  date
+	 * @param boolean if true formats in accordance to iso1806 "+12:45"
 	 * @return string
 	 */
-	$.timepicker.timeZoneOffsetString = function(date) {
-		var off = date.getTimezoneOffset() * -1,
+	$.timepicker.timeZoneOffsetString = function(tzMinutes, iso1806) {
+		var off = tzMinutes * -1,
 			minutes = off % 60,
-			hours = (off - minutes) / 60;
-		return (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + ('0' + (minutes * 101).toString()).slice(-2);
+			hours = (off - minutes) / 60,
+			iso = iso1806? ':':'',
+			tz = (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + iso + ('0' + (minutes * 101).toString()).slice(-2);
+		
+		if(tz == '+00:00'){
+			return 'Z';
+		}
+		return tz;
+	};
+
+	/**
+	 * Get the number in minutes that represents a timezone string
+	 * @param  string formated like "+0500", "-1245"
+	 * @return number
+	 */
+	$.timepicker.timeZoneOffsetNumber = function(tzString) {
+		tzString = tzString.replace(/(\:|z)/gi,''); // excuse any iso1806, end up with "+1245"
+		
+		if(!/^(\-|\+)\d{4}$/.test(tzString)){
+			return 0;
+		}
+		return ((tzString.substr(0,1) =='-'? -1 : 1) * // plus or minus
+					((parseInt(tzString.substr(1,2),10)*60) + // hours (converted to minutes)
+					parseInt(tzString.substr(3,2),10))); // minutes
+	};
+
+	/**
+	 * No way to set timezone in js Date, so we must adjust the minutes to compensate
+	 * @param  date
+	 * @param  string formated like "+0500", "-1245"
+	 * @return date
+	 */
+	$.timepicker.timeZoneAdjust = function(date, toTimeZone) {
+		var currTz = date.getTimezoneOffset(),
+			toTz = $.timepicker.timeZoneOffsetNumber(toTimeZone)*-1,
+			diff = currTz - toTz; // difference in minutes
+
+		date.setMinutes(date.getMinutes()+diff);
+
+		return date;
 	};
 
 	/**
