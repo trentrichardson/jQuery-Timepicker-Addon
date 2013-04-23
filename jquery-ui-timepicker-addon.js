@@ -1307,11 +1307,11 @@
 			if (tp_inst) {
 				tp_inst._addTimePicker(inst);
 
-//				if (tp_inst._defaults.useLocalTimezone) { //checks daylight saving with the new date.
-//					var date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay, 12);
-//					selectLocalTimeZone(tp_inst, date);
-//					tp_inst._onTimeChange();
-//				}
+				if (tp_inst._defaults.useLocalTimezone) { //checks daylight saving with the new date.
+					var date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay, 12);
+					selectLocalTimeZone(tp_inst, date);
+					tp_inst._onTimeChange();
+				}
 			}
 		}
 	};
