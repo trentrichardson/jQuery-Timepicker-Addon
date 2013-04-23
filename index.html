@@ -127,7 +127,7 @@
 
 					
 					<h3>Version</h3>
-					<p>Version 1.2.3</p>
+					<p>Version 1.3</p>
 
 					<p>Last updated on 04/13/2013</p>
 					<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
@@ -565,7 +565,7 @@ $('#timezone_example_2').datetimepicker({
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Use timezone string abbreviations for values:</p>
+						<p>You may also use timezone string abbreviations for values.  This should be used with caution.  Computing accurate javascript Date objects may not be possible when trying to retrieve or set the date from timepicker (see setDate and getDate examples below).  For simple input values however this should work.</p>
 						<div>
 					 		<input type="text" name="timezone_example_3" id="timezone_example_3" value="" />
 						</div>					
@@ -848,7 +848,7 @@ endDateTextBox.datetimepicker({
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Get and Set Datetime:</p>
+						<p>Get and Set Datetime with the getDate and setDate methods.  This example uses timezone to demonstrate the timepicker regonizes the timezones and computes the offsets when getting and setting.</p>
 						<div>
 							<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
 							<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
