@@ -1920,8 +1920,8 @@
 	 * @param  string method Can be used to specify the type of picker to be added
 	 * @return jQuery
 	 */
-	$.timepicker.dateTimeRange = function(startTime, endTime, options) {
-		$.timepicker.dateRange(startTime, endTime, options, 'datetimepicker');
+	$.timepicker.datetimeRange = function(startTime, endTime, options) {
+		$.timepicker.handleRange('datetimepicker', startTime, endTime, options);
 	};
 
 	/**
@@ -1931,12 +1931,10 @@
 	 * @param  Element endTime
 	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @param  string method Can be used to specify the type of picker to be added
 	 * @return jQuery
 	 */
-	$.timepicker.dateRange = function(startTime, endTime, options, method) {
-		method = method || 'datepicker';
-		$.timepicker.handleRange(method, startTime, endTime, options);
+	$.timepicker.dateRange = function(startTime, endTime, options) {
+		$.timepicker.handleRange('datepicker', startTime, endTime, options);
 	};
 
 	/**
@@ -1952,18 +1950,18 @@
 	$.timepicker.handleRange = function(method, startTime, endTime, options) {
 		$.fn[method].call(startTime, $.extend({
 			onClose: function(dateText, inst) {
-				checkDates(this, endTime, dateText);
+				checkDates($(this), endTime, dateText);
 			},
 			onSelect: function(selectedDateTime) {
-				selected(this, endTime, 'minDate');
+				selected($(this), endTime, 'minDate');
 			}
 		}, options, options.start));
 		$.fn[method].call(endTime, $.extend({
 			onClose: function(dateText, inst) {
-				checkDates(this, startTime, dateText);
+				checkDates($(this), startTime, dateText);
 			},
 			onSelect: function(selectedDateTime) {
-				selected(this, startTime, 'maxDate');
+				selected($(this), startTime, 'maxDate');
 			}
 		}, options, options.end));
 		// timepicker doesn't provide access to its 'timeFormat' option, 
@@ -1971,31 +1969,35 @@
 		// have disabled reformatting for timepicker
 		if (method != 'timepicker' && options.reformat) {
 			$([startTime, endTime]).each(function() {
-				var format = $(this)[method].call($(this), 'option', 'dateFormat'),
-					date = new Date($(this).val());
-				if ($(this).val() && date) {
-					$(this).val($.datepicker.formatDate(format, date));
+				var $t = $(this),
+					format = $t[method].call($t, 'option', 'dateFormat'),
+					date = new Date($t.val());
+				if ($t.val() && date) {
+					$t.val($.datepicker.formatDate(format, date));
 				}
 			});
 		}
-		checkDates(startTime, endTime, startTime.val());
 
-		function checkDates(changed, other, dateText) {
-			if (other.val() && (new Date(startTime.val()) > new Date(endTime.val()))) {
-				other.val(dateText);
-			}
-		}
+		checkDates(startTime, endTime, startTime.val());
 		selected(startTime, endTime, 'minDate');
 		selected(endTime, startTime, 'maxDate');
 
+		function checkDates(changed, other, dateText) {
+			var startdt = startTime[method]('getDate'),
+				enddt = endTime[method]('getDate');
+			
+			if (other.val() && startdt > enddt) {
+				other.val(dateText);
+			}
+		}
+
 		function selected(changed, other, option) {
-			if (!$(changed).val()) {
+			if (!changed.val()) {
 				return;
 			}
-			var date = $(changed)[method].call($(changed), 'getDate');
-			// timepicker doesn't implement 'getDate' and returns a jQuery
+			var date = changed[method].call(changed, 'getDate');
 			if (date.getTime) {
-				$(other)[method].call($(other), 'option', option, date);
+				other[method].call(other, 'option', option, date);
 			}
 		}
 		return $([startTime.get(0), endTime.get(0)]);

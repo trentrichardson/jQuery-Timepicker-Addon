@@ -795,18 +795,37 @@ $('#rest_example_3').datetimepicker({
 	maxDate: new Date(2010, 11, 31, 17, 30)
 });
 </pre>
-					</div>									
+					</div>	
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Restrict a start and end date (also shows using onSelect and onClose events):</p>
+						<p>Restrict a start and end date with timepicker's built in restraint methods:</p>
 						<div>
 					 		<input type="text" name="rest_example_4_start" id="rest_example_4_start" value="" /> 
 					 		<input type="text" name="rest_example_4_end" id="rest_example_4_end" value="" />
-						</div>					
+						</div>
 <pre>
 var startDateTextBox = $('#rest_example_4_start');
 var endDateTextBox = $('#rest_example_4_end');
+
+$.timepicker.datetimeRange(startDateTextBox, endDateTextBox, {
+	reformat: true,
+	start: {  }, // start datetime options
+	end: {  }    // end datetime options
+});
+</pre>
+					</div>								
+
+					<!-- ============= example -->
+					<div class="example-container">
+						<p>Restrict a start and end date by using onSelect and onClose events for more control over functionality:</p>
+						<div>
+					 		<input type="text" name="rest_example_5_start" id="rest_example_5_start" value="" /> 
+					 		<input type="text" name="rest_example_5_end" id="rest_example_5_end" value="" />
+						</div>					
+<pre>
+var startDateTextBox = $('#rest_example_5_start');
+var endDateTextBox = $('#rest_example_5_end');
 
 startDateTextBox.datetimepicker({ 
 	onClose: function(dateText, inst) {
@@ -843,7 +862,6 @@ endDateTextBox.datetimepicker({
 </pre>
 					</div>
 
-					
 					<h3 id="utility_examples">Utilities</h3>
 
 					<!-- ============= example -->
