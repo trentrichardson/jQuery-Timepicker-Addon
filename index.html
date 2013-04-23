@@ -208,12 +208,6 @@
 					<h3>Timezone Options</h3>
 					<dl class="defs">
 
-						<!-- <dt>useLocalTimezone</dt>
-							<dd><em>Default: false</em> - Whether to default timezone to the browser's set timezone.</dd>
-
-						<dt>defaultTimezone</dt>
-							<dd><em>Default: "+0000"</em> - If not set, the default timezone used.</dd> -->
-
 						<dt>timezoneIso8601</dt>
 							<dd><em>Default: false</em> - Whether to follow the ISO 8601 standard.</dd>
 
@@ -240,19 +234,19 @@
 							</dd>
 
 						<dt>showHour</dt>
-							<dd><em>Default: true</em> - Whether to show the hour slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the hour control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showMinute</dt>
-							<dd><em>Default: true</em> - Whether to show the minute slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the minute control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showSecond</dt>
-							<dd><em>Default: false</em> - Whether to show the second slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the second control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showMillisec</dt>
-							<dd><em>Default: false</em> - Whether to show the millisecond slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the millisecond control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showTimezone</dt>
-							<dd><em>Default: false</em> - Whether to show the timezone select.</dd>
+							<dd><em>Default: null</em> - Whether to show the timezone select.</dd>
 
 						<dt>showTime</dt>
 							<dd><em>Default: true</em> - Whether to show the time selected within the datetimepicker.</dd>
@@ -545,8 +539,7 @@ $('#basic_example_3').datetimepicker({
 						</div>					
 <pre>
 $('#timezone_example_1').datetimepicker({
-	timeFormat: 'hh:mm tt z',
-	showTimezone: true
+	timeFormat: 'hh:mm tt z'
 });
 </pre>
 					</div>
@@ -560,7 +553,6 @@ $('#timezone_example_1').datetimepicker({
 <pre>
 $('#timezone_example_2').datetimepicker({
 	timeFormat: 'HH:mm z',
-	showTimezone: true,
 	timezoneList: [ 
 			{ value: '-0500', label: 'Eastern'}, 
 			{ value: '-0600', label: 'Central' }, 
@@ -580,7 +572,6 @@ $('#timezone_example_2').datetimepicker({
 <pre>
 $('#timezone_example_3').datetimepicker({
 	timeFormat: 'HH:mm z',
-	showTimezone: true,
 	timezone: 'MT',
 	timezoneList: [ 
 			{ value: 'ET', label: 'Eastern'}, 
@@ -618,7 +609,6 @@ $('#slider_example_1').timepicker({
 						</div>					
 <pre>
 $('#slider_example_2').datetimepicker({
-	showSecond: true,
 	timeFormat: 'HH:mm:ss',
 	stepHour: 2,
 	stepMinute: 10,

@@ -58,11 +58,11 @@
 		this._defaults = { // Global defaults for all the datetime picker instances
 			showButtonPanel: true,
 			timeOnly: false,
-			showHour: true,
-			showMinute: true,
-			showSecond: false,
-			showMillisec: false,
-			showTimezone: false,
+			showHour: null,
+			showMinute: null,
+			showSecond: null,
+			showMillisec: null,
+			showTimezone: null,
 			showTime: true,
 			stepHour: 1,
 			stepMinute: 1,
@@ -137,6 +137,7 @@
 		formattedDateTime: '',
 		timezoneList: null,
 		units: ['hour','minute','second','millisec'],
+		support: {},
 		control: null,
 
 		/* 
@@ -209,6 +210,12 @@
 			tp_inst.pmNames = $.map(tp_inst._defaults.pmNames, function(val) {
 				return val.toUpperCase();
 			});
+
+			// detect which units are supported
+			tp_inst.support = detectSupport(
+					tp_inst._defaults.timeFormat + 
+					(tp_inst._defaults.pickerTimeFormat? tp_inst._defaults.pickerTimeFormat:'') + 
+					(tp_inst._defaults.altTimeFormat? tp_inst._defaults.altTimeFormat:''));
 
 			// controlType is string - key to our this._controls
 			if(typeof(tp_inst._defaults.controlType) === 'string'){
@@ -336,6 +343,7 @@
 				tp_inst = this,
 				litem = '',
 				uitem = '',
+				show = null,
 				max = {},
 				gridSize = {},
 				size = null,
@@ -352,22 +360,24 @@
 				for(i=0,l=this.units.length; i<l; i++){
 					litem = this.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
+					show = o['show'+uitem] !== null? o['show'+uitem] : this.support[litem];
+
 					// Added by Peter Medeiros:
 					// - Figure out what the hour/minute/second max should be based on the step values.
 					// - Example: if stepMinute is 15, then minMax is 45.
 					max[litem] = parseInt((o[litem+'Max'] - ((o[litem+'Max'] - o[litem+'Min']) % o['step'+uitem])), 10);
 					gridSize[litem] = 0;
 
-					html += '<dt class="ui_tpicker_'+ litem +'_label"' + ((o['show'+uitem]) ? '' : noDisplay) + '>' + o[litem +'Text'] + '</dt>' + 
-								'<dd class="ui_tpicker_'+ litem +'"><div class="ui_tpicker_'+ litem +'_slider"' + ((o['show'+uitem]) ? '' : noDisplay) + '></div>';
+					html += '<dt class="ui_tpicker_'+ litem +'_label"' + (show ? '' : noDisplay) + '>' + o[litem +'Text'] + '</dt>' + 
+								'<dd class="ui_tpicker_'+ litem +'"><div class="ui_tpicker_'+ litem +'_slider"' + (show ? '' : noDisplay) + '></div>';
 
-					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
+					if (show && o[litem+'Grid'] > 0) {
 						html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
 
 						if(litem == 'hour'){
 							for (var h = o[litem+'Min']; h <= max[litem]; h += parseInt(o[litem+'Grid'], 10)) {
 								gridSize[litem]++;
-								var tmph = $.datepicker.formatTime(useAmpm(o.pickerTimeFormat || o.timeFormat)? 'hht':'HH', {hour:h}, o);									
+								var tmph = $.datepicker.formatTime(this.support.ampm? 'hht':'HH', {hour:h}, o);									
 								html += '<td data-for="'+litem+'">' + tmph + '</td>';
 							}
 						}
@@ -384,8 +394,9 @@
 				}
 				
 				// Timezone
-				html += '<dt class="ui_tpicker_timezone_label"' + ((o.showTimezone) ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
-				html += '<dd class="ui_tpicker_timezone" ' + ((o.showTimezone) ? '' : noDisplay) + '></dd>';
+				var showTz = o.showTimezone !== null? o.showTimezone : this.support.timezone;
+				html += '<dt class="ui_tpicker_timezone_label"' + (showTz ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
+				html += '<dd class="ui_tpicker_timezone" ' + (showTz ? '' : noDisplay) + '></dd>';
 
 				// Create the elements from string
 				html += '</dl></div>';
@@ -401,12 +412,13 @@
 				for(i=0,l=tp_inst.units.length; i<l; i++){
 					litem = tp_inst.units[i];
 					uitem = litem.substr(0,1).toUpperCase() + litem.substr(1);
+					show = o['show'+uitem] !== null? o['show'+uitem] : this.support[litem];
 
 					// add the slider
 					tp_inst[litem+'_slider'] = tp_inst.control.create(tp_inst, $tp.find('.ui_tpicker_'+litem+'_slider'), litem, tp_inst[litem], o[litem+'Min'], max[litem], o['step'+uitem]);
 
 					// adjust the grid and add click event
-					if (o['show'+uitem] && o[litem+'Grid'] > 0) {
+					if (show && o[litem+'Grid'] > 0) {
 						size = 100 * gridSize[litem] * o[litem+'Grid'] / (max[litem] - o[litem+'Min']);
 						$tp.find('.ui_tpicker_'+litem+' table').css({
 							width: size + "%",
@@ -722,7 +734,7 @@
 
 				this._limitMinMaxDateTime(this.inst, true);
 			}
-			if (useAmpm(o.timeFormat)) {
+			if (this.support.ampm) {
 				this.ampm = ampm;
 			}
 
@@ -1318,7 +1330,8 @@
 
 		if (tp_inst) {
 			if ($.datepicker._get(inst, 'constrainInput')) {
-				var ampm = useAmpm(tp_inst._defaults.timeFormat),
+				var ampm = tp_inst.support.ampm,
+					tz = tp_inst._defaults.showTimezone !== null? tp_inst._defaults.showTimezone : tp_inst.support.timezone,					
 					dateChars = $.datepicker._possibleChars($.datepicker._get(inst, 'dateFormat')),
 					datetimeChars = tp_inst._defaults.timeFormat.toString()
 											.replace(/[hms]/g, '')
@@ -1330,7 +1343,7 @@
 											.replace(/t/g, ampm ? 'ap' : '') + 
 											" " + tp_inst._defaults.separator + 
 											tp_inst._defaults.timeSuffix + 
-											(tp_inst._defaults.showTimezone ? tp_inst._defaults.timezoneList.join('') : '') + 
+											(tz ? tp_inst._defaults.timezoneList.join('') : '') + 
 											(tp_inst._defaults.amNames.join('')) + (tp_inst._defaults.pmNames.join('')) + 
 											dateChars,
 					chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
@@ -1705,11 +1718,22 @@
 	};
 
 	/*
-	* Determine by the time format if should use ampm
-	* Returns true if should use ampm, false if not
+	* Determine by the time format which units are supported
+	* Returns an object of booleans for each unit
 	*/
-	var useAmpm = function(timeFormat){
-		return ((timeFormat.indexOf('t') !== -1 || timeFormat.indexOf('T') !== -1) && timeFormat.indexOf('h') !== -1);
+	var detectSupport = function(timeFormat){
+		var tf = timeFormat.replace(/\'.*?\'/g,'').toLowerCase(), // removes literals
+			isIn = function(f, t){ // does the format contain the token?
+					return f.indexOf(t) !== -1? true:false; 
+				};
+		return {
+				hour: isIn(tf,'h'),
+				minute: isIn(tf,'m'),
+				second: isIn(tf,'s'),
+				millisec: isIn(tf,'l'),
+				timezone: isIn(tf,'z'),
+				ampm: isIn('t') && isIn(timeFormat,'h')
+			};
 	};
 
 	/*
