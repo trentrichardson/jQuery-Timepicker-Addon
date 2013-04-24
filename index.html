@@ -182,6 +182,9 @@
 						<dt>millisecText</dt>
 							<dd><em>Default: "Millisecond", A Localization Setting</em> - Label used to identify the millisecond slider.</dd>
 
+						<dt>microsecText</dt>
+							<dd><em>Default: "Microsecond", A Localization Setting</em> - Label used to identify the microsecond slider.</dd>
+
 						<dt>timezoneText</dt>
 							<dd><em>Default: "Timezone", A Localization Setting</em> - Label used to identify the timezone slider.</dd>
 
@@ -245,6 +248,9 @@
 						<dt>showMillisec</dt>
 							<dd><em>Default: null</em> - Whether to show the millisecond control.  The default of null will use detection from timeFormat.</dd>
 
+						<dt>showMicrosec</dt>
+							<dd><em>Default: null</em> - Whether to show the microsecond control.  The default of null will use detection from timeFormat.</dd>
+
 						<dt>showTimezone</dt>
 							<dd><em>Default: null</em> - Whether to show the timezone select.</dd>
 
@@ -260,8 +266,11 @@
 						<dt>stepSecond</dt>
 							<dd><em>Default: 1</em> - Seconds per step the slider makes.</dd>
 
-						<dt>stepMilliSec</dt>
+						<dt>stepMillisec</dt>
 							<dd><em>Default: 1</em> - Milliseconds per step the slider makes.</dd>
+
+						<dt>stepMicrosec</dt>
+							<dd><em>Default: 1</em> - Microseconds per step the slider makes.</dd>
 
 						<dt>hour</dt>
 							<dd><em>Default: 0</em> - Initial hour set.</dd>
@@ -274,6 +283,9 @@
 
 						<dt>millisec</dt>
 							<dd><em>Default: 0</em> - Initial millisecond set.</dd>
+
+						<dt>microsec</dt>
+							<dd><em>Default: 0</em> - Initial microsecond set.  Note: Javascript's native Date object does not natively support microseconds.  Timepicker adds ability to simply Date.setMicroseconds(m) and Date.getMicroseconds().  Date comparisons will not acknowledge microseconds.  Use this only for display purposes.</dd>
 
 						<dt>timezone</dt>
 							<dd><em>Default: 0</em> - Initial timezone set.</dd>
@@ -290,6 +302,9 @@
 						<dt>millisecMin</dt>
 							<dd><em>Default: 0</em> - The minimum millisecond allowed for all dates.</dd>
 
+						<dt>microsecMin</dt>
+							<dd><em>Default: 0</em> - The minimum microsecond allowed for all dates.</dd>
+
 						<dt>hourMax</dt>
 							<dd><em>Default: 23</em> - The maximum hour allowed for all dates.</dd>
 
@@ -302,6 +317,9 @@
 						<dt>millisecMax</dt>
 							<dd><em>Default: 999</em> - The maximum millisecond allowed for all dates.</dd>
 
+						<dt>microsecMax</dt>
+							<dd><em>Default: 999</em> - The maximum microsecond allowed for all dates.</dd>
+
 						<dt>hourGrid</dt>
 							<dd><em>Default: 0</em> - When greater than 0 a label grid will be generated under the slider.  This number represents the units (in hours) between labels.</dd>
 
@@ -313,6 +331,9 @@
 
 						<dt>millisecGrid</dt>
 							<dd><em>Default: 0</em> - When greater than 0 a label grid will be genereated under the slider.  This number represents the units (in milliseconds) between labels.</dd>
+
+						<dt>microsecGrid</dt>
+							<dd><em>Default: 0</em> - When greater than 0 a label grid will be genereated under the slider.  This number represents the units (in microseconds) between labels.</dd>
 					</dl>
 
 					<h3>Other Options</h3>
@@ -363,6 +384,7 @@
 	minute: 10,
 	second: 23,
 	millisec: 45,
+	microsec: 23,
 	timezone: '-0400'
 }</pre>
 							</dd>
@@ -390,6 +412,7 @@
 						<dt>s</dt><dd>Second with no leading 0</dd>
 						<dt>ss</dt><dd>Second with leading 0</dd>
 						<dt>l</dt><dd>Milliseconds always with leading 0</dd>
+						<dt>c</dt><dd>Microseconds always with leading 0</dd>
 						<dt>t</dt><dd>a or p for AM/PM</dd>
 						<dt>T</dt><dd>A or P for AM/PM</dd>
 						<dt>tt</dt><dd>am or pm for AM/PM</dd>
