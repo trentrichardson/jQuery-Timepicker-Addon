@@ -104,7 +104,6 @@
 			pickerTimeFormat: null,
 			pickerTimeSuffix: null,
 			showTimepicker: true,
-			timezoneIso8601: false,
 			timezoneList: null,
 			addSliderAccess: false,
 			sliderAccessArgs: null,
@@ -245,7 +244,7 @@
 									'+0100', '+0200', '+0300', '+0330', '+0400', '+0430', '+0500', '+0530', '+0545', '+0600', '+0630', '+0700', '+0800', '+0845', '+0900', '+0930', 
 									'+1000', '+1030', '+1100', '+1130', '+1200', '+1245', '+1300', '+1400'];
 
-				if (tp_inst._defaults.timezoneIso8601) {
+				if (tp_inst.support.iso8601) {
 					timezoneList = $.map(timezoneList, function(val) {
 						return val == '+0000' ? 'Z' : (val.substring(0, 3) + ':' + val.substring(3));
 					});
@@ -253,7 +252,8 @@
 				tp_inst._defaults.timezoneList = timezoneList;
 			}
 
-			tp_inst.timezone = tp_inst._defaults.timezone !== null? tp_inst._defaults.timezone : $.timepicker.timezoneOffsetString((new Date()).getTimezoneOffset());
+			tp_inst.timezone = tp_inst._defaults.timezone !== null? tp_inst._defaults.timezone : 
+							$.timepicker.timezoneOffsetString((new Date()).getTimezoneOffset(), tp_inst.support.iso8601);
 			tp_inst.hour = tp_inst._defaults.hour < tp_inst._defaults.hourMin? tp_inst._defaults.hourMin : 
 							tp_inst._defaults.hour > tp_inst._defaults.hourMax? tp_inst._defaults.hourMax : tp_inst._defaults.hour;
 			tp_inst.minute = tp_inst._defaults.minute < tp_inst._defaults.minuteMin? tp_inst._defaults.minuteMin : 
@@ -477,7 +477,7 @@
 				}));
 				if (typeof(this.timezone) != "undefined" && this.timezone !== null && this.timezone !== "") {
 					var local_date = new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12);
-					var local_timezone = $.timepicker.timezoneOffsetString(local_date.getTimezoneOffset());
+					var local_timezone = $.timepicker.timezoneOffsetString(local_date.getTimezoneOffset(), this.support.iso8601);
 					if (local_timezone == this.timezone) {
 						selectLocalTimezone(tp_inst);
 					} else {
@@ -1082,7 +1082,8 @@
 	* Public utility to parse time
 	*/
 	$.datepicker.parseTime = function(timeFormat, timeString, options) {		
-		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {});
+		var o = extendRemove(extendRemove({}, $.timepicker._defaults), options || {}),
+			iso8601 = (timeFormat.replace(/\'.*?\'/g,'').indexOf('Z') !== -1);
 
 		// Strict parse requires the timeString to match the timeFormat exactly
 		var strictParse = function(f, s, o){
@@ -1126,7 +1127,7 @@
 			};
 
 			var regstr = '^' + f.toString()
-					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[lcz]|'.*?')/g, function (match) {
+					.replace(/([hH]{1,2}|mm?|ss?|[tT]{1,2}|[zZ]|[lc]|'.*?')/g, function (match) {
 							var ml = match.length;
 							switch (match.charAt(0).toLowerCase()) {
 								case 'h': return ml === 1? '(\\d?\\d)':'(\\d{'+ml+'})';
@@ -1193,27 +1194,28 @@
 				}
 				if (order.z !== -1 && treg[order.z] !== undefined) {
 					var tz = treg[order.z].toUpperCase();
+
 					switch (tz.length) {
-					case 1:
-						// Z
-						tz = o.timezoneIso8601 ? 'Z' : '+0000';
-						break;
-					case 5:
-						// +hhmm
-						if (o.timezoneIso8601) {
-							tz = tz.substring(1) == '0000' ? 'Z' : tz.substring(0, 3) + ':' + tz.substring(3);
-						}
-						break;
-					case 6:
-						// +hh:mm
-						if (!o.timezoneIso8601) {
-							tz = tz == 'Z' || tz.substring(1) == '00:00' ? '+0000' : tz.replace(/:/, '');
-						} else {
-							if (tz.substring(1) == '00:00') {
-								tz = 'Z';
+						case 1:
+							// Z
+							tz = iso8601 ? 'Z' : '+0000';
+							break;
+						case 5:
+							// +hhmm
+							if (iso8601) {
+								tz = tz.substring(1) == '0000' ? 'Z' : tz.substring(0, 3) + ':' + tz.substring(3);
 							}
-						}
-						break;
+							break;
+						case 6:
+							// +hh:mm
+							if (!iso8601) {
+								tz = tz == 'Z' || tz.substring(1) == '00:00' ? '+0000' : tz.replace(/:/, '');
+							} else {
+								if (tz.substring(1) == '00:00') {
+									tz = 'Z';
+								}
+							}
+							break;
 					}
 					resTime.timezone = tz;
 				}
@@ -1244,7 +1246,7 @@
 					second: d.getSeconds(),
 					millisec: d.getMilliseconds(),
 					microsec: d.getMicroseconds(),
-					timezone: $.timepicker.timezoneOffsetString(d.getTimezoneOffset())
+					timezone: $.timepicker.timezoneOffsetString(d.getTimezoneOffset(), iso8601)
 				};
 			}
 			catch(err){
@@ -1292,7 +1294,7 @@
 			ampmName = options.pmNames[0];
 		}
 
-		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[lcz]|('.*?'|".*?"))/g, function(match) {
+		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[zZ]|[lc]|('.*?'|".*?"))/g, function(match) {
 		switch (match) {
 			case 'HH':
 				return ('0' + hour).slice(-2);
@@ -1315,6 +1317,8 @@
 			case 'c':
 				return ('00' + time.microsec).slice(-3);
 			case 'z':
+				return time.timezone === null? options.timezone : time.timezone;
+			case 'Z':
 				return time.timezone === null? options.timezone : time.timezone;
 			case 'T': 
 				return ampmName.charAt(0).toUpperCase();
@@ -1796,7 +1800,8 @@
 				millisec: isIn(tf,'l'),
 				microsec: isIn(tf,'c'),
 				timezone: isIn(tf,'z'),
-				ampm: isIn('t') && isIn(timeFormat,'h')
+				ampm: isIn('t') && isIn(timeFormat,'h'),
+				iso8601: isIn(timeFormat, 'Z')
 			};
 	};
 
@@ -1897,10 +1902,7 @@
 	var selectLocalTimezone = function(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
 			var now = typeof date !== 'undefined' ? date : new Date();
-			var tzoffset = $.timepicker.timezoneOffsetString(now.getTimezoneOffset());
-			if (tp_inst._defaults.timezoneIso8601) {
-				tzoffset = tzoffset.substring(0, 3) + ':' + tzoffset.substring(3);
-			}
+			var tzoffset = $.timepicker.timezoneOffsetString(now.getTimezoneOffset(), tp_inst.support.iso8601);
 			tp_inst.timezone_select.val(tzoffset);
 		}
 	};
@@ -1913,14 +1915,14 @@
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
 	 * @param  date
-	 * @param boolean if true formats in accordance to iso1806 "+12:45"
+	 * @param boolean if true formats in accordance to iso8601 "+12:45"
 	 * @return string
 	 */
-	$.timepicker.timezoneOffsetString = function(tzMinutes, iso1806) {
+	$.timepicker.timezoneOffsetString = function(tzMinutes, iso8601) {
 		var off = tzMinutes * -1,
 			minutes = off % 60,
 			hours = (off - minutes) / 60,
-			iso = iso1806? ':':'',
+			iso = iso8601? ':':'',
 			tz = (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + iso + ('0' + (minutes * 101).toString()).slice(-2);
 		
 		if(tz == '+00:00'){
@@ -1935,7 +1937,7 @@
 	 * @return number
 	 */
 	$.timepicker.timezoneOffsetNumber = function(tzString) {
-		tzString = tzString.replace(/(\:|z)/gi,''); // excuse any iso1806, end up with "+1245"
+		tzString = tzString.replace(/(\:|z)/gi,''); // excuse any iso8601, end up with "+1245"
 		
 		if(!/^(\-|\+)\d{4}$/.test(tzString)){
 			return 0;
