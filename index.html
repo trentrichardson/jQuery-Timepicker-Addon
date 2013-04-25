@@ -212,7 +212,7 @@
 					<dl class="defs">
 
 						<dt>timezoneList</dt>
-							<dd><em>Default: [generated timezones]</em> - An array of timezones used to populate the timezone select. Can be an array of values or an array of objects: { label: "EST", value: "+0400" }</dd>
+							<dd><em>Default: [generated timezones]</em> - An array of timezones used to populate the timezone select. Can be an array of values or an array of objects: { label: "EDT", value: -240 }.  The value should be the offset number in minutes.  So "-0400" which is the format "-hhmm", would equate to -240 minutes.</dd>
 					</dl>
 
 					<h3>Time Field Options</h3>
@@ -285,7 +285,7 @@
 							<dd><em>Default: 0</em> - Initial microsecond set.  Note: Javascript's native Date object does not natively support microseconds.  Timepicker adds ability to simply Date.setMicroseconds(m) and Date.getMicroseconds().  Date comparisons will not acknowledge microseconds.  Use this only for display purposes.</dd>
 
 						<dt>timezone</dt>
-							<dd><em>Default: 0</em> - Initial timezone set.</dd>
+							<dd><em>Default: null</em> - Initial timezone set.  This is the offset in minutes.  If null the browser's local timezone will be used.  If you're timezone is "-0400" you would use -240.  For backwards compatibility you may pass "-0400", however the timezone is stored in minutes and more reliable.</dd>
 
 						<dt>hourMin</dt>
 							<dd><em>Default: 0</em> - The minimum hour allowed for all dates.</dd>
@@ -575,10 +575,10 @@ $('#timezone_example_1').datetimepicker({
 $('#timezone_example_2').datetimepicker({
 	timeFormat: 'HH:mm z',
 	timezoneList: [ 
-			{ value: '-0500', label: 'Eastern'}, 
-			{ value: '-0600', label: 'Central' }, 
-			{ value: '-0700', label: 'Mountain' }, 
-			{ value: '-0800', label: 'Pacific' } 
+			{ value: -300, label: 'Eastern'}, 
+			{ value: -360, label: 'Central' }, 
+			{ value: -420, label: 'Mountain' }, 
+			{ value: -480, label: 'Pacific' } 
 		]
 });
 </pre>
