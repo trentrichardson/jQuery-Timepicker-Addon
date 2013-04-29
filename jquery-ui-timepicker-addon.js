@@ -581,7 +581,7 @@
 							if (this.second <= this._defaults.secondMin) {
 								this.second = this._defaults.secondMin;
 								this._defaults.millisecMin = minDateTime.getMilliseconds();
-								if(this.millisec <= this._default.millisecMin) {
+								if(this.millisec <= this._defaults.millisecMin) {
 									this.millisec = this._defaults.millisecMin;
 									this._defaults.microsecMin = minDateTime.getMicroseconds();
 								} else {
@@ -637,8 +637,8 @@
 							if (this.second >= this._defaults.secondMax) {
 								this.second = this._defaults.secondMax;
 								this._defaults.millisecMax = maxDateTime.getMilliseconds();
-								if (this.millisecond >= this._defaults.millisecondMax) {
-									this.millisecond = this._defaults.millisecondMax;
+								if (this.millisec >= this._defaults.millisecMax) {
+									this.millisec = this._defaults.millisecMax;
 									this._defaults.microsecMax = maxDateTime.getMicroseconds();
 								} else {
 									if (this.microsec > this._defaults.microsecMax) {
@@ -2071,7 +2071,7 @@
 	* Rough microsecond support
 	*/
 	if(!Date.prototype.getMicroseconds){
-		Date.microseconds = null;
+		Date.microseconds = 0;
 		Date.prototype.getMicroseconds = function(){ return this.microseconds; };
 		Date.prototype.setMicroseconds = function(m){ this.microseconds = m; return this; };
 	}
