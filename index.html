@@ -830,7 +830,7 @@ var startDateTextBox = $('#rest_example_4_start');
 var endDateTextBox = $('#rest_example_4_end');
 
 $.timepicker.datetimeRange(startDateTextBox, endDateTextBox, {
-	reformat: true,
+	minInterval: (1000*60*60),
 	start: {  }, // start datetime options
 	end: {  }    // end datetime options
 });

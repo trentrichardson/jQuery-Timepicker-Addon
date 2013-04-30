@@ -2001,9 +2001,16 @@
 	 * @return jQuery
 	 */
 	$.timepicker.handleRange = function(method, startTime, endTime, options) {
+		options = $.extend({}, {
+			minInterval: 0, // min allowed interval in milliseconds
+			maxInterval: 0, // max allowed interval in milliseconds
+			start: {},      // options for start picker
+			end: {}         // options for end picker
+		}, options);
+
 		$.fn[method].call(startTime, $.extend({
 			onClose: function(dateText, inst) {
-				checkDates($(this), endTime, dateText);
+				checkDates($(this), endTime);
 			},
 			onSelect: function(selectedDateTime) {
 				selected($(this), endTime, 'minDate');
@@ -2011,36 +2018,38 @@
 		}, options, options.start));
 		$.fn[method].call(endTime, $.extend({
 			onClose: function(dateText, inst) {
-				checkDates($(this), startTime, dateText);
+				checkDates($(this), startTime);
 			},
 			onSelect: function(selectedDateTime) {
 				selected($(this), startTime, 'maxDate');
 			}
 		}, options, options.end));
-		// timepicker doesn't provide access to its 'timeFormat' option, 
-		// nor could I get datepicker.formatTime() to behave with times, so I
-		// have disabled reformatting for timepicker
-		if (method != 'timepicker' && options.reformat) {
-			$([startTime, endTime]).each(function() {
-				var $t = $(this),
-					format = $t[method].call($t, 'option', 'dateFormat'),
-					date = new Date($t.val());
-				if ($t.val() && date) {
-					$t.val($.datepicker.formatDate(format, date));
-				}
-			});
-		}
 
-		checkDates(startTime, endTime, startTime.val());
+		checkDates(startTime, endTime);
 		selected(startTime, endTime, 'minDate');
 		selected(endTime, startTime, 'maxDate');
 
-		function checkDates(changed, other, dateText) {
+		function checkDates(changed, other) {
 			var startdt = startTime[method]('getDate'),
-				enddt = endTime[method]('getDate');
-			
-			if (other.val() && startdt > enddt) {
-				other.val(dateText);
+				enddt = endTime[method]('getDate'),
+				changeddt = changed[method]('getDate');
+
+			if(startdt !== null){
+				var minDate = new Date(startdt.getTime()),
+					maxDate = new Date(startdt.getTime());
+
+				minDate.setMilliseconds(minDate.getMilliseconds() + options.minInterval);
+				maxDate.setMilliseconds(maxDate.getMilliseconds() + options.maxInterval);
+
+				if(options.minInterval > 0 && minDate > enddt){ // minInterval check
+					endTime[method]('setDate',minDate);
+				}
+				else if(options.maxInterval > 0 && maxDate < enddt){ // max interval check
+					endTime[method]('setDate',maxDate);
+				}
+				else if (startdt > enddt) {
+					other[method]('setDate',changeddt);
+				}
 			}
 		}
 
@@ -2049,6 +2058,14 @@
 				return;
 			}
 			var date = changed[method].call(changed, 'getDate');
+			if(date !== null && options.minInterval > 0){
+				if(option == 'minDate'){
+					date.setMilliseconds(date.getMilliseconds() + options.minInterval); 
+				}
+				if(option == 'maxDate'){
+					date.setMilliseconds(date.getMilliseconds() - options.minInterval);
+				}
+			}
 			if (date.getTime) {
 				other[method].call(other, 'option', option, date);
 			}
