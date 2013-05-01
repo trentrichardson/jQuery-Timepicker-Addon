@@ -857,7 +857,7 @@
 
 			if (!this._defaults.showTimepicker) {
 				this.$input.val(this.formattedDate);
-			} else if (this.$altInput && this._defaults.altFieldTimeOnly === true) {
+			} else if (this.$altInput && this._defaults.timeOnly === false && this._defaults.altFieldTimeOnly === true) {
 				this.$altInput.val(this.formattedTime);
 				this.$input.val(this.formattedDate);
 			} else if (this.$altInput) {
@@ -865,16 +865,18 @@
 				var altFormattedDateTime = '',
 					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
 					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+				
+				if(!this._defaults.timeOnly){
+					if (this._defaults.altFormat){
+						altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
+					}
+					else{
+						altFormattedDateTime = this.formattedDate;
+					}
 
-				if (this._defaults.altFormat){
-					altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
-				}
-				else{
-					altFormattedDateTime = this.formattedDate;
-				}
-
-				if (altFormattedDateTime){
-					altFormattedDateTime += altSeparator;
+					if (altFormattedDateTime){
+						altFormattedDateTime += altSeparator;
+					}
 				}
 
 				if(this._defaults.altTimeFormat){
