@@ -229,7 +229,7 @@
 
 			// controlType is string - key to our this._controls
 			if(typeof(tp_inst._defaults.controlType) === 'string'){
-				if($.fn[tp_inst._defaults.controlType] === undefined){
+				if(tp_inst._defaults.controlType == 'slider' && typeof(jQuery.ui.slider) === 'undefined'){
 					tp_inst._defaults.controlType = 'select';
 				}
 				tp_inst.control = tp_inst._controls[tp_inst._defaults.controlType];
