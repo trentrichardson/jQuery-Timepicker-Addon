@@ -8,6 +8,7 @@
 		minuteText: 'Minuty',
 		secondText: 'Vteřiny',
 		millisecText: 'Milisekundy',
+		microsecText: 'Mikrosekund',
 		timezoneText: 'Časové pásmo',
 		currentText: 'Nyní',
 		closeText: 'Zavřít',

@@ -8,6 +8,7 @@
 		minuteText: 'Minute',
 		secondText: 'Sekondes',
 		millisecText: 'Millisekondes',
+		microsecText: 'Mikrosekondes',
 		timezoneText: 'Tydsone',
 		currentText: 'Huidige Tyd',
 		closeText: 'Klaar',

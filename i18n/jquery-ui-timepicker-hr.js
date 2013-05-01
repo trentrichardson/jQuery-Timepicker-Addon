@@ -8,6 +8,7 @@
 		minuteText: 'Minute',
 		secondText: 'Sekunde',
 		millisecText: 'Milisekunde',
+		microsecText: 'Mikrosekunde',
 		timezoneText: 'Vremenska zona',
 		currentText: 'Sada',
 		closeText: 'Gotovo',

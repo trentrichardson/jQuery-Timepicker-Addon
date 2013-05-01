@@ -8,6 +8,7 @@
 		minuteText: 'นาที',
 		secondText: 'วินาที',
 		millisecText: 'มิลลิวินาที',
+		microsecText: 'ไมโคริวินาที',
 		timezoneText: 'เขตเวลา',
 		currentText: 'เวลาปัจจุบัน',
 		closeText: 'ปิด',

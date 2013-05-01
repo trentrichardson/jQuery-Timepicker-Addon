@@ -8,6 +8,7 @@
 		minuteText: 'Λεπτά',
 		secondText: 'Δευτερόλεπτα',
 		millisecText: 'μιλιδευτερόλεπτο',
+		microsecText: 'Microseconds',
 		timezoneText: 'Ζώνη ώρας',
 		currentText: 'Τώρα',
 		closeText: 'Κλείσιμο',

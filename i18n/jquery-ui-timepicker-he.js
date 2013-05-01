@@ -8,6 +8,7 @@
 		minuteText: "דקות",
 		secondText: "שניות",
 		millisecText: "אלפית השנייה",
+		microsecText: "מיקרו",
 		timezoneText: "אזור זמן",
 		currentText: "עכשיו",
 		closeText:"סגור",

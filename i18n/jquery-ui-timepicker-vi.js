@@ -8,6 +8,7 @@
 		minuteText: 'Phút',
 		secondText: 'Giây',
 		millisecText: 'Phần nghìn giây',
+		microsecText: 'Miligiây',
 		timezoneText: 'Múi giờ',
 		currentText: 'Hiện thời',
 		closeText: 'Đóng',

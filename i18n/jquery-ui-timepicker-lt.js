@@ -8,6 +8,7 @@
 		minuteText: 'Minutės',
 		secondText: 'Sekundės',
 		millisecText: 'Milisekundės',
+		microsecText: 'Mikrosekundės',
 		timezoneText: 'Laiko zona',
 		currentText: 'Dabar',
 		closeText: 'Uždaryti',

@@ -8,6 +8,7 @@
 		minuteText: 'Minuutti',
 		secondText: 'Sekunti',
 		millisecText: 'Millisekunnin',
+		microsecText: 'Mikrosekuntia',
 		timezoneText: 'Aikavyöhyke',
 		currentText: 'Nyt',
 		closeText: 'Sulje',

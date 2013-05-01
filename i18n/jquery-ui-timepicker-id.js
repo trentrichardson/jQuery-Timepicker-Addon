@@ -8,6 +8,7 @@
 		minuteText: 'Menit',
 		secondText: 'Detik',
 		millisecText: 'Milidetik',
+		microsecText: 'Mikrodetik',
 		timezoneText: 'Zona Waktu',
 		currentText: 'Sekarang',
 		closeText: 'OK',

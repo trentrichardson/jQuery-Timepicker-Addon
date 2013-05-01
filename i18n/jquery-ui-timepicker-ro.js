@@ -8,6 +8,7 @@
 		minuteText: 'Minute',
 		secondText: 'Secunde',
 		millisecText: 'Milisecunde',
+		microsecText: 'Microsecunde',
 		timezoneText: 'Fus orar',
 		currentText: 'Acum',
 		closeText: 'Închide',

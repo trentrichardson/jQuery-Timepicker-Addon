@@ -8,6 +8,7 @@
 		minuteText: 'Minutuak',
 		secondText: 'Segunduak',
 		millisecText: 'Milisegunduak',
+		microsecText: 'Mikrosegundotan',
 		timezoneText: 'Ordu-eremua',
 		currentText: 'Orain',
 		closeText: 'Itxi',

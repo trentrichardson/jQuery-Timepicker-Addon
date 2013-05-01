@@ -8,6 +8,7 @@
 		minuteText: 'Minutos',
 		secondText: 'Segundos',
 		millisecText: 'Milisegundos',
+		microsecText: 'Microsegundos',
 		timezoneText: 'Huso horario',
 		currentText: 'Ahora',
 		closeText: 'Cerrar',

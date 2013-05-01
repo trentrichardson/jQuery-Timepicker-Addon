@@ -8,6 +8,7 @@
 		minuteText: 'Минуты',
 		secondText: 'Секунды',
 		millisecText: 'Миллисекунды',
+		microsecText: 'Микросекунды',
 		timezoneText: 'Часовой пояс',
 		currentText: 'Сейчас',
 		closeText: 'Закрыть',

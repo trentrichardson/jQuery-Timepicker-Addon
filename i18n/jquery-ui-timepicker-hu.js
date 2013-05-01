@@ -8,6 +8,7 @@
 		minuteText: 'Perc',
 		secondText: 'Másodperc',
 		millisecText: 'Milliszekundumos',
+		microsecText: 'Ezredmásodperc',
 		timezoneText: 'Időzóna',
 		currentText: 'Most',
 		closeText: 'Kész',

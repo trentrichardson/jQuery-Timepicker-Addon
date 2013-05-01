@@ -8,6 +8,7 @@
 		minuteText: 'Minut',
 		secondText: 'Sekund',
 		millisecText: 'Millisekundis',
+		microsecText: 'Mikrosekundis',
 		timezoneText: 'Ajavöönd',
 		currentText: 'Praegu',
 		closeText: 'Valmis',

@@ -8,6 +8,7 @@
 		minuteText: 'Dakika',
 		secondText: 'Saniye',
 		millisecText: 'Milisaniye',
+		microsecText: 'Mikrosaniye',
 		timezoneText: 'Zaman Dilimi',
 		currentText: 'Şu an',
 		closeText: 'Tamam',

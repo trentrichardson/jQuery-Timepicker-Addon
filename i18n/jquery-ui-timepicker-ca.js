@@ -8,6 +8,7 @@
 		minuteText: 'Minuts',
 		secondText: 'Segons',
 		millisecText: 'Milisegons',
+		microsecText: 'Microsegons',
 		timezoneText: 'Fus horari',
 		currentText: 'Ara',
 		closeText: 'Tancar',
