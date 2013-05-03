@@ -99,6 +99,7 @@
 					<h4>Subscribe to Blog and Twitter</h4>
 					<p><a href="http://trentrichardson.com" title="Subscribe to TrentRichardson.com via email">Subscribe to my blog via email</a> and follow <a href="http://twitter.com/practicalweb" title="Follow Me on Twitter">@PracticalWeb</a> on Twitter.  I post for nearly every new version, so you know about updates.</p>
 					<div class="clear"></div>
+					<br />
 
 					<h3>Download</h3>
 					<p><a href="jquery-ui-timepicker-addon.js" title="Download Timepicker Addon">Download Timepicker Addon</a></p>
@@ -116,7 +117,8 @@
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
 </pre>
-					
+					<br />
+
 					<h3>Requirements</h3>
 					<p>You also need to include jQuery and jQuery UI with datepicker and slider wigits. You should include them in your page in the following order:</p>
 					<ol>
@@ -125,7 +127,7 @@
 						<li>Timepicker</li>
 					</ol>
 
-					
+					<br />
 					<h3>Version</h3>
 					<p>Version 1.3</p>
 
@@ -816,37 +818,19 @@ $('#rest_example_3').datetimepicker({
 	maxDate: new Date(2010, 11, 31, 17, 30)
 });
 </pre>
-					</div>	
-
-					<!-- ============= example -->
-					<div class="example-container">
-						<p>Restrict a start and end date with timepicker's built in restraint methods:</p>
-						<div>
-					 		<input type="text" name="rest_example_4_start" id="rest_example_4_start" value="" /> 
-					 		<input type="text" name="rest_example_4_end" id="rest_example_4_end" value="" />
-						</div>
-<pre>
-var startDateTextBox = $('#rest_example_4_start');
-var endDateTextBox = $('#rest_example_4_end');
-
-$.timepicker.datetimeRange(startDateTextBox, endDateTextBox, {
-	minInterval: (1000*60*60),
-	start: {  }, // start datetime options
-	end: {  }    // end datetime options
-});
-</pre>
-					</div>								
+					</div>
 
 					<!-- ============= example -->
 					<div class="example-container">
 						<p>Restrict a start and end date by using onSelect and onClose events for more control over functionality:</p>
+						<p>For more examples and advanced usage grab the <a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook">Handling Time eBook</a>.</p>
 						<div>
-					 		<input type="text" name="rest_example_5_start" id="rest_example_5_start" value="" /> 
-					 		<input type="text" name="rest_example_5_end" id="rest_example_5_end" value="" />
+					 		<input type="text" name="rest_example_4_start" id="rest_example_4_start" value="" /> 
+					 		<input type="text" name="rest_example_4_end" id="rest_example_4_end" value="" />
 						</div>					
 <pre>
-var startDateTextBox = $('#rest_example_5_start');
-var endDateTextBox = $('#rest_example_5_end');
+var startDateTextBox = $('#rest_example_4_start');
+var endDateTextBox = $('#rest_example_4_end');
 
 startDateTextBox.datetimepicker({ 
 	onClose: function(dateText, inst) {
