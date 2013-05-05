@@ -35,11 +35,11 @@
 			.example-container input{ border: solid 1px #aaa; padding: 4px; width: 175px; }
 		</style> 
 		
-		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
 		<script type="text/javascript">
@@ -99,6 +99,7 @@
 					<h4>Subscribe to Blog and Twitter</h4>
 					<p><a href="http://trentrichardson.com" title="Subscribe to TrentRichardson.com via email">Subscribe to my blog via email</a> and follow <a href="http://twitter.com/practicalweb" title="Follow Me on Twitter">@PracticalWeb</a> on Twitter.  I post for nearly every new version, so you know about updates.</p>
 					<div class="clear"></div>
+					<br />
 
 					<h3>Download</h3>
 					<p><a href="jquery-ui-timepicker-addon.js" title="Download Timepicker Addon">Download Timepicker Addon</a></p>
@@ -116,7 +117,8 @@
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
 </pre>
-					
+					<br />
+
 					<h3>Requirements</h3>
 					<p>You also need to include jQuery and jQuery UI with datepicker and slider wigits. You should include them in your page in the following order:</p>
 					<ol>
@@ -125,11 +127,11 @@
 						<li>Timepicker</li>
 					</ol>
 
-					
+					<br />
 					<h3>Version</h3>
-					<p>Version 1.2.2</p>
+					<p>Version 1.3</p>
 
-					<p>Last updated on 04/06/2013</p>
+					<p>Last updated on 05/05/2013</p>
 					<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
 					<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
 					<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
@@ -182,6 +184,9 @@
 						<dt>millisecText</dt>
 							<dd><em>Default: "Millisecond", A Localization Setting</em> - Label used to identify the millisecond slider.</dd>
 
+						<dt>microsecText</dt>
+							<dd><em>Default: "Microsecond", A Localization Setting</em> - Label used to identify the microsecond slider.</dd>
+
 						<dt>timezoneText</dt>
 							<dd><em>Default: "Timezone", A Localization Setting</em> - Label used to identify the timezone slider.</dd>
 
@@ -208,17 +213,8 @@
 					<h3>Timezone Options</h3>
 					<dl class="defs">
 
-						<dt>useLocalTimezone</dt>
-							<dd><em>Default: false</em> - Whether to default timezone to the browser's set timezone.</dd>
-
-						<dt>defaultTimezone</dt>
-							<dd><em>Default: "+0000"</em> - If not set, the default timezone used.</dd>
-
-						<dt>timezoneIso8601</dt>
-							<dd><em>Default: false</em> - Whether to follow the ISO 8601 standard.</dd>
-
 						<dt>timezoneList</dt>
-							<dd><em>Default: [generated timezones]</em> - An array of timezones used to populate the timezone select. Can be an array of values or an array of objects: { label: "EST", value: "+0400" }</dd>
+							<dd><em>Default: [generated timezones]</em> - An array of timezones used to populate the timezone select. Can be an array of values or an array of objects: { label: "EDT", value: -240 }.  The value should be the offset number in minutes.  So "-0400" which is the format "-hhmm", would equate to -240 minutes.</dd>
 					</dl>
 
 					<h3>Time Field Options</h3>
@@ -240,19 +236,22 @@
 							</dd>
 
 						<dt>showHour</dt>
-							<dd><em>Default: true</em> - Whether to show the hour slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the hour control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showMinute</dt>
-							<dd><em>Default: true</em> - Whether to show the minute slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the minute control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showSecond</dt>
-							<dd><em>Default: false</em> - Whether to show the second slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the second control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showMillisec</dt>
-							<dd><em>Default: false</em> - Whether to show the millisecond slider.</dd>
+							<dd><em>Default: null</em> - Whether to show the millisecond control.  The default of null will use detection from timeFormat.</dd>
+
+						<dt>showMicrosec</dt>
+							<dd><em>Default: null</em> - Whether to show the microsecond control.  The default of null will use detection from timeFormat.</dd>
 
 						<dt>showTimezone</dt>
-							<dd><em>Default: false</em> - Whether to show the timezone select.</dd>
+							<dd><em>Default: null</em> - Whether to show the timezone select.</dd>
 
 						<dt>showTime</dt>
 							<dd><em>Default: true</em> - Whether to show the time selected within the datetimepicker.</dd>
@@ -266,8 +265,11 @@
 						<dt>stepSecond</dt>
 							<dd><em>Default: 1</em> - Seconds per step the slider makes.</dd>
 
-						<dt>stepMilliSec</dt>
+						<dt>stepMillisec</dt>
 							<dd><em>Default: 1</em> - Milliseconds per step the slider makes.</dd>
+
+						<dt>stepMicrosec</dt>
+							<dd><em>Default: 1</em> - Microseconds per step the slider makes.</dd>
 
 						<dt>hour</dt>
 							<dd><em>Default: 0</em> - Initial hour set.</dd>
@@ -281,8 +283,11 @@
 						<dt>millisec</dt>
 							<dd><em>Default: 0</em> - Initial millisecond set.</dd>
 
+						<dt>microsec</dt>
+							<dd><em>Default: 0</em> - Initial microsecond set.  Note: Javascript's native Date object does not natively support microseconds.  Timepicker adds ability to simply Date.setMicroseconds(m) and Date.getMicroseconds().  Date comparisons will not acknowledge microseconds.  Use this only for display purposes.</dd>
+
 						<dt>timezone</dt>
-							<dd><em>Default: 0</em> - Initial timezone set.</dd>
+							<dd><em>Default: null</em> - Initial timezone set.  This is the offset in minutes.  If null the browser's local timezone will be used.  If you're timezone is "-0400" you would use -240.  For backwards compatibility you may pass "-0400", however the timezone is stored in minutes and more reliable.</dd>
 
 						<dt>hourMin</dt>
 							<dd><em>Default: 0</em> - The minimum hour allowed for all dates.</dd>
@@ -296,6 +301,9 @@
 						<dt>millisecMin</dt>
 							<dd><em>Default: 0</em> - The minimum millisecond allowed for all dates.</dd>
 
+						<dt>microsecMin</dt>
+							<dd><em>Default: 0</em> - The minimum microsecond allowed for all dates.</dd>
+
 						<dt>hourMax</dt>
 							<dd><em>Default: 23</em> - The maximum hour allowed for all dates.</dd>
 
@@ -308,6 +316,9 @@
 						<dt>millisecMax</dt>
 							<dd><em>Default: 999</em> - The maximum millisecond allowed for all dates.</dd>
 
+						<dt>microsecMax</dt>
+							<dd><em>Default: 999</em> - The maximum microsecond allowed for all dates.</dd>
+
 						<dt>hourGrid</dt>
 							<dd><em>Default: 0</em> - When greater than 0 a label grid will be generated under the slider.  This number represents the units (in hours) between labels.</dd>
 
@@ -319,6 +330,9 @@
 
 						<dt>millisecGrid</dt>
 							<dd><em>Default: 0</em> - When greater than 0 a label grid will be genereated under the slider.  This number represents the units (in milliseconds) between labels.</dd>
+
+						<dt>microsecGrid</dt>
+							<dd><em>Default: 0</em> - When greater than 0 a label grid will be genereated under the slider.  This number represents the units (in microseconds) between labels.</dd>
 					</dl>
 
 					<h3>Other Options</h3>
@@ -369,6 +383,7 @@
 	minute: 10,
 	second: 23,
 	millisec: 45,
+	microsec: 23,
 	timezone: '-0400'
 }</pre>
 							</dd>
@@ -396,11 +411,13 @@
 						<dt>s</dt><dd>Second with no leading 0</dd>
 						<dt>ss</dt><dd>Second with leading 0</dd>
 						<dt>l</dt><dd>Milliseconds always with leading 0</dd>
+						<dt>c</dt><dd>Microseconds always with leading 0</dd>
 						<dt>t</dt><dd>a or p for AM/PM</dd>
 						<dt>T</dt><dd>A or P for AM/PM</dd>
 						<dt>tt</dt><dd>am or pm for AM/PM</dd>
 						<dt>TT</dt><dd>AM or PM for AM/PM</dd>
 						<dt>z</dt><dd>Timezone as defined by timezoneList</dd>
+						<dt>Z</dt><dd>Timezone in Iso 8601 format (+04:45)</dd>
 						<dt>'...'</dt><dd>Literal text (Uses single quotes)</dd>
 					</dl>
 
@@ -423,7 +440,7 @@
 
 					<h2>Working with Localizations</h2>
 					
-					<p>Timepicker comes with many translations and localizations, thanks to all the contributors.  They can be found in the localization folder in the git repo.</p>
+					<p>Timepicker comes with many translations and localizations, thanks to all the contributors.  They can be found in the i18n folder in the git repo.</p>
 
 					<p>The quick and cheap way to use localizations is to pass in options to a timepicker instance:</p>
 			
@@ -545,8 +562,7 @@ $('#basic_example_3').datetimepicker({
 						</div>					
 <pre>
 $('#timezone_example_1').datetimepicker({
-	timeFormat: 'hh:mm tt z',
-	showTimezone: true
+	timeFormat: 'hh:mm tt z'
 });
 </pre>
 					</div>
@@ -560,12 +576,11 @@ $('#timezone_example_1').datetimepicker({
 <pre>
 $('#timezone_example_2').datetimepicker({
 	timeFormat: 'HH:mm z',
-	showTimezone: true,
 	timezoneList: [ 
-			{ value: '-0500', label: 'Eastern'}, 
-			{ value: '-0600', label: 'Central' }, 
-			{ value: '-0700', label: 'Mountain' }, 
-			{ value: '-0800', label: 'Pacific' } 
+			{ value: -300, label: 'Eastern'}, 
+			{ value: -360, label: 'Central' }, 
+			{ value: -420, label: 'Mountain' }, 
+			{ value: -480, label: 'Pacific' } 
 		]
 });
 </pre>
@@ -573,14 +588,13 @@ $('#timezone_example_2').datetimepicker({
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Use timezone string abbreviations for values:</p>
+						<p>You may also use timezone string abbreviations for values.  This should be used with caution.  Computing accurate javascript Date objects may not be possible when trying to retrieve or set the date from timepicker (see setDate and getDate examples below).  For simple input values however this should work.</p>
 						<div>
 					 		<input type="text" name="timezone_example_3" id="timezone_example_3" value="" />
 						</div>					
 <pre>
 $('#timezone_example_3').datetimepicker({
 	timeFormat: 'HH:mm z',
-	showTimezone: true,
 	timezone: 'MT',
 	timezoneList: [ 
 			{ value: 'ET', label: 'Eastern'}, 
@@ -618,7 +632,6 @@ $('#slider_example_1').timepicker({
 						</div>					
 <pre>
 $('#slider_example_2').datetimepicker({
-	showSecond: true,
 	timeFormat: 'HH:mm:ss',
 	stepHour: 2,
 	stepMinute: 10,
@@ -805,11 +818,12 @@ $('#rest_example_3').datetimepicker({
 	maxDate: new Date(2010, 11, 31, 17, 30)
 });
 </pre>
-					</div>									
+					</div>
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Restrict a start and end date (also shows using onSelect and onClose events):</p>
+						<p>Restrict a start and end date by using onSelect and onClose events for more control over functionality:</p>
+						<p>For more examples and advanced usage grab the <a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook">Handling Time eBook</a>.</p>
 						<div>
 					 		<input type="text" name="rest_example_4_start" id="rest_example_4_start" value="" /> 
 					 		<input type="text" name="rest_example_4_end" id="rest_example_4_end" value="" />
@@ -853,12 +867,11 @@ endDateTextBox.datetimepicker({
 </pre>
 					</div>
 
-					
 					<h3 id="utility_examples">Utilities</h3>
 
 					<!-- ============= example -->
 					<div class="example-container">
-						<p>Get and Set Datetime:</p>
+						<p>Get and Set Datetime with the getDate and setDate methods.  This example uses timezone to demonstrate the timepicker regonizes the timezones and computes the offsets when getting and setting.</p>
 						<div>
 							<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
 							<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
@@ -869,8 +882,9 @@ endDateTextBox.datetimepicker({
 var ex13 = $('#utility_example_1');
 
 ex13.datetimepicker({
-	dateFormat: "D MM d, yy",
-	separator: ' @ '
+	timeFormat: 'hh:mm tt z',
+	separator: ' @ ',
+	showTimezone: true
 });
 
 $('#utility_example_1_setdt').click(function(){
