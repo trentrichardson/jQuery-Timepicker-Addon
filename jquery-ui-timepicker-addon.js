@@ -1076,7 +1076,7 @@
 		if (parseRes.timeObj) {
 			var t = parseRes.timeObj;
 			parseRes.date.setHours(t.hour, t.minute, t.second, t.millisec);
-			parseRex.date.setMicroseconds(t.microsec);
+			parseRes.date.setMicroseconds(t.microsec);
 		}
 
 		return parseRes.date;
