@@ -1546,6 +1546,7 @@
 					tp_date.setMicroseconds(tp_inst.microsec);
 				} else {
 					tp_date = new Date(date.getTime());
+					tp_date.setMicroseconds(date.getMicroseconds());
 				}
 				if (tp_date.toString() == 'Invalid Date') {
 					tp_date = undefined;
@@ -1573,8 +1574,14 @@
 			}
 		}
 
-		var tp_inst = this._get(inst, 'timepicker'),
-			tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
+		var tp_inst = this._get(inst, 'timepicker');
+		var tp_date;
+		if (date instanceof Date) {
+			tp_date = new Date(date.getTime());
+			tp_date.setMicroseconds(date.getMicroseconds());
+		} else {
+			tp_date = date;
+		}
 		
 		// This is important if you are using the timezone option, javascript's Date 
 		// object will only return the timezone offset for the current locale, so we 
