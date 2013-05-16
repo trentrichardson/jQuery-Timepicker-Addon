@@ -163,7 +163,7 @@
 		/*
 		* Create a new Timepicker instance
 		*/
-		_newInst: function($input, o) {
+		_newInst: function($input, opts) {
 			var tp_inst = new Timepicker(),
 				inlineSettings = {},
             	fns = {},
@@ -206,11 +206,11 @@
 		    };
 		    for (i in overrides) {
 		        if (overrides.hasOwnProperty(i)) {
-		            fns[i] = o[i] || null;
+		            fns[i] = opts[i] || null;
 		        }
 		    }
 
-		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, overrides, {
+		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, opts, overrides, {
 		        evnts:fns,
 		        timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		    });
@@ -270,8 +270,8 @@
 			tp_inst.ampm = '';
 			tp_inst.$input = $input;
 
-			if (o.altField) {
-				tp_inst.$altInput = $(o.altField).css({
+			if (tp_inst._defaults.altField) {
+				tp_inst.$altInput = $(tp_inst._defaults.altField).css({
 					cursor: 'pointer'
 				}).focus(function() {
 					$input.trigger("focus");
@@ -1755,7 +1755,7 @@
 	* jQuery isEmptyObject does not check hasOwnProperty - if someone has added to the object prototype,
 	* it will return false for all objects
 	*/
-	function isEmptyObject(obj) {
+	var isEmptyObject = function(obj) {
 		var prop;
 		for (prop in obj) {
 			if (obj.hasOwnProperty(obj)) {
@@ -1768,7 +1768,7 @@
 	/*
 	* jQuery extend now ignores nulls!
 	*/
-	function extendRemove(target, props) {
+	var extendRemove = function(target, props) {
 		$.extend(target, props);
 		for (var name in props) {
 			if (props[name] === null || props[name] === undefined) {
@@ -1782,7 +1782,7 @@
 	* Determine by the time format which units are supported
 	* Returns an object of booleans for each unit
 	*/
-	function detectSupport(timeFormat){
+	var detectSupport = function(timeFormat){
 		var tf = timeFormat.replace(/\'.*?\'/g,'').toLowerCase(), // removes literals
 			isIn = function(f, t){ // does the format contain the token?
 					return f.indexOf(t) !== -1? true:false; 
@@ -1803,7 +1803,7 @@
 	* Converts 24 hour format into 12 hour
 	* Returns 12 hour without leading 0
 	*/
-	function convert24to12(hour) {
+	var convert24to12 = function(hour) {
 		if (hour > 12) {
 			hour = hour - 12;
 		}
@@ -1820,7 +1820,7 @@
 	* Throws exception when date can't be parsed
 	* Returns [dateString, timeString]
 	*/
-	function splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings) {
+	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
 			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
@@ -1868,7 +1868,7 @@
 	*   date - parsed date without time (type Date)
 	*   timeObj = {hour: , minute: , second: , millisec: , microsec: } - parsed time. Optional
 	*/
-	function parseDateTimeInternal(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
+	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
 		var date;
 		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
 		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
@@ -1893,7 +1893,7 @@
 	/*
 	* Internal function to set timezone_select to the local timezone
 	*/
-	function selectLocalTimezone(tp_inst, date) {
+	var selectLocalTimezone = function(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
 			var now = typeof date !== 'undefined' ? date : new Date();
 			tp_inst.timezone_select.val(now.getTimezoneOffset()*-1);
