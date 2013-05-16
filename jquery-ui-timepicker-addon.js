@@ -1755,7 +1755,7 @@
 	* jQuery isEmptyObject does not check hasOwnProperty - if someone has added to the object prototype,
 	* it will return false for all objects
 	*/
-	var isEmptyObject = function(obj) {
+	function isEmptyObject(obj) {
 		var prop;
 		for (prop in obj) {
 			if (obj.hasOwnProperty(obj)) {
@@ -1768,7 +1768,7 @@
 	/*
 	* jQuery extend now ignores nulls!
 	*/
-	var extendRemove = function(target, props) {
+	function extendRemove(target, props) {
 		$.extend(target, props);
 		for (var name in props) {
 			if (props[name] === null || props[name] === undefined) {
@@ -1782,7 +1782,7 @@
 	* Determine by the time format which units are supported
 	* Returns an object of booleans for each unit
 	*/
-	var detectSupport = function(timeFormat){
+	function detectSupport(timeFormat){
 		var tf = timeFormat.replace(/\'.*?\'/g,'').toLowerCase(), // removes literals
 			isIn = function(f, t){ // does the format contain the token?
 					return f.indexOf(t) !== -1? true:false; 
@@ -1803,7 +1803,7 @@
 	* Converts 24 hour format into 12 hour
 	* Returns 12 hour without leading 0
 	*/
-	var convert24to12 = function(hour) {
+	function convert24to12(hour) {
 		if (hour > 12) {
 			hour = hour - 12;
 		}
@@ -1820,7 +1820,7 @@
 	* Throws exception when date can't be parsed
 	* Returns [dateString, timeString]
 	*/
-	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
+	function splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
 			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
@@ -1868,7 +1868,7 @@
 	*   date - parsed date without time (type Date)
 	*   timeObj = {hour: , minute: , second: , millisec: , microsec: } - parsed time. Optional
 	*/
-	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
+	function parseDateTimeInternal(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
 		var date;
 		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
 		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
@@ -1893,7 +1893,7 @@
 	/*
 	* Internal function to set timezone_select to the local timezone
 	*/
-	var selectLocalTimezone = function(tp_inst, date) {
+	function selectLocalTimezone(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
 			var now = typeof date !== 'undefined' ? date : new Date();
 			tp_inst.timezone_select.val(now.getTimezoneOffset()*-1);
