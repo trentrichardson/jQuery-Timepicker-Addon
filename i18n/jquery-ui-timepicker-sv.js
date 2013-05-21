@@ -3,12 +3,12 @@
 (function($) {
 	$.timepicker.regional['sv'] = {
 		timeOnlyTitle: 'Välj en tid',
-		timeText: 'Timme',
-		hourText: 'Timmar',
-		minuteText: 'Minuter',
-		secondText: 'Sekunder',
-		millisecText: 'Millisekunder',
-		microsecText: 'Mikrosekunder',
+		timeText: 'Tid',
+		hourText: 'Timme',
+		minuteText: 'Minut',
+		secondText: 'Sekund',
+		millisecText: 'Millisekund',
+		microsecText: 'Mikrosekund',
 		timezoneText: 'Tidszon',
 		currentText: 'Nu',
 		closeText: 'Stäng',
