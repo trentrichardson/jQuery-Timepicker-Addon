@@ -543,6 +543,7 @@
 				}
 				// end slideAccess integration
 
+				tp_inst._limitMinMaxDateTime(this.inst, true);
 			}
 		},
 
