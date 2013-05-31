@@ -1591,7 +1591,7 @@
 		// If a timezone is different in tp, keep the timezone as is
 		if(tp_inst){
 			// look out for DST if tz wasn't specified
-			if(tp_inst._defaults.timezone === null){
+			if(!tp_inst.support.timezone && tp_inst._defaults.timezone === null){
 				tp_inst.timezone = tp_date.getTimezoneOffset()*-1;
 			}
 			date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
@@ -1630,6 +1630,10 @@
 				// object will only return the timezone offset for the current locale, so we 
 				// adjust it accordingly.  If not using timezone option this won't matter..
 				if(tp_inst.timezone != null){
+					// look out for DST if tz wasn't specified
+					if(!tp_inst.support.timezone && tp_inst._defaults.timezone === null){
+						tp_inst.timezone = date.getTimezoneOffset()*-1;
+					}
 					date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
 				}
 			}
