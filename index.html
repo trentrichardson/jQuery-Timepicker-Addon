@@ -38,21 +38,6 @@
 		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
-		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
-		<script type="text/javascript">
-			
-			$(function(){
-				$('#tabs').tabs();
-		
-				$('.example-container > pre').each(function(i){
-					eval($(this).text());
-				});
-			});
-			
-		</script>
 	</head> 
 	<body> 
 		<div class="wrapper">
@@ -947,6 +932,24 @@ $('#utility_example_3').text(JSON.stringify(
 
 				
 	 	</div>
+
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+		<script type="text/javascript">
+			
+			$(function(){
+				$('#tabs').tabs();
+		
+				$('.example-container > pre').each(function(i){
+					eval($(this).text());
+				});
+			});
+			
+		</script>
+		
 	 	<script type="text/javascript"> /*
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
