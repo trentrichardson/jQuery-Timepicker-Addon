@@ -33,6 +33,9 @@
 			
 			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 20px 40px; padding: 20px; }
 			.example-container input{ border: solid 1px #aaa; padding: 4px; width: 175px; }
+			.ebook{}
+			.ebook img.ebookimg{ float: left; margin: 0 15px 15px 0; width: 100px; }
+			.ebook .buyp a iframe{ margin-bottom: -5px; }
 		</style> 
 		
 		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -93,13 +96,16 @@
 					<h2>Getting Started</h2>
 					
 					<h3>Highly Recommended</h3>
-					<a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook"><img src="http://trentrichardson.com/wp-content/uploads/2013/04/time-book-titlepage.jpg" alt="Handling Time eBook" style="float:left;width:100px;margin:0 15px 15px 0;" /></a>
+					
 					<h4>Handling Time eBook</h4>
-					<p>Check out the <a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook">Handling Time eBook</a> to learn from the basic setup to advanced i18n usage, and from client's javascript to the server's database.</p>
-					<a href="https://sellfy.com/p/8gxZ" id="8gxZ" class="sellfy-buy-button">buy</a><script type="text/javascript" src="https://sellfy.com/js/api_buttons.js"></script> on Sellfy with Paypal
-					<br />
-					<a href="http://gum.co/ZWYO" class="gumroad-button">Handling Time</a><script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script> on Gumroad with Credit Card
-					<div class="clear"></div>
+					<div class="ebook">
+						<p>Check out the <a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook">Handling Time eBook</a> to learn from the basic setup to advanced i18n usage, and from client's javascript to the server's database.</p>
+						<a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook"><img src="http://trentrichardson.com/wp-content/uploads/2013/04/time-book-titlepage.jpg" alt="Handling Time eBook" style="float:left;width:100px;margin:0 15px 15px 0;" /></a>
+						<p class="buyp"><a href="https://sellfy.com/p/LvAG" id="LvAG" class="sellfy-buy-button">buy</a> eBook</p>
+						<p class="buyp"><a href="https://sellfy.com/p/8gxZ" id="8gxZ" class="sellfy-buy-button">buy</a> eBook + Example code</p>
+						<p class="buyp"><a href="http://gum.co/ZWYO" class="gumroad-button">Handling Time</a></p>
+						<div class="clear"></div>
+					</div>
 					
 					<h4>Subscribe to Blog and Twitter</h4>
 					<p><a href="http://trentrichardson.com" title="Subscribe to TrentRichardson.com via email">Subscribe to my blog via email</a> and follow <a href="http://twitter.com/practicalweb" title="Follow Me on Twitter">@PracticalWeb</a> on Twitter.  I post for nearly every new version, so you know about updates.</p>
@@ -947,6 +953,10 @@ $('#utility_example_3').text(JSON.stringify(
 
 				
 	 	</div>
+
+		<script type="text/javascript" src="https://sellfy.com/js/api_buttons.js"></script>
+	 	<script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script>
+
 	 	<script type="text/javascript"> /*
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
