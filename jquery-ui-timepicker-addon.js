@@ -2111,12 +2111,16 @@
 	};
 
 	/*
-	* Rough microsecond support
+	* Microsecond support
 	*/
 	if(!Date.prototype.getMicroseconds){
-		Date.microseconds = 0;
+		Date.prototype.microseconds = 0;
 		Date.prototype.getMicroseconds = function(){ return this.microseconds; };
-		Date.prototype.setMicroseconds = function(m){ this.microseconds = m; return this; };
+		Date.prototype.setMicroseconds = function(m){ 
+			this.setMilliseconds(this.getMilliseconds() + Math.floor(m/1000);
+			this.microseconds = m%1000;
+			return this;
+		};
 	}
 
 	/*
