@@ -829,6 +829,7 @@ var startDateTextBox = $('#rest_example_4_start');
 var endDateTextBox = $('#rest_example_4_end');
 
 startDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
 	onClose: function(dateText, inst) {
 		if (endDateTextBox.val() != '') {
 			var testStartDate = startDateTextBox.datetimepicker('getDate');
@@ -845,6 +846,7 @@ startDateTextBox.datetimepicker({
 	}
 });
 endDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
 	onClose: function(dateText, inst) {
 		if (startDateTextBox.val() != '') {
 			var testStartDate = startDateTextBox.datetimepicker('getDate');

@@ -1968,10 +1968,7 @@
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
 		if(!isNaN(toTz)){
-			var currTz = date.getTimezoneOffset()*-1,
-				diff = currTz - toTz; // difference in minutes
-
-			date.setMinutes(date.getMinutes()+diff);
+			date.setMinutes(date.getMinutes()*1 + (date.getTimezoneOffset()*-1 - toTz*1) );
 		}
 		return date;
 	};
