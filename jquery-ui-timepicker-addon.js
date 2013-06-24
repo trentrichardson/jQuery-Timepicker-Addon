@@ -1911,7 +1911,7 @@
 	};
 
 	/*
-	* Create a Singleton Insance
+	* Create a Singleton Instance
 	*/
 	$.timepicker = new Timepicker();
 
