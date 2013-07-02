@@ -1804,7 +1804,7 @@
 				millisec: isIn(tf,'l'),
 				microsec: isIn(tf,'c'),
 				timezone: isIn(tf,'z'),
-				ampm: isIn('t') && isIn(timeFormat,'h'),
+				ampm: isIn(tf,'t') && isIn(timeFormat,'h'),
 				iso8601: isIn(timeFormat, 'Z')
 			};
 	};
