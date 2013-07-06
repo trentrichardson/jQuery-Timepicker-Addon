@@ -1768,7 +1768,7 @@
 	var isEmptyObject = function(obj) {
 		var prop;
 		for (prop in obj) {
-			if (obj.hasOwnProperty(obj)) {
+			if (obj.hasOwnProperty(prop)) {
 				return false;
 			}
 		}
@@ -1793,9 +1793,9 @@
 	* Returns an object of booleans for each unit
 	*/
 	var detectSupport = function(timeFormat){
-		var tf = timeFormat.replace(/\'.*?\'/g,'').toLowerCase(), // removes literals
+		var tf = timeFormat.replace(/'.*?'/g,'').toLowerCase(), // removes literals
 			isIn = function(f, t){ // does the format contain the token?
-					return f.indexOf(t) !== -1? true:false; 
+					return !!(f.indexOf(t) !== -1);
 				};
 		return {
 				hour: isIn(tf,'h'),
@@ -1804,7 +1804,7 @@
 				millisec: isIn(tf,'l'),
 				microsec: isIn(tf,'c'),
 				timezone: isIn(tf,'z'),
-				ampm: isIn('t') && isIn(timeFormat,'h'),
+				ampm: isIn(tf, 't') && isIn(timeFormat,'h'),
 				iso8601: isIn(timeFormat, 'Z')
 			};
 	};
@@ -2111,7 +2111,8 @@
 	$.timepicker.util = {
 		_extendRemove: extendRemove,
 		_isEmptyObject: isEmptyObject,
-		_convert24to12: convert24to12
+		_convert24to12: convert24to12,
+		_detectSupport: detectSupport
 	};
 
 	/*

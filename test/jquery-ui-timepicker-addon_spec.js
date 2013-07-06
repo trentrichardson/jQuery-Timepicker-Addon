@@ -89,5 +89,68 @@ describe('datetimepicker', function() {
 				expect(util._convert24to12(expectedValue + 12 * 3)).toBe("" + expectedValue);
 			})
 		});
+
+		describe('detectSupport', function() {
+			it('should detect support for hours', function() {
+				expect(util._detectSupport('H').hour).toBe(true);
+				expect(util._detectSupport('HH').hour).toBe(true);
+				expect(util._detectSupport('h').hour).toBe(true);
+				expect(util._detectSupport('hh').hour).toBe(true);
+
+				expect(util._detectSupport('asdf').hour).toBe(false);
+			});
+
+			it('should detect support for minutes', function() {
+				expect(util._detectSupport('m').minute).toBe(true);
+				expect(util._detectSupport('mm').minute).toBe(true);
+
+				expect(util._detectSupport('asdf').minute).toBe(false);
+			});
+
+			it('should detect support for seconds', function() {
+				expect(util._detectSupport('s').second).toBe(true);
+				expect(util._detectSupport('ss').second).toBe(true);
+
+				expect(util._detectSupport('acdf').second).toBe(false);
+			});
+
+			it('should detect support for milliseconds', function() {
+				expect(util._detectSupport('l').millisec).toBe(true);
+
+				expect(util._detectSupport('acdf').millisec).toBe(false);
+			});
+
+			it('should detect support for microseconds', function() {
+				expect(util._detectSupport('c').microsec).toBe(true);
+
+				expect(util._detectSupport('asdf').microsec).toBe(false);
+			});
+
+			it('should detect support for AM/PM', function() {
+				expect(util._detectSupport('h t').ampm).toBe(true);
+				expect(util._detectSupport('h tt').ampm).toBe(true);
+				expect(util._detectSupport('h T').ampm).toBe(true);
+				expect(util._detectSupport('h TT').ampm).toBe(true);
+
+				expect(util._detectSupport('t').ampm).toBe(false);
+				expect(util._detectSupport('h').ampm).toBe(false);
+				expect(util._detectSupport('H t').ampm).toBe(false);
+				expect(util._detectSupport('acdf').ampm).toBe(false);
+			});
+
+			it('should detect support for timezone', function() {
+				expect(util._detectSupport('z').timezone).toBe(true);
+				expect(util._detectSupport('Z').timezone).toBe(true);
+
+				expect(util._detectSupport('acdf').timezone).toBe(false);
+			});
+
+			it('should detect support for iso8601', function() {
+				expect(util._detectSupport('Z').iso8601).toBe(true);
+
+				expect(util._detectSupport('z').iso8601).toBe(false);
+				expect(util._detectSupport('acdf').iso8601).toBe(false);
+			});
+		});
 	});
 });
