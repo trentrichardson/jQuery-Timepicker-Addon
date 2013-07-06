@@ -1824,13 +1824,13 @@
 	};
 
 	/*
-	* Splits datetime string into date ans time substrings.
+	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
 	* Returns [dateString, timeString]
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
+			// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
