@@ -2108,6 +2108,14 @@
 	};
 
 	/*
+	 * Add util object to allow access to private methods for testability.
+	 */
+	$.timepicker.util = {
+		_extendRemove: extendRemove,
+		_isEmptyObject: isEmptyObject
+	};
+
+	/*
 	* Microsecond support
 	*/
 	if(!Date.prototype.getMicroseconds){

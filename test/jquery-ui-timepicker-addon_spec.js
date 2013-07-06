@@ -1,5 +1,69 @@
 describe('datetimepicker', function() {
-	it('should fail', function() {
-		expect(true).toBe(false);
+	describe('utility functions', function() {
+		var util = $.timepicker.util;
+
+		describe('extendRemove', function() {
+			var target,
+				props;
+
+			beforeEach(function() {
+				target = {};
+				props = {};
+			});
+
+			it('should add a nonexistent property to the target', function() {
+				var expectedValue = "set",
+					propertyName = "prop";
+				props[propertyName] = expectedValue;
+
+				var newTarget = util._extendRemove(target, props);
+
+				expect(target[propertyName]).toBe(expectedValue);
+				expect(newTarget).toBe(target);
+			});
+
+			it('should change the value of an existing property', function() {
+				var expectedValue = "new",
+					originalValue = "old",
+					propertyName = "prop";
+				target[propertyName] = originalValue;
+				props[propertyName] = expectedValue;
+
+				util._extendRemove(target, props);
+
+				expect(target[propertyName]).not.toBe(originalValue);
+				expect(target[propertyName]).toBe(expectedValue);
+			});
+
+			it('should null the value of an existing property', function() {
+				var expectedValue = null,
+					propertyName = "prop";
+				target[propertyName] = "original";
+				props[propertyName] = expectedValue;
+
+				util._extendRemove(target, props);
+
+				expect(target[propertyName]).toBeNull();
+			});
+		});
+
+		describe('isEmptyObject', function() {
+			it('should say an empty object is empty', function() {
+				expect(util._isEmptyObject({})).toBe(true);
+			});
+
+			it('should say an object with a property is not empty', function() {
+				var testObject = {"prop": "value"};
+
+				expect(util._isEmptyObject(testObject)).toBe(false);
+			});
+
+			it('should say object with a supplemental prototype property is empty', function() {
+				var testObject = new Function();
+				testObject.prototype["prop"] = "something";
+
+				expect(util._isEmptyObject(testObject)).toBe(true);
+			})
+		});
 	});
 });
