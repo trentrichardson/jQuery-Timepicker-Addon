@@ -2108,7 +2108,7 @@
 	/*
 	 * Add util object to allow access to private methods for testability.
 	 */
-	$.timepicker.util = {
+	$.timepicker._util = {
 		_extendRemove: extendRemove,
 		_isEmptyObject: isEmptyObject,
 		_convert24to12: convert24to12,

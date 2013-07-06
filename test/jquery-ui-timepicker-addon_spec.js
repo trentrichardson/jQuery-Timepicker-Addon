@@ -1,6 +1,6 @@
 describe('datetimepicker', function() {
 	describe('utility functions', function() {
-		var util = $.timepicker.util;
+		var util = $.timepicker._util;
 
 		describe('extendRemove', function() {
 			var target,
