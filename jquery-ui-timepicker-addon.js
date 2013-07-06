@@ -675,7 +675,7 @@
 				var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)), 10),
 					minMax = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)), 10),
 					secMax = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)), 10),
-					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
+					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10),
 					microsecMax = parseInt((this._defaults.microsecMax - ((this._defaults.microsecMax - this._defaults.microsecMin) % this._defaults.stepMicrosec)), 10);
 
 				if (this.hour_slider) {
@@ -1917,9 +1917,9 @@
 
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
-	 * @param  number if not a number this value is returned
-	 * @param boolean if true formats in accordance to iso8601 "+12:45"
-	 * @return string
+	 * @param {number} tzMinutes if not a number this value is returned
+	 * @param {boolean} iso8601 if true formats in accordance to iso8601 "+12:45"
+	 * @return {string}
 	 */
 	$.timepicker.timezoneOffsetString = function(tzMinutes, iso8601) {
 		if(isNaN(tzMinutes) || tzMinutes > 840){
@@ -1940,8 +1940,8 @@
 
 	/**
 	 * Get the number in minutes that represents a timezone string
-	 * @param  string formated like "+0500", "-1245"
-	 * @return number
+	 * @param  {string} tzString formatted like "+0500", "-1245"
+	 * @return {number}
 	 */
 	$.timepicker.timezoneOffsetNumber = function(tzString) {
 		tzString = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
@@ -1961,8 +1961,8 @@
 
 	/**
 	 * No way to set timezone in js Date, so we must adjust the minutes to compensate. (think setDate, getDate)
-	 * @param  date
-	 * @param  string formated like "+0500", "-1245"
+	 * @param  {date} date
+	 * @param  {string} toTimezone formatted like "+0500", "-1245"
 	 * @return date
 	 */
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
@@ -1977,10 +1977,10 @@
 	 * Calls `timepicker()` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
 	 * n.b. The input value must be correctly formatted (reformatting is not supported)
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the timepicker() call
-	 * @return jQuery
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {object} options Options for the timepicker() call
+	 * @return {jQuery}
 	 */
 	$.timepicker.timeRange = function(startTime, endTime, options) {
 		return $.timepicker.handleRange('timepicker', startTime, endTime, options);
@@ -1989,9 +1989,9 @@
 	/**
 	 * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
 	 * @param  string method Can be used to specify the type of picker to be added
 	 * @return jQuery
@@ -2003,9 +2003,9 @@
 	/**
 	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
 	 * @return jQuery
 	 */
@@ -2016,10 +2016,10 @@
 	/**
 	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  string method Can be used to specify the type of picker to be added
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {string} method Can be used to specify the type of picker to be added
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
 	 * @return jQuery
 	 */
@@ -2098,8 +2098,8 @@
 
 	/**
 	 * Log error or data to the console during error or debugging
-	 * @param  Object err pass any type object to log to the console during error or debugging
-	 * @return void
+	 * @param  {Object} err pass any type object to log to the console during error or debugging
+	 * @return {void}
 	 */
 	$.timepicker.log = function(err){
 		if(window.console){
