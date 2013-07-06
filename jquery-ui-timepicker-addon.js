@@ -1959,9 +1959,9 @@
 
 	/**
 	 * No way to set timezone in js Date, so we must adjust the minutes to compensate. (think setDate, getDate)
-	 * @param  {date} date
+	 * @param  {Date} date
 	 * @param  {string} toTimezone formatted like "+0500", "-1245"
-	 * @return date
+	 * @return {Date}
 	 */
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
@@ -1977,7 +1977,7 @@
 	 * n.b. The input value must be correctly formatted (reformatting is not supported)
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
-	 * @param  {object} options Options for the timepicker() call
+	 * @param  {Object} options Options for the timepicker() call
 	 * @return {jQuery}
 	 */
 	$.timepicker.timeRange = function(startTime, endTime, options) {
@@ -1989,10 +1989,10 @@
 	 * enforce date range limits.
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
-	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @param  string method Can be used to specify the type of picker to be added
-	 * @return jQuery
+	 * @param  {string} method Can be used to specify the type of picker to be added
+	 * @return {jQuery}
 	 */
 	$.timepicker.datetimeRange = function(startTime, endTime, options) {
 		$.timepicker.handleRange('datetimepicker', startTime, endTime, options);
@@ -2003,9 +2003,9 @@
 	 * enforce date range limits.
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
-	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @return jQuery
+	 * @return {jQuery}
 	 */
 	$.timepicker.dateRange = function(startTime, endTime, options) {
 		$.timepicker.handleRange('datepicker', startTime, endTime, options);
@@ -2017,9 +2017,9 @@
 	 * @param  {string} method Can be used to specify the type of picker to be added
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
-	 * @param  {object} options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @return jQuery
+	 * @return {jQuery}
 	 */
 	$.timepicker.handleRange = function(method, startTime, endTime, options) {
 		options = $.extend({}, {
