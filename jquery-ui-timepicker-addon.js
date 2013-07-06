@@ -1814,9 +1814,7 @@
 	* Returns 12 hour without leading 0
 	*/
 	var convert24to12 = function(hour) {
-		if (hour > 12) {
-			hour = hour - 12;
-		}
+		hour %= 12;
 
 		if (hour === 0) {
 			hour = 12;
@@ -2112,7 +2110,8 @@
 	 */
 	$.timepicker.util = {
 		_extendRemove: extendRemove,
-		_isEmptyObject: isEmptyObject
+		_isEmptyObject: isEmptyObject,
+		_convert24to12: convert24to12
 	};
 
 	/*

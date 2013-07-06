@@ -65,5 +65,29 @@ describe('datetimepicker', function() {
 				expect(util._isEmptyObject(testObject)).toBe(true);
 			})
 		});
+
+		describe('convert24to12', function() {
+			it('should return the value for a non-zero value less than 12', function() {
+				var expectedHour = 6;
+
+				expect(util._convert24to12(expectedHour)).toBe("" + expectedHour);
+			});
+
+			it('should return 12 hours less if the value is greater than 12 and less than 24', function() {
+				var expectedHour = 7;
+
+				expect(util._convert24to12(expectedHour + 12)).toBe("" + expectedHour);
+			});
+
+			it('should return 12 if the normalized value is 0', function() {
+				expect(util._convert24to12(0)).toBe('12');
+			});
+
+			it('should normalize values that are clearly out of the expected range', function() {
+				var expectedValue = 11;
+
+				expect(util._convert24to12(expectedValue + 12 * 3)).toBe("" + expectedValue);
+			})
+		});
 	});
 });
