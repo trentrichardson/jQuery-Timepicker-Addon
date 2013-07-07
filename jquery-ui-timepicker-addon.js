@@ -1,8 +1,8 @@
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]
- * Version 1.3
- * Last Modified: 05/05/2013
+ * Version 1.3.1
+ * Last Modified: 07/07/2013
  *
  * Copyright 2013 Trent Richardson
  * You may use this project under MIT or GPL licenses.
@@ -27,7 +27,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.3"
+			version: "1.3.1"
 		}
 	});
 
@@ -163,7 +163,7 @@
 		/*
 		* Create a new Timepicker instance
 		*/
-		_newInst: function($input, o) {
+		_newInst: function($input, opts) {
 			var tp_inst = new Timepicker(),
 				inlineSettings = {},
             	fns = {},
@@ -206,11 +206,11 @@
 		    };
 		    for (i in overrides) {
 		        if (overrides.hasOwnProperty(i)) {
-		            fns[i] = o[i] || null;
+		            fns[i] = opts[i] || null;
 		        }
 		    }
 
-		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, o, overrides, {
+		    tp_inst._defaults = $.extend({}, this._defaults, inlineSettings, opts, overrides, {
 		        evnts:fns,
 		        timepicker: tp_inst // add timepicker as a property of datepicker: $.datepicker._get(dp_inst, 'timepicker');
 		    });
@@ -270,8 +270,8 @@
 			tp_inst.ampm = '';
 			tp_inst.$input = $input;
 
-			if (o.altField) {
-				tp_inst.$altInput = $(o.altField).css({
+			if (tp_inst._defaults.altField) {
+				tp_inst.$altInput = $(tp_inst._defaults.altField).css({
 					cursor: 'pointer'
 				}).focus(function() {
 					$input.trigger("focus");
@@ -543,6 +543,7 @@
 				}
 				// end slideAccess integration
 
+				tp_inst._limitMinMaxDateTime(this.inst, true);
 			}
 		},
 
@@ -824,7 +825,8 @@
 		*/
 		_updateDateTime: function(dp_inst) {
 			dp_inst = this.inst || dp_inst;
-			var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+			//var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+			var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay)),
 				dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 				formatCfg = $.datepicker._getFormatConfig(dp_inst),
 				timeAvailable = dt !== null && this.timeDefined;
@@ -1076,7 +1078,7 @@
 		if (parseRes.timeObj) {
 			var t = parseRes.timeObj;
 			parseRes.date.setHours(t.hour, t.minute, t.second, t.millisec);
-			parseRex.date.setMicroseconds(t.microsec);
+			parseRes.date.setMicroseconds(t.microsec);
 		}
 
 		return parseRes.date;
@@ -1546,6 +1548,7 @@
 					tp_date.setMicroseconds(tp_inst.microsec);
 				} else {
 					tp_date = new Date(date.getTime());
+					tp_date.setMicroseconds(date.getMicroseconds());
 				}
 				if (tp_date.toString() == 'Invalid Date') {
 					tp_date = undefined;
@@ -1566,14 +1569,31 @@
 			return;
 		}
 
-		var tp_inst = this._get(inst, 'timepicker'),
-			tp_date = (date instanceof Date) ? new Date(date.getTime()) : date;
+		if(typeof(date) === 'string'){
+			date = new Date(date);
+			if(!date.getTime()){
+				$.timepicker.log("Error creating Date object from string.");
+			}
+		}
+
+		var tp_inst = this._get(inst, 'timepicker');
+		var tp_date;
+		if (date instanceof Date) {
+			tp_date = new Date(date.getTime());
+			tp_date.setMicroseconds(date.getMicroseconds());
+		} else {
+			tp_date = date;
+		}
 		
 		// This is important if you are using the timezone option, javascript's Date 
 		// object will only return the timezone offset for the current locale, so we 
 		// adjust it accordingly.  If not using timezone option this won't matter..
 		// If a timezone is different in tp, keep the timezone as is
-		if(tp_inst && tp_inst.timezone != null){
+		if(tp_inst){
+			// look out for DST if tz wasn't specified
+			if(!tp_inst.support.timezone && tp_inst._defaults.timezone === null){
+				tp_inst.timezone = tp_date.getTimezoneOffset()*-1;
+			}
 			date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
 			tp_date = $.timepicker.timezoneAdjust(tp_date, tp_inst.timezone);
 		}
@@ -1610,6 +1630,10 @@
 				// object will only return the timezone offset for the current locale, so we 
 				// adjust it accordingly.  If not using timezone option this won't matter..
 				if(tp_inst.timezone != null){
+					// look out for DST if tz wasn't specified
+					if(!tp_inst.support.timezone && tp_inst._defaults.timezone === null){
+						tp_inst.timezone = date.getTimezoneOffset()*-1;
+					}
 					date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
 				}
 			}
@@ -1780,7 +1804,7 @@
 				millisec: isIn(tf,'l'),
 				microsec: isIn(tf,'c'),
 				timezone: isIn(tf,'z'),
-				ampm: isIn('t') && isIn(timeFormat,'h'),
+				ampm: isIn(tf,'t') && isIn(timeFormat,'h'),
 				iso8601: isIn(timeFormat, 'Z')
 			};
 	};
@@ -1944,10 +1968,7 @@
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
 		if(!isNaN(toTz)){
-			var currTz = date.getTimezoneOffset()*-1,
-				diff = currTz - toTz; // difference in minutes
-
-			date.setMinutes(date.getMinutes()+diff);
+			date.setMinutes(date.getMinutes()*1 + (date.getTimezoneOffset()*-1 - toTz*1) );
 		}
 		return date;
 	};
@@ -2087,17 +2108,21 @@
 	};
 
 	/*
-	* Rough microsecond support
+	* Microsecond support
 	*/
 	if(!Date.prototype.getMicroseconds){
-		Date.microseconds = 0;
+		Date.prototype.microseconds = 0;
 		Date.prototype.getMicroseconds = function(){ return this.microseconds; };
-		Date.prototype.setMicroseconds = function(m){ this.microseconds = m; return this; };
+		Date.prototype.setMicroseconds = function(m){ 
+			this.setMilliseconds(this.getMilliseconds() + Math.floor(m/1000));
+			this.microseconds = m%1000;
+			return this;
+		};
 	}
 
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.3";
+	$.timepicker.version = "1.3.1";
 
 })(jQuery);

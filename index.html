@@ -41,21 +41,6 @@
 		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
-		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
-		<script type="text/javascript">
-			
-			$(function(){
-				$('#tabs').tabs();
-		
-				$('.example-container > pre').each(function(i){
-					eval($(this).text());
-				});
-			});
-			
-		</script>
 	</head> 
 	<body> 
 		<div class="wrapper">
@@ -140,9 +125,9 @@
 
 					<br />
 					<h3>Version</h3>
-					<p>Version 1.3</p>
+					<p>Version 1.3.1</p>
 
-					<p>Last updated on 05/05/2013</p>
+					<p>Last updated on 07/07/2013</p>
 					<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under both MIT and GPL licenses. This means that you can choose the license that best suits your project, and use it accordingly. </p>
 					<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
 					<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
@@ -844,6 +829,7 @@ var startDateTextBox = $('#rest_example_4_start');
 var endDateTextBox = $('#rest_example_4_end');
 
 startDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
 	onClose: function(dateText, inst) {
 		if (endDateTextBox.val() != '') {
 			var testStartDate = startDateTextBox.datetimepicker('getDate');
@@ -860,6 +846,7 @@ startDateTextBox.datetimepicker({
 	}
 });
 endDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
 	onClose: function(dateText, inst) {
 		if (startDateTextBox.val() != '') {
 			var testStartDate = startDateTextBox.datetimepicker('getDate');
@@ -954,9 +941,27 @@ $('#utility_example_3').text(JSON.stringify(
 				
 	 	</div>
 
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
+
+		<script type="text/javascript">
+			
+			$(function(){
+				$('#tabs').tabs();
+		
+				$('.example-container > pre').each(function(i){
+					eval($(this).text());
+				});
+			});
+			
+		</script>
+
 		<script type="text/javascript" src="https://sellfy.com/js/api_buttons.js"></script>
 	 	<script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script>
-
+		
 	 	<script type="text/javascript"> /*
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
