@@ -152,5 +152,48 @@ describe('datetimepicker', function() {
 				expect(util._detectSupport('acdf').iso8601).toBe(false);
 			});
 		});
+
+		describe('selectLocalTimezone', function() {
+			var timepicker,
+				timezoneOffset,
+				defaultTimezoneOffset;
+
+			beforeEach(function() {
+				timepicker = {
+					timezone_select: affix('select')
+				};
+				var now = new Date();
+				timezoneOffset = String(-now.getTimezoneOffset());
+				defaultTimezoneOffset = String(timezoneOffset - 60);
+				timepicker.timezone_select.affix('option').text(defaultTimezoneOffset);
+				timepicker.timezone_select.affix('option').text(timezoneOffset);
+				timepicker.timezone_select.affix('option').text(timezoneOffset + 60);
+
+			});
+
+			it('should do nothing for a falsey timepicker', function() {
+				util._selectLocalTimezone(undefined);
+
+				expect(timepicker.timezone_select.val()).toBe(defaultTimezoneOffset);
+			});
+
+			it('should do nothing for a timepicker with a falsey timezone_select', function() {
+				util._selectLocalTimezone({});
+
+				expect(timepicker.timezone_select.val()).toBe(defaultTimezoneOffset);
+			});
+
+			it('should select the current timezone with a valid timezone_select and no date', function() {
+				util._selectLocalTimezone(timepicker);
+
+				expect(timepicker.timezone_select.val()).toBe(timezoneOffset);
+			});
+
+			it('should select the current timezone with a valid timezone_select and a date', function() {
+				util._selectLocalTimezone(timepicker, new Date());
+
+				expect(timepicker.timezone_select.val()).toBe(timezoneOffset);
+			});
+		});
 	});
 });

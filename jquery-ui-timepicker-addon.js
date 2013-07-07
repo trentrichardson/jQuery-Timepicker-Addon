@@ -1903,8 +1903,8 @@
 	*/
 	var selectLocalTimezone = function(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
-			var now = typeof date !== 'undefined' ? date : new Date();
-			tp_inst.timezone_select.val(now.getTimezoneOffset()*-1);
+			var now = date || new Date();
+			tp_inst.timezone_select.val(-now.getTimezoneOffset());
 		}
 	};
 
@@ -2112,7 +2112,8 @@
 		_extendRemove: extendRemove,
 		_isEmptyObject: isEmptyObject,
 		_convert24to12: convert24to12,
-		_detectSupport: detectSupport
+		_detectSupport: detectSupport,
+		_selectLocalTimezone: selectLocalTimezone
 	};
 
 	/*
