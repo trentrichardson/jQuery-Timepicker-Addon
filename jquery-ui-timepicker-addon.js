@@ -1834,7 +1834,7 @@
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
-				timeParts = format.split(separator), // how many occurances of separator may be in our format?
+				timeParts = format.split(separator), // how many occurrences of separator may be in our format?
 				timePartsLen = timeParts.length,
 				allParts = dateTimeString.split(separator),
 				allPartsLen = allParts.length;
