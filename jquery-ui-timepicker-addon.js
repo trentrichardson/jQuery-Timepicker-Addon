@@ -1942,19 +1942,19 @@
 	 * @return {number}
 	 */
 	$.timepicker.timezoneOffsetNumber = function(tzString) {
-		tzString = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
+		var normalized = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
 
-		if(tzString.toUpperCase() === 'Z'){ // if iso8601 with Z, its 0 minute offset
+		if(normalized.toUpperCase() === 'Z'){ // if iso8601 with Z, its 0 minute offset
 			return 0;
 		}
 
-		if(!/^(\-|\+)\d{4}$/.test(tzString)){ // possibly a user defined tz, so just give it back
+		if(!/^(\-|\+)\d{4}$/.test(normalized)){ // possibly a user defined tz, so just give it back
 			return tzString;
 		}
 
-		return ((tzString.substr(0,1) =='-'? -1 : 1) * // plus or minus
-					((parseInt(tzString.substr(1,2),10)*60) + // hours (converted to minutes)
-					parseInt(tzString.substr(3,2),10))); // minutes
+		return ((normalized.substr(0,1) =='-'? -1 : 1) * // plus or minus
+					((parseInt(normalized.substr(1,2),10)*60) + // hours (converted to minutes)
+					parseInt(normalized.substr(3,2),10))); // minutes
 	};
 
 	/**

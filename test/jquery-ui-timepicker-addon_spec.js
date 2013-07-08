@@ -196,4 +196,29 @@ describe('datetimepicker', function() {
 			});
 		});
 	});
+
+	describe('timepicker functions', function() {
+		describe('timezoneOffsetNumber', function() {
+			it('returns 0 if the time zone string is iso8601 Zulu', function() {
+				expect($.timepicker.timezoneOffsetNumber('Z')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('z')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber(':Z')).toBe(0);
+			});
+
+			it('returns a string that does not match the expected representations', function() {
+				expect($.timepicker.timezoneOffsetNumber('EDT')).toBe('EDT');
+				expect($.timepicker.timezoneOffsetNumber('1234')).toBe('1234');
+				expect($.timepicker.timezoneOffsetNumber('+123')).toBe('+123');
+				expect($.timepicker.timezoneOffsetNumber('-123')).toBe('-123');
+				expect($.timepicker.timezoneOffsetNumber('abc:def')).toBe('abc:def');
+			});
+
+			it('returns the minute offset from a time zone offset string', function() {
+				expect($.timepicker.timezoneOffsetNumber('-0000')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('+0000')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('-0400')).toBe(-240);
+				expect($.timepicker.timezoneOffsetNumber('+0400')).toBe(240);
+			});
+		});
+	});
 });
