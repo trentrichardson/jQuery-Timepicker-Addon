@@ -675,7 +675,7 @@
 				var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)), 10),
 					minMax = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)), 10),
 					secMax = parseInt((this._defaults.secondMax - ((this._defaults.secondMax - this._defaults.secondMin) % this._defaults.stepSecond)), 10),
-					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10);
+					millisecMax = parseInt((this._defaults.millisecMax - ((this._defaults.millisecMax - this._defaults.millisecMin) % this._defaults.stepMillisec)), 10),
 					microsecMax = parseInt((this._defaults.microsecMax - ((this._defaults.microsecMax - this._defaults.microsecMin) % this._defaults.stepMicrosec)), 10);
 
 				if (this.hour_slider) {
@@ -1028,7 +1028,7 @@
 
 	$.fn.extend({
 		/*
-		* shorthand just to use timepicker..
+		* shorthand just to use timepicker.
 		*/
 		timepicker: function(o) {
 			o = o || {};
@@ -1320,7 +1320,7 @@
 	};
 
 	/*
-	* the bad hack :/ override datepicker so it doesnt close on select
+	* the bad hack :/ override datepicker so it doesn't close on select
 	// inspired: http://stackoverflow.com/questions/1252512/jquery-datepicker-prevent-closing-picker-when-clicking-a-date/1762378#1762378
 	*/
 	$.datepicker._base_selectDate = $.datepicker._selectDate;
@@ -1768,7 +1768,7 @@
 	var isEmptyObject = function(obj) {
 		var prop;
 		for (prop in obj) {
-			if (obj.hasOwnProperty(obj)) {
+			if (obj.hasOwnProperty(prop)) {
 				return false;
 			}
 		}
@@ -1793,9 +1793,9 @@
 	* Returns an object of booleans for each unit
 	*/
 	var detectSupport = function(timeFormat){
-		var tf = timeFormat.replace(/\'.*?\'/g,'').toLowerCase(), // removes literals
+		var tf = timeFormat.replace(/'.*?'/g,'').toLowerCase(), // removes literals
 			isIn = function(f, t){ // does the format contain the token?
-					return f.indexOf(t) !== -1? true:false; 
+					return !!(f.indexOf(t) !== -1);
 				};
 		return {
 				hour: isIn(tf,'h'),
@@ -1804,7 +1804,7 @@
 				millisec: isIn(tf,'l'),
 				microsec: isIn(tf,'c'),
 				timezone: isIn(tf,'z'),
-				ampm: isIn(tf,'t') && isIn(timeFormat,'h'),
+				ampm: isIn(tf, 't') && isIn(timeFormat,'h'),
 				iso8601: isIn(timeFormat, 'Z')
 			};
 	};
@@ -1814,9 +1814,7 @@
 	* Returns 12 hour without leading 0
 	*/
 	var convert24to12 = function(hour) {
-		if (hour > 12) {
-			hour = hour - 12;
-		}
+		hour %= 12;
 
 		if (hour === 0) {
 			hour = 12;
@@ -1826,17 +1824,17 @@
 	};
 
 	/*
-	* Splits datetime string into date ans time substrings.
+	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
 	* Returns [dateString, timeString]
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
-			// The idea is to get the number separator occurances in datetime and the time format requested (since time has 
+			// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
 				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
-				timeParts = format.split(separator), // how many occurances of separator may be in our format?
+				timeParts = format.split(separator), // how many occurrences of separator may be in our format?
 				timePartsLen = timeParts.length,
 				allParts = dateTimeString.split(separator),
 				allPartsLen = allParts.length;
@@ -1905,21 +1903,21 @@
 	*/
 	var selectLocalTimezone = function(tp_inst, date) {
 		if (tp_inst && tp_inst.timezone_select) {
-			var now = typeof date !== 'undefined' ? date : new Date();
-			tp_inst.timezone_select.val(now.getTimezoneOffset()*-1);
+			var now = date || new Date();
+			tp_inst.timezone_select.val(-now.getTimezoneOffset());
 		}
 	};
 
 	/*
-	* Create a Singleton Insance
+	* Create a Singleton Instance
 	*/
 	$.timepicker = new Timepicker();
 
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
-	 * @param  number if not a number this value is returned
-	 * @param boolean if true formats in accordance to iso8601 "+12:45"
-	 * @return string
+	 * @param {number} tzMinutes if not a number this value is returned
+	 * @param {boolean} iso8601 if true formats in accordance to iso8601 "+12:45"
+	 * @return {string}
 	 */
 	$.timepicker.timezoneOffsetString = function(tzMinutes, iso8601) {
 		if(isNaN(tzMinutes) || tzMinutes > 840){
@@ -1940,8 +1938,8 @@
 
 	/**
 	 * Get the number in minutes that represents a timezone string
-	 * @param  string formated like "+0500", "-1245"
-	 * @return number
+	 * @param  {string} tzString formatted like "+0500", "-1245"
+	 * @return {number}
 	 */
 	$.timepicker.timezoneOffsetNumber = function(tzString) {
 		tzString = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
@@ -1961,9 +1959,9 @@
 
 	/**
 	 * No way to set timezone in js Date, so we must adjust the minutes to compensate. (think setDate, getDate)
-	 * @param  date
-	 * @param  string formated like "+0500", "-1245"
-	 * @return date
+	 * @param  {Date} date
+	 * @param  {string} toTimezone formatted like "+0500", "-1245"
+	 * @return {Date}
 	 */
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
@@ -1977,10 +1975,10 @@
 	 * Calls `timepicker()` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
 	 * n.b. The input value must be correctly formatted (reformatting is not supported)
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the timepicker() call
-	 * @return jQuery
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {Object} options Options for the timepicker() call
+	 * @return {jQuery}
 	 */
 	$.timepicker.timeRange = function(startTime, endTime, options) {
 		return $.timepicker.handleRange('timepicker', startTime, endTime, options);
@@ -1989,12 +1987,12 @@
 	/**
 	 * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @param  string method Can be used to specify the type of picker to be added
-	 * @return jQuery
+	 * @param  {string} method Can be used to specify the type of picker to be added
+	 * @return {jQuery}
 	 */
 	$.timepicker.datetimeRange = function(startTime, endTime, options) {
 		$.timepicker.handleRange('datetimepicker', startTime, endTime, options);
@@ -2003,11 +2001,11 @@
 	/**
 	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @return jQuery
+	 * @return {jQuery}
 	 */
 	$.timepicker.dateRange = function(startTime, endTime, options) {
 		$.timepicker.handleRange('datepicker', startTime, endTime, options);
@@ -2016,12 +2014,12 @@
 	/**
 	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
-	 * @param  string method Can be used to specify the type of picker to be added
-	 * @param  Element startTime
-	 * @param  Element endTime
-	 * @param  obj options Options for the `timepicker()` call. Also supports `reformat`,
+	 * @param  {string} method Can be used to specify the type of picker to be added
+	 * @param  {Element} startTime
+	 * @param  {Element} endTime
+	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
 	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
-	 * @return jQuery
+	 * @return {jQuery}
 	 */
 	$.timepicker.handleRange = function(method, startTime, endTime, options) {
 		options = $.extend({}, {
@@ -2098,13 +2096,24 @@
 
 	/**
 	 * Log error or data to the console during error or debugging
-	 * @param  Object err pass any type object to log to the console during error or debugging
-	 * @return void
+	 * @param  {Object} err pass any type object to log to the console during error or debugging
+	 * @return {void}
 	 */
 	$.timepicker.log = function(err){
 		if(window.console){
 			console.log(err);
 		}
+	};
+
+	/*
+	 * Add util object to allow access to private methods for testability.
+	 */
+	$.timepicker._util = {
+		_extendRemove: extendRemove,
+		_isEmptyObject: isEmptyObject,
+		_convert24to12: convert24to12,
+		_detectSupport: detectSupport,
+		_selectLocalTimezone: selectLocalTimezone
 	};
 
 	/*
