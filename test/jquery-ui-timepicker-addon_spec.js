@@ -220,5 +220,50 @@ describe('datetimepicker', function() {
 				expect($.timepicker.timezoneOffsetNumber('+0400')).toBe(240);
 			});
 		});
+
+		describe('timezoneOffsetString', function() {
+			it('returns NaN if the input is NaN', function() {
+				expect($.timepicker.timezoneOffsetString(NaN)).toBeNaN();
+			});
+
+			it('returns the input if the input is greater than 840 (+14:00)', function() {
+				var expectedMinutes = 850;
+
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+
+				expect(actualMinutes).toBe(expectedMinutes);
+			});
+
+			it('returns the input if the input is less than -720 (-12:00)', function() {
+				var expectedMinutes = -730;
+
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+
+				expect(actualMinutes).toBe(expectedMinutes);
+			});
+
+			it('returns "Z" if the offset is 0 and iso8601 is true', function() {
+				expect($.timepicker.timezoneOffsetString(0, true)).toBe('Z');
+			});
+
+			it('returns the expected offset string for non-iso8601 values', function() {
+				expect($.timepicker.timezoneOffsetString(0, false)).toBe('+0000');
+				expect($.timepicker.timezoneOffsetString(60, false)).toBe('+0100');
+				expect($.timepicker.timezoneOffsetString(480, false)).toBe('+0800');
+				expect($.timepicker.timezoneOffsetString(-60, false)).toBe('-0100');
+				expect($.timepicker.timezoneOffsetString(-480, false)).toBe('-0800');
+				expect($.timepicker.timezoneOffsetString(-720, false)).toBe('-1200');
+				expect($.timepicker.timezoneOffsetString(840, false)).toBe('+1400');
+			});
+
+			it('returns the expected offset string for iso8601 values', function() {
+				expect($.timepicker.timezoneOffsetString(60, true)).toBe('+01:00');
+				expect($.timepicker.timezoneOffsetString(480, true)).toBe('+08:00');
+				expect($.timepicker.timezoneOffsetString(-60, true)).toBe('-01:00');
+				expect($.timepicker.timezoneOffsetString(-480, true)).toBe('-08:00');
+				expect($.timepicker.timezoneOffsetString(-720, true)).toBe('-12:00');
+				expect($.timepicker.timezoneOffsetString(840, true)).toBe('+14:00');
+			});
+		});
 	});
 });
