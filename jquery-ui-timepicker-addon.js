@@ -1999,7 +1999,7 @@
 	};
 
 	/**
-	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
+	 * Calls `datepicker` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
