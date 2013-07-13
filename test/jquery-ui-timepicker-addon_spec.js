@@ -266,6 +266,29 @@ describe('datetimepicker', function() {
 			});
 		});
 
+		describe('timezoneAdjust', function() {
+			it('does not change the date if the timezone yields NaN for an offset', function() {
+				var expectedDate = new Date();
+
+				expect($.timepicker.timezoneAdjust(expectedDate, NaN)).toEqual(expectedDate);
+			});
+
+			it('changes the minutes by the time zone offset minutes', function() {
+				var inputDate,
+					originalMillis,
+					expectedDifference,
+					adjustedDate;
+
+				inputDate = new Date();
+				originalMillis = inputDate.getTime();
+				expectedDifference = -(inputDate.getTimezoneOffset() + 60) * 60 * 1000;
+
+				adjustedDate = $.timepicker.timezoneAdjust(inputDate, '+0100');
+
+				expect(adjustedDate.getTime() - originalMillis).toBe(expectedDifference);
+			});
+		});
+
 		describe('log', function() {
 			it('calls console.log with the message if the console exists', function() {
 				var expectedMessage = "Just what I expected!";
