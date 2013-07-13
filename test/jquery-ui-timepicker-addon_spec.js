@@ -311,5 +311,44 @@ describe('datetimepicker', function() {
 				window.console = originalConsole;
 			});
 		});
+
+		describe('timeRange', function() {
+			it('calls handleRange the right way', function() {
+				var startTime = new Date(),
+					endTime = new Date(),
+					options = {};
+				spyOn($.timepicker, 'handleRange');
+
+				$.timepicker.timeRange(startTime, endTime, options);
+
+				expect($.timepicker.handleRange).toHaveBeenCalledWith('timepicker', startTime, endTime, options);
+			});
+		});
+
+		describe('datetimeRange', function() {
+			it('calls handleRange the right way', function() {
+				var startTime = new Date(),
+					endTime = new Date(),
+					options = {};
+				spyOn($.timepicker, 'handleRange');
+
+				$.timepicker.datetimeRange(startTime, endTime, options);
+
+				expect($.timepicker.handleRange).toHaveBeenCalledWith('datetimepicker', startTime, endTime, options);
+			});
+		});
+
+		describe('dateRange', function() {
+			it('calls handleRange the right way', function() {
+				var startTime = new Date(),
+					endTime = new Date(),
+					options = {};
+				spyOn($.timepicker, 'handleRange');
+
+				$.timepicker.dateRange(startTime, endTime, options);
+
+				expect($.timepicker.handleRange).toHaveBeenCalledWith('datepicker', startTime, endTime, options);
+			});
+		});
 	});
 });
