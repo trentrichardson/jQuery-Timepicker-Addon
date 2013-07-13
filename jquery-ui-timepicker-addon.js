@@ -1966,7 +1966,7 @@
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
 		if(!isNaN(toTz)){
-			date.setMinutes(date.getMinutes()*1 + (date.getTimezoneOffset()*-1 - toTz*1) );
+			date.setMinutes(date.getMinutes() + -date.getTimezoneOffset() - toTz);
 		}
 		return date;
 	};
