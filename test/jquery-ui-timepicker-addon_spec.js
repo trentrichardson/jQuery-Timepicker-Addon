@@ -340,6 +340,10 @@ describe('datetimepicker', function() {
 					expect($.timepicker.handleRange).toHaveBeenCalledWith('datepicker', startTime, endTime, options);
 				});
 			});
+
+			xdescribe('handleRange', function() {
+				// TODO: Difficult to test. Needs attention.
+			});
 		});
 	});
 });
