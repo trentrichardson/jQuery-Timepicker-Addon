@@ -265,5 +265,28 @@ describe('datetimepicker', function() {
 				expect($.timepicker.timezoneOffsetString(840, true)).toBe('+14:00');
 			});
 		});
+
+		describe('log', function() {
+			it('calls console.log with the message if the console exists', function() {
+				var expectedMessage = "Just what I expected!";
+				spyOn(window.console, "log");
+
+				$.timepicker.log(expectedMessage);
+
+				expect(window.console.log).toHaveBeenCalledWith(expectedMessage);
+			});
+
+			it('does not call console.log if there is no console', function() {
+				var originalConsole = window.console,
+					consoleLogSpy = spyOn(window.console, "log");
+				window.console = undefined;
+
+				$.timepicker.log("Don't care");
+
+				expect(consoleLogSpy).not.toHaveBeenCalled();
+
+				window.console = originalConsole;
+			});
+		});
 	});
 });
