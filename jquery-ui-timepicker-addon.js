@@ -152,8 +152,8 @@
 
 		/* 
 		* Override the default settings for all instances of the time picker.
-		* @param  settings  object - the new settings to use as defaults (anonymous object)
-		* @return the manager object
+		* @param  {Object} settings  object - the new settings to use as defaults (anonymous object)
+		* @return {Object} the manager object
 		*/
 		setDefaults: function(settings) {
 			extendRemove(this._defaults, settings || {});
