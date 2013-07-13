@@ -312,42 +312,33 @@ describe('datetimepicker', function() {
 			});
 		});
 
-		describe('timeRange', function() {
-			it('calls handleRange the right way', function() {
-				var startTime = new Date(),
-					endTime = new Date(),
-					options = {};
-				spyOn($.timepicker, 'handleRange');
+		describe('range functions', function() {
+			var startTime = $('<p>start</p>'),
+				endTime = $('<p>end</p>'),
+				options = {};
 
-				$.timepicker.timeRange(startTime, endTime, options);
+			describe('convenience functions', function() {
+				beforeEach(function() {
+					spyOn($.timepicker, 'handleRange');
+				});
 
-				expect($.timepicker.handleRange).toHaveBeenCalledWith('timepicker', startTime, endTime, options);
-			});
-		});
+				it('timeRange calls handleRange the right way', function() {
+					$.timepicker.timeRange(startTime, endTime, options);
 
-		describe('datetimeRange', function() {
-			it('calls handleRange the right way', function() {
-				var startTime = new Date(),
-					endTime = new Date(),
-					options = {};
-				spyOn($.timepicker, 'handleRange');
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('timepicker', startTime, endTime, options);
+				});
 
-				$.timepicker.datetimeRange(startTime, endTime, options);
+				it('datetimeRange calls handleRange the right way', function() {
+					$.timepicker.datetimeRange(startTime, endTime, options);
 
-				expect($.timepicker.handleRange).toHaveBeenCalledWith('datetimepicker', startTime, endTime, options);
-			});
-		});
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('datetimepicker', startTime, endTime, options);
+				});
 
-		describe('dateRange', function() {
-			it('calls handleRange the right way', function() {
-				var startTime = new Date(),
-					endTime = new Date(),
-					options = {};
-				spyOn($.timepicker, 'handleRange');
+				it('dateRange calls handleRange the right way', function() {
+					$.timepicker.dateRange(startTime, endTime, options);
 
-				$.timepicker.dateRange(startTime, endTime, options);
-
-				expect($.timepicker.handleRange).toHaveBeenCalledWith('datepicker', startTime, endTime, options);
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('datepicker', startTime, endTime, options);
+				});
 			});
 		});
 	});
