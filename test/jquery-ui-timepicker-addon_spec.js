@@ -195,6 +195,51 @@ describe('datetimepicker', function() {
 				expect(timepicker.timezone_select.val()).toBe(timezoneOffset);
 			});
 		});
+
+		describe('splitDateTime', function() {
+			var expectedDateString = '3/6/1967',
+				expectedTimeString = '07:32';
+
+			it('splits a date and time into its parts using the default separator', function() {
+				var inputDateTimeString = expectedDateString + $.timepicker._defaults.separator + expectedTimeString,
+					result;
+
+				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {});
+
+				expect(result).toEqual([expectedDateString, expectedTimeString]);
+			});
+
+			it('splits a date and time into its parts using a supplied separator', function() {
+				var separator = '-',
+					inputDateTimeString = expectedDateString + separator + expectedTimeString,
+					result;
+
+				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {separator: separator});
+
+				expect(result).toEqual([expectedDateString, expectedTimeString]);
+			});
+
+			it('splits a date and time into its parts when there are multiple separators in the time format', function() {
+				var timeFormat = 'hh mm tt',
+					separator = ' ',
+					alternateTimeString = '07 32 am',
+					inputDateTimeString = expectedDateString + separator + alternateTimeString,
+					timeSettings = {separator: separator, timeFormat: timeFormat},
+					result;
+
+				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, timeSettings);
+
+				expect(result).toEqual([expectedDateString, alternateTimeString]);
+			});
+
+			it('splits only a date into itself', function() {
+				var result = $.timepicker._util._splitDateTime('', expectedDateString, {}, {});
+
+				expect(result).toEqual([expectedDateString, '']);
+			});
+
+			// TODO: Should test the error path, but not sure what throws the error or what the message looks like.
+		});
 	});
 
 	describe('timepicker functions', function() {
