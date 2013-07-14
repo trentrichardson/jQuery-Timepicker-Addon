@@ -196,6 +196,32 @@ describe('datetimepicker', function() {
 			});
 		});
 
+		describe('computeEffectiveSetting', function() {
+			it('pulls the setting from the passed settings object if it is there', function() {
+				var expectedUniqueValue = 'This is very unique',
+					settings = {
+						property: expectedUniqueValue
+					};
+
+				expect($.timepicker._util._computeEffectiveSetting(settings, 'property')).toBe(expectedUniqueValue);
+			});
+
+			it('pulls the setting from the timepicker defaults if there are no passed settings', function() {
+				var expectedValue = $.timepicker._defaults.separator;
+				expect(expectedValue).toBeDefined();
+
+				expect($.timepicker._util._computeEffectiveSetting(undefined, 'separator')).toBe(expectedValue);
+			});
+
+			it('pulls the setting from the timepicker defaults if not present in the passed settings', function() {
+				var expectedValue = $.timepicker._defaults.separator,
+					settings = {};
+				expect(expectedValue).toBeDefined();
+
+				expect($.timepicker._util._computeEffectiveSetting(settings, 'separator')).toBe(expectedValue);
+			});
+		});
+
 		describe('splitDateTime', function() {
 			var expectedDateString = '3/6/1967',
 				expectedTimeString = '07:32';
