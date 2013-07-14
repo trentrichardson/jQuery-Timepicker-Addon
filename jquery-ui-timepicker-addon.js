@@ -2114,7 +2114,8 @@
 		_convert24to12: convert24to12,
 		_detectSupport: detectSupport,
 		_selectLocalTimezone: selectLocalTimezone,
-		_splitDateTime: splitDateTime
+		_splitDateTime: splitDateTime,
+		_parseDateTimeInternal: parseDateTimeInternal
 	};
 
 	/*
