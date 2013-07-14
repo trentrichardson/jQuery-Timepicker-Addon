@@ -1833,46 +1833,22 @@
 	* Returns {dateString: dateString, timeString: timeString}
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
-		try {
-			// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
-			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
-			var separator = computeEffectiveSetting(timeSettings, 'separator'),
-				format = computeEffectiveSetting(timeSettings, 'timeFormat'),
-				timeParts = format.split(separator), // how many occurrences of separator may be in our format?
-				timePartsLen = timeParts.length,
-				allParts = dateTimeString.split(separator),
-				allPartsLen = allParts.length;
+		// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
+		// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
+		var separator = computeEffectiveSetting(timeSettings, 'separator'),
+			format = computeEffectiveSetting(timeSettings, 'timeFormat'),
+			timeParts = format.split(separator), // how many occurrences of separator may be in our format?
+			timePartsLen = timeParts.length,
+			allParts = dateTimeString.split(separator),
+			allPartsLen = allParts.length;
 
-			if (allPartsLen > 1) {
-				return {
-					dateString: allParts.splice(0,allPartsLen-timePartsLen).join(separator),
-					timeString: allParts.splice(0,timePartsLen).join(separator)
-				};
-			}
-
-		} catch (err) {
-			$.timepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
-					"\nthrown error: " + err +
-					"\ndateTimeString" + dateTimeString +
-					"\ndateFormat = " + dateFormat +
-					"\nseparator = " + timeSettings.separator +
-					"\ntimeFormat = " + timeSettings.timeFormat);
-
-			if (err.indexOf(":") >= 0) {
-				// Hack!  The error message ends with a colon, a space, and
-				// the "extra" characters.  We rely on that instead of
-				// attempting to perfectly reproduce the parsing algorithm.
-				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2);
-
-				return {
-					dateString: $.trim(dateTimeString.substring(0, dateStringLength)),
-					timeString: $.trim(dateTimeString.substring(dateStringLength))
-				};
-
-			} else {
-				throw err;
-			}
+		if (allPartsLen > 1) {
+			return {
+				dateString: allParts.splice(0,allPartsLen-timePartsLen).join(separator),
+				timeString: allParts.splice(0,timePartsLen).join(separator)
+			};
 		}
+
 		return {
 			dateString: dateTimeString,
 			timeString: ''

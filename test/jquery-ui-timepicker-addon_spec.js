@@ -263,8 +263,6 @@ describe('datetimepicker', function() {
 
 				expect(result).toEqual({dateString: expectedDateString, timeString: ''});
 			});
-
-			// TODO: Should test the error path, but not sure what throws the error or what the message looks like.
 		});
 
 		describe('parseDateTimeInternal', function() {
