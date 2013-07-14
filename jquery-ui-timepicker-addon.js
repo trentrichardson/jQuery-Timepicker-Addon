@@ -1823,6 +1823,10 @@
 		return String(hour);
 	};
 
+	var computeEffectiveSetting = function (settings, property) {
+		return settings && settings[property] ? settings[property] : $.timepicker._defaults[property];
+	};
+
 	/*
 	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
@@ -1832,8 +1836,8 @@
 		try {
 			// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
 			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
-			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
-				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
+			var separator = computeEffectiveSetting(timeSettings, 'separator'),
+				format = computeEffectiveSetting(timeSettings, 'timeFormat'),
 				timeParts = format.split(separator), // how many occurrences of separator may be in our format?
 				timePartsLen = timeParts.length,
 				allParts = dateTimeString.split(separator),
