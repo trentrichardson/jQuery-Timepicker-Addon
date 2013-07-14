@@ -2113,7 +2113,8 @@
 		_isEmptyObject: isEmptyObject,
 		_convert24to12: convert24to12,
 		_detectSupport: detectSupport,
-		_selectLocalTimezone: selectLocalTimezone
+		_selectLocalTimezone: selectLocalTimezone,
+		_splitDateTime: splitDateTime
 	};
 
 	/*
