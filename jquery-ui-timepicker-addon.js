@@ -1826,7 +1826,7 @@
 	/*
 	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
-	* Returns [dateString, timeString]
+	* Returns {dateString: dateString, timeString: timeString}
 	*/
 	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
 		try {
@@ -1840,10 +1840,10 @@
 				allPartsLen = allParts.length;
 
 			if (allPartsLen > 1) {
-				return [
-						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
-						allParts.splice(0,timePartsLen).join(separator)
-					];
+				return {
+					dateString: allParts.splice(0,allPartsLen-timePartsLen).join(separator),
+					timeString: allParts.splice(0,timePartsLen).join(separator)
+				};
 			}
 
 		} catch (err) {
@@ -1861,13 +1861,19 @@
 				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2),
 					timeString = dateTimeString.substring(dateStringLength);
 
-				return [$.trim(dateTimeString.substring(0, dateStringLength)), $.trim(dateTimeString.substring(dateStringLength))];
+				return {
+					dateString: $.trim(dateTimeString.substring(0, dateStringLength)),
+					timeString: $.trim(dateTimeString.substring(dateStringLength))
+				};
 
 			} else {
 				throw err;
 			}
 		}
-		return [dateTimeString, ''];
+		return {
+			dateString: dateTimeString,
+			timeString: ''
+		};
 	};
 
 	/*
@@ -1878,21 +1884,19 @@
 	*/
 	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
 		var date,
-			splitRes,
-			timeString,
+			parts,
 			parsedTime;
 
-		splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
-		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-		timeString = splitRes[1];
+		parts = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
+		date = $.datepicker._base_parseDate(dateFormat, parts.dateString, dateSettings);
 
-		if (timeString === '') {
+		if (parts.timeString === '') {
 			return {
 				date: date
 			};
 		}
 
-		parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+		parsedTime = $.datepicker.parseTime(timeFormat, parts.timeString, timeSettings);
 
 		if (!parsedTime) {
 			throw 'Wrong time format';

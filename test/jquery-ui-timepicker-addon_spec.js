@@ -206,7 +206,7 @@ describe('datetimepicker', function() {
 
 				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {});
 
-				expect(result).toEqual([expectedDateString, expectedTimeString]);
+				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
 			});
 
 			it('splits a date and time into its parts using a supplied separator', function() {
@@ -216,7 +216,7 @@ describe('datetimepicker', function() {
 
 				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {separator: separator});
 
-				expect(result).toEqual([expectedDateString, expectedTimeString]);
+				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
 			});
 
 			it('splits a date and time into its parts when there are multiple separators in the time format', function() {
@@ -229,13 +229,13 @@ describe('datetimepicker', function() {
 
 				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, timeSettings);
 
-				expect(result).toEqual([expectedDateString, alternateTimeString]);
+				expect(result).toEqual({dateString: expectedDateString, timeString: alternateTimeString});
 			});
 
 			it('splits only a date into itself', function() {
 				var result = $.timepicker._util._splitDateTime('', expectedDateString, {}, {});
 
-				expect(result).toEqual([expectedDateString, '']);
+				expect(result).toEqual({dateString: expectedDateString, timeString: ''});
 			});
 
 			// TODO: Should test the error path, but not sure what throws the error or what the message looks like.
