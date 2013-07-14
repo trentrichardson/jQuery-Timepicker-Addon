@@ -1884,7 +1884,7 @@
 			var timeString = splitRes[1],
 				parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
 
-			if (parsedTime === null) {
+			if (!parsedTime) {
 				throw 'Wrong time format';
 			}
 			return {
