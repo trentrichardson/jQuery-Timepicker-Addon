@@ -1877,25 +1877,31 @@
 	*   timeObj = {hour: , minute: , second: , millisec: , microsec: } - parsed time. Optional
 	*/
 	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
-		var date;
-		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
-		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-		if (splitRes[1] !== '') {
-			var timeString = splitRes[1],
-				parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+		var date,
+			splitRes,
+			timeString,
+			parsedTime;
 
-			if (!parsedTime) {
-				throw 'Wrong time format';
-			}
-			return {
-				date: date,
-				timeObj: parsedTime
-			};
-		} else {
+		splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
+		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
+		timeString = splitRes[1];
+
+		if (timeString === '') {
 			return {
 				date: date
 			};
 		}
+
+		parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+
+		if (!parsedTime) {
+			throw 'Wrong time format';
+		}
+
+		return {
+			date: date,
+			timeObj: parsedTime
+		};
 	};
 
 	/*
