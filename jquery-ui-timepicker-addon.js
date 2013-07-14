@@ -1858,8 +1858,7 @@
 				// Hack!  The error message ends with a colon, a space, and
 				// the "extra" characters.  We rely on that instead of
 				// attempting to perfectly reproduce the parsing algorithm.
-				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2),
-					timeString = dateTimeString.substring(dateStringLength);
+				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2);
 
 				return {
 					dateString: $.trim(dateTimeString.substring(0, dateStringLength)),
