@@ -240,6 +240,50 @@ describe('datetimepicker', function() {
 
 			// TODO: Should test the error path, but not sure what throws the error or what the message looks like.
 		});
+
+		describe('parseDateTimeInternal', function() {
+			it('should return only a date if there is no time component', function() {
+				var inputDateString = '9/11/2001',
+					expectedDate = new Date(inputDateString),
+					result;
+
+				result = $.timepicker._util._parseDateTimeInternal('mm/dd/yy', undefined, inputDateString, undefined, undefined);
+
+				expect(result.date).toEqual(expectedDate);
+				expect(result.timeObj).toBeUndefined();
+			});
+
+			it('should return a date and a parsed time if a time is included', function() {
+				var expectedDateString = '7/4/1976',
+					expectedParsedTime = {
+						hour: 1,
+						minute: 23,
+						second: 45,
+						millisec: 678,
+						microsec: 0
+					},
+					inputDateTimeString = expectedDateString + ' '
+											+ expectedParsedTime.hour + ':'
+											+ expectedParsedTime.minute + ':'
+											+ expectedParsedTime.second + '.'
+											+ expectedParsedTime.millisec,
+					expectedDate = new Date(expectedDateString),
+					result;
+
+				result = $.timepicker._util._parseDateTimeInternal('mm/dd/yy', 'H:m:s.l', inputDateTimeString, undefined, undefined);
+
+				expect(result.date).toEqual(expectedDate);
+				expect(result.timeObj).toEqual(expectedParsedTime);
+			});
+
+			it('should throw an exception if it cannot parse the time', function() {
+				var inputDateString = '4/17/2008 11:22:33';
+
+				expect(function() {
+					$.timepicker._util._parseDateTimeInternal('mm/dd/yy', 'q', inputDateString, undefined, undefined);
+				}).toThrow('Wrong time format');
+			});
+		});
 	});
 
 	describe('timepicker functions', function() {
