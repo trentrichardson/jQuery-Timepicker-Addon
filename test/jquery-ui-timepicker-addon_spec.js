@@ -230,7 +230,7 @@ describe('datetimepicker', function() {
 				var inputDateTimeString = expectedDateString + $.timepicker._defaults.separator + expectedTimeString,
 					result;
 
-				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {});
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, {});
 
 				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
 			});
@@ -240,7 +240,7 @@ describe('datetimepicker', function() {
 					inputDateTimeString = expectedDateString + separator + expectedTimeString,
 					result;
 
-				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, {separator: separator});
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, {separator: separator});
 
 				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
 			});
@@ -253,13 +253,13 @@ describe('datetimepicker', function() {
 					timeSettings = {separator: separator, timeFormat: timeFormat},
 					result;
 
-				result = $.timepicker._util._splitDateTime('', inputDateTimeString, {}, timeSettings);
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, timeSettings);
 
 				expect(result).toEqual({dateString: expectedDateString, timeString: alternateTimeString});
 			});
 
 			it('splits only a date into itself', function() {
-				var result = $.timepicker._util._splitDateTime('', expectedDateString, {}, {});
+				var result = $.timepicker._util._splitDateTime(expectedDateString, {});
 
 				expect(result).toEqual({dateString: expectedDateString, timeString: ''});
 			});

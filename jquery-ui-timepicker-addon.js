@@ -1832,7 +1832,7 @@
 	* Throws exception when date can't be parsed
 	* Returns {dateString: dateString, timeString: timeString}
 	*/
-	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
+	var splitDateTime = function(dateTimeString, timeSettings) {
 		// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
 		// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 		var separator = computeEffectiveSetting(timeSettings, 'separator'),
@@ -1866,7 +1866,7 @@
 			parts,
 			parsedTime;
 
-		parts = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
+		parts = splitDateTime(dateTimeString, timeSettings);
 		date = $.datepicker._base_parseDate(dateFormat, parts.dateString, dateSettings);
 
 		if (parts.timeString === '') {
