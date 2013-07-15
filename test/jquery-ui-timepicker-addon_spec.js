@@ -266,12 +266,14 @@ describe('datetimepicker', function() {
 		});
 
 		describe('parseDateTimeInternal', function() {
+			var dateFormat = 'mm/dd/yy';
+
 			it('should return only a date if there is no time component', function() {
 				var inputDateString = '9/11/2001',
 					expectedDate = new Date(inputDateString),
 					result;
 
-				result = $.timepicker._util._parseDateTimeInternal('mm/dd/yy', undefined, inputDateString, undefined, undefined);
+				result = $.timepicker._util._parseDateTimeInternal(dateFormat, undefined, inputDateString, undefined, undefined);
 
 				expect(result.date).toEqual(expectedDate);
 				expect(result.timeObj).toBeUndefined();
@@ -294,7 +296,7 @@ describe('datetimepicker', function() {
 					expectedDate = new Date(expectedDateString),
 					result;
 
-				result = $.timepicker._util._parseDateTimeInternal('mm/dd/yy', 'H:m:s.l', inputDateTimeString, undefined, undefined);
+				result = $.timepicker._util._parseDateTimeInternal(dateFormat, 'H:m:s.l', inputDateTimeString, undefined, undefined);
 
 				expect(result.date).toEqual(expectedDate);
 				expect(result.timeObj).toEqual(expectedParsedTime);
@@ -304,7 +306,7 @@ describe('datetimepicker', function() {
 				var inputDateString = '4/17/2008 11:22:33';
 
 				expect(function() {
-					$.timepicker._util._parseDateTimeInternal('mm/dd/yy', 'q', inputDateString, undefined, undefined);
+					$.timepicker._util._parseDateTimeInternal(dateFormat, 'q', inputDateString, undefined, undefined);
 				}).toThrow('Wrong time format');
 			});
 		});
