@@ -152,8 +152,8 @@
 
 		/* 
 		* Override the default settings for all instances of the time picker.
-		* @param  settings  object - the new settings to use as defaults (anonymous object)
-		* @return the manager object
+		* @param  {Object} settings  object - the new settings to use as defaults (anonymous object)
+		* @return {Object} the manager object
 		*/
 		setDefaults: function(settings) {
 			extendRemove(this._defaults, settings || {});
@@ -1823,51 +1823,36 @@
 		return String(hour);
 	};
 
+	var computeEffectiveSetting = function (settings, property) {
+		return settings && settings[property] ? settings[property] : $.timepicker._defaults[property];
+	};
+
 	/*
 	* Splits datetime string into date and time substrings.
 	* Throws exception when date can't be parsed
-	* Returns [dateString, timeString]
+	* Returns {dateString: dateString, timeString: timeString}
 	*/
-	var splitDateTime = function(dateFormat, dateTimeString, dateSettings, timeSettings) {
-		try {
-			// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
-			// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
-			var separator = timeSettings && timeSettings.separator ? timeSettings.separator : $.timepicker._defaults.separator,
-				format = timeSettings && timeSettings.timeFormat ? timeSettings.timeFormat : $.timepicker._defaults.timeFormat,
-				timeParts = format.split(separator), // how many occurrences of separator may be in our format?
-				timePartsLen = timeParts.length,
-				allParts = dateTimeString.split(separator),
-				allPartsLen = allParts.length;
+	var splitDateTime = function(dateTimeString, timeSettings) {
+		// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
+		// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
+		var separator = computeEffectiveSetting(timeSettings, 'separator'),
+			format = computeEffectiveSetting(timeSettings, 'timeFormat'),
+			timeParts = format.split(separator), // how many occurrences of separator may be in our format?
+			timePartsLen = timeParts.length,
+			allParts = dateTimeString.split(separator),
+			allPartsLen = allParts.length;
 
-			if (allPartsLen > 1) {
-				return [
-						allParts.splice(0,allPartsLen-timePartsLen).join(separator),
-						allParts.splice(0,timePartsLen).join(separator)
-					];
-			}
-
-		} catch (err) {
-			$.timepicker.log('Could not split the date from the time. Please check the following datetimepicker options' +
-					"\nthrown error: " + err +
-					"\ndateTimeString" + dateTimeString +
-					"\ndateFormat = " + dateFormat +
-					"\nseparator = " + timeSettings.separator +
-					"\ntimeFormat = " + timeSettings.timeFormat);
-
-			if (err.indexOf(":") >= 0) {
-				// Hack!  The error message ends with a colon, a space, and
-				// the "extra" characters.  We rely on that instead of
-				// attempting to perfectly reproduce the parsing algorithm.
-				var dateStringLength = dateTimeString.length - (err.length - err.indexOf(':') - 2),
-					timeString = dateTimeString.substring(dateStringLength);
-
-				return [$.trim(dateTimeString.substring(0, dateStringLength)), $.trim(dateTimeString.substring(dateStringLength))];
-
-			} else {
-				throw err;
-			}
+		if (allPartsLen > 1) {
+			return {
+				dateString: allParts.splice(0,allPartsLen-timePartsLen).join(separator),
+				timeString: allParts.splice(0,timePartsLen).join(separator)
+			};
 		}
-		return [dateTimeString, ''];
+
+		return {
+			dateString: dateTimeString,
+			timeString: ''
+		};
 	};
 
 	/*
@@ -1877,25 +1862,29 @@
 	*   timeObj = {hour: , minute: , second: , millisec: , microsec: } - parsed time. Optional
 	*/
 	var parseDateTimeInternal = function(dateFormat, timeFormat, dateTimeString, dateSettings, timeSettings) {
-		var date;
-		var splitRes = splitDateTime(dateFormat, dateTimeString, dateSettings, timeSettings);
-		date = $.datepicker._base_parseDate(dateFormat, splitRes[0], dateSettings);
-		if (splitRes[1] !== '') {
-			var timeString = splitRes[1],
-				parsedTime = $.datepicker.parseTime(timeFormat, timeString, timeSettings);
+		var date,
+			parts,
+			parsedTime;
 
-			if (parsedTime === null) {
-				throw 'Wrong time format';
-			}
-			return {
-				date: date,
-				timeObj: parsedTime
-			};
-		} else {
+		parts = splitDateTime(dateTimeString, timeSettings);
+		date = $.datepicker._base_parseDate(dateFormat, parts.dateString, dateSettings);
+
+		if (parts.timeString === '') {
 			return {
 				date: date
 			};
 		}
+
+		parsedTime = $.datepicker.parseTime(timeFormat, parts.timeString, timeSettings);
+
+		if (!parsedTime) {
+			throw 'Wrong time format';
+		}
+
+		return {
+			date: date,
+			timeObj: parsedTime
+		};
 	};
 
 	/*
@@ -1915,12 +1904,12 @@
 
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
-	 * @param {number} tzMinutes if not a number this value is returned
+	 * @param {number} tzMinutes if not a number, less than -720 (-1200), or greater than 840 (+1400) this value is returned
 	 * @param {boolean} iso8601 if true formats in accordance to iso8601 "+12:45"
 	 * @return {string}
 	 */
 	$.timepicker.timezoneOffsetString = function(tzMinutes, iso8601) {
-		if(isNaN(tzMinutes) || tzMinutes > 840){
+		if(isNaN(tzMinutes) || tzMinutes > 840 || tzMinutes < -720){
 			return tzMinutes;
 		}
 
@@ -1928,7 +1917,7 @@
 			minutes = off % 60,
 			hours = (off - minutes) / 60,
 			iso = iso8601? ':':'',
-			tz = (off >= 0 ? '+' : '-') + ('0' + (hours * 101).toString()).slice(-2) + iso + ('0' + (minutes * 101).toString()).slice(-2);
+			tz = (off >= 0 ? '+' : '-') + ('0' + Math.abs(hours)).slice(-2) + iso + ('0' + Math.abs(minutes)).slice(-2);
 		
 		if(tz == '+00:00'){
 			return 'Z';
@@ -1938,23 +1927,23 @@
 
 	/**
 	 * Get the number in minutes that represents a timezone string
-	 * @param  {string} tzString formatted like "+0500", "-1245"
-	 * @return {number}
+	 * @param  {string} tzString formatted like "+0500", "-1245", "Z"
+	 * @return {number} the offset minutes or the original string if it doesn't match expectations
 	 */
 	$.timepicker.timezoneOffsetNumber = function(tzString) {
-		tzString = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
+		var normalized = tzString.toString().replace(':',''); // excuse any iso8601, end up with "+1245"
 
-		if(tzString.toUpperCase() === 'Z'){ // if iso8601 with Z, its 0 minute offset
+		if(normalized.toUpperCase() === 'Z'){ // if iso8601 with Z, its 0 minute offset
 			return 0;
 		}
 
-		if(!/^(\-|\+)\d{4}$/.test(tzString)){ // possibly a user defined tz, so just give it back
+		if(!/^(\-|\+)\d{4}$/.test(normalized)){ // possibly a user defined tz, so just give it back
 			return tzString;
 		}
 
-		return ((tzString.substr(0,1) =='-'? -1 : 1) * // plus or minus
-					((parseInt(tzString.substr(1,2),10)*60) + // hours (converted to minutes)
-					parseInt(tzString.substr(3,2),10))); // minutes
+		return ((normalized.substr(0,1) =='-'? -1 : 1) * // plus or minus
+					((parseInt(normalized.substr(1,2),10)*60) + // hours (converted to minutes)
+					parseInt(normalized.substr(3,2),10))); // minutes
 	};
 
 	/**
@@ -1966,7 +1955,7 @@
 	$.timepicker.timezoneAdjust = function(date, toTimezone) {
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
 		if(!isNaN(toTz)){
-			date.setMinutes(date.getMinutes()*1 + (date.getTimezoneOffset()*-1 - toTz*1) );
+			date.setMinutes(date.getMinutes() + -date.getTimezoneOffset() - toTz);
 		}
 		return date;
 	};
@@ -1999,7 +1988,7 @@
 	};
 
 	/**
-	 * Calls `method` on the `startTime` and `endTime` elements, and configures them to
+	 * Calls `datepicker` on the `startTime` and `endTime` elements, and configures them to
 	 * enforce date range limits.
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
@@ -2113,7 +2102,10 @@
 		_isEmptyObject: isEmptyObject,
 		_convert24to12: convert24to12,
 		_detectSupport: detectSupport,
-		_selectLocalTimezone: selectLocalTimezone
+		_selectLocalTimezone: selectLocalTimezone,
+		_computeEffectiveSetting: computeEffectiveSetting,
+		_splitDateTime: splitDateTime,
+		_parseDateTimeInternal: parseDateTimeInternal
 	};
 
 	/*
