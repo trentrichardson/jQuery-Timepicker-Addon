@@ -24,7 +24,7 @@
 			dl.defs{ margin: 10px 0 10px 40px; }
 			dl.defs dt{ font-weight: bold; line-height: 20px; margin: 10px 0 0 0; }
 			dl.defs dd{ margin: -20px 0 10px 160px; padding-bottom: 10px; border-bottom: solid 1px #eee;}
-			pre{ font-size: 12px; line-height: 16px; padding: 5px 5px 5px 10px; margin: 10px 0; background-color: #e4f4d4; border-left: solid 5px #9EC45F; overflow: auto; }
+			pre{ font-size: 12px; line-height: 16px; padding: 5px 5px 5px 10px; margin: 10px 0; background-color: #e4f4d4; border-left: solid 5px #9EC45F; overflow: auto; tab-size: 4; -moz-tab-size: 4; -o-tab-size: 4; -webkit-tab-size: 4; }
 
 			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
 			#tabs{ margin: 20px -20px; border: none; }
@@ -692,7 +692,7 @@ $('#slider_example_4').datetimepicker({
 	},
 	options: function(tp_inst, obj, unit, opts, val){
 		if(typeof(opts) == 'string' && val !== undefined)
-				return obj.find('.ui-timepicker-input').spinner(opts, val);
+			return obj.find('.ui-timepicker-input').spinner(opts, val);
 		return obj.find('.ui-timepicker-input').spinner(opts);
 	},
 	value: function(tp_inst, obj, unit, val){
