@@ -203,14 +203,14 @@ describe('datetimepicker', function() {
 						property: expectedUniqueValue
 					};
 
-				expect($.timepicker._util._computeEffectiveSetting(settings, 'property')).toBe(expectedUniqueValue);
+				expect(util._computeEffectiveSetting(settings, 'property')).toBe(expectedUniqueValue);
 			});
 
 			it('pulls the setting from the timepicker defaults if there are no passed settings', function() {
 				var expectedValue = $.timepicker._defaults.separator;
 				expect(expectedValue).toBeDefined();
 
-				expect($.timepicker._util._computeEffectiveSetting(undefined, 'separator')).toBe(expectedValue);
+				expect(util._computeEffectiveSetting(undefined, 'separator')).toBe(expectedValue);
 			});
 
 			it('pulls the setting from the timepicker defaults if not present in the passed settings', function() {
@@ -218,7 +218,7 @@ describe('datetimepicker', function() {
 					settings = {};
 				expect(expectedValue).toBeDefined();
 
-				expect($.timepicker._util._computeEffectiveSetting(settings, 'separator')).toBe(expectedValue);
+				expect(util._computeEffectiveSetting(settings, 'separator')).toBe(expectedValue);
 			});
 		});
 
@@ -273,7 +273,7 @@ describe('datetimepicker', function() {
 					expectedDate = new Date(inputDateString),
 					result;
 
-				result = $.timepicker._util._parseDateTimeInternal(dateFormat, undefined, inputDateString, undefined, undefined);
+				result = util._parseDateTimeInternal(dateFormat, undefined, inputDateString, undefined, undefined);
 
 				expect(result.date).toEqual(expectedDate);
 				expect(result.timeObj).toBeUndefined();
@@ -296,7 +296,7 @@ describe('datetimepicker', function() {
 					expectedDate = new Date(expectedDateString),
 					result;
 
-				result = $.timepicker._util._parseDateTimeInternal(dateFormat, 'H:m:s.l', inputDateTimeString, undefined, undefined);
+				result = util._parseDateTimeInternal(dateFormat, 'H:m:s.l', inputDateTimeString, undefined, undefined);
 
 				expect(result.date).toEqual(expectedDate);
 				expect(result.timeObj).toEqual(expectedParsedTime);
@@ -306,7 +306,7 @@ describe('datetimepicker', function() {
 				var inputDateString = '4/17/2008 11:22:33';
 
 				expect(function() {
-					$.timepicker._util._parseDateTimeInternal(dateFormat, 'q', inputDateString, undefined, undefined);
+					util._parseDateTimeInternal(dateFormat, 'q', inputDateString, undefined, undefined);
 				}).toThrow('Wrong time format');
 			});
 		});
