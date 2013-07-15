@@ -195,5 +195,270 @@ describe('datetimepicker', function() {
 				expect(timepicker.timezone_select.val()).toBe(timezoneOffset);
 			});
 		});
+
+		describe('computeEffectiveSetting', function() {
+			it('pulls the setting from the passed settings object if it is there', function() {
+				var expectedUniqueValue = 'This is very unique',
+					settings = {
+						property: expectedUniqueValue
+					};
+
+				expect(util._computeEffectiveSetting(settings, 'property')).toBe(expectedUniqueValue);
+			});
+
+			it('pulls the setting from the timepicker defaults if there are no passed settings', function() {
+				var expectedValue = $.timepicker._defaults.separator;
+				expect(expectedValue).toBeDefined();
+
+				expect(util._computeEffectiveSetting(undefined, 'separator')).toBe(expectedValue);
+			});
+
+			it('pulls the setting from the timepicker defaults if not present in the passed settings', function() {
+				var expectedValue = $.timepicker._defaults.separator,
+					settings = {};
+				expect(expectedValue).toBeDefined();
+
+				expect(util._computeEffectiveSetting(settings, 'separator')).toBe(expectedValue);
+			});
+		});
+
+		describe('splitDateTime', function() {
+			var expectedDateString = '3/6/1967',
+				expectedTimeString = '07:32';
+
+			it('splits a date and time into its parts using the default separator', function() {
+				var inputDateTimeString = expectedDateString + $.timepicker._defaults.separator + expectedTimeString,
+					result;
+
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, {});
+
+				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
+			});
+
+			it('splits a date and time into its parts using a supplied separator', function() {
+				var separator = '-',
+					inputDateTimeString = expectedDateString + separator + expectedTimeString,
+					result;
+
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, {separator: separator});
+
+				expect(result).toEqual({dateString: expectedDateString, timeString: expectedTimeString});
+			});
+
+			it('splits a date and time into its parts when there are multiple separators in the time format', function() {
+				var timeFormat = 'hh mm tt',
+					separator = ' ',
+					alternateTimeString = '07 32 am',
+					inputDateTimeString = expectedDateString + separator + alternateTimeString,
+					timeSettings = {separator: separator, timeFormat: timeFormat},
+					result;
+
+				result = $.timepicker._util._splitDateTime(inputDateTimeString, timeSettings);
+
+				expect(result).toEqual({dateString: expectedDateString, timeString: alternateTimeString});
+			});
+
+			it('splits only a date into itself', function() {
+				var result = $.timepicker._util._splitDateTime(expectedDateString, {});
+
+				expect(result).toEqual({dateString: expectedDateString, timeString: ''});
+			});
+		});
+
+		describe('parseDateTimeInternal', function() {
+			var dateFormat = 'mm/dd/yy';
+
+			it('should return only a date if there is no time component', function() {
+				var inputDateString = '9/11/2001',
+					expectedDate = new Date(inputDateString),
+					result;
+
+				result = util._parseDateTimeInternal(dateFormat, undefined, inputDateString, undefined, undefined);
+
+				expect(result.date).toEqual(expectedDate);
+				expect(result.timeObj).toBeUndefined();
+			});
+
+			it('should return a date and a parsed time if a time is included', function() {
+				var expectedDateString = '7/4/1976',
+					expectedParsedTime = {
+						hour: 1,
+						minute: 23,
+						second: 45,
+						millisec: 678,
+						microsec: 0
+					},
+					inputDateTimeString = expectedDateString + ' '
+											+ expectedParsedTime.hour + ':'
+											+ expectedParsedTime.minute + ':'
+											+ expectedParsedTime.second + '.'
+											+ expectedParsedTime.millisec,
+					expectedDate = new Date(expectedDateString),
+					result;
+
+				result = util._parseDateTimeInternal(dateFormat, 'H:m:s.l', inputDateTimeString, undefined, undefined);
+
+				expect(result.date).toEqual(expectedDate);
+				expect(result.timeObj).toEqual(expectedParsedTime);
+			});
+
+			it('should throw an exception if it cannot parse the time', function() {
+				var inputDateString = '4/17/2008 11:22:33';
+
+				expect(function() {
+					util._parseDateTimeInternal(dateFormat, 'q', inputDateString, undefined, undefined);
+				}).toThrow('Wrong time format');
+			});
+		});
+	});
+
+	describe('timepicker functions', function() {
+		describe('timezoneOffsetNumber', function() {
+			it('returns 0 if the time zone string is iso8601 Zulu', function() {
+				expect($.timepicker.timezoneOffsetNumber('Z')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('z')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber(':Z')).toBe(0);
+			});
+
+			it('returns a string that does not match the expected representations', function() {
+				expect($.timepicker.timezoneOffsetNumber('EDT')).toBe('EDT');
+				expect($.timepicker.timezoneOffsetNumber('1234')).toBe('1234');
+				expect($.timepicker.timezoneOffsetNumber('+123')).toBe('+123');
+				expect($.timepicker.timezoneOffsetNumber('-123')).toBe('-123');
+				expect($.timepicker.timezoneOffsetNumber('abc:def')).toBe('abc:def');
+			});
+
+			it('returns the minute offset from a time zone offset string', function() {
+				expect($.timepicker.timezoneOffsetNumber('-0000')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('+0000')).toBe(0);
+				expect($.timepicker.timezoneOffsetNumber('-0400')).toBe(-240);
+				expect($.timepicker.timezoneOffsetNumber('+0400')).toBe(240);
+			});
+		});
+
+		describe('timezoneOffsetString', function() {
+			it('returns NaN if the input is NaN', function() {
+				expect($.timepicker.timezoneOffsetString(NaN)).toBeNaN();
+			});
+
+			it('returns the input if the input is greater than 840 (+14:00)', function() {
+				var expectedMinutes = 850;
+
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+
+				expect(actualMinutes).toBe(expectedMinutes);
+			});
+
+			it('returns the input if the input is less than -720 (-12:00)', function() {
+				var expectedMinutes = -730;
+
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+
+				expect(actualMinutes).toBe(expectedMinutes);
+			});
+
+			it('returns "Z" if the offset is 0 and iso8601 is true', function() {
+				expect($.timepicker.timezoneOffsetString(0, true)).toBe('Z');
+			});
+
+			it('returns the expected offset string for non-iso8601 values', function() {
+				expect($.timepicker.timezoneOffsetString(0, false)).toBe('+0000');
+				expect($.timepicker.timezoneOffsetString(60, false)).toBe('+0100');
+				expect($.timepicker.timezoneOffsetString(480, false)).toBe('+0800');
+				expect($.timepicker.timezoneOffsetString(-60, false)).toBe('-0100');
+				expect($.timepicker.timezoneOffsetString(-480, false)).toBe('-0800');
+				expect($.timepicker.timezoneOffsetString(-720, false)).toBe('-1200');
+				expect($.timepicker.timezoneOffsetString(840, false)).toBe('+1400');
+			});
+
+			it('returns the expected offset string for iso8601 values', function() {
+				expect($.timepicker.timezoneOffsetString(60, true)).toBe('+01:00');
+				expect($.timepicker.timezoneOffsetString(480, true)).toBe('+08:00');
+				expect($.timepicker.timezoneOffsetString(-60, true)).toBe('-01:00');
+				expect($.timepicker.timezoneOffsetString(-480, true)).toBe('-08:00');
+				expect($.timepicker.timezoneOffsetString(-720, true)).toBe('-12:00');
+				expect($.timepicker.timezoneOffsetString(840, true)).toBe('+14:00');
+			});
+		});
+
+		describe('timezoneAdjust', function() {
+			it('does not change the date if the timezone yields NaN for an offset', function() {
+				var expectedDate = new Date();
+
+				expect($.timepicker.timezoneAdjust(expectedDate, NaN)).toEqual(expectedDate);
+			});
+
+			it('changes the minutes by the time zone offset minutes', function() {
+				var inputDate,
+					originalMillis,
+					expectedDifference,
+					adjustedDate;
+
+				inputDate = new Date();
+				originalMillis = inputDate.getTime();
+				expectedDifference = -(inputDate.getTimezoneOffset() + 60) * 60 * 1000;
+
+				adjustedDate = $.timepicker.timezoneAdjust(inputDate, '+0100');
+
+				expect(adjustedDate.getTime() - originalMillis).toBe(expectedDifference);
+			});
+		});
+
+		describe('log', function() {
+			it('calls console.log with the message if the console exists', function() {
+				var expectedMessage = "Just what I expected!";
+				spyOn(window.console, "log");
+
+				$.timepicker.log(expectedMessage);
+
+				expect(window.console.log).toHaveBeenCalledWith(expectedMessage);
+			});
+
+			it('does not call console.log if there is no console', function() {
+				var originalConsole = window.console,
+					consoleLogSpy = spyOn(window.console, "log");
+				window.console = undefined;
+
+				$.timepicker.log("Don't care");
+
+				expect(consoleLogSpy).not.toHaveBeenCalled();
+
+				window.console = originalConsole;
+			});
+		});
+
+		describe('range functions', function() {
+			var startTime = $('<p>start</p>'),
+				endTime = $('<p>end</p>'),
+				options = {};
+
+			describe('convenience functions', function() {
+				beforeEach(function() {
+					spyOn($.timepicker, 'handleRange');
+				});
+
+				it('timeRange calls handleRange the right way', function() {
+					$.timepicker.timeRange(startTime, endTime, options);
+
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('timepicker', startTime, endTime, options);
+				});
+
+				it('datetimeRange calls handleRange the right way', function() {
+					$.timepicker.datetimeRange(startTime, endTime, options);
+
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('datetimepicker', startTime, endTime, options);
+				});
+
+				it('dateRange calls handleRange the right way', function() {
+					$.timepicker.dateRange(startTime, endTime, options);
+
+					expect($.timepicker.handleRange).toHaveBeenCalledWith('datepicker', startTime, endTime, options);
+				});
+			});
+
+			xdescribe('handleRange', function() {
+				// TODO: Difficult to test. Needs attention.
+			});
+		});
 	});
 });
