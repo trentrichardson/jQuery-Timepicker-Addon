@@ -87,7 +87,7 @@ describe('datetimepicker', function() {
 				var expectedValue = 11;
 
 				expect(util._convert24to12(expectedValue + 12 * 3)).toBe("" + expectedValue);
-			})
+			});
 		});
 
 		describe('detectSupport', function() {
@@ -458,6 +458,116 @@ describe('datetimepicker', function() {
 
 			xdescribe('handleRange', function() {
 				// TODO: Difficult to test. Needs attention.
+			});
+		});
+	});
+
+	describe('datepicker functions', function() {
+		describe('formatTime', function() {
+			describe('single formats, default options', function() {
+				var emptyTime = {};
+
+				describe('hours', function() {
+					var earlyHour = {hour: 7},
+						lateHour = {hour: 17};
+
+					it('formats HH correctly', function() {
+						expect($.datepicker.formatTime('HH', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('HH', earlyHour)).toBe('07');
+						expect($.datepicker.formatTime('HH', lateHour)).toBe('17');
+					});
+
+					it('formats H correctly', function() {
+						expect($.datepicker.formatTime('H', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('H', earlyHour)).toBe('7');
+						expect($.datepicker.formatTime('H', lateHour)).toBe('17');
+					});
+
+					it('formats hh correctly', function() {
+						expect($.datepicker.formatTime('hh', emptyTime)).toBe('12');
+						expect($.datepicker.formatTime('hh', earlyHour)).toBe('07');
+						expect($.datepicker.formatTime('hh', lateHour)).toBe('05');
+					});
+
+					it('formats h correctly', function() {
+						expect($.datepicker.formatTime('h', emptyTime)).toBe('12');
+						expect($.datepicker.formatTime('h', earlyHour)).toBe('7');
+						expect($.datepicker.formatTime('h', lateHour)).toBe('5');
+					});
+				});
+
+				describe('minutes', function() {
+					var singleDigitMinute = {minute: 3},
+						doubleDigitMinute = {minute: 42};
+
+					it('formats mm correctly', function() {
+						expect($.datepicker.formatTime('mm', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('mm', singleDigitMinute)).toBe('03');
+						expect($.datepicker.formatTime('mm', doubleDigitMinute)).toBe('42');
+					});
+
+					it('formats m correctly', function() {
+						expect($.datepicker.formatTime('m', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('m', singleDigitMinute)).toBe('3');
+						expect($.datepicker.formatTime('m', doubleDigitMinute)).toBe('42');
+					});
+				});
+
+				describe('seconds', function() {
+					var singleDigitSecond = {second: 5},
+						doubleDigitSecond = {second: 31};
+
+					it('formats ss correctly', function() {
+						expect($.datepicker.formatTime('ss', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('ss', singleDigitSecond)).toBe('05');
+						expect($.datepicker.formatTime('ss', doubleDigitSecond)).toBe('31');
+					});
+
+					it('formats s correctly', function() {
+						expect($.datepicker.formatTime('s', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('s', singleDigitSecond)).toBe('5');
+						expect($.datepicker.formatTime('s', doubleDigitSecond)).toBe('31');
+					});
+				});
+
+				describe('milliseconds', function() {
+					it('formats l correctly', function() {
+						var singleDigitMillis = {millisec: 3},
+							doubleDigitMillis = {millisec: 17},
+							tripleDigitMillis = {millisec: 123};
+
+						expect($.datepicker.formatTime('l', emptyTime)).toBe('000');
+						expect($.datepicker.formatTime('l', singleDigitMillis)).toBe('003');
+						expect($.datepicker.formatTime('l', doubleDigitMillis)).toBe('017');
+						expect($.datepicker.formatTime('l', tripleDigitMillis)).toBe('123');
+					});
+				});
+
+				// TODO: Should microseconds be three digits or six? Does this complement millis or replace? The regexp looks like it replaces.
+				describe('microseconds', function() {
+					it('formats c correctly', function() {
+						var singleDigitMillis = {microsec: 3},
+							doubleDigitMillis = {microsec: 17},
+							tripleDigitMillis = {microsec: 123};
+
+						expect($.datepicker.formatTime('c', emptyTime)).toBe('000');
+						expect($.datepicker.formatTime('c', singleDigitMillis)).toBe('003');
+						expect($.datepicker.formatTime('c', doubleDigitMillis)).toBe('017');
+						expect($.datepicker.formatTime('c', tripleDigitMillis)).toBe('123');
+					});
+				});
+
+				describe('timezone', function() {
+					// TODO: Finish
+				});
+
+				describe('am/pm', function() {
+					// TODO: Finish
+				});
+
+				describe('other', function() {
+					// TODO: Finish
+				});
 			});
 		});
 	});
