@@ -87,7 +87,7 @@ describe('datetimepicker', function() {
 				var expectedValue = 11;
 
 				expect(util._convert24to12(expectedValue + 12 * 3)).toBe("" + expectedValue);
-			})
+			});
 		});
 
 		describe('detectSupport', function() {
@@ -338,13 +338,13 @@ describe('datetimepicker', function() {
 
 		describe('timezoneOffsetString', function() {
 			it('returns NaN if the input is NaN', function() {
-				expect($.timepicker.timezoneOffsetString(NaN)).toBeNaN();
+				expect($.timepicker.timezoneOffsetString(NaN, false)).toBeNaN();
 			});
 
 			it('returns the input if the input is greater than 840 (+14:00)', function() {
 				var expectedMinutes = 850;
 
-				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes, false);
 
 				expect(actualMinutes).toBe(expectedMinutes);
 			});
@@ -352,7 +352,7 @@ describe('datetimepicker', function() {
 			it('returns the input if the input is less than -720 (-12:00)', function() {
 				var expectedMinutes = -730;
 
-				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes, false);
 
 				expect(actualMinutes).toBe(expectedMinutes);
 			});
@@ -458,6 +458,145 @@ describe('datetimepicker', function() {
 
 			xdescribe('handleRange', function() {
 				// TODO: Difficult to test. Needs attention.
+			});
+		});
+	});
+
+	describe('datepicker functions', function() {
+		describe('formatTime', function() {
+			describe('single formats, default options', function() {
+				var emptyTime = {};
+
+				describe('hours', function() {
+					var earlyHour = {hour: 7},
+						lateHour = {hour: 17};
+
+					it('formats HH correctly', function() {
+						expect($.datepicker.formatTime('HH', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('HH', earlyHour)).toBe('07');
+						expect($.datepicker.formatTime('HH', lateHour)).toBe('17');
+					});
+
+					it('formats H correctly', function() {
+						expect($.datepicker.formatTime('H', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('H', earlyHour)).toBe('7');
+						expect($.datepicker.formatTime('H', lateHour)).toBe('17');
+					});
+
+					it('formats hh correctly', function() {
+						expect($.datepicker.formatTime('hh', emptyTime)).toBe('12');
+						expect($.datepicker.formatTime('hh', earlyHour)).toBe('07');
+						expect($.datepicker.formatTime('hh', lateHour)).toBe('05');
+					});
+
+					it('formats h correctly', function() {
+						expect($.datepicker.formatTime('h', emptyTime)).toBe('12');
+						expect($.datepicker.formatTime('h', earlyHour)).toBe('7');
+						expect($.datepicker.formatTime('h', lateHour)).toBe('5');
+					});
+				});
+
+				describe('minutes', function() {
+					var singleDigitMinute = {minute: 3},
+						doubleDigitMinute = {minute: 42};
+
+					it('formats mm correctly', function() {
+						expect($.datepicker.formatTime('mm', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('mm', singleDigitMinute)).toBe('03');
+						expect($.datepicker.formatTime('mm', doubleDigitMinute)).toBe('42');
+					});
+
+					it('formats m correctly', function() {
+						expect($.datepicker.formatTime('m', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('m', singleDigitMinute)).toBe('3');
+						expect($.datepicker.formatTime('m', doubleDigitMinute)).toBe('42');
+					});
+				});
+
+				describe('seconds', function() {
+					var singleDigitSecond = {second: 5},
+						doubleDigitSecond = {second: 31};
+
+					it('formats ss correctly', function() {
+						expect($.datepicker.formatTime('ss', emptyTime)).toBe('00');
+						expect($.datepicker.formatTime('ss', singleDigitSecond)).toBe('05');
+						expect($.datepicker.formatTime('ss', doubleDigitSecond)).toBe('31');
+					});
+
+					it('formats s correctly', function() {
+						expect($.datepicker.formatTime('s', emptyTime)).toBe('0');
+						expect($.datepicker.formatTime('s', singleDigitSecond)).toBe('5');
+						expect($.datepicker.formatTime('s', doubleDigitSecond)).toBe('31');
+					});
+				});
+
+				describe('milliseconds', function() {
+					it('formats l correctly', function() {
+						var singleDigitMillis = {millisec: 3},
+							doubleDigitMillis = {millisec: 17},
+							tripleDigitMillis = {millisec: 123};
+
+						expect($.datepicker.formatTime('l', emptyTime)).toBe('000');
+						expect($.datepicker.formatTime('l', singleDigitMillis)).toBe('003');
+						expect($.datepicker.formatTime('l', doubleDigitMillis)).toBe('017');
+						expect($.datepicker.formatTime('l', tripleDigitMillis)).toBe('123');
+					});
+				});
+
+				describe('microseconds', function() {
+					it('formats c correctly', function() {
+						var singleDigitMicros = {microsec: 3},
+							doubleDigitMicros = {microsec: 17},
+							tripleDigitMicros = {microsec: 123};
+
+						expect($.datepicker.formatTime('c', emptyTime)).toBe('000');
+						expect($.datepicker.formatTime('c', singleDigitMicros)).toBe('003');
+						expect($.datepicker.formatTime('c', doubleDigitMicros)).toBe('017');
+						expect($.datepicker.formatTime('c', tripleDigitMicros)).toBe('123');
+					});
+				});
+
+				describe('timezone', function() {
+					// TODO: Finish
+				});
+
+				describe('am/pm', function() {
+					var morningHour = {hour: 3},
+						afternoonHour = {hour: 15};
+
+					it('formats t correctly', function() {
+						expect($.datepicker.formatTime('t', emptyTime)).toBe('a');
+						expect($.datepicker.formatTime('t', morningHour)).toBe('a');
+						expect($.datepicker.formatTime('t', afternoonHour)).toBe('p');
+					});
+
+					it('formats T correctly', function() {
+						expect($.datepicker.formatTime('T', emptyTime)).toBe('A');
+						expect($.datepicker.formatTime('T', morningHour)).toBe('A');
+						expect($.datepicker.formatTime('T', afternoonHour)).toBe('P');
+					});
+
+					it('formats tt correctly', function() {
+						expect($.datepicker.formatTime('tt', emptyTime)).toBe('am');
+						expect($.datepicker.formatTime('tt', morningHour)).toBe('am');
+						expect($.datepicker.formatTime('tt', afternoonHour)).toBe('pm');
+					});
+
+					it('formats TT correctly', function() {
+						expect($.datepicker.formatTime('TT', emptyTime)).toBe('AM');
+						expect($.datepicker.formatTime('TT', morningHour)).toBe('AM');
+						expect($.datepicker.formatTime('TT', afternoonHour)).toBe('PM');
+					});
+				});
+
+				describe('other', function() {
+					expect($.datepicker.formatTime('')).toBe('');
+					expect($.datepicker.formatTime("'abc'")).toBe('abc');
+					expect($.datepicker.formatTime('"abc"')).toBe('"abc"');
+					expect($.datepicker.formatTime("'")).toBe("'");
+					expect($.datepicker.formatTime("''")).toBe("");
+					expect($.datepicker.formatTime("'abc' h 'def'")).toBe('abc 12 def');
+				});
 			});
 		});
 	});
