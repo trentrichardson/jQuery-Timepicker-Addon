@@ -338,13 +338,13 @@ describe('datetimepicker', function() {
 
 		describe('timezoneOffsetString', function() {
 			it('returns NaN if the input is NaN', function() {
-				expect($.timepicker.timezoneOffsetString(NaN)).toBeNaN();
+				expect($.timepicker.timezoneOffsetString(NaN, false)).toBeNaN();
 			});
 
 			it('returns the input if the input is greater than 840 (+14:00)', function() {
 				var expectedMinutes = 850;
 
-				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes, false);
 
 				expect(actualMinutes).toBe(expectedMinutes);
 			});
@@ -352,7 +352,7 @@ describe('datetimepicker', function() {
 			it('returns the input if the input is less than -720 (-12:00)', function() {
 				var expectedMinutes = -730;
 
-				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes);
+				var actualMinutes = $.timepicker.timezoneOffsetString(expectedMinutes, false);
 
 				expect(actualMinutes).toBe(expectedMinutes);
 			});
