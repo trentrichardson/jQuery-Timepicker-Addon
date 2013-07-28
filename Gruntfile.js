@@ -65,7 +65,14 @@ module.exports = function(grunt) {
 			},
 		},
 		jasmine: {
-			files: ['test/**/*.html']
+			src: 'src/<%= pkg.name %>.js',
+			options: {
+				specs: 'test/*_spec.js',
+				vendor: [
+						'http://code.jquery.com/jquery-1.10.1.min.js',
+						'http://code.jquery.com/ui/1.10.3/jquery-ui.min.js'
+					]
+			}
 		},
 		jshint: {
 			gruntfile: {
