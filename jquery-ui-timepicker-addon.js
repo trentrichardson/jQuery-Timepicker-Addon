@@ -1267,7 +1267,7 @@
 			second: 0,
 			millisec: 0,
 			microsec: 0,
-			timezone: 0
+			timezone: null
 		}, time);
 
 		var tmptime = format,
@@ -1278,7 +1278,7 @@
 			ampmName = options.pmNames[0];
 		}
 
-		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[zZ]|[lc]|('.*?'|".*?"))/g, function(match) {
+		tmptime = tmptime.replace(/(?:HH?|hh?|mm?|ss?|[tT]{1,2}|[zZ]|[lc]|'.*?')/g, function(match) {
 		switch (match) {
 			case 'HH':
 				return ('0' + hour).slice(-2);

@@ -379,6 +379,14 @@ describe('datetimepicker', function() {
 				expect($.timepicker.timezoneOffsetString(-720, true)).toBe('-12:00');
 				expect($.timepicker.timezoneOffsetString(840, true)).toBe('+14:00');
 			});
+
+			it('handles abnormal values reasonably', function() {
+				expect($.timepicker.timezoneOffsetString(null, false)).toBe('+0000');
+				expect($.timepicker.timezoneOffsetString(null, true)).toBe('Z');
+
+				expect($.timepicker.timezoneOffsetString(undefined, false)).toBeUndefined();
+				expect($.timepicker.timezoneOffsetString(undefined, true)).toBeUndefined();
+			});
 		});
 
 		describe('timezoneAdjust', function() {
@@ -557,7 +565,31 @@ describe('datetimepicker', function() {
 				});
 
 				describe('timezone', function() {
-					// TODO: Finish
+					var nullTimezoneTime = {timezone: null},
+						noTimezoneTime = emptyTime,
+						timezoneTime = {timezone: -240},
+						noTimezoneOptions = {},
+						timezoneOptions = {timezone: 600};
+
+					it('handles z correctly', function() {
+						expect($.datepicker.formatTime('z', timezoneTime, noTimezoneOptions)).toBe('-0400');
+						expect($.datepicker.formatTime('z', timezoneTime, timezoneOptions)).toBe('-0400');
+
+						expect($.datepicker.formatTime('z', nullTimezoneTime, timezoneOptions)).toBe('+1000');
+						expect($.datepicker.formatTime('z', noTimezoneTime, timezoneOptions)).toBe('+1000');
+						expect($.datepicker.formatTime('z', nullTimezoneTime, noTimezoneOptions)).toBe('+0000');
+						expect($.datepicker.formatTime('z', noTimezoneTime, noTimezoneOptions)).toBe('+0000');
+					});
+
+					it('handles Z correctly', function() {
+						expect($.datepicker.formatTime('Z', timezoneTime, noTimezoneOptions)).toBe('-04:00');
+						expect($.datepicker.formatTime('Z', timezoneTime, timezoneOptions)).toBe('-04:00');
+
+						expect($.datepicker.formatTime('Z', nullTimezoneTime, timezoneOptions)).toBe('+10:00');
+						expect($.datepicker.formatTime('Z', noTimezoneTime, timezoneOptions)).toBe('+10:00');
+						expect($.datepicker.formatTime('Z', nullTimezoneTime, noTimezoneOptions)).toBe('Z');
+						expect($.datepicker.formatTime('Z', noTimezoneTime, noTimezoneOptions)).toBe('Z');
+					});
 				});
 
 				describe('am/pm', function() {
@@ -589,13 +621,19 @@ describe('datetimepicker', function() {
 					});
 				});
 
-				describe('other', function() {
-					expect($.datepicker.formatTime('')).toBe('');
-					expect($.datepicker.formatTime("'abc'")).toBe('abc');
-					expect($.datepicker.formatTime('"abc"')).toBe('"abc"');
-					expect($.datepicker.formatTime("'")).toBe("'");
-					expect($.datepicker.formatTime("''")).toBe("");
-					expect($.datepicker.formatTime("'abc' h 'def'")).toBe('abc 12 def');
+				describe('literals', function() {
+					it('handles literals correctly', function() {
+						expect($.datepicker.formatTime('', emptyTime)).toBe('');
+						expect($.datepicker.formatTime("'abc'", emptyTime)).toBe('abc');
+						expect($.datepicker.formatTime("'", emptyTime)).toBe("'");
+						expect($.datepicker.formatTime("''", emptyTime)).toBe("");
+						expect($.datepicker.formatTime("'abc' h 'def'", emptyTime)).toBe('abc 12 def');
+					});
+
+					it('does not treat double quotes as literals', function() {
+						expect($.datepicker.formatTime('"ab"', emptyTime)).toBe('"ab"');
+						expect($.datepicker.formatTime('"abc"', emptyTime)).toBe('"ab000"');
+					});
 				});
 			});
 		});
