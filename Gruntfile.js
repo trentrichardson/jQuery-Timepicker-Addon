@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 		copy: {
 			dist: {
 				files: [
-					{ src: 'src/index.html', dest: 'dist/index.html' },
+					//{ src: 'src/index.html', dest: 'dist/index.html' },
 					{ src: 'src/<%= pkg.name %>.css', dest: 'dist/<%= pkg.name %>.css' },
 					{ src: 'src/i18n/jquery-ui-timepicker-*.js', dest: 'dist/i18n/', expand:true, flatten: true },
 				]
@@ -32,21 +32,19 @@ module.exports = function(grunt) {
 				},
 				src: ['src/<%= pkg.name %>.js'],
 				dest: 'dist/<%= pkg.name %>.js'
-			}/*,
+			},
 			docs: {
 				src: [
 						'src/docs/header.html',
 						'src/docs/intro.html',
 						'src/docs/options.html',
-						'src/docs/methods.html',
-						'src/docs/events.html',
 						'src/docs/formatting.html',
 						'src/docs/i18n.html',
 						'src/docs/examples.html',
 						'src/docs/footer.html'
 					],
 				dest: 'dist/index.html'
-			}*/
+			}
 		},
 		uglify: {
 			options: {
