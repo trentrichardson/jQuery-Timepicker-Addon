@@ -561,7 +561,32 @@ describe('datetimepicker', function() {
 				});
 
 				describe('am/pm', function() {
-					// TODO: Finish
+					var morningHour = {hour: 3},
+						afternoonHour = {hour: 15};
+
+					it('formats t correctly', function() {
+						expect($.datepicker.formatTime('t', emptyTime)).toBe('a');
+						expect($.datepicker.formatTime('t', morningHour)).toBe('a');
+						expect($.datepicker.formatTime('t', afternoonHour)).toBe('p');
+					});
+
+					it('formats T correctly', function() {
+						expect($.datepicker.formatTime('T', emptyTime)).toBe('A');
+						expect($.datepicker.formatTime('T', morningHour)).toBe('A');
+						expect($.datepicker.formatTime('T', afternoonHour)).toBe('P');
+					});
+
+					it('formats tt correctly', function() {
+						expect($.datepicker.formatTime('tt', emptyTime)).toBe('am');
+						expect($.datepicker.formatTime('tt', morningHour)).toBe('am');
+						expect($.datepicker.formatTime('tt', afternoonHour)).toBe('pm');
+					});
+
+					it('formats TT correctly', function() {
+						expect($.datepicker.formatTime('TT', emptyTime)).toBe('AM');
+						expect($.datepicker.formatTime('TT', morningHour)).toBe('AM');
+						expect($.datepicker.formatTime('TT', afternoonHour)).toBe('PM');
+					});
 				});
 
 				describe('other', function() {
