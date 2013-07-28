@@ -593,7 +593,9 @@ describe('datetimepicker', function() {
 					expect($.datepicker.formatTime('')).toBe('');
 					expect($.datepicker.formatTime("'abc'")).toBe('abc');
 					expect($.datepicker.formatTime('"abc"')).toBe('"abc"');
-					expect($.datepicker.formatTime("'")).toBe("'"); // TODO: Why???
+					expect($.datepicker.formatTime("'")).toBe("'");
+					expect($.datepicker.formatTime("''")).toBe("");
+					expect($.datepicker.formatTime("'abc' h 'def'")).toBe('abc 12 def');
 				});
 			});
 		});

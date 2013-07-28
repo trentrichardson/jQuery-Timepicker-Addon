@@ -1313,7 +1313,7 @@
 			case 'tt':
 				return ampmName.toLowerCase();
 			default:
-				return match.replace(/\'/g, "") || "'";
+				return match.replace(/'/g, "");
 			}
 		});
 
