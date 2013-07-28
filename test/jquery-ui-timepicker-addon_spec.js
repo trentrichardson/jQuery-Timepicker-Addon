@@ -543,17 +543,16 @@ describe('datetimepicker', function() {
 					});
 				});
 
-				// TODO: Should microseconds be three digits or six? Does this complement millis or replace? The regexp looks like it replaces.
 				describe('microseconds', function() {
 					it('formats c correctly', function() {
-						var singleDigitMillis = {microsec: 3},
-							doubleDigitMillis = {microsec: 17},
-							tripleDigitMillis = {microsec: 123};
+						var singleDigitMicros = {microsec: 3},
+							doubleDigitMicros = {microsec: 17},
+							tripleDigitMicros = {microsec: 123};
 
 						expect($.datepicker.formatTime('c', emptyTime)).toBe('000');
-						expect($.datepicker.formatTime('c', singleDigitMillis)).toBe('003');
-						expect($.datepicker.formatTime('c', doubleDigitMillis)).toBe('017');
-						expect($.datepicker.formatTime('c', tripleDigitMillis)).toBe('123');
+						expect($.datepicker.formatTime('c', singleDigitMicros)).toBe('003');
+						expect($.datepicker.formatTime('c', doubleDigitMicros)).toBe('017');
+						expect($.datepicker.formatTime('c', tripleDigitMicros)).toBe('123');
 					});
 				});
 
