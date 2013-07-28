@@ -590,7 +590,10 @@ describe('datetimepicker', function() {
 				});
 
 				describe('other', function() {
-					// TODO: Finish
+					expect($.datepicker.formatTime('')).toBe('');
+					expect($.datepicker.formatTime("'abc'")).toBe('abc');
+					expect($.datepicker.formatTime('"abc"')).toBe('"abc"');
+					expect($.datepicker.formatTime("'")).toBe("'"); // TODO: Why???
 				});
 			});
 		});
