@@ -1255,7 +1255,7 @@
 	 * Public utility to format the time
 	 * @param {string} format format of the time
 	 * @param {Object} time Object not a Date for timezones
-	 * @param {Object} options essentially the regional[].. amNames, pmNames, ampm
+	 * @param {Object} [options] essentially the regional[].. amNames, pmNames, ampm
 	 * @returns {string} the formatted time
 	 */
 	$.datepicker.formatTime = function(format, time, options) {
