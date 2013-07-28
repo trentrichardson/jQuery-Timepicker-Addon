@@ -636,6 +636,16 @@ describe('datetimepicker', function() {
 					});
 				});
 			});
+
+			describe('preserves whitespace in formats', function() {
+				it('preserves leading whitespace', function() {
+					expect($.datepicker.formatTime(' H', {hour: 3})).toBe(' 3');
+				});
+
+				it('preserves trailing whitespace', function() {
+					expect($.datepicker.formatTime('H ', {hour: 3})).toBe('3 ');
+				});
+			});
 		});
 	});
 });

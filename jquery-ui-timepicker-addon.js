@@ -1317,7 +1317,6 @@
 			}
 		});
 
-		tmptime = $.trim(tmptime);
 		return tmptime;
 	};
 
