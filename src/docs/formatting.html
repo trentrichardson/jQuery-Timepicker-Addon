@@ -1,0 +1,40 @@
+<!-- ############################################################################# -->
+<!-- Formatting
+<!-- ############################################################################# -->
+<div id="tp-formatting">
+
+	<h2>Formatting Your Time</h2>
+
+	<p>The default format is "HH:mm".  To use 12 hour time use something similar to: "hh:mm tt".  When both "t" and lower case "h" are present in the timeFormat, 12 hour time will be used.</p>
+
+	<dl class="defs">
+		<dt>H</dt><dd>Hour with no leading 0 (24 hour)</dd>
+		<dt>HH</dt><dd>Hour with leading 0 (24 hour)</dd>
+		<dt>h</dt><dd>Hour with no leading 0 (12 hour)</dd>
+		<dt>hh</dt><dd>Hour with leading 0 (12 hour)</dd>
+		<dt>m</dt><dd>Minute with no leading 0</dd>
+		<dt>mm</dt><dd>Minute with leading 0</dd>
+		<dt>s</dt><dd>Second with no leading 0</dd>
+		<dt>ss</dt><dd>Second with leading 0</dd>
+		<dt>l</dt><dd>Milliseconds always with leading 0</dd>
+		<dt>c</dt><dd>Microseconds always with leading 0</dd>
+		<dt>t</dt><dd>a or p for AM/PM</dd>
+		<dt>T</dt><dd>A or P for AM/PM</dd>
+		<dt>tt</dt><dd>am or pm for AM/PM</dd>
+		<dt>TT</dt><dd>AM or PM for AM/PM</dd>
+		<dt>z</dt><dd>Timezone as defined by timezoneList</dd>
+		<dt>Z</dt><dd>Timezone in Iso 8601 format (+04:45)</dd>
+		<dt>'...'</dt><dd>Literal text (Uses single quotes)</dd>
+	</dl>
+
+	<p>Formats are used in the following ways:</p>
+	<ul>
+		<li>timeFormat option</li>
+		<li>altTimeFormat option</li>
+		<li>pickerTimeFormat option</li>
+		<li>$.datepicker.formatTime(format, timeObj, options) utility method</li>
+		<li>$.datepicker.parseTime(format, timeStr, options) utility method</li>
+	</ul>
+
+	<p>For help with  formatting the date portion, visit the datepicker documentation for <a href="http://docs.jquery.com/UI/Datepicker/formatDate" title="jQuery UI Datepicker Formatting">formatting dates</a>.</p>
+</div>

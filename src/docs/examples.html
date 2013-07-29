@@ -1,0 +1,441 @@
+<!-- ############################################################################# -->
+<!-- Examples
+<!-- ############################################################################# -->
+<div id="tp-examples">
+	<h2>Examples</h2>
+
+	<ul>
+		<li><a href="#basic_examples" title="Basic Initializations">Basic Initializations</a></li>
+		<li><a href="#timezone_examples" title="Using Timezones">Using Timezones</a></li>
+		<li><a href="#slider_examples" title="Slider Modifications">Slider Modifications</a></li>
+		<li><a href="#alt_examples" title="Alternate Field">Alternate Fields</a></li>
+		<li><a href="#rest_examples" title="Time Restraints">Time Restraints</a></li>
+		<li><a href="#utility_examples" title="Utilities">Utilities</a></li>
+	</ul>
+
+	<h3 id="basic_examples">Basic Initializations</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Add a simple datetimepicker to jQuery UI's datepicker</p>
+		<div>
+	 		<input type="text" name="basic_example_1" id="basic_example_1" value="" />
+		</div>					
+<pre>
+$('#basic_example_1').datetimepicker();
+</pre>
+	</div>
+
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Add only a timepicker:</p>
+		<div>
+	 		<input type="text" name="basic_example_2" id="basic_example_2" value="" />
+		</div>					
+<pre>
+$('#basic_example_2').timepicker();
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Format the time:</p>
+		<div>
+	 		<input type="text" name="basic_example_3" id="basic_example_3" value="" />
+		</div>					
+<pre>
+$('#basic_example_3').datetimepicker({
+	timeFormat: "hh:mm tt"
+});
+</pre>
+	</div>
+
+	<h3 id="timezone_examples">Using Timezones</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Simplest timezone usage:</p>
+		<div>
+	 		<input type="text" name="timezone_example_1" id="timezone_example_1" value="" />
+		</div>					
+<pre>
+$('#timezone_example_1').datetimepicker({
+	timeFormat: 'hh:mm tt z'
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Define your own timezone options:</p>
+		<div>
+	 		<input type="text" name="timezone_example_2" id="timezone_example_2" value="" />
+		</div>					
+<pre>
+$('#timezone_example_2').datetimepicker({
+	timeFormat: 'HH:mm z',
+	timezoneList: [ 
+			{ value: -300, label: 'Eastern'}, 
+			{ value: -360, label: 'Central' }, 
+			{ value: -420, label: 'Mountain' }, 
+			{ value: -480, label: 'Pacific' } 
+		]
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>You may also use timezone string abbreviations for values.  This should be used with caution.  Computing accurate javascript Date objects may not be possible when trying to retrieve or set the date from timepicker (see setDate and getDate examples below).  For simple input values however this should work.</p>
+		<div>
+	 		<input type="text" name="timezone_example_3" id="timezone_example_3" value="" />
+		</div>					
+<pre>
+$('#timezone_example_3').datetimepicker({
+	timeFormat: 'HH:mm z',
+	timezone: 'MT',
+	timezoneList: [ 
+			{ value: 'ET', label: 'Eastern'}, 
+			{ value: 'CT', label: 'Central' }, 
+			{ value: 'MT', label: 'Mountain' }, 
+			{ value: 'PT', label: 'Pacific' } 
+		]
+});
+
+</pre>
+	</div>
+
+	<h3 id="slider_examples">Slider Modifications</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Add a grid to each slider:</p>
+		<div>
+	 		<input type="text" name="slider_example_1" id="slider_example_1" value="" />
+		</div>					
+<pre>
+$('#slider_example_1').timepicker({
+	hourGrid: 4,
+	minuteGrid: 10,
+	timeFormat: 'hh:mm tt'
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Set the interval step of sliders:</p>
+		<div>
+	 		<input type="text" name="slider_example_2" id="slider_example_2" value="" />
+		</div>					
+<pre>
+$('#slider_example_2').datetimepicker({
+	timeFormat: 'HH:mm:ss',
+	stepHour: 2,
+	stepMinute: 10,
+	stepSecond: 10
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Add sliderAccess plugin for touch devices:</p>
+		<div>
+	 		<input type="text" name="slider_example_3" id="slider_example_3" value="" />
+		</div>					
+<pre>
+$('#slider_example_3').datetimepicker({
+	addSliderAccess: true,
+	sliderAccessArgs: { touchonly: false }
+});</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use dropdowns instead of sliders.  By default if slider is not available dropdowns will be used.</p>
+		<div>
+	 		<input type="text" name="slider_example_4" id="slider_example_4" value="" />
+		</div>					
+<pre>
+$('#slider_example_4').datetimepicker({
+	controlType: 'select',
+	timeFormat: 'hh:mm tt'
+});</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Create your own control by implementing the create, options, and value methods. If you want to use your new control for all instances use the $.timepicker.setDefaults({controlType:myControl}). Here we implement jQueryUI's spinner control (jQueryUI 1.9+).</p>
+		<div>
+			<input type="text" name="slider_example_5" id="slider_example_5" value="" />
+		</div>					
+<pre>var myControl=  {
+	create: function(tp_inst, obj, unit, val, min, max, step){
+		$('&lt;input class="ui-timepicker-input" value="'+val+'" style="width:50%"&gt;')
+			.appendTo(obj)
+			.spinner({
+				min: min,
+				max: max,
+				step: step,
+				change: function(e,ui){ // key events
+						// don't call if api was used and not key press
+						if(e.originalEvent !== undefined)
+							tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
+					},
+				spin: function(e,ui){ // spin events
+						tp_inst.control.value(tp_inst, obj, unit, ui.value);
+						tp_inst._onTimeChange();
+						tp_inst._onSelectHandler();
+					}
+			});
+		return obj;
+	},
+	options: function(tp_inst, obj, unit, opts, val){
+		if(typeof(opts) == 'string' && val !== undefined)
+			return obj.find('.ui-timepicker-input').spinner(opts, val);
+		return obj.find('.ui-timepicker-input').spinner(opts);
+	},
+	value: function(tp_inst, obj, unit, val){
+		if(val !== undefined)
+			return obj.find('.ui-timepicker-input').spinner('value', val);
+		return obj.find('.ui-timepicker-input').spinner('value');
+	}
+};
+
+$('#slider_example_5').datetimepicker({
+	controlType: myControl
+});</pre>
+	</div>
+
+	<h3 id="alt_examples">Alternate Fields</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Alt field in the simplest form:</p>
+		<div>
+			<input type="text" name="alt_example_1" id="alt_example_1" value="09/15/2012" />
+			<input type="text" name="alt_example_1_alt" id="alt_example_1_alt" value="10:15" />
+		</div>					
+<pre>
+$('#alt_example_1').datetimepicker({
+	altField: "#alt_example_1_alt"
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>With datetime in both:</p>
+		<div>
+			<input type="text" name="alt_example_2" id="alt_example_2" value="" />
+			<input type="text" name="alt_example_2_alt" id="alt_example_2_alt" value="" />
+		</div>					
+<pre>
+$('#alt_example_2').datetimepicker({
+	altField: "#alt_example_2_alt",
+	altFieldTimeOnly: false
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Format the altField differently:</p>
+		<div>
+			<input type="text" name="alt_example_3" id="alt_example_3" value="" />
+			<input type="text" name="alt_example_3_alt" id="alt_example_3_alt" value="" />
+		</div>					
+<pre>
+$('#alt_example_3').datetimepicker({
+	altField: "#alt_example_3_alt",
+	altFieldTimeOnly: false,
+	altFormat: "yy-mm-dd",
+	altTimeFormat: "h:m t",
+	altSeparator: " @ "
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>With inline mode using altField:</p>
+		<div>
+	 		<input type="text" name="alt_example_4_alt" id="alt_example_4_alt" value="" />
+	 		<span id="alt_example_4" ></span>
+		</div>					
+<pre>
+$('#alt_example_4').datetimepicker({
+	altField: "#alt_example_4_alt",
+	altFieldTimeOnly: false
+});
+</pre>
+	</div>
+
+	<h3 id="rest_examples">Time Restraints</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Set the min/max hour of every date:</p>
+		<div>
+	 		<input type="text" name="rest_example_1" id="rest_example_1" value="" />
+		</div>					
+<pre>
+$('#rest_example_1').timepicker({
+	hourMin: 8,
+	hourMax: 16
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Set the min/max date numerically:</p>
+		<div>
+	 		<input type="text" name="rest_example_2" id="rest_example_2" value="" />
+		</div>					
+<pre>
+$('#rest_example_2').datetimepicker({
+	numberOfMonths: 2,
+	minDate: 0,
+	maxDate: 30
+});
+</pre>
+	</div>					
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Set the min/max date and time with a Date object:</p>
+		<div>
+	 		<input type="text" name="rest_example_3" id="rest_example_3" value="" />
+		</div>					
+<pre>
+$('#rest_example_3').datetimepicker({
+	minDate: new Date(2010, 11, 20, 8, 30),
+	maxDate: new Date(2010, 11, 31, 17, 30)
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Restrict a start and end date by using onSelect and onClose events for more control over functionality:</p>
+		<p>For more examples and advanced usage grab the <a href="http://trentrichardson.com/ebooks/handling-time/" title="Handling Time eBook">Handling Time eBook</a>.</p>
+		<div>
+	 		<input type="text" name="rest_example_4_start" id="rest_example_4_start" value="" /> 
+	 		<input type="text" name="rest_example_4_end" id="rest_example_4_end" value="" />
+		</div>					
+<pre>
+var startDateTextBox = $('#rest_example_4_start');
+var endDateTextBox = $('#rest_example_4_end');
+
+startDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
+	onClose: function(dateText, inst) {
+		if (endDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				endDateTextBox.datetimepicker('setDate', testStartDate);
+		}
+		else {
+			endDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		endDateTextBox.datetimepicker('option', 'minDate', startDateTextBox.datetimepicker('getDate') );
+	}
+});
+endDateTextBox.datetimepicker({ 
+	timeFormat: 'HH:mm z',
+	onClose: function(dateText, inst) {
+		if (startDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				startDateTextBox.datetimepicker('setDate', testEndDate);
+		}
+		else {
+			startDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		startDateTextBox.datetimepicker('option', 'maxDate', endDateTextBox.datetimepicker('getDate') );
+	}
+});
+</pre>
+	</div>
+
+	<h3 id="utility_examples">Utilities</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Get and Set Datetime with the getDate and setDate methods.  This example uses timezone to demonstrate the timepicker regonizes the timezones and computes the offsets when getting and setting.</p>
+		<div>
+			<input type="text" name="utility_example_1" id="utility_example_1" value="" /> 
+			<button id="utility_example_1_setdt" value="1">Set Datetime</button> 
+			<button id="utility_example_1_getdt" value="1">Get Datetime</button> 
+		</div>
+					
+<pre>
+var ex13 = $('#utility_example_1');
+
+ex13.datetimepicker({
+	timeFormat: 'hh:mm tt z',
+	separator: ' @ ',
+	showTimezone: true
+});
+
+$('#utility_example_1_setdt').click(function(){
+	ex13.datetimepicker('setDate', (new Date()) );
+});
+
+$('#utility_example_1_getdt').click(function(){
+	alert(ex13.datetimepicker('getDate'));
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the utility function to format your own time. $.datepicker.formatTime(format, time, options)</p>
+		<dl class="defs">
+			<dt>format</dt><dd>required - string represenation of the time format to use</dd>
+			<dt>time</dt><dd>required - hash: { hour, minute, second, millisecond, timezone }</dd>
+			<dt>options</dt><dd>optional - hash of any options in regional translation (ampm, amNames, pmNames..)</dd>
+		</dl>
+		<p>Returns a time string in the specified format.</p>
+		<div>
+			<div id="utility_example_2"></div>
+		</div>
+					
+<pre>
+$('#utility_example_2').text(
+	$.datepicker.formatTime('HH:mm z', { hour: 14, minute: 36, timezone: '+2000' }, {})
+);
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Use the utility function to parses a formatted time. $.datepicker.parseTime(format, timeString, options)</p>
+		<dl class="defs">
+			<dt>format</dt><dd>required - string represenation of the time format to use</dd>
+			<dt>time</dt><dd>required - time string matching the format given in parameter 1</dd>
+			<dt>options</dt><dd>optional - hash of any options in regional translation (ampm, amNames, pmNames..)</dd>
+		</dl>
+		<p>Returns an object with hours, minutes, seconds, milliseconds, timezone.</p>
+		<div>
+			<div id="utility_example_3"></div>
+		</div>
+					
+<pre>
+$('#utility_example_3').text(JSON.stringify( 
+	$.datepicker.parseTime('HH:mm:ss:l z', "14:36:21:765 +2000", {}) 
+));
+</pre>
+	</div>
+
+</div>
