@@ -10,8 +10,6 @@
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
  */
 
-/*jslint evil: true, white: false, undef: false */
-
 (function ($) {
 
 	/*
@@ -756,9 +754,8 @@
 
 			// If the update was done in the input field, the input field should not be updated.
 			// If the update was done using the sliders, update the input field.
-			var hasChanged = (hour != this.hour || minute != this.minute || second != this.second || millisec != this.millisec || microsec != this.microsec
-								|| (this.ampm.length > 0 && (hour < 12) != ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) 
-								|| (this.timezone !== null && timezone != this.timezone));
+			var hasChanged = (hour !== this.hour || minute !== this.minute || second !== this.second || millisec !== this.millisec || microsec !== this.microsec || 
+					(this.ampm.length > 0 && (hour < 12) !== ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) || (this.timezone !== null && timezone !== this.timezone));
 
 			if (hasChanged) {
 
@@ -1358,7 +1355,7 @@
 
 		// don't popup the datepicker if there is another instance already opened
 		var input = inst.input[0];
-		if ($.datepicker._curInst && $.datepicker._curInst != inst && $.datepicker._datepickerShowing && $.datepicker._lastInput != input) {
+		if ($.datepicker._curInst && $.datepicker._curInst !== inst && $.datepicker._datepickerShowing && $.datepicker._lastInput !== input) {
 			return;
 		}
 
@@ -1410,9 +1407,9 @@
 
 	/*
 	* Fourth bad hack :/ override _updateAlternate function used in inline mode to init altField
+	* Update any alternate field to synchronise with the main field.
 	*/
 	$.datepicker._base_updateAlternate = $.datepicker._updateAlternate;
-	/* Update any alternate field to synchronise with the main field. */
 	$.datepicker._updateAlternate = function (inst) {
 		var tp_inst = this._get(inst, 'timepicker');
 		if (tp_inst) {
@@ -1452,7 +1449,7 @@
 			tp_inst = $.datepicker._get(inst, 'timepicker');
 
 		if (tp_inst) {
-			if (tp_inst._defaults.timeOnly && (inst.input.val() != inst.lastVal)) {
+			if (tp_inst._defaults.timeOnly && (inst.input.val() !== inst.lastVal)) {
 				try {
 					$.datepicker._updateDatepicker(inst);
 				} catch (err) {
@@ -1803,7 +1800,7 @@
 	var detectSupport = function (timeFormat) {
 		var tf = timeFormat.replace(/'.*?'/g, '').toLowerCase(), // removes literals
 			isIn = function (f, t) { // does the format contain the token?
-					return !!(f.indexOf(t) !== -1);
+					return f.indexOf(t) !== -1 ? true : false;
 				};
 		return {
 				hour: isIn(tf, 'h'),
@@ -2098,7 +2095,7 @@
 	 */
 	$.timepicker.log = function (err) {
 		if (window.console) {
-			console.log(err);
+			window.console.log(err);
 		}
 	};
 
