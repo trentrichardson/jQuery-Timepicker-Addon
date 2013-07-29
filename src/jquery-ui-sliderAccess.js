@@ -17,8 +17,9 @@
 			options = options || {};
 			options.touchonly = options.touchonly !== undefined? options.touchonly : true; // by default only show it if touch device
 
-			if(options.touchonly === true && !("ontouchend" in document))
+			if(options.touchonly === true && !("ontouchend" in document)){
 				return $(this);
+			}
 				
 			return $(this).each(function(i,obj){
 						var $t = $(this),
@@ -56,8 +57,9 @@
 
 											e.preventDefault();
 											
-											if(newval < minval || newval > maxval)
+											if(newval < minval || newval > maxval){
 												return;
+											}
 											
 											$t.slider('value', newval);
 
@@ -77,8 +79,8 @@
 
 						// adjust the width so we don't break the original layout
 						var bOuterWidth = $buttons.css({
-									marginLeft: ((o.where == 'after' && !o.isRTL) || (o.where == 'before' && o.isRTL)? 10:0), 
-									marginRight: ((o.where == 'before' && !o.isRTL) || (o.where == 'after' && o.isRTL)? 10:0)
+									marginLeft: ((o.where === 'after' && !o.isRTL) || (o.where === 'before' && o.isRTL)? 10:0), 
+									marginRight: ((o.where === 'before' && !o.isRTL) || (o.where === 'after' && o.isRTL)? 10:0)
 								}).outerWidth(true) + 5;
 						var tOuterWidth = $t.outerWidth(true);
 						$t.css('display','inline-block').width(tOuterWidth-bOuterWidth);
