@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 				files: [
 					//{ src: 'src/index.html', dest: 'dist/index.html' },
 					{ src: 'src/<%= pkg.name %>.css', dest: 'dist/<%= pkg.name %>.css' },
-					{ src: 'src/i18n/jquery-ui-timepicker-*.js', dest: 'dist/i18n/', expand:true, flatten: true },
+					{ src: 'src/i18n/jquery-ui-timepicker-*.js', dest: 'dist/i18n/', expand:true, flatten: true }
 				]
 			}
 		},
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 			dist: {
 				src: '<%= concat.dist.dest %>',
 				dest: 'dist/<%= pkg.name %>.min.js'
-			},
+			}
 		},
 		cssmin: {
 			options: {
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 			dist: {
 				src: 'dist/<%= pkg.name %>.css',
 				dest: 'dist/<%= pkg.name %>.min.css'
-			},
+			}
 		},
 		jasmine: {
 			src: 'src/<%= pkg.name %>.js',
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 					jshintrc: 'test/.jshintrc'
 				},
 				src: ['test/**/*.js']
-			},
+			}
 		},
 		watch: {
 			gruntfile: {
@@ -107,8 +107,8 @@ module.exports = function(grunt) {
 			test: {
 				files: '<%= jshint.test.src %>',
 				tasks: ['jshint:test', 'jasmine']
-			},
-		},
+			}
+		}
 	});
 
 	// These plugins provide necessary tasks.
