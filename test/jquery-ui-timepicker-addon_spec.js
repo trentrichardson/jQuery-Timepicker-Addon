@@ -59,11 +59,11 @@ describe('datetimepicker', function() {
 			});
 
 			it('should say object with a supplemental prototype property is empty', function() {
-				var testObject = new Function();
+				var testObject = function () {};
 				testObject.prototype["prop"] = "something";
 
 				expect(util._isEmptyObject(testObject)).toBe(true);
-			})
+			});
 		});
 
 		describe('convert24to12', function() {
@@ -288,11 +288,11 @@ describe('datetimepicker', function() {
 						millisec: 678,
 						microsec: 0
 					},
-					inputDateTimeString = expectedDateString + ' '
-											+ expectedParsedTime.hour + ':'
-											+ expectedParsedTime.minute + ':'
-											+ expectedParsedTime.second + '.'
-											+ expectedParsedTime.millisec,
+					inputDateTimeString = expectedDateString + ' ' +
+											expectedParsedTime.hour + ':' +
+											expectedParsedTime.minute + ':' +
+											expectedParsedTime.second + '.' +
+											expectedParsedTime.millisec,
 					expectedDate = new Date(expectedDateString),
 					result;
 
