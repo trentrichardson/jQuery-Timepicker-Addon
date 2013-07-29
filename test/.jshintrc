@@ -13,6 +13,7 @@
 	"browser": true,
 	"predef": [
 		"jQuery",
+		"$",
 		"QUnit",
 		"module",
 		"test",
@@ -27,6 +28,14 @@
 		"notDeepEqual",
 		"strictEqual",
 		"notStrictEqual",
-		"throws"
+		"throws",
+		"describe",
+		"it",
+		"beforeEach",
+		"afterEach",
+		"spyOn",
+		"affix",
+		"xdescribe",
+		"xit"
 	]
 }
