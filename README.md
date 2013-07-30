@@ -9,9 +9,9 @@ About
 
 Use
 ---
-- To use this plugin you must include jQuery and jQuery UI with datepicker and slider
-- Include timepicker-addon script located in the *dist* directory
-- now use timepicker with $('#selector').datetimepicker() or $('#selector').timepicker()
+- To use this plugin you must include jQuery (1.6+) and jQuery UI with datepicker (and optionally slider)
+- Include timepicker-addon script located in the `dist` directory
+- now use timepicker with `$('#selector').datetimepicker()` or `$('#selector').timepicker()`
 
 Contributing Code - Please Read!
 --------------------------------
