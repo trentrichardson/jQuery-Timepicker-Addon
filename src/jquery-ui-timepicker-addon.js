@@ -22,7 +22,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.3.2"
+			version: "@@version"
 		}
 	});
 
@@ -2126,6 +2126,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.3.2";
+	$.timepicker.version = "@@version";
 
 })(jQuery);

@@ -20,6 +20,7 @@ module.exports = function(grunt) {
 				files: [
 					//{ src: 'src/index.html', dest: 'dist/index.html' },
 					{ src: 'src/<%= pkg.name %>.css', dest: 'dist/<%= pkg.name %>.css' },
+					{ src: 'src/jquery-ui-sliderAccess.js', dest: 'dist/jquery-ui-sliderAccess.js' },
 					{ src: 'src/i18n/jquery-ui-timepicker-*.js', dest: 'dist/i18n/', expand:true, flatten: true }
 				]
 			}
@@ -62,6 +63,22 @@ module.exports = function(grunt) {
 			dist: {
 				src: 'dist/<%= pkg.name %>.css',
 				dest: 'dist/<%= pkg.name %>.min.css'
+			}
+		},
+		replace: {
+			dist: {
+				options: {
+					variables: {
+						version: '<%= pkg.version %>',
+						timestamp: '<%= grunt.template.today("yyyy-mm-dd") %>'
+					},
+					prefix: '@@'
+				},
+				files: [
+					{ src: 'dist/<%= pkg.name %>.js', dest: 'dist/<%= pkg.name %>.js' },
+					{ src: 'dist/<%= pkg.name %>.css', dest: 'dist/<%= pkg.name %>.css' },
+					{ src: 'dist/index.html', dest: 'dist/index.html' }
+				]
 			}
 		},
 		jasmine: {
@@ -116,6 +133,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-replace');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -123,6 +141,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'copy', 'concat', 'uglify', 'cssmin']);
+	grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'copy', 'concat', 'replace', 'uglify', 'cssmin']);
 
 };
