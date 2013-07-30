@@ -1,8 +1,6 @@
 /*! jQuery Timepicker Addon - v1.3.2 - 2013-07-29
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
-/*jslint evil: true, white: false, undef: false */
-
 (function ($) {
 
 	/*

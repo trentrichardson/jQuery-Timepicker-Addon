@@ -83,15 +83,15 @@
 		<dt>controlType</dt>
 			<dd><em>Default: 'slider'</em> - Whether to use 'slider' or 'select'. If 'slider' is unavailable through jQueryUI, 'select' will be used. For advanced usage you may pass an object which implements "create", "options", "value" methods to use controls other than sliders or selects.  See the _controls property in the source code for more details.
 <pre>{
-create: function(tp_inst, obj, unit, val, min, max, step){	
-// generate whatever controls you want here, just return obj
-},
-options: function(tp_inst, obj, unit, opts, val){
-// if val==undefined return the value, else return obj
-},
-value: function(tp_inst, obj, unit, val){
-// if val==undefined return the value, else return obj
-}
+	create: function(tp_inst, obj, unit, val, min, max, step){	
+		// generate whatever controls you want here, just return obj
+	},
+	options: function(tp_inst, obj, unit, opts, val){
+		// if val==undefined return the value, else return obj
+	},
+	value: function(tp_inst, obj, unit, val){
+		// if val==undefined return the value, else return obj
+	}
 }</pre>
 			</dd>
 
@@ -239,12 +239,12 @@ value: function(tp_inst, obj, unit, val){
 		<dt>parse</dt>
 			<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
 <pre>{
-hour: 19,
-minute: 10,
-second: 23,
-millisec: 45,
-microsec: 23,
-timezone: '-0400'
+	hour: 19,
+	minute: 10,
+	second: 23,
+	millisec: 45,
+	microsec: 23,
+	timezone: '-0400'
 }</pre>
 			</dd>
 	</dl>
