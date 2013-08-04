@@ -4,8 +4,7 @@
 	"type": "component",
 	"homepage": "http://trentrichardson.com/examples/timepicker/",
 	"license": [
-		"MIT",
-		"GPL-2.0"
+		"MIT"
 	],
 	"require": {
 		"robloach/component-installer": "*",
