@@ -702,6 +702,9 @@
 		* on time change is also called when the time is updated in the text field
 		*/
 		_onTimeChange: function () {
+			if (!this._defaults.showTimepicker) {
+                                return;
+			}
 			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider, 'hour') : false,
 				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
 				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
@@ -1485,6 +1488,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = false;
 			tp_inst._defaults.showTimepicker = false;
 			tp_inst._updateDateTime(inst);
 		}
@@ -1499,6 +1503,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = true;
 			tp_inst._defaults.showTimepicker = true;
 			tp_inst._addTimePicker(inst); // Could be disabled on page load
 			tp_inst._updateDateTime(inst);
