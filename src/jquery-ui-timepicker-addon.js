@@ -1485,6 +1485,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = false;
 			tp_inst._defaults.showTimepicker = false;
 			tp_inst._updateDateTime(inst);
 		}
@@ -1499,6 +1500,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = true;
 			tp_inst._defaults.showTimepicker = true;
 			tp_inst._addTimePicker(inst); // Could be disabled on page load
 			tp_inst._updateDateTime(inst);
