@@ -702,6 +702,9 @@
 		* on time change is also called when the time is updated in the text field
 		*/
 		_onTimeChange: function () {
+			if (!this._defaults.showTimepicker) {
+                                return;
+			}
 			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider, 'hour') : false,
 				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
 				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
