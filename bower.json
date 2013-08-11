@@ -1,6 +1,6 @@
 {
 	"name": "jquery-timepicker-addon",
-	"version": "1.4",
+	"version": "1.4.1",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/trentrichardson/jQuery-Timepicker-Addon.git"
