@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"> 
+	<head> 
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Adding a Timepicker to jQuery UI Datepicker</title> 
+		<meta name="Description" content="jQuery Timepicker Addon.  Add a timepicker to your jQuery UI Datepicker.  With options to show only time, format time, and much more." />
+		<meta name="Keywords" content="jQuery, UI, datepicker, timepicker, datetime, time, format" />
+		
+		<style type="text/css"> 
+			body,img,p,h1,h2,h3,h4,h5,h6,form,table,td,ul,ol,li,dl,dt,dd,pre,blockquote,fieldset,label{
+				margin:0;
+				padding:0;
+				border:0;
+			}
+			body{ background-color: #777; border-top: solid 10px #7b94b2; font: 90% Arial, Helvetica, sans-serif; padding: 20px; }
+			h1,h2,h3{ margin: 10px 0; }
+			h1{}
+			h2{ color: #f66; }
+			h3{ color: #6b84a2; }
+			p{ margin: 10px 0; }
+			a{ color: #7b94b2; }
+			ul,ol{ margin: 10px 0 10px 40px; }
+			li{ margin: 4px 0; }
+			dl.defs{ margin: 10px 0 10px 40px; }
+			dl.defs dt{ font-weight: bold; line-height: 20px; margin: 10px 0 0 0; }
+			dl.defs dd{ margin: -20px 0 10px 160px; padding-bottom: 10px; border-bottom: solid 1px #eee;}
+			pre{ font-size: 12px; line-height: 16px; padding: 5px 5px 5px 10px; margin: 10px 0; background-color: #e4f4d4; border-left: solid 5px #9EC45F; overflow: auto; tab-size: 4; -moz-tab-size: 4; -o-tab-size: 4; -webkit-tab-size: 4; }
+
+			.wrapper{ background-color: #ffffff; width: 800px; border: solid 1px #eeeeee; padding: 20px; margin: 0 auto; }
+			#tabs{ margin: 20px -20px; border: none; }
+			#tabs, #ui-datepicker-div, .ui-datepicker{ font-size: 85%; }
+			.clear{ clear: both; }
+			
+			.example-container{ background-color: #f4f4f4; border-bottom: solid 2px #777777; margin: 0 0 20px 40px; padding: 20px; }
+			.example-container input{ border: solid 1px #aaa; padding: 4px; width: 175px; }
+			.ebook{}
+			.ebook img.ebookimg{ float: left; margin: 0 15px 15px 0; width: 100px; }
+			.ebook .buyp a iframe{ margin-bottom: -5px; }
+		</style> 
+		
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+		
+	</head> 
+	<body> 
+		<div class="wrapper">
+			<h1>Adding a Timepicker to jQuery UI Datepicker</h1> 
+			
+			<p>The timepicker addon adds a timepicker to jQuery UI Datepicker, thus the datepicker and slider components (jQueryUI) are required for using any of these.  In addition all datepicker options are still available through the timepicker addon.</p>
+			
+			<p>If you are interested in contributing to Timepicker Addon please <a href="http://github.com/trentrichardson/jQuery-Timepicker-Addon" title="Check out Timepicker on GitHub">check it out on GitHub</a>.  If you do make additions please keep in mind I enjoy tabs over spaces,.. But contributions are welcome in any form.</p>
+			
+			<p><a href="http://trentrichardson.com" title="Back to Blog">Back to Blog</a> or <a href="http://twitter.com/practicalweb" title="Follow Me on Twitter">Follow on Twitter</a></p>
+		
+			<a href="http://carbounce.com" title="Car Bounce" style="float: right;display: inline-block;width:380px;padding: 10px;background-color: #fbfbfb;border: dotted 4px #e8e8e8;color: #9EC45F;font-size: 16px;text-decoration:none;letter-spacing:1px;"><img src="http://carbounce.com/img/logo_small.png" alt="Car Bounce" align="left" style="margin-right: 20px;"/>Try my new app to keep you informed of your car's financing status and value.</a>	
+
+			<h2>Donation</h2>
+			<p>Has this Timepicker Addon been helpful to you?</p>
+			<div class="donation">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="C2QQHR7JQGD28">
+				<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</div>
+
+			<div id="tabs">
+				<ul>
+					<li><a href="#tp-getting-started" title="Getting Started">Getting Started</a></li>
+					<li><a href="#tp-options" title="Options">Options</a></li>
+					<li><a href="#tp-formatting" title="Examples">Formatting</a></li>
+					<li><a href="#tp-localization" title="Examples">Localization</a></li>
+					<li><a href="#tp-examples" title="Examples">Examples</a></li>
+				</ul>

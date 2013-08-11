@@ -1,0 +1,26 @@
+{
+	"name": "trentrichardson/jquery-timepicker-addon",
+	"description": "Adds a timepicker to jQueryUI Datepicker.",
+	"type": "component",
+	"homepage": "http://trentrichardson.com/examples/timepicker/",
+	"license": [
+		"MIT"
+	],
+	"require": {
+		"robloach/component-installer": "*",
+		"components/jqueryui": "~1.10.2"
+	},
+	"extra": {
+		"component": {
+			"name": "jquery-timepicker-addon",
+			"scripts": [
+				"dist/jquery-ui-sliderAccess.js",
+				"dist/jquery-ui-timepicker-addon.js",
+				"dist/i18n/**"
+			],
+			"styles": [
+				"dist/jquery-ui-timepicker-addon.css"
+			]
+		}
+	}
+}

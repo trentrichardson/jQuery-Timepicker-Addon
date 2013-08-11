@@ -1,0 +1,17 @@
+{
+	"evil": true,
+	"curly": true,
+	"eqeqeq": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"sub": true,
+	"undef": true,
+	"unused": false,
+	"loopfunc": true,
+	"boss": true,
+	"eqnull": true,
+	"browser": true,
+	"predef": ["jQuery"]
+}

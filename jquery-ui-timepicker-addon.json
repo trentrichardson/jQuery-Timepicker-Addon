@@ -1,0 +1,27 @@
+{
+	"name": "jquery-ui-timepicker-addon",
+	"title": "jQuery Timepicker Addon",
+	"description": "A timepicker addon for jQueryUI datepicker.",
+	"version": "1.4",
+	"homepage": "http://trentrichardson.com/examples/timepicker",
+	"author": {
+		"name": "Trent Richardson",
+		"email": "trentdrichardson@gmail.com",
+		"url": "http://trentrichardson.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/trentrichardson/jQuery-Timepicker-Addon.git"
+	},
+	"bugs": "https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues",
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://trentrichardson.com/examples/jQuery-Timepicker-Addon/blob/master/LICENSE-MIT"
+		}
+	],
+	"dependencies": {
+		"jquery": "*"
+	},
+	"keywords": []
+}

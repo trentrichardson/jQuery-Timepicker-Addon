@@ -1,0 +1,65 @@
+<!-- ############################################################################# -->
+<!-- Localization
+<!-- ############################################################################# -->
+<div id="tp-localization">
+
+	<h2>Working with Localizations</h2>
+	
+	<p>Timepicker comes with many translations and localizations, thanks to all the contributors.  They can be found in the i18n folder in the git repo.</p>
+
+	<p>The quick and cheap way to use localizations is to pass in options to a timepicker instance:</p>
+
+<pre>$('#example123').timepicker({
+	timeOnlyTitle: 'Выберите время',
+	timeText: 'Время',
+	hourText: 'Часы',
+	minuteText: 'Минуты',
+	secondText: 'Секунды',
+	currentText: 'Теперь',
+	closeText: 'Закрыть'
+});
+</pre>
+	<p>However, if you plan to use timepicker extensively you will need to include (build your own) localization.  It is simply assigning those same variables to an object.  As you see in the example below we maintain a separate object for timepicker.  This way we aren't bound to any changes within datepicker.</p>
+
+<pre>$.datepicker.regional['ru'] = {
+	closeText: 'Закрыть',
+	prevText: '&#x3c;Пред',
+	nextText: 'След&#x3e;',
+	currentText: 'Сегодня',
+	monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь',
+	'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+	monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн',
+	'Июл','Авг','Сен','Окт','Ноя','Дек'],
+	dayNames: ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
+	dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
+	dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+	weekHeader: 'Не',
+	dateFormat: 'dd.mm.yy',
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ''
+};
+$.datepicker.setDefaults($.datepicker.regional['ru']);
+
+
+$.timepicker.regional['ru'] = {
+	timeOnlyTitle: 'Выберите время',
+	timeText: 'Время',
+	hourText: 'Часы',
+	minuteText: 'Минуты',
+	secondText: 'Секунды',
+	millisecText: 'Миллисекунды',
+	timezoneText: 'Часовой пояс',
+	currentText: 'Сейчас',
+	closeText: 'Закрыть',
+	timeFormat: 'HH:mm',
+	amNames: ['AM', 'A'],
+	pmNames: ['PM', 'P'],
+	isRTL: false
+};
+$.timepicker.setDefaults($.timepicker.regional['ru']);
+</pre>
+	<p>Now all you have to do is call timepicker and the Russian localization is used.  Generally you only need to include the localization file, it will setDefaults() for you.</p>
+	<p>You can also visit <a href="http://docs.jquery.com/UI/Datepicker/Localization" title="localization for datepicker" target="_BLANK">localization for datepicker</a> for more information about datepicker localizations.</p>
+</div>
