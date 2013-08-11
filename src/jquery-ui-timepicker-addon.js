@@ -822,8 +822,12 @@
 		*/
 		_updateDateTime: function (dp_inst) {
 			dp_inst = this.inst || dp_inst;
-			//var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
-			var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay)),
+			var dtTmp = (dp_inst.currentYear > 0? 
+							new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay) : 
+							new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+				dt = $.datepicker._daylightSavingAdjust(dtTmp),
+				//dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+				//dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay)),
 				dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 				formatCfg = $.datepicker._getFormatConfig(dp_inst),
 				timeAvailable = dt !== null && this.timeDefined;

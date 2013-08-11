@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.3.2 - 2013-07-31
+/*! jQuery Timepicker Addon - v1.3.2 - 2013-08-11
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -696,6 +696,9 @@
 		* on time change is also called when the time is updated in the text field
 		*/
 		_onTimeChange: function () {
+			if (!this._defaults.showTimepicker) {
+                                return;
+			}
 			var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider, 'hour') : false,
 				minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
 				second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
@@ -813,8 +816,12 @@
 		*/
 		_updateDateTime: function (dp_inst) {
 			dp_inst = this.inst || dp_inst;
-			//var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
-			var dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay)),
+			var dtTmp = (dp_inst.currentYear > 0? 
+							new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay) : 
+							new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+				dt = $.datepicker._daylightSavingAdjust(dtTmp),
+				//dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+				//dt = $.datepicker._daylightSavingAdjust(new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay)),
 				dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
 				formatCfg = $.datepicker._getFormatConfig(dp_inst),
 				timeAvailable = dt !== null && this.timeDefined;
@@ -1479,6 +1486,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = false;
 			tp_inst._defaults.showTimepicker = false;
 			tp_inst._updateDateTime(inst);
 		}
@@ -1493,6 +1501,7 @@
 		var tp_inst = this._get(inst, 'timepicker');
 		$(target).datepicker('getDate'); // Init selected[Year|Month|Day]
 		if (tp_inst) {
+			inst.settings.showTimepicker = true;
 			tp_inst._defaults.showTimepicker = true;
 			tp_inst._addTimePicker(inst); // Could be disabled on page load
 			tp_inst._updateDateTime(inst);
