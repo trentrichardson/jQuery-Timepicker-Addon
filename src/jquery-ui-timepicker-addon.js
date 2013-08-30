@@ -835,7 +835,7 @@
 			var formattedDateTime = this.formattedDate;
 			
 			// if a slider was changed but datepicker doesn't have a value yet, set it
-			if (dp_inst.lastVa === "") {
+			if (dp_inst.lastVal === "") {
                 dp_inst.currentYear = dp_inst.selectedYear;
                 dp_inst.currentMonth = dp_inst.selectedMonth;
                 dp_inst.currentDay = dp_inst.selectedDay;
