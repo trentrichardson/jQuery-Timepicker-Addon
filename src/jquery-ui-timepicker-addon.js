@@ -749,6 +749,9 @@
 			if (microsec !== false) {
 				microsec = parseInt(microsec, 10);
 			}
+			if (timezone !== false) {
+				timezone = parseInt(timezone, 10);
+			}
 
 			var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
 
