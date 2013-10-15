@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4.1 - 2013-08-30
+/*! jQuery Timepicker Addon - v1.4.1 - 2013-10-15
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -742,6 +742,9 @@
 			}
 			if (microsec !== false) {
 				microsec = parseInt(microsec, 10);
+			}
+			if (timezone !== false) {
+				timezone = parseInt(timezone, 10);
 			}
 
 			var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
