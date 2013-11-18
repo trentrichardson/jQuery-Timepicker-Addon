@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4.2 - 2013-11-10
+/*! jQuery Timepicker Addon - v1.4.2 - 2013-11-18
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -799,6 +799,7 @@
 			this.timeDefined = true;
 			if (hasChanged) {
 				this._updateDateTime();
+				this.$input.focus();
 			}
 		},
 

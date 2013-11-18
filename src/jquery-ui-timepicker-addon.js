@@ -805,6 +805,7 @@
 			this.timeDefined = true;
 			if (hasChanged) {
 				this._updateDateTime();
+				this.$input.focus();
 			}
 		},
 
