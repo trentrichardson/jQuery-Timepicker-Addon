@@ -7,7 +7,8 @@ module.exports = function(grunt) {
 		// Metadata.
 		pkg: grunt.file.readJSON('jquery-ui-timepicker-addon.json'),
 		banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-			'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+			//'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+			'<%= pkg.modified %>\n' +
 			'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
 			'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
 			' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
 				options: {
 					variables: {
 						version: '<%= pkg.version %>',
-						timestamp: '<%= grunt.template.today("yyyy-mm-dd") %>'
+						timestamp: '<%= pkg.modified %>'
 					},
 					prefix: '@@'
 				},
