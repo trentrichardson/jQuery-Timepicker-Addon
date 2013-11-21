@@ -752,13 +752,13 @@
 			// If the update was done in the input field, the input field should not be updated.
 			// If the update was done using the sliders, update the input field.
 			var hasChanged = (
-						hour !== parseInt(this.hour,10) || 
+						hour !== parseInt(this.hour,10) || // sliders should all be numeric
 						minute !== parseInt(this.minute,10) || 
 						second !== parseInt(this.second,10) || 
 						millisec !== parseInt(this.millisec,10) || 
 						microsec !== parseInt(this.microsec,10) || 
 						(this.ampm.length > 0 && (hour < 12) !== ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) || 
-						(this.timezone !== null && timezone !== this.timezone.toString()) 
+						(this.timezone !== null && timezone !== this.timezone.toString()) // could be numeric or "EST" format, so use toString()
 					);
 
 			if (hasChanged) {
