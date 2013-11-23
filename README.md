@@ -15,6 +15,8 @@ I recommend getting the eBook [Handling Time](https://sellfy.com/p/8gxZ) as it h
 - Include timepicker-addon script located in the `dist` directory.
 - now use timepicker with `$('#selector').datetimepicker()` or `$('#selector').timepicker()`.
 
+There is also a [Bower](http://bower.io/) package named `jqueryui-timepicker-addon`.  Beware there are other similar package names that point to forks which may not be current.
+
 Contributing Code - Please Read!
 --------------------------------
 - All code contributions and bug reports are much appreciated.
