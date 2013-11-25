@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4.2 - 2013-11-23
+/*! jQuery Timepicker Addon - v1.4.3 - 2013-11-23
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2013 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -16,7 +16,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.4.2"
+			version: "1.4.3"
 		}
 	});
 
@@ -1605,7 +1605,7 @@
 		// object will only return the timezone offset for the current locale, so we 
 		// adjust it accordingly.  If not using timezone option this won't matter..
 		// If a timezone is different in tp, keep the timezone as is
-		if (tp_inst) {
+		if (tp_inst && tp_date) {
 			// look out for DST if tz wasn't specified
 			if (!tp_inst.support.timezone && tp_inst._defaults.timezone === null) {
 				tp_inst.timezone = tp_date.getTimezoneOffset() * -1;
@@ -2140,6 +2140,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.4.2";
+	$.timepicker.version = "1.4.3";
 
 })(jQuery);
