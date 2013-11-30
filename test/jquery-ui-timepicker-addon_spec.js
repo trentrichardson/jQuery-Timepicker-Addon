@@ -648,4 +648,17 @@ describe('datetimepicker', function() {
 			});
 		});
 	});
+
+	describe('methods', function() {
+		describe('setDate', function() {
+			it('should accept null as date', function() {
+				var $input = affix('input').datetimepicker();
+				$input.datetimepicker('setDate', '2013-11-25 15:30:25');
+
+				$input.datetimepicker('setDate', null);
+
+				expect($input.datetimepicker('getDate')).toBeNull();
+			});
+		});
+	});
 });
