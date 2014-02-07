@@ -812,7 +812,7 @@
 			this.timeDefined = true;
 			if (hasChanged) {
 				this._updateDateTime();
-				this.$input.focus();
+				//this.$input.focus(); // may automatically open the picker on setDate
 			}
 		},
 
