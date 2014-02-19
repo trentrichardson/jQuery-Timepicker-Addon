@@ -38,7 +38,7 @@
 			.ebook .buyp a iframe{ margin-bottom: -5px; }
 		</style> 
 		
-		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 		
 	</head> 
@@ -369,6 +369,12 @@
 
 		<dt>maxDateTime</dt>
 			<dd><em>Default: null</em> - Date object of the maximum datetime allowed. Also Available as maxDate.</dd>
+
+		<dt>minTime</dt>
+			<dd><em>Default: null</em> - String of the minimum time allowed. '8:00 am' will restrict to times after 8am</dd>
+
+		<dt>maxTime</dt>
+			<dd><em>Default: null</em> - String of the maximum time allowed. '8:00 pm' will restrict to times before 8pm</dd>
 
 		<dt>parse</dt>
 			<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
@@ -939,8 +945,8 @@ $('#utility_example_3').text(JSON.stringify(
 	 	</div>
 
 
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="jquery-ui-sliderAccess.js"></script>
 
