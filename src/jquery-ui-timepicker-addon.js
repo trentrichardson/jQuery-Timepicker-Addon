@@ -84,6 +84,8 @@
 			microsecMax: 999,
 			minDateTime: null,
 			maxDateTime: null,
+			maxTime: null,
+			minTime: null,
 			onSelect: null,
 			hourGrid: 0,
 			minuteGrid: 0,
@@ -120,6 +122,8 @@
 		millisec_slider: null,
 		microsec_slider: null,
 		timezone_select: null,
+		maxTime: null,
+		minTime: null,
 		hour: 0,
 		minute: 0,
 		second: 0,
@@ -666,6 +670,44 @@
 				}
 			}
 
+			if (dp_inst.settings.minTime!==null) {				
+				var tempMinTime=new Date("01/01/1970 " + dp_inst.settings.minTime);				
+				if (this.hour<tempMinTime.getHours()) {
+					this.hour=this._defaults.hourMin=tempMinTime.getHours();
+					this.minute=this._defaults.minuteMin=tempMinTime.getMinutes();							
+				} else if (this.hour===tempMinTime.getHours() && this.minute<tempMinTime.getMinutes()) {
+					this.minute=this._defaults.minuteMin=tempMinTime.getMinutes();
+				} else {						
+					if (this._defaults.hourMin<tempMinTime.getHours()) {
+						this._defaults.hourMin=tempMinTime.getHours();
+						this._defaults.minuteMin=tempMinTime.getMinutes();					
+					} else if (this._defaults.hourMin===tempMinTime.getHours()===this.hour && this._defaults.minuteMin<tempMinTime.getMinutes()) {
+						this._defaults.minuteMin=tempMinTime.getMinutes();						
+					} else {
+						this._defaults.minuteMin=0;
+					}
+				}				
+			}
+			
+			if (dp_inst.settings.maxTime!==null) {				
+				var tempMaxTime=new Date("01/01/1970 " + dp_inst.settings.maxTime);
+				if (this.hour>tempMaxTime.getHours()) {
+					this.hour=this._defaults.hourMax=tempMaxTime.getHours();						
+					this.minute=this._defaults.minuteMax=tempMaxTime.getMinutes();
+				} else if (this.hour===tempMaxTime.getHours() && this.minute>tempMaxTime.getMinutes()) {							
+					this.minute=this._defaults.minuteMax=tempMaxTime.getMinutes();						
+				} else {
+					if (this._defaults.hourMax>tempMaxTime.getHours()) {
+						this._defaults.hourMax=tempMaxTime.getHours();
+						this._defaults.minuteMax=tempMaxTime.getMinutes();					
+					} else if (this._defaults.hourMax===tempMaxTime.getHours()===this.hour && this._defaults.minuteMax>tempMaxTime.getMinutes()) {
+						this._defaults.minuteMax=tempMaxTime.getMinutes();						
+					} else {
+						this._defaults.minuteMax=59;
+					}
+				}						
+			}
+			
 			if (adjustSliders !== undefined && adjustSliders === true) {
 				var hourMax = parseInt((this._defaults.hourMax - ((this._defaults.hourMax - this._defaults.hourMin) % this._defaults.stepHour)), 10),
 					minMax = parseInt((this._defaults.minuteMax - ((this._defaults.minuteMax - this._defaults.minuteMin) % this._defaults.stepMinute)), 10),
