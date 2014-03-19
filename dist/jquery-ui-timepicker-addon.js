@@ -2077,6 +2077,13 @@
 			end: {}         // options for end picker
 		}, options);
 
+		// for the mean time this fixes an issue with calling getDate with timepicker()
+		var timeOnly = false;
+		if(method === 'timepicker'){
+			timeOnly = true;
+			method = 'datetimepicker';
+		}
+
 		function checkDates(changed, other) {
 			var startdt = startTime[method]('getDate'),
 				enddt = endTime[method]('getDate'),
@@ -2120,6 +2127,7 @@
 		}
 
 		$.fn[method].call(startTime, $.extend({
+			timeOnly: timeOnly,
 			onClose: function (dateText, inst) {
 				checkDates($(this), endTime);
 			},
@@ -2128,6 +2136,7 @@
 			}
 		}, options, options.start));
 		$.fn[method].call(endTime, $.extend({
+			timeOnly: timeOnly,
 			onClose: function (dateText, inst) {
 				checkDates($(this), startTime);
 			},
