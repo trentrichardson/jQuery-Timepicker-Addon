@@ -203,6 +203,9 @@
 		<dt>timeOnly</dt>
 			<dd><em>Default: false</em> - Hide the datepicker and only provide a time interface.</dd>
 
+		<dt>timeOnlyShowDate</dt>
+			<dd><em>Default: false</em> - Show the date and time in the input, but only allow the timepicker.</dd>
+
 		<dt>onSelect</dt>
 			<dd><em>Default: null</em> - Function to be called when a date is chosen or time has changed (parameters: datetimeText, datepickerInstance).</dd>
 
@@ -235,6 +238,12 @@
 
 		<dt>maxDateTime</dt>
 			<dd><em>Default: null</em> - Date object of the maximum datetime allowed. Also Available as maxDate.</dd>
+
+		<dt>minTime</dt>
+			<dd><em>Default: null</em> - String of the minimum time allowed. '8:00 am' will restrict to times after 8am</dd>
+
+		<dt>maxTime</dt>
+			<dd><em>Default: null</em> - String of the maximum time allowed. '8:00 pm' will restrict to times before 8pm</dd>
 
 		<dt>parse</dt>
 			<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
