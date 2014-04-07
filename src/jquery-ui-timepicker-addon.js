@@ -1628,16 +1628,18 @@
 	* override setDate() to allow setting time too within Date object
 	*/
 	$.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
-	$.datepicker._setDateDatepicker = function (target, date) {
+	$.datepicker._setDateDatepicker = function (target, _date) {
 		var inst = this._getInst(target);
+		var date = _date;
 		if (!inst) {
 			return;
 		}
 
-		if (typeof(date) === 'string') {
-			date = new Date(date);
+		if (typeof(_date) === 'string') {
+			date = new Date(_date);
 			if (!date.getTime()) {
-				$.timepicker.log("Error creating Date object from string.");
+				this._base_setDateDatepicker.apply(this, arguments);
+				date = $(target).datepicker('getDate');
 			}
 		}
 
