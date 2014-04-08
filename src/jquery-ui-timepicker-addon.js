@@ -1494,7 +1494,7 @@
 			}
 		}
 		else {
-			$.datepicker._base_updateAlternate(inst);
+			$(altField).val( inst.input.val() ? altFormattedDateTime : "");
 		}
 	};
 
