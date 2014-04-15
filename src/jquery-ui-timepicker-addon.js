@@ -1490,11 +1490,11 @@
 						altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
 					}
 				}
-				$(altField).val(altFormattedDateTime);
+				$(altField).val( inst.input.val() ? altFormattedDateTime : "");
 			}
 		}
 		else {
-			$.datepicker._base_updateAlternate(inst);
+			$.datepicker._base_updateAlternate(inst);	
 		}
 	};
 
