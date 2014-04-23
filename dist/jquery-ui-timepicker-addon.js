@@ -914,8 +914,8 @@
 			} else if (this.$altInput) {
 				this.$input.val(formattedDateTime);
 				var altFormattedDateTime = '',
-					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
-					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+					altSeparator = this._defaults.altSeparator !== null ? this._defaults.altSeparator : this._defaults.separator,
+					altTimeSuffix = this._defaults.altTimeSuffix !== null ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
 				
 				if (!this._defaults.timeOnly) {
 					if (this._defaults.altFormat) {
@@ -930,7 +930,7 @@
 					}
 				}
 
-				if (this._defaults.altTimeFormat) {
+				if (this._defaults.altTimeFormat !== null) {
 					altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
 				}
 				else {
@@ -1484,11 +1484,11 @@
 						altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
 					}
 				}
-				$(altField).val(altFormattedDateTime);
+				$(altField).val( inst.input.val() ? altFormattedDateTime : "");
 			}
 		}
 		else {
-			$.datepicker._base_updateAlternate(inst);
+			$.datepicker._base_updateAlternate(inst);	
 		}
 	};
 
@@ -1622,16 +1622,18 @@
 	* override setDate() to allow setting time too within Date object
 	*/
 	$.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
-	$.datepicker._setDateDatepicker = function (target, date) {
+	$.datepicker._setDateDatepicker = function (target, _date) {
 		var inst = this._getInst(target);
+		var date = _date;
 		if (!inst) {
 			return;
 		}
 
-		if (typeof(date) === 'string') {
-			date = new Date(date);
+		if (typeof(_date) === 'string') {
+			date = new Date(_date);
 			if (!date.getTime()) {
-				$.timepicker.log("Error creating Date object from string.");
+				this._base_setDateDatepicker.apply(this, arguments);
+				date = $(target).datepicker('getDate');
 			}
 		}
 

@@ -920,8 +920,8 @@
 			} else if (this.$altInput) {
 				this.$input.val(formattedDateTime);
 				var altFormattedDateTime = '',
-					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
-					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+					altSeparator = this._defaults.altSeparator !== null ? this._defaults.altSeparator : this._defaults.separator,
+					altTimeSuffix = this._defaults.altTimeSuffix !== null ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
 				
 				if (!this._defaults.timeOnly) {
 					if (this._defaults.altFormat) {
@@ -936,7 +936,7 @@
 					}
 				}
 
-				if (this._defaults.altTimeFormat) {
+				if (this._defaults.altTimeFormat !== null) {
 					altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
 				}
 				else {
