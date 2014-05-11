@@ -684,5 +684,16 @@ describe('datetimepicker', function() {
 			$altField.trigger('focus');
 			expect(inputFocusSpy).toHaveBeenCalled();
 		});
+
+		it('should not redirect focus to main field if altRedirectFocus is false', function() {
+			$input.datetimepicker({
+				showOn: 'button',
+				altField: $altField,
+				altRedirectFocus: false,
+			});
+
+			$altField.trigger('focus');
+			expect(inputFocusSpy).not.toHaveBeenCalled();
+		});
 	});
 });
