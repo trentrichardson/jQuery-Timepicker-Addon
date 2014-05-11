@@ -661,4 +661,28 @@ describe('datetimepicker', function() {
 			});
 		});
 	});
+
+	describe('altField', function() {
+		var $input;
+		var $altField;
+		var inputFocusSpy;
+
+		beforeEach(function() {
+			$input = affix('input');
+			$altField = affix('input');
+
+			inputFocusSpy = jasmine.createSpy();
+			$input.focus(inputFocusSpy);
+		});
+
+		it('should redirect focus to main field', function() {
+			$input.datetimepicker({
+				showOn: 'button',
+				altField: $altField,
+			});
+
+			$altField.trigger('focus');
+			expect(inputFocusSpy).toHaveBeenCalled();
+		});
+	});
 });

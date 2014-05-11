@@ -15,6 +15,7 @@
 		"jQuery",
 		"$",
 		"QUnit",
+		"jasmine",
 		"module",
 		"test",
 		"asyncTest",
