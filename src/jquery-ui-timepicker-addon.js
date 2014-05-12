@@ -99,6 +99,7 @@
 			altTimeFormat: null,
 			altSeparator: null,
 			altTimeSuffix: null,
+			altRedirectFocus: true,
 			pickerTimeFormat: null,
 			pickerTimeSuffix: null,
 			showTimepicker: true,
@@ -271,11 +272,14 @@
 			tp_inst.$input = $input;
 
 			if (tp_inst._defaults.altField) {
-				tp_inst.$altInput = $(tp_inst._defaults.altField).css({
-					cursor: 'pointer'
-				}).focus(function () {
-					$input.trigger("focus");
-				});
+				tp_inst.$altInput = $(tp_inst._defaults.altField);
+				if (tp_inst._defaults.altRedirectFocus === true) {
+					tp_inst.$altInput.css({
+						cursor: 'pointer'
+					}).focus(function () {
+						$input.trigger("focus");
+					});
+				}
 			}
 
 			if (tp_inst._defaults.minDate === 0 || tp_inst._defaults.minDateTime === 0) {
