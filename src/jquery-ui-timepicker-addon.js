@@ -1112,7 +1112,7 @@
 			var tmp_args = arguments;
 
 			if (typeof(o) === 'string') {
-				if (o === 'getDate') {
+				if (o === 'getDate'  || (o === 'option' && tmp_args.length === 2 && typeof (tmp_args[1]) === 'string')) {
 					return $.fn.datepicker.apply($(this[0]), tmp_args);
 				} else {
 					return this.each(function () {
