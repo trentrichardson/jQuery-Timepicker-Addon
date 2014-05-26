@@ -678,7 +678,7 @@ describe('datetimepicker', function() {
 		it('should redirect focus to main field', function() {
 			$input.datetimepicker({
 				showOn: 'button',
-				altField: $altField,
+				altField: $altField
 			});
 
 			$altField.trigger('focus');
@@ -689,7 +689,7 @@ describe('datetimepicker', function() {
 			$input.datetimepicker({
 				showOn: 'button',
 				altField: $altField,
-				altRedirectFocus: false,
+				altRedirectFocus: false
 			});
 
 			$altField.trigger('focus');
