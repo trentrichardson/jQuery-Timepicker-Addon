@@ -99,6 +99,7 @@
 			altTimeFormat: null,
 			altSeparator: null,
 			altTimeSuffix: null,
+			altRedirectFocus: true,
 			pickerTimeFormat: null,
 			pickerTimeSuffix: null,
 			showTimepicker: true,
@@ -271,11 +272,14 @@
 			tp_inst.$input = $input;
 
 			if (tp_inst._defaults.altField) {
-				tp_inst.$altInput = $(tp_inst._defaults.altField).css({
-					cursor: 'pointer'
-				}).focus(function () {
-					$input.trigger("focus");
-				});
+				tp_inst.$altInput = $(tp_inst._defaults.altField);
+				if (tp_inst._defaults.altRedirectFocus === true) {
+					tp_inst.$altInput.css({
+						cursor: 'pointer'
+					}).focus(function () {
+						$input.trigger("focus");
+					});
+				}
 			}
 
 			if (tp_inst._defaults.minDate === 0 || tp_inst._defaults.minDateTime === 0) {
@@ -920,8 +924,8 @@
 			} else if (this.$altInput) {
 				this.$input.val(formattedDateTime);
 				var altFormattedDateTime = '',
-					altSeparator = this._defaults.altSeparator ? this._defaults.altSeparator : this._defaults.separator,
-					altTimeSuffix = this._defaults.altTimeSuffix ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+					altSeparator = this._defaults.altSeparator !== null ? this._defaults.altSeparator : this._defaults.separator,
+					altTimeSuffix = this._defaults.altTimeSuffix !== null ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
 				
 				if (!this._defaults.timeOnly) {
 					if (this._defaults.altFormat) {
@@ -936,7 +940,7 @@
 					}
 				}
 
-				if (this._defaults.altTimeFormat) {
+				if (this._defaults.altTimeFormat !== null) {
 					altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
 				}
 				else {
@@ -1108,7 +1112,7 @@
 			var tmp_args = arguments;
 
 			if (typeof(o) === 'string') {
-				if (o === 'getDate') {
+				if (o === 'getDate'  || (o === 'option' && tmp_args.length === 2 && typeof (tmp_args[1]) === 'string')) {
 					return $.fn.datepicker.apply($(this[0]), tmp_args);
 				} else {
 					return this.each(function () {
@@ -1490,11 +1494,11 @@
 						altFormattedDateTime = tp_inst.formattedDate + altSeparator + altFormattedDateTime;
 					}
 				}
-				$(altField).val(altFormattedDateTime);
+				$(altField).val( inst.input.val() ? altFormattedDateTime : "");
 			}
 		}
 		else {
-			$.datepicker._base_updateAlternate(inst);
+			$.datepicker._base_updateAlternate(inst);	
 		}
 	};
 
@@ -1628,16 +1632,18 @@
 	* override setDate() to allow setting time too within Date object
 	*/
 	$.datepicker._base_setDateDatepicker = $.datepicker._setDateDatepicker;
-	$.datepicker._setDateDatepicker = function (target, date) {
+	$.datepicker._setDateDatepicker = function (target, _date) {
 		var inst = this._getInst(target);
+		var date = _date;
 		if (!inst) {
 			return;
 		}
 
-		if (typeof(date) === 'string') {
-			date = new Date(date);
+		if (typeof(_date) === 'string') {
+			date = new Date(_date);
 			if (!date.getTime()) {
-				$.timepicker.log("Error creating Date object from string.");
+				this._base_setDateDatepicker.apply(this, arguments);
+				date = $(target).datepicker('getDate');
 			}
 		}
 
