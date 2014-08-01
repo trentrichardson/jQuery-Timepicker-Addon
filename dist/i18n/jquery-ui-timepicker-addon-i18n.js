@@ -175,6 +175,7 @@
 // source: src/i18n/jquery-ui-timepicker-es.js
 /* Spanish translation for the jQuery Timepicker Addon */
 /* Written by Ianaré Sévi */
+/* Modified by Carlos Martínez */
 
 	$.timepicker.regional['es'] = {
 		timeOnlyTitle: 'Elegir una hora',
@@ -184,8 +185,8 @@
 		secondText: 'Segundos',
 		millisecText: 'Milisegundos',
 		microsecText: 'Microsegundos',
-		timezoneText: 'Huso horario',
-		currentText: 'Ahora',
+		timezoneText: 'Uso horario',
+		currentText: 'Hoy',
 		closeText: 'Cerrar',
 		timeFormat: 'HH:mm',
 		amNames: ['a.m.', 'AM', 'A'],
