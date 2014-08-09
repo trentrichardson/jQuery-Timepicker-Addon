@@ -1,12 +1,13 @@
-/*! jQuery Timepicker Addon - v1.4.5 - 2014-05-26
+/*! jQuery Timepicker Addon - v1.4.6 - 2014-08-09
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2014 Trent Richardson; Licensed MIT */
 
 (function($){
 
+// source: src/i18n/jquery-ui-timepicker-af.js
 /* Afrikaans translation for the jQuery Timepicker Addon */
 /* Written by Deon Heyns */
-(function($) {
+
 	$.timepicker.regional['af'] = {
 		timeOnlyTitle: 'Kies Tyd',
 		timeText: 'Tyd ',
@@ -23,12 +24,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['af']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-am.js
 /* Armenian translation for the jQuery Timepicker Addon */
 /* Written by Artavazd Avetisyan artavazda@hotmail.com */
-(function($) {
+
 	$.timepicker.regional['am'] = {
 		timeOnlyTitle: 'Ընտրեք ժամանակը',
 		timeText: 'Ժամանակը',
@@ -45,12 +45,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['am']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-bg.js
 /* Bulgarian translation for the jQuery Timepicker Addon */
 /* Written by Plamen Kovandjiev */
-(function($) {
+
 	$.timepicker.regional['bg'] = {
 		timeOnlyTitle: 'Изберете време',
 		timeText: 'Време',
@@ -67,11 +66,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['bg']);
-})(jQuery);
+
+// source: src/i18n/jquery-ui-timepicker-ca.js
 /* Catalan translation for the jQuery Timepicker Addon */
 /* Written by Sergi Faber */
-(function($) {
+
 	$.timepicker.regional['ca'] = {
 		timeOnlyTitle: 'Escollir una hora',
 		timeText: 'Hora',
@@ -88,12 +87,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['ca']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-cs.js
 /* Czech translation for the jQuery Timepicker Addon */
 /* Written by Ondřej Vodáček */
-(function($) {
+
 	$.timepicker.regional['cs'] = {
 		timeOnlyTitle: 'Vyberte čas',
 		timeText: 'Čas',
@@ -110,12 +108,11 @@
 		pmNames: ['odp.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['cs']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-da.js
 /* Danish translation for the jQuery Timepicker Addon */
 /* Written by Lars H. Jensen (http://www.larshj.dk) */
-(function ($) {
+
     $.timepicker.regional['da'] = {
         timeOnlyTitle: 'Vælg tid',
         timeText: 'Tid',
@@ -132,12 +129,11 @@
         pmNames: ['pm', 'PM', 'P'],
         isRTL: false
     };
-    $.timepicker.setDefaults($.timepicker.regional['da']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-de.js
 /* German translation for the jQuery Timepicker Addon */
 /* Written by Marvin */
-(function($) {
+
 	$.timepicker.regional['de'] = {
 		timeOnlyTitle: 'Zeit wählen',
 		timeText: 'Zeit',
@@ -154,12 +150,11 @@
 		pmNames: ['nachm.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['de']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-el.js
 /* Hellenic translation for the jQuery Timepicker Addon */
 /* Written by Christos Pontikis */
-(function($) {
+
 	$.timepicker.regional['el'] = {
 		timeOnlyTitle: 'Επιλογή ώρας',
 		timeText: 'Ώρα',
@@ -176,12 +171,12 @@
 		pmNames: ['μ.μ.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['el']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-es.js
 /* Spanish translation for the jQuery Timepicker Addon */
 /* Written by Ianaré Sévi */
-(function($) {
+/* Modified by Carlos Martínez */
+
 	$.timepicker.regional['es'] = {
 		timeOnlyTitle: 'Elegir una hora',
 		timeText: 'Hora',
@@ -190,20 +185,19 @@
 		secondText: 'Segundos',
 		millisecText: 'Milisegundos',
 		microsecText: 'Microsegundos',
-		timezoneText: 'Huso horario',
-		currentText: 'Ahora',
+		timezoneText: 'Uso horario',
+		currentText: 'Hoy',
 		closeText: 'Cerrar',
 		timeFormat: 'HH:mm',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['es']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-et.js
 /* Estonian translation for the jQuery Timepicker Addon */
 /* Written by Karl Sutt (karl@sutt.ee) */
-(function($) {
+
 	$.timepicker.regional['et'] = {
 		timeOnlyTitle: 'Vali aeg',
 		timeText: 'Aeg',
@@ -220,13 +214,12 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['et']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-eu.js
 /* Basque trannslation for JQuery Timepicker Addon */
 /* Translated by Xabi Fer */
 /* Fixed by Asier Iturralde Sarasola - iametza interaktiboa */
-(function($) {
+
 	$.timepicker.regional['eu'] = {
 		timeOnlyTitle: 'Aukeratu ordua',
 		timeText: 'Ordua',
@@ -243,11 +236,11 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['eu']);
-})(jQuery);
+
+// source: src/i18n/jquery-ui-timepicker-fi.js
 /* Finnish translation for the jQuery Timepicker Addon */
 /* Written by Juga Paazmaya (http://github.com/paazmaya) */
-(function($) {
+
 	$.timepicker.regional['fi'] = {
 		timeOnlyTitle: 'Valitse aika',
 		timeText: 'Aika',
@@ -264,12 +257,11 @@
 		pmNames: ['ip.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['fi']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-fr.js
 /* French translation for the jQuery Timepicker Addon */
 /* Written by Thomas Lété */
-(function($) {
+
 	$.timepicker.regional['fr'] = {
 		timeOnlyTitle: 'Choisir une heure',
 		timeText: 'Heure',
@@ -286,12 +278,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['fr']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-gl.js
 /* Galician translation for the jQuery Timepicker Addon */
 /* Written by David Barral */
-(function($) {
+
 	$.timepicker.regional['gl'] = {
 		timeOnlyTitle: 'Elixir unha hora',
 		timeText: 'Hora',
@@ -308,12 +299,11 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['gl']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-he.js
 /* Hebrew translation for the jQuery Timepicker Addon */
 /* Written by Lior Lapid */
-(function($) {
+
 	$.timepicker.regional["he"] = {
 		timeOnlyTitle: "בחירת זמן",
 		timeText: "שעה",
@@ -330,12 +320,11 @@
 		pmNames: ['אחה"צ', 'PM', 'P'],
 		isRTL: true
 	};
-	$.timepicker.setDefaults($.timepicker.regional["he"]);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-hr.js
 /* Croatian translation for the jQuery Timepicker Addon */
 /* Written by Mladen */
-(function($) {
+
 	$.timepicker.regional['hr'] = {
 		timeOnlyTitle: 'Odaberi vrijeme',
 		timeText: 'Vrijeme',
@@ -352,11 +341,11 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['hr']);
-})(jQuery);
+
+// source: src/i18n/jquery-ui-timepicker-hu.js
 /* Hungarian translation for the jQuery Timepicker Addon */
 /* Written by Vas Gábor */
-(function($) {
+
 	$.timepicker.regional['hu'] = {
 		timeOnlyTitle: 'Válasszon időpontot',
 		timeText: 'Idő',
@@ -373,12 +362,11 @@
 		pmNames: ['du.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['hu']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-id.js
 /* Indonesian translation for the jQuery Timepicker Addon */
 /* Written by Nia */
-(function($) {
+
 	$.timepicker.regional['id'] = {
 		timeOnlyTitle: 'Pilih Waktu',
 		timeText: 'Waktu',
@@ -395,12 +383,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['id']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-it.js
 /* Italian translation for the jQuery Timepicker Addon */
 /* Written by Marco "logicoder" Del Tongo */
-(function($) {
+
     $.timepicker.regional['it'] = {
         timeOnlyTitle: 'Scegli orario',
         timeText: 'Orario',
@@ -417,12 +404,11 @@
         pmNames: ['p.', 'PM', 'P'],
         isRTL: false
     };
-    $.timepicker.setDefaults($.timepicker.regional['it']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-ja.js
 /* Japanese translation for the jQuery Timepicker Addon */
 /* Written by Jun Omae */
-(function($) {
+
 	$.timepicker.regional['ja'] = {
 		timeOnlyTitle: '時間を選択',
 		timeText: '時間',
@@ -439,12 +425,11 @@
 		pmNames: ['午後', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['ja']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-ko.js
 /* Korean translation for the jQuery Timepicker Addon */
 /* Written by Genie */
-(function($) {
+
 	$.timepicker.regional['ko'] = {
 		timeOnlyTitle: '시간 선택',
 		timeText: '시간',
@@ -461,12 +446,11 @@
 		pmNames: ['오후', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['ko']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-lt.js
 /* Lithuanian translation for the jQuery Timepicker Addon */
 /* Written by Irmantas Šiupšinskas */
-(function($) {
+
 	$.timepicker.regional['lt'] = {
 		timeOnlyTitle: 'Pasirinkite laiką',
 		timeText: 'Laikas',
@@ -483,12 +467,11 @@
 		pmNames: ['popiet', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['lt']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-nl.js
 /* Dutch translation for the jQuery Timepicker Addon */
 /* Written by Martijn van der Lee */
-(function($) {
+
 	$.timepicker.regional['nl'] = {
 		timeOnlyTitle: 'Tijdstip',
 		timeText: 'Tijd',
@@ -505,12 +488,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['nl']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-no.js
 /* Norwegian translation for the jQuery Timepicker Addon */
 /* Written by Morten Hauan (http://hauan.me) */
-(function($) {
+
 	$.timepicker.regional['no'] = {
 		timeOnlyTitle: 'Velg tid',
 		timeText: 'Tid',
@@ -527,12 +509,11 @@
 		pmNames: ['pm', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['no']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-pl.js
 /* Polish translation for the jQuery Timepicker Addon */
 /* Written by Michał Pena */
-(function($) {
+
 	$.timepicker.regional['pl'] = {
 		timeOnlyTitle: 'Wybierz godzinę',
 		timeText: 'Czas',
@@ -549,12 +530,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['pl']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-pt-BR.js
 /* Brazilian Portuguese translation for the jQuery Timepicker Addon */
 /* Written by Diogo Damiani (diogodamiani@gmail.com) */
-(function ($) {
+
 	$.timepicker.regional['pt-BR'] = {
 		timeOnlyTitle: 'Escolha o horário',
 		timeText: 'Horário',
@@ -571,12 +551,11 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['pt-BR']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-pt.js
 /* Portuguese translation for the jQuery Timepicker Addon */
 /* Written by Luan Almeida */
-(function($) {
+
 	$.timepicker.regional['pt'] = {
 		timeOnlyTitle: 'Escolha uma hora',
 		timeText: 'Hora',
@@ -593,12 +572,11 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['pt']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-ro.js
 /* Romanian translation for the jQuery Timepicker Addon */
 /* Written by Romeo Adrian Cioaba */
-(function($) {
+
 	$.timepicker.regional['ro'] = {
 		timeOnlyTitle: 'Alegeţi o oră',
 		timeText: 'Timp',
@@ -615,12 +593,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['ro']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-ru.js
 /* Russian translation for the jQuery Timepicker Addon */
 /* Written by Trent Richardson */
-(function($) {
+
 	$.timepicker.regional['ru'] = {
 		timeOnlyTitle: 'Выберите время',
 		timeText: 'Время',
@@ -637,12 +614,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['ru']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-sk.js
 /* Slovak translation for the jQuery Timepicker Addon */
 /* Written by David Vallner */
-(function($) {
+
 	$.timepicker.regional['sk'] = {
 		timeOnlyTitle: 'Zvoľte čas',
 		timeText: 'Čas',
@@ -659,12 +635,32 @@
 		pmNames: ['pop.', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['sk']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-sl.js
+/* Slovenian translation for the jQuery Timepicker Addon */
+/* Written by Hadalin (https://github.com/hadalin) */
+
+    $.timepicker.regional['sl'] = {
+        timeOnlyTitle: 'Izberite čas',
+        timeText: 'Čas',
+        hourText: 'Ura',
+        minuteText: 'Minute',
+        secondText: 'Sekunde',
+        millisecText: 'Milisekunde',
+        microsecText: 'Mikrosekunde',
+        timezoneText: 'Časovni pas',
+        currentText: 'Sedaj',
+        closeText: 'Zapri',
+        timeFormat: 'HH:mm',
+        amNames: ['dop.', 'AM', 'A'],
+        pmNames: ['pop.', 'PM', 'P'],
+        isRTL: false
+    };
+
+// source: src/i18n/jquery-ui-timepicker-sr-RS.js
 /* Serbian cyrilic translation for the jQuery Timepicker Addon */
 /* Written by Vladimir Jelovac */
-(function($) {
+
 	$.timepicker.regional['sr-RS'] = {
 		timeOnlyTitle: 'Одаберите време',
 		timeText: 'Време',
@@ -681,12 +677,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['sr-RS']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-sr-YU.js
 /* Serbian latin translation for the jQuery Timepicker Addon */
 /* Written by Vladimir Jelovac */
-(function($) {
+
 	$.timepicker.regional['sr-YU'] = {
 		timeOnlyTitle: 'Odaberite vreme',
 		timeText: 'Vreme',
@@ -703,12 +698,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['sr-YU']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-sv.js
 /* Swedish translation for the jQuery Timepicker Addon */
 /* Written by Nevon */
-(function($) {
+
 	$.timepicker.regional['sv'] = {
 		timeOnlyTitle: 'Välj en tid',
 		timeText: 'Tid',
@@ -725,12 +719,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['sv']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-th.js
 /* Thai translation for the jQuery Timepicker Addon */
 /* Written by Yote Wachirapornpongsa */
-(function($) {
+
 	$.timepicker.regional['th'] = {
 		timeOnlyTitle: 'เลือกเวลา',
 		timeText: 'เวลา ',
@@ -744,11 +737,11 @@
 		closeText: 'ปิด',
 		timeFormat: 'hh:mm tt'
 	};
-	$.timepicker.setDefaults($.timepicker.regional['th']);
-})(jQuery);
+
+// source: src/i18n/jquery-ui-timepicker-tr.js
 /* Turkish translation for the jQuery Timepicker Addon */
 /* Written by Fehmi Can Saglam, Edited by Goktug Ozturk */
-(function($) {
+
 	$.timepicker.regional['tr'] = {
 		timeOnlyTitle: 'Zaman Seçiniz',
 		timeText: 'Zaman',
@@ -765,12 +758,11 @@
 		pmNames: ['ÖS', 'S'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['tr']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-uk.js
 /* Ukrainian translation for the jQuery Timepicker Addon */
 /* Written by Sergey Noskov */
-(function($) {
+
 	$.timepicker.regional['uk'] = {
 		timeOnlyTitle: 'Виберіть час',
 		timeText: 'Час',
@@ -787,12 +779,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['uk']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-vi.js
 /* Vietnamese translation for the jQuery Timepicker Addon */
 /* Written by Nguyen Dinh Trung */
-(function($) {
+
 	$.timepicker.regional['vi'] = {
 		timeOnlyTitle: 'Chọn giờ',
 		timeText: 'Thời gian',
@@ -809,12 +800,11 @@
 		pmNames: ['CH', 'C'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['vi']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-zh-CN.js
 /* Simplified Chinese translation for the jQuery Timepicker Addon /
 / Written by Will Lu */
-(function($) {
+
 	$.timepicker.regional['zh-CN'] = {
 		timeOnlyTitle: '选择时间',
 		timeText: '时间',
@@ -831,12 +821,11 @@
 		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['zh-CN']);
-})(jQuery);
 
+// source: src/i18n/jquery-ui-timepicker-zh-TW.js
 /* Chinese translation for the jQuery Timepicker Addon */
 /* Written by Alang.lin */
-(function($) {
+
 	$.timepicker.regional['zh-TW'] = {
 		timeOnlyTitle: '選擇時分秒',
 		timeText: '時間',
@@ -853,7 +842,5 @@
 		pmNames: ['下午', 'PM', 'P'],
 		isRTL: false
 	};
-	$.timepicker.setDefaults($.timepicker.regional['zh-TW']);
-})(jQuery);
 
 })(jQuery);

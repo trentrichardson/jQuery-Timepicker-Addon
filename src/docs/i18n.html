@@ -19,7 +19,8 @@
 	closeText: 'Закрыть'
 });
 </pre>
-	<p>However, if you plan to use timepicker extensively you will need to include (build your own) localization.  It is simply assigning those same variables to an object.  As you see in the example below we maintain a separate object for timepicker.  This way we aren't bound to any changes within datepicker.</p>
+	<p>However, if you plan to use timepicker extensively you will need to include (build your own) localization.  It is simply assigning those same variables to an object.</p>
+	<p>As you see in the example below we maintain a separate object for timepicker.  This way we aren't bound to any future changes within datepicker.</p>
 
 <pre>$.datepicker.regional['ru'] = {
 	closeText: 'Закрыть',
@@ -60,6 +61,12 @@ $.timepicker.regional['ru'] = {
 };
 $.timepicker.setDefaults($.timepicker.regional['ru']);
 </pre>
+
 	<p>Now all you have to do is call timepicker and the Russian localization is used.  Generally you only need to include the localization file, it will setDefaults() for you.</p>
-	<p>You can also visit <a href="http://docs.jquery.com/UI/Datepicker/Localization" title="localization for datepicker" target="_BLANK">localization for datepicker</a> for more information about datepicker localizations.</p>
+	<p>As of version 1.4.5 a combined file of all localizations available is included.  This file DOES NOT call setDefaults(), so you will need to pass, or merge with your options.</p>
+
+<pre>$('#example123').timepicker($.timepicker.regional['ru']);
+</pre>
+
+	<p>Localization files for datepicker are typically available in your jQueryUI downloads.</p>
 </div>
