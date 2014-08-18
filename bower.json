@@ -1,10 +1,21 @@
 {
 	"name": "jqueryui-timepicker-addon",
 	"version": "1.4.6",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/trentrichardson/jQuery-Timepicker-Addon.git"
-	},
-	"dependencies": {
-	}
+	"homepage": "https://github.com/trentrichardson/jQuery-Timepicker-Addon",
+	"authors": [
+		"Trent Richardson"
+	],
+	"keywords": [
+		"jqueryui",
+		"timepicker",
+		"bower"
+	],
+	"license": "MIT",
+	"ignore": [
+  	"**/.*",
+  	"node_modules",
+  	"bower_components",
+  	"test",
+  	"tests"
+  ]
 }
