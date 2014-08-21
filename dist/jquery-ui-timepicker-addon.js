@@ -1065,7 +1065,10 @@
 						o[opts] = val;	
 					}
 					else { o = opts; }
-					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+					/*
+					* Check for existence of properties when determining which value to use instead of just truthiness to avoid o.min evaulating to false when its value is 0
+					*/
+			                return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), ('min' in o) ? o.min : $t.data('min'), ('max' in o) ? o.max : $t.data('max'), ('step' in o) ? o.step : $t.data('step'));
 				},
 				value: function (tp_inst, obj, unit, val) {
 					var $t = obj.children('select');
