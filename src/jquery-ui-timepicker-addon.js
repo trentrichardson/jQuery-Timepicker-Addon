@@ -1767,7 +1767,10 @@
 				onselect = null,
 				overrides = tp_inst._defaults.evnts,
 				fns = {},
-				prop;
+				prop,
+				ret,
+				oldVal,
+				$target;
 			if (typeof name === 'string') { // if min/max was set with the string
 				if (name === 'minDate' || name === 'minDateTime') {
 					min = value;
@@ -1825,11 +1828,21 @@
 			} else if (onselect) {
 				tp_inst._defaults.onSelect = onselect;
 			}
+
+			// Datepicker will override our date when we call _base_optionDatepicker when 
+			// calling minDate/maxDate, so we will first grab the value, call 
+			// _base_optionDatepicker, then set our value back.
+			if(min || max){
+				$target = $(target);
+				oldVal = $target.datetimepicker('getDate');
+				ret = this._base_optionDatepicker.call($.datepicker, target, name_clone || name, value);
+				$target.datetimepicker('setDate', oldVal);
+				return ret;
+			}
 		}
 		if (value === undefined) {
 			return this._base_optionDatepicker.call($.datepicker, target, name);
 		}
-		
 		return this._base_optionDatepicker.call($.datepicker, target, name_clone || name, value);
 	};
 	
