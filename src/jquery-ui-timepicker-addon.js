@@ -1829,6 +1829,7 @@
 		if (value === undefined) {
 			return this._base_optionDatepicker.call($.datepicker, target, name);
 		}
+		
 		return this._base_optionDatepicker.call($.datepicker, target, name_clone || name, value);
 	};
 	
@@ -2133,6 +2134,7 @@
 					date.setMilliseconds(date.getMilliseconds() - options.minInterval);
 				}
 			}
+			
 			if (date.getTime) {
 				other[method].call(other, 'option', option, date);
 			}
@@ -2158,8 +2160,10 @@
 		}, options, options.end));
 
 		checkDates(startTime, endTime);
+		
 		selected(startTime, endTime, 'minDate');
 		selected(endTime, startTime, 'maxDate');
+
 		return $([startTime.get(0), endTime.get(0)]);
 	};
 
@@ -2168,9 +2172,9 @@
 	 * @param  {Object} err pass any type object to log to the console during error or debugging
 	 * @return {void}
 	 */
-	$.timepicker.log = function (err) {
+	$.timepicker.log = function () {
 		if (window.console) {
-			window.console.log(err);
+			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
 		}
 	};
 

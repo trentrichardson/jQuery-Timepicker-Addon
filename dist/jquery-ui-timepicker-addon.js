@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4.6 - 2014-08-09
+/*! jQuery Timepicker Addon - v1.4.7 - 2014-08-09
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2014 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -16,7 +16,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.4.6"
+			version: "1.4.7"
 		}
 	});
 
@@ -1065,10 +1065,7 @@
 						o[opts] = val;	
 					}
 					else { o = opts; }
-					/*
-					* Check for existence of properties when determining which value to use instead of just truthiness to avoid o.min evaulating to false when its value is 0
-					*/
-			                return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), ('min' in o) ? o.min : $t.data('min'), ('max' in o) ? o.max : $t.data('max'), ('step' in o) ? o.step : $t.data('step'));
+					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
 				value: function (tp_inst, obj, unit, val) {
 					var $t = obj.children('select');
@@ -1826,6 +1823,7 @@
 		if (value === undefined) {
 			return this._base_optionDatepicker.call($.datepicker, target, name);
 		}
+		
 		return this._base_optionDatepicker.call($.datepicker, target, name_clone || name, value);
 	};
 	
@@ -2130,6 +2128,7 @@
 					date.setMilliseconds(date.getMilliseconds() - options.minInterval);
 				}
 			}
+			
 			if (date.getTime) {
 				other[method].call(other, 'option', option, date);
 			}
@@ -2155,8 +2154,10 @@
 		}, options, options.end));
 
 		checkDates(startTime, endTime);
+		
 		selected(startTime, endTime, 'minDate');
 		selected(endTime, startTime, 'maxDate');
+
 		return $([startTime.get(0), endTime.get(0)]);
 	};
 
@@ -2165,9 +2166,9 @@
 	 * @param  {Object} err pass any type object to log to the console during error or debugging
 	 * @return {void}
 	 */
-	$.timepicker.log = function (err) {
+	$.timepicker.log = function () {
 		if (window.console) {
-			window.console.log(err);
+			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
 		}
 	};
 
@@ -2201,6 +2202,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.4.6";
+	$.timepicker.version = "1.4.7";
 
 })(jQuery);
