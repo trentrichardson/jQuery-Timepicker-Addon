@@ -398,15 +398,62 @@ var startDateTextBox = $('#range_example_2_start');
 var endDateTextBox = $('#range_example_2_end');
 
 $.timepicker.datetimeRange(
-    startDateTextBox,
-    endDateTextBox,
-    {
-        minInterval: (1000*60*60),
-        dateFormat: 'dd M yy', 
-        timeFormat: 'HH:mm',
-        start: {}, // start picker options
-        end: {} // end picker options					
-    }
+	startDateTextBox,
+	endDateTextBox,
+	{
+		minInterval: (1000*60*60), // 1hr
+		dateFormat: 'dd M yy', 
+		timeFormat: 'HH:mm',
+		start: {}, // start picker options
+		end: {} // end picker options					
+	}
+);
+</pre>
+	</div>
+
+		<!-- ============= example -->
+	<div class="example-container">
+		<p>To use only times for a time range use $.timepicker.timeRange():</p>
+		<div>
+	 		<input type="text" name="range_example_3_start" id="range_example_3_start" value="09:16" /> 
+	 		<input type="text" name="range_example_3_end" id="range_example_3_end" value="10:16" />
+		</div>					
+<pre>
+var startTimeTextBox = $('#range_example_3_start');
+var endTimeTextBox = $('#range_example_3_end');
+
+$.timepicker.timeRange(
+	startTimeTextBox,
+	endTimeTextBox,
+	{
+		minInterval: (1000*60*60), // 1hr
+		timeFormat: 'HH:mm',
+		start: {}, // start picker options
+		end: {} // end picker options
+	}
+);
+</pre>
+	</div>
+
+		<!-- ============= example -->
+	<div class="example-container">
+		<p>Even though this plugin focuses on datetime, it also provides a dateRange function:</p>
+		<div>
+	 		<input type="text" name="range_example_4_start" id="range_example_4_start" value="" /> 
+	 		<input type="text" name="range_example_4_end" id="range_example_4_end" value="" />
+		</div>					
+<pre>
+var startDateTextBox = $('#range_example_4_start');
+var endDateTextBox = $('#range_example_4_end');
+
+$.timepicker.dateRange(
+	startDateTextBox,
+	endDateTextBox,
+	{
+		minInterval: (1000*60*60*24*4), // 4 days
+		start: {}, // start picker options
+		end: {} // end picker options
+	}
 );
 </pre>
 	</div>
