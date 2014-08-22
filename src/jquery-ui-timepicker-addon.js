@@ -1393,14 +1393,17 @@
 	$.datepicker._base_selectDate = $.datepicker._selectDate;
 	$.datepicker._selectDate = function (id, dateStr) {
 		var inst = this._getInst($(id)[0]),
-			tp_inst = this._get(inst, 'timepicker');
+			tp_inst = this._get(inst, 'timepicker'),
+			was_inline;
 
 		if (tp_inst && inst.settings.showTimepicker) {
 			tp_inst._limitMinMaxDateTime(inst, true);
+			was_inline = inst.inline;
 			inst.inline = inst.stay_open = true;
 			//This way the onSelect handler called from calendarpicker get the full dateTime
 			this._base_selectDate(id, dateStr);
-			inst.inline = inst.stay_open = false;
+			inst.inline = was_inline;
+			inst.stay_open = false;
 			this._notifyChange(inst);
 			this._updateDatepicker(inst);
 		} else {
