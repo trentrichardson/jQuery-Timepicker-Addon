@@ -1539,7 +1539,6 @@
 		var now = new Date();
 		this._setTime(inst, now);
 		this._setDate(inst, now);
-		this._hideDatepicker($(id)[0]);
 	};
 
 	/*
