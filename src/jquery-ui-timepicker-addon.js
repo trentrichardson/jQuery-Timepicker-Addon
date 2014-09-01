@@ -1038,7 +1038,7 @@
 			// select methods
 			select: {
 				create: function (tp_inst, obj, unit, val, min, max, step) {
-					var sel = '<select class="ui-timepicker-select" data-unit="' + unit + '" data-min="' + min + '" data-max="' + max + '" data-step="' + step + '">',
+					var sel = '<select class="ui-timepicker-select ui-state-default ui-corner-all" data-unit="' + unit + '" data-min="' + min + '" data-max="' + max + '" data-step="' + step + '">',
 						format = tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat;
 
 					for (var i = min; i <= max; i += step) {
@@ -1393,14 +1393,17 @@
 	$.datepicker._base_selectDate = $.datepicker._selectDate;
 	$.datepicker._selectDate = function (id, dateStr) {
 		var inst = this._getInst($(id)[0]),
-			tp_inst = this._get(inst, 'timepicker');
+			tp_inst = this._get(inst, 'timepicker'),
+			was_inline;
 
 		if (tp_inst && inst.settings.showTimepicker) {
 			tp_inst._limitMinMaxDateTime(inst, true);
+			was_inline = inst.inline;
 			inst.inline = inst.stay_open = true;
 			//This way the onSelect handler called from calendarpicker get the full dateTime
 			this._base_selectDate(id, dateStr);
-			inst.inline = inst.stay_open = false;
+			inst.inline = was_inline;
+			inst.stay_open = false;
 			this._notifyChange(inst);
 			this._updateDatepicker(inst);
 		} else {
@@ -1535,7 +1538,7 @@
 		selectLocalTimezone(tp_inst);
 		var now = new Date();
 		this._setTime(inst, now);
-		$('.ui-datepicker-today', $dp).click();
+		this._setDate(inst, now);
 	};
 
 	/*
@@ -1767,7 +1770,10 @@
 				onselect = null,
 				overrides = tp_inst._defaults.evnts,
 				fns = {},
-				prop;
+				prop,
+				ret,
+				oldVal,
+				$target;
 			if (typeof name === 'string') { // if min/max was set with the string
 				if (name === 'minDate' || name === 'minDateTime') {
 					min = value;
@@ -1824,6 +1830,17 @@
 				tp_inst._defaults.maxDateTime = max;
 			} else if (onselect) {
 				tp_inst._defaults.onSelect = onselect;
+			}
+
+			// Datepicker will override our date when we call _base_optionDatepicker when 
+			// calling minDate/maxDate, so we will first grab the value, call 
+			// _base_optionDatepicker, then set our value back.
+			if(min || max){
+				$target = $(target);
+				oldVal = $target.datetimepicker('getDate');
+				ret = this._base_optionDatepicker.call($.datepicker, target, name_clone || name, value);
+				$target.datetimepicker('setDate', oldVal);
+				return ret;
 			}
 		}
 		if (value === undefined) {
@@ -2133,6 +2150,7 @@
 					date.setMilliseconds(date.getMilliseconds() - options.minInterval);
 				}
 			}
+			
 			if (date.getTime) {
 				other[method].call(other, 'option', option, date);
 			}
@@ -2158,8 +2176,10 @@
 		}, options, options.end));
 
 		checkDates(startTime, endTime);
+		
 		selected(startTime, endTime, 'minDate');
 		selected(endTime, startTime, 'maxDate');
+
 		return $([startTime.get(0), endTime.get(0)]);
 	};
 
@@ -2168,9 +2188,9 @@
 	 * @param  {Object} err pass any type object to log to the console during error or debugging
 	 * @return {void}
 	 */
-	$.timepicker.log = function (err) {
+	$.timepicker.log = function () {
 		if (window.console) {
-			window.console.log(err);
+			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
 		}
 	};
 
