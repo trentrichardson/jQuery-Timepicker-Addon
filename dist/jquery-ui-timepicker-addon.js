@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.4.7 - 2014-09-01
+/*! jQuery Timepicker Addon - v1.5.0 - 2014-09-01
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2014 Trent Richardson; Licensed MIT */
 (function ($) {
@@ -16,7 +16,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.4.7"
+			version: "1.5.0"
 		}
 	});
 
@@ -2218,6 +2218,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.4.7";
+	$.timepicker.version = "1.5.0";
 
 })(jQuery);
