@@ -1,10 +1,6 @@
 jQuery Timepicker Addon
 =======================
 
-Why forked?
------------
-To fix bower integration
-
 About
 -----
 - Author: [Trent Richardson](http://trentrichardson.com)
