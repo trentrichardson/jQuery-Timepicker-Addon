@@ -11,7 +11,7 @@
 		microsecText: 'Mikrosekundes',
 		timezoneText: 'Laika josla',
 		currentText: 'Tagad',
-		closeText: 'Aizvert',
+		closeText: 'Aizvērt',
 		timeFormat: 'HH:mm',
 		amNames: ['AM', 'AM', 'A'],
 		pmNames: ['PM', 'PM', 'P'],
