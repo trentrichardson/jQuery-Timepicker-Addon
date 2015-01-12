@@ -1235,7 +1235,7 @@
 						ampm = '';
 						resTime.ampm = '';
 					} else {
-						ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames) !== -1 ? 'AM' : 'PM';
+						ampm = $.inArray(treg[order.t].toUpperCase(), o.amNames.toUpperCase()) !== -1 ? 'AM' : 'PM';
 						resTime.ampm = o[ampm === 'AM' ? 'amNames' : 'pmNames'][0];
 					}
 				}
