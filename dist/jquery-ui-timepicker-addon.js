@@ -1,6 +1,6 @@
 /*! jQuery Timepicker Addon - v1.5.1 - 2014-09-01
 * http://trentrichardson.com/examples/timepicker
-* Copyright (c) 2014 Trent Richardson; Licensed MIT */
+* Copyright (c) 2015 Trent Richardson; Licensed MIT */
 (function ($) {
 
 	/*
@@ -16,7 +16,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.5.1"
+			version: "@@version"
 		}
 	});
 
@@ -101,6 +101,7 @@
 			addSliderAccess: false,
 			sliderAccessArgs: null,
 			controlType: 'slider',
+			oneLine: false,
 			defaultValue: null,
 			parse: 'strict'
 		};
@@ -367,8 +368,8 @@
 			// Prevent displaying twice
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
 				var noDisplay = ' style="display:none;"',
-					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
-								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>';
+					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + (o.oneLine && o.controlType === 'select' ? ' ui-timepicker-shortened' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
+							'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>';
 
 				// Create the markup
 				for (i = 0, l = this.units.length; i < l; i++) {
@@ -2218,6 +2219,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.5.1";
+	$.timepicker.version = "@@version";
 
 })(jQuery);

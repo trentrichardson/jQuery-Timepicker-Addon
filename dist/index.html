@@ -126,9 +126,9 @@
 
 	<br />
 	<h3>Version</h3>
-	<p>Version 1.5.1</p>
+	<p>Version @@version</p>
 
-	<p>Last updated on 2014-09-01</p>
+	<p>Last updated on @@timestamp</p>
 	<p>jQuery Timepicker Addon is currently available for use in all personal or commercial projects under the MIT license.</p>
 	<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
 
@@ -694,6 +694,20 @@ $('#slider_example_4').datetimepicker({
 	timeFormat: 'hh:mm tt'
 });</pre>
 	</div>
+
+    <!-- ============= example -->
+    <div class="example-container">
+        <p>Uses one line dropdowns instead of sliders.</p>
+        <div>
+            <input type="text" name="slider_example_4andHalf" id="slider_example_4andHalf" value="" />
+        </div>
+<pre>
+$('#slider_example_4andHalf').datetimepicker({
+	controlType: 'select',
+    oneLine: true,
+	timeFormat: 'hh:mm tt'
+});</pre>
+    </div>
 
 	<!-- ============= example -->
 	<div class="example-container">

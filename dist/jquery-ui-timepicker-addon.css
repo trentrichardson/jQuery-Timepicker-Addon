@@ -9,3 +9,11 @@
 .ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
+
+/* Shortened version style */
+.ui-timepicker-div.ui-timepicker-shortened { padding-right: 2px; }
+.ui-timepicker-div.ui-timepicker-shortened .ui_tpicker_time, .ui-timepicker-div.ui-timepicker-shortened dt { display: none; }
+.ui-timepicker-div.ui-timepicker-shortened .ui_tpicker_time_label { display: block; padding-top: 2px; }
+.ui-timepicker-div.ui-timepicker-shortened dl { text-align: right; }
+.ui-timepicker-div.ui-timepicker-shortened dl dd, .ui-timepicker-div.ui-timepicker-shortened dl dd > div { display:inline-block; margin:0; }
+.ui-timepicker-div.ui-timepicker-shortened dl dd.ui_tpicker_hour:after { content:':'; display:inline-block; }
