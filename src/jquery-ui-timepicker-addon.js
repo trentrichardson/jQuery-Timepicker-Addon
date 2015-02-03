@@ -509,6 +509,7 @@
 				this.timezone_select.change(function () {
 					tp_inst._onTimeChange();
 					tp_inst._onSelectHandler();
+					tp_inst._afterInject();
 				});
 				// End timezone options
 				
@@ -1067,6 +1068,7 @@
 					$(sel).appendTo(obj).change(function (e) {
 						tp_inst._onTimeChange();
 						tp_inst._onSelectHandler();
+						tp_inst._afterInject();
 					});
 
 					return obj;

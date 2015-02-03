@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		copy: {
 			dist: {
 				files: [
-					//{ src: 'src/index.html', dest: 'dist/index.html' },
+					{ src: 'src/index.html', dest: 'dist/index.html' },
 					{ src: 'src/<%= pkg.name %>.css', dest: 'dist/<%= pkg.name %>.css' },
 					{ src: 'src/jquery-ui-sliderAccess.js', dest: 'dist/jquery-ui-sliderAccess.js' },
 					{ src: 'src/i18n/jquery-ui-timepicker-*.js', dest: 'dist/i18n/', expand:true, flatten: true }
