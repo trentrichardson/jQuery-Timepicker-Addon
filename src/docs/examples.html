@@ -182,6 +182,20 @@ $('#slider_example_4').datetimepicker({
 
 	<!-- ============= example -->
 	<div class="example-container">
+		<p>Uses one line dropdowns instead of sliders.</p>
+		<div>
+			<input type="text" name="slider_example_4andHalf" id="slider_example_4andHalf" value="" />
+		</div>
+<pre>
+$('#slider_example_4andHalf').datetimepicker({
+	controlType: 'select',
+	oneLine: true,
+	timeFormat: 'hh:mm tt'
+});</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
 		<p>Create your own control by implementing the create, options, and value methods. If you want to use your new control for all instances use the $.timepicker.setDefaults({controlType:myControl}). Here we implement jQueryUI's spinner control (jQueryUI 1.9+).</p>
 		<div>
 			<input type="text" name="slider_example_5" id="slider_example_5" value="" />

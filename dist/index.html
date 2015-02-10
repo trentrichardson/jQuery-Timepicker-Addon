@@ -363,6 +363,9 @@
 		<dt>showTimepicker</dt>
 			<dd><em>Default: true</em> - Whether to show the timepicker within the datepicker.</dd>
 
+		<dt>oneLine</dt>
+			<dd><em>Default: false</em> - Try to show the time dropdowns all on one line.  This should be used with controlType 'select' and as few units as possible.</dd>
+
 		<dt>addSliderAccess</dt>
 			<dd><em>Default: false</em> - Adds the <a href="http://trentrichardson.com/examples/jQuery-SliderAccess/" title="jQueryUI Slider Access Plugin">sliderAccess plugin</a> to sliders within timepicker</dd>
 
@@ -691,6 +694,20 @@ $('#slider_example_3').datetimepicker({
 <pre>
 $('#slider_example_4').datetimepicker({
 	controlType: 'select',
+	timeFormat: 'hh:mm tt'
+});</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Uses one line dropdowns instead of sliders.</p>
+		<div>
+			<input type="text" name="slider_example_4andHalf" id="slider_example_4andHalf" value="" />
+		</div>
+<pre>
+$('#slider_example_4andHalf').datetimepicker({
+	controlType: 'select',
+	oneLine: true,
 	timeFormat: 'hh:mm tt'
 });</pre>
 	</div>

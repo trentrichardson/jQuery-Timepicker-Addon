@@ -107,6 +107,7 @@
 			addSliderAccess: false,
 			sliderAccessArgs: null,
 			controlType: 'slider',
+			oneLine: false,
 			defaultValue: null,
 			parse: 'strict'
 		};
@@ -372,9 +373,9 @@
 
 			// Prevent displaying twice
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
-				var noDisplay = ' style="display:none;"',
-					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
-								'<dd class="ui_tpicker_time"' + ((o.showTime) ? '' : noDisplay) + '></dd>';
+				var noDisplay = ' ui_tpicker_unit_hide',
+					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + (o.oneLine && o.controlType === 'select' ? ' ui-timepicker-oneLine' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label"' + ((o.showTime) ? '' : noDisplay) + '>' + o.timeText + '</dt>' +
+								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"></dd>';
 
 				// Create the markup
 				for (i = 0, l = this.units.length; i < l; i++) {
@@ -388,8 +389,8 @@
 					max[litem] = parseInt((o[litem + 'Max'] - ((o[litem + 'Max'] - o[litem + 'Min']) % o['step' + uitem])), 10);
 					gridSize[litem] = 0;
 
-					html += '<dt class="ui_tpicker_' + litem + '_label"' + (show ? '' : noDisplay) + '>' + o[litem + 'Text'] + '</dt>' +
-								'<dd class="ui_tpicker_' + litem + '"><div class="ui_tpicker_' + litem + '_slider"' + (show ? '' : noDisplay) + '></div>';
+					html += '<dt class="ui_tpicker_' + litem + '_label' + (show ? '' : noDisplay) + '">' + o[litem + 'Text'] + '</dt>' +
+								'<dd class="ui_tpicker_' + litem + (show ? '' : noDisplay) + '"><div class="ui_tpicker_' + litem + '_slider' + (show ? '' : noDisplay) + '"></div>';
 
 					if (show && o[litem + 'Grid'] > 0) {
 						html += '<div style="padding-left: 1px"><table class="ui-tpicker-grid-label"><tr>';
@@ -415,8 +416,8 @@
 				
 				// Timezone
 				var showTz = o.showTimezone !== null ? o.showTimezone : this.support.timezone;
-				html += '<dt class="ui_tpicker_timezone_label"' + (showTz ? '' : noDisplay) + '>' + o.timezoneText + '</dt>';
-				html += '<dd class="ui_tpicker_timezone" ' + (showTz ? '' : noDisplay) + '></dd>';
+				html += '<dt class="ui_tpicker_timezone_label' + (showTz ? '' : noDisplay) + '">' + o.timezoneText + '</dt>';
+				html += '<dd class="ui_tpicker_timezone' + (showTz ? '' : noDisplay) + '"></dd>';
 
 				// Create the elements from string
 				html += '</dl></div>';
