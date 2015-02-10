@@ -1071,7 +1071,7 @@
 						o[opts] = val;	
 					}
 					else { o = opts; }
-					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min || $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+					return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min>=0 ? o.min : $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
 				},
 				value: function (tp_inst, obj, unit, val) {
 					var $t = obj.children('select');
