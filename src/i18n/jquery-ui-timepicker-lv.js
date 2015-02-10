@@ -13,6 +13,7 @@
 		currentText: 'Tagad',
 		closeText: 'Aizvērt',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'AM', 'A'],
 		pmNames: ['PM', 'PM', 'P'],
 		isRTL: false

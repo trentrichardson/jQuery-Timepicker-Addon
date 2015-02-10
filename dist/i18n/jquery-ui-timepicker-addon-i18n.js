@@ -20,6 +20,7 @@
 		currentText: 'Huidige Tyd',
 		closeText: 'Klaar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -41,6 +42,7 @@
 		currentText: 'Այժմ',
 		closeText: 'Փակել',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -62,6 +64,7 @@
 		currentText: 'Сега',
 		closeText: 'Затвори',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -83,6 +86,7 @@
 		currentText: 'Ara',
 		closeText: 'Tancar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -104,6 +108,7 @@
 		currentText: 'Nyní',
 		closeText: 'Zavřít',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['dop.', 'AM', 'A'],
 		pmNames: ['odp.', 'PM', 'P'],
 		isRTL: false
@@ -125,6 +130,7 @@
         currentText: 'Nu',
         closeText: 'Luk',
         timeFormat: 'HH:mm',
+        timeSuffix: '',
         amNames: ['am', 'AM', 'A'],
         pmNames: ['pm', 'PM', 'P'],
         isRTL: false
@@ -146,6 +152,7 @@
 		currentText: 'Jetzt',
 		closeText: 'Fertig',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['vorm.', 'AM', 'A'],
 		pmNames: ['nachm.', 'PM', 'P'],
 		isRTL: false
@@ -167,6 +174,7 @@
 		currentText: 'Τώρα',
 		closeText: 'Κλείσιμο',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['π.μ.', 'AM', 'A'],
 		pmNames: ['μ.μ.', 'PM', 'P'],
 		isRTL: false
@@ -189,6 +197,7 @@
 		currentText: 'Hoy',
 		closeText: 'Cerrar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -210,6 +219,7 @@
 		currentText: 'Praegu',
 		closeText: 'Valmis',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -232,6 +242,7 @@
 		currentText: 'Orain',
 		closeText: 'Itxi',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -253,6 +264,7 @@
 		currentText: 'Nyt',
 		closeText: 'Sulje',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['ap.', 'AM', 'A'],
 		pmNames: ['ip.', 'PM', 'P'],
 		isRTL: false
@@ -274,6 +286,7 @@
 		currentText: 'Maintenant',
 		closeText: 'Terminé',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -295,6 +308,7 @@
 		currentText: 'Agora',
 		closeText: 'Pechar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -316,6 +330,7 @@
 		currentText: "עכשיו",
 		closeText:"סגור",
 		timeFormat: "HH:mm",
+		timeSuffix: '',
 		amNames: ['לפנה"צ', 'AM', 'A'],
 		pmNames: ['אחה"צ', 'PM', 'P'],
 		isRTL: true
@@ -337,6 +352,7 @@
 		currentText: 'Sada',
 		closeText: 'Gotovo',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -358,6 +374,7 @@
 		currentText: 'Most',
 		closeText: 'Kész',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['de.', 'AM', 'A'],
 		pmNames: ['du.', 'PM', 'P'],
 		isRTL: false
@@ -379,6 +396,7 @@
 		currentText: 'Sekarang',
 		closeText: 'OK',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -400,6 +418,7 @@
         currentText: 'Adesso',
         closeText: 'Chiudi',
         timeFormat: 'HH:mm',
+        timeSuffix: '',
         amNames: ['m.', 'AM', 'A'],
         pmNames: ['p.', 'PM', 'P'],
         isRTL: false
@@ -421,6 +440,7 @@
 		currentText: '現時刻',
 		closeText: '閉じる',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['午前', 'AM', 'A'],
 		pmNames: ['午後', 'PM', 'P'],
 		isRTL: false
@@ -442,6 +462,7 @@
 		currentText: '현재 시각',
 		closeText: '닫기',
 		timeFormat: 'tt h:mm',
+		timeSuffix: '',
 		amNames: ['오전', 'AM', 'A'],
 		pmNames: ['오후', 'PM', 'P'],
 		isRTL: false
@@ -463,6 +484,7 @@
 		currentText: 'Dabar',
 		closeText: 'Uždaryti',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['priešpiet', 'AM', 'A'],
 		pmNames: ['popiet', 'PM', 'P'],
 		isRTL: false
@@ -484,6 +506,7 @@
 		currentText: 'Tagad',
 		closeText: 'Aizvērt',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'AM', 'A'],
 		pmNames: ['PM', 'PM', 'P'],
 		isRTL: false
@@ -505,6 +528,7 @@
 		currentText: 'Vandaag',
 		closeText: 'Sluiten',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -526,6 +550,7 @@
 		currentText: 'Nå',
 		closeText: 'Lukk',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['am', 'AM', 'A'],
 		pmNames: ['pm', 'PM', 'P'],
 		isRTL: false
@@ -547,6 +572,7 @@
 		currentText: 'Teraz',
 		closeText: 'Gotowe',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -568,6 +594,7 @@
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -589,6 +616,7 @@
 		currentText: 'Agora',
 		closeText: 'Fechar',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['a.m.', 'AM', 'A'],
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
@@ -610,6 +638,7 @@
 		currentText: 'Acum',
 		closeText: 'Închide',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -631,6 +660,7 @@
 		currentText: 'Сейчас',
 		closeText: 'Закрыть',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -652,6 +682,7 @@
 		currentText: 'Teraz',
 		closeText: 'Zavrieť',
 		timeFormat: 'H:m',
+		timeSuffix: '',
 		amNames: ['dop.', 'AM', 'A'],
 		pmNames: ['pop.', 'PM', 'P'],
 		isRTL: false
@@ -673,6 +704,7 @@
         currentText: 'Sedaj',
         closeText: 'Zapri',
         timeFormat: 'HH:mm',
+        timeSuffix: '',
         amNames: ['dop.', 'AM', 'A'],
         pmNames: ['pop.', 'PM', 'P'],
         isRTL: false
@@ -694,6 +726,7 @@
 		currentText: 'Сада',
 		closeText: 'Затвори',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -715,6 +748,7 @@
 		currentText: 'Sada',
 		closeText: 'Zatvori',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -736,6 +770,7 @@
 		currentText: 'Nu',
 		closeText: 'Stäng',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -756,7 +791,8 @@
 		timezoneText: 'เขตเวลา',
 		currentText: 'เวลาปัจจุบัน',
 		closeText: 'ปิด',
-		timeFormat: 'hh:mm tt'
+		timeFormat: 'hh:mm tt',
+		timeSuffix: ''
 	};
 
 // source: src/i18n/jquery-ui-timepicker-tr.js
@@ -775,6 +811,7 @@
 		currentText: 'Şu an',
 		closeText: 'Tamam',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['ÖÖ', 'Ö'],
 		pmNames: ['ÖS', 'S'],
 		isRTL: false
@@ -796,6 +833,7 @@
 		currentText: 'Зараз',
 		closeText: 'Закрити',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -817,6 +855,7 @@
 		currentText: 'Hiện thời',
 		closeText: 'Đóng',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['SA', 'S'],
 		pmNames: ['CH', 'C'],
 		isRTL: false
@@ -838,6 +877,7 @@
 		currentText: '现在时间',
 		closeText: '关闭',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
@@ -859,6 +899,7 @@
 		currentText: '現在時間',
 		closeText: '確定',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['上午', 'AM', 'A'],
 		pmNames: ['下午', 'PM', 'P'],
 		isRTL: false

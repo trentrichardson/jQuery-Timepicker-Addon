@@ -13,6 +13,7 @@
 		currentText: 'Τώρα',
 		closeText: 'Κλείσιμο',
 		timeFormat: 'HH:mm',
+		timeSuffix: '',
 		amNames: ['π.μ.', 'AM', 'A'],
 		pmNames: ['μ.μ.', 'PM', 'P'],
 		isRTL: false
