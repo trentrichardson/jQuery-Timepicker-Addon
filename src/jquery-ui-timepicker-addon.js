@@ -109,7 +109,8 @@
 			controlType: 'slider',
 			oneLine: false,
 			defaultValue: null,
-			parse: 'strict'
+			parse: 'strict',
+			afterInject: null
 		};
 		$.extend(this._defaults, this.regional['']);
 	};
@@ -319,6 +320,7 @@
 			this.timeDefined = this._parseTime(currDT);
 			this._limitMinMaxDateTime(dp_inst, false);
 			this._injectTimePicker();
+			this._afterInject();
 		},
 
 		/*
@@ -352,6 +354,16 @@
 				}
 				$.extend(this, timeObj);
 				return true;
+			}
+		},
+
+		/*
+		* Handle callback option after injecting timepicker
+		*/
+		_afterInject: function() {
+			var o = this.inst.settings;
+			if ($.isFunction(o.afterInject)) {
+				o.afterInject.call(this);
 			}
 		},
 
@@ -500,6 +512,7 @@
 				this.timezone_select.change(function () {
 					tp_inst._onTimeChange();
 					tp_inst._onSelectHandler();
+					tp_inst._afterInject();
 				});
 				// End timezone options
 				
@@ -1058,6 +1071,7 @@
 					$(sel).appendTo(obj).change(function (e) {
 						tp_inst._onTimeChange();
 						tp_inst._onSelectHandler();
+						tp_inst._afterInject();
 					});
 
 					return obj;
