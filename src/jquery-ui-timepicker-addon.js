@@ -7,7 +7,13 @@
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
  */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery', 'jquery.ui'], factory);
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
 
 	/*
 	* Lets not redefine timepicker, Prevent "Uncaught RangeError: Maximum call stack size exceeded"
@@ -2241,4 +2247,4 @@
 	*/
 	$.timepicker.version = "@@version";
 
-})(jQuery);
+}));

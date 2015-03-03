@@ -1,7 +1,13 @@
 /*! jQuery Timepicker Addon - v1.5.1 - 2014-09-01
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2015 Trent Richardson; Licensed MIT */
-(function ($) {
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery', 'jquery.ui'], factory);
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
 
 	/*
 	* Lets not redefine timepicker, Prevent "Uncaught RangeError: Maximum call stack size exceeded"
@@ -2235,4 +2241,4 @@
 	*/
 	$.timepicker.version = "1.5.1";
 
-})(jQuery);
+}));
