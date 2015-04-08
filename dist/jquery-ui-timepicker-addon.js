@@ -1548,12 +1548,12 @@
 	$.datepicker._gotoToday = function (id) {
 		var inst = this._getInst($(id)[0]),
 			$dp = inst.dpDiv;
-		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
 		selectLocalTimezone(tp_inst);
 		var now = new Date();
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		this._base_gotoToday(id);
 	};
 
 	/*
