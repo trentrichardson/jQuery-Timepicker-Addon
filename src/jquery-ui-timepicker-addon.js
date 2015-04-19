@@ -1554,12 +1554,12 @@
 	$.datepicker._gotoToday = function (id) {
 		var inst = this._getInst($(id)[0]),
 			$dp = inst.dpDiv;
-		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
 		selectLocalTimezone(tp_inst);
 		var now = new Date();
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		this._base_gotoToday(id);
 	};
 
 	/*
@@ -1717,7 +1717,8 @@
 			}
 
 			var date = this._getDate(inst);
-			if (date && tp_inst._parseTime($(target).val(), tp_inst.timeOnly)) {
+			var currDT = $.trim((tp_inst.$altInput && tp_inst._defaults.altFieldTimeOnly) ? tp_inst.$input.val() + ' ' + tp_inst.$altInput.val() : tp_inst.$input.val());
+			if (date && tp_inst._parseTime(currDT, !inst.settings.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
 				date.setMicroseconds(tp_inst.microsec);
 
