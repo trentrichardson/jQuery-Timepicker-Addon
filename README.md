@@ -23,7 +23,7 @@ Rails with Bower
 -----------------
 If you happen to use Rails with the [bower](gem "bower-rails", "~> 0.8.3") gem, here it is to use it easily :
 #### Bowerfile 
-```asset "jqueryui-timepicker-addon", "1.5.4"```
+```asset "jqueryui-timepicker-addon", "1.5.6"```
 
 #### application.js
 ```javascript
