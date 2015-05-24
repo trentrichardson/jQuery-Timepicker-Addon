@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.5.4 - 2015-05-11
+/*! jQuery Timepicker Addon - v1.5.5 - 2015-05-24
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2015 Trent Richardson; Licensed MIT */
 
@@ -247,6 +247,28 @@
 		pmNames: ['p.m.', 'PM', 'P'],
 		isRTL: false
 	};
+
+// source: src/i18n/jquery-ui-timepicker-fa.js
+/* Persian translation for the jQuery Timepicker Addon */
+/* Written by Meysam Pour Ganji */
+
+    $.timepicker.regional['fa'] = {
+        timeOnlyTitle: 'انتخاب زمان',
+        timeText: 'زمان',
+        hourText: 'ساعت',
+        minuteText: 'دقیقه',
+        secondText: 'ثانیه',
+        millisecText: 'میلی ثانیه',
+        microsecText: 'میکرو ثانیه',
+        timezoneText: 'منطقه زمانی',
+        currentText: 'الان',
+        closeText: 'انتخاب',
+        timeFormat: 'HH:mm',
+        timeSuffix: '',
+        amNames: ['قبل ظهر', 'AM', 'A'],
+        pmNames: ['بعد ظهر', 'PM', 'P'],
+        isRTL: true
+    };
 
 // source: src/i18n/jquery-ui-timepicker-fi.js
 /* Finnish translation for the jQuery Timepicker Addon */
