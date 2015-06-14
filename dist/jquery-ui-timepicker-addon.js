@@ -1546,14 +1546,14 @@
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function (id) {
-		var inst = this._getInst($(id)[0]),
-			$dp = inst.dpDiv;
+		var inst = this._getInst($(id)[0]);
+		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
-		selectLocalTimezone(tp_inst);
+		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
+		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() - tzoffset);
 		this._setTime(inst, now);
 		this._setDate(inst, now);
-		this._base_gotoToday(id);
 	};
 
 	/*
