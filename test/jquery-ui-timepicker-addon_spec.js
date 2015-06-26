@@ -696,4 +696,58 @@ describe('datetimepicker', function() {
 			expect(inputFocusSpy).not.toHaveBeenCalled();
 		});
 	});
+
+	describe('timeInput', function () {
+		var $input;
+		beforeEach(function () {
+			$input = affix('input');
+		});
+		describe('option', function () {
+			it('just display, input disabled', function () {
+				$input.datetimepicker();
+				$input.trigger('focus');
+				var $timeInput = $('.ui_tpicker_time_input');
+				expect($timeInput.attr('disabled')).toBe('disabled');
+			});
+
+			it('allow type new time', function () {
+				$input.datetimepicker({timeInput: true});
+				$input.trigger('focus');
+				var $timeInput = $('.ui_tpicker_time_input');
+				expect($timeInput.attr('disabled')).toBeUndefined();
+			});
+		});
+
+		describe('behavior', function () {
+			beforeEach(function () {
+				$input.datetimepicker({timeInput: true});
+				$input.trigger('focus');
+			});
+			it('should update timepicker time', function () {
+				var inputTime = '12:34';
+				var inst = $.datepicker._getInst($input.get(0));
+				var tp_inst = $.datepicker._get(inst, 'timepicker');
+				var $timeInput = inst.dpDiv.find('.ui_tpicker_time_input');
+
+				$timeInput.val(inputTime).trigger('change');
+				expect(tp_inst.formattedTime).toEqual(inputTime);
+			});
+			it('revert to previous time value if input is invalid', function () {
+				var invalidTime = '123:456';
+				var inst = $.datepicker._getInst($input.get(0));
+				var tp_inst = $.datepicker._get(inst, 'timepicker');
+				var $timeInput = inst.dpDiv.find('.ui_tpicker_time_input');
+
+				var previousTimeString = tp_inst.formattedTime;
+				$timeInput.val(invalidTime).trigger('change');
+				expect(tp_inst.formattedTime).toEqual(previousTimeString);
+			});
+		});
+
+		afterEach(function () {
+			var $widget = $input.datepicker('widget');
+			$input.datepicker('destroy');
+			$widget.remove();
+		});
+	});
 });
