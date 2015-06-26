@@ -287,7 +287,21 @@ $('#alt_example_3').datetimepicker({
 });
 </pre>
 	</div>
-
+	</div>
+	<h3 id="input_examples">Time Input</h3>
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Allows for direct input of time string</p>
+		<div>
+			<input type="text" name="input_example_1" id="input_example_1" value="08/20/2014 09:22 -0400" />
+		</div>
+<pre>
+$('#input_example_1').datetimepicker(
+  timeInput: true
+);
+</pre>
+  </div>
+	
 	<!-- ============= example -->
 	<div class="example-container">
 		<p>With inline mode using altField:</p>
@@ -541,6 +555,4 @@ $('#utility_example_3').text(JSON.stringify(
 	$.datepicker.parseTime('HH:mm:ss:l z', "14:36:21:765 +2000", {}) 
 ));
 </pre>
-	</div>
-
 </div>
