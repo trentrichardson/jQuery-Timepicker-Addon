@@ -9,6 +9,7 @@
 		<li><a href="#timezone_examples" title="Using Timezones">Using Timezones</a></li>
 		<li><a href="#slider_examples" title="Slider Modifications">Slider Modifications</a></li>
 		<li><a href="#alt_examples" title="Alternate Field">Alternate Fields</a></li>
+		<li><a href="#input_examples" title="Time Input">Time Input</a></li>
 		<li><a href="#rest_examples" title="Time Restraints">Time Restraints</a></li>
 		<li><a href="#range_examples" title="Time Ranges">Time Ranges</a></li>
 		<li><a href="#utility_examples" title="Utilities">Utilities</a></li>
@@ -287,20 +288,6 @@ $('#alt_example_3').datetimepicker({
 });
 </pre>
 	</div>
-	</div>
-	<h3 id="input_examples">Time Input</h3>
-	<!-- ============= example -->
-	<div class="example-container">
-		<p>Allows for direct input of time string</p>
-		<div>
-			<input type="text" name="input_example_1" id="input_example_1" value="08/20/2014 09:22 -0400" />
-		</div>
-<pre>
-$('#input_example_1').datetimepicker(
-  timeInput: true
-);
-</pre>
-  </div>
 	
 	<!-- ============= example -->
 	<div class="example-container">
@@ -313,6 +300,38 @@ $('#input_example_1').datetimepicker(
 $('#alt_example_4').datetimepicker({
 	altField: "#alt_example_4_alt",
 	altFieldTimeOnly: false
+});
+</pre>
+	</div>
+	
+<h3 id="input_examples">Time Input</h3>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Allows time displayed inside the picker to allow being typed in.</p>
+		<div>
+			<input type="text" name="input_example_1" id="input_example_1" value="08/20/2014 01:22 pm" />
+		</div>
+<pre>
+$('#input_example_1').datetimepicker({
+	timeInput: true,
+	timeFormat: "hh:mm tt"
+});
+</pre>
+	</div>
+
+	<!-- ============= example -->
+	<div class="example-container">
+		<p>Don't show any sliders, only the time input.</p>
+		<div>
+			<input type="text" name="input_example_1" id="input_example_2" value="08/20/2014 01:22 pm" />
+		</div>
+<pre>
+$('#input_example_2').datetimepicker({
+	timeInput: true,
+	timeFormat: "hh:mm tt",
+	showHour: false,
+	showMinute: false
 });
 </pre>
 	</div>

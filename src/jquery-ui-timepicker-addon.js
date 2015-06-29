@@ -544,7 +544,7 @@
 						this.value = tp_inst.formattedTime;
 						this.blur();
 					}
-				})
+				});
 
 				if (this.inst !== null) {
 					var timeDefined = this.timeDefined;
