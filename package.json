@@ -1,6 +1,6 @@
 {
 	"name": "jquery-ui-timepicker-addon",
-	"version": "0.0.0-ignored",
+	"version": "1.5.5",
 	"engines": {
 		"node": ">= 0.8.0"
 	},
