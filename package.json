@@ -1,12 +1,30 @@
 {
-	"name": "jQuery-Timepicker-Addon",
+	"name": "jquery-ui-timepicker-addon",
 	"version": "0.0.0-ignored",
 	"engines": {
 		"node": ">= 0.8.0"
 	},
-	"scripts": {
-		"test": "grunt jasmine"
+	"keywords": [
+		"timepicker", "jquery", "datetime", "jquery-ui"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/trentrichardson/jQuery-Timepicker-Addon.git"
 	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/master/LICENSE-MIT"
+		}
+	],
+	"homepage": "http://trentrichardson.com/examples/timepicker",
+	"main": "./dist/jquery-ui-timepicker-addon.js",
+	"browser": "./dist/jquery-ui-timepicker-addon.js",
+	"scripts": {
+		"start": "grunt",
+		"test": "grunt test"
+	},
+	"dependencies": {},
 	"devDependencies": {
 		"grunt-contrib-jshint": "~0.1.1",
 		"grunt-contrib-jasmine": "~0.5.1",
