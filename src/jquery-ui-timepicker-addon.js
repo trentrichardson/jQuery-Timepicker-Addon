@@ -1564,8 +1564,8 @@
 		return $.datepicker._base_doKeyUp(event);
 	};
 
-/*
-	* override "Today" button to also grab the time.
+	/*
+	* override "Today" button to also grab the time and set it to input field.
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function (id) {
