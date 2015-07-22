@@ -1564,7 +1564,7 @@
 		return $.datepicker._base_doKeyUp(event);
 	};
 
-	/*
+/*
 	* override "Today" button to also grab the time.
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
@@ -1577,6 +1577,7 @@
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		tp_inst._onSelectHandler();
 	};
 
 	/*
