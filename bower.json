@@ -6,6 +6,8 @@
 		"url": "git://github.com/trentrichardson/jQuery-Timepicker-Addon.git"
 	},
 	"main": ["dist/jquery-ui-timepicker-addon.js", "dist/jquery-ui-timepicker-addon.css"],
+	"ignore": [
+	],
 	"dependencies": {
 	}
 }
