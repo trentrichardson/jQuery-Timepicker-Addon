@@ -9,7 +9,7 @@
 
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
-		define(['jquery', 'jquery.ui'], factory);
+		define(['jquery', 'jquery-ui'], factory);
 	} else {
 		factory(jQuery);
 	}
@@ -393,7 +393,7 @@
 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
 				var noDisplay = ' ui_tpicker_unit_hide',
 					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + (o.oneLine && o.controlType === 'select' ? ' ui-timepicker-oneLine' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label' + ((o.showTime) ? '' : noDisplay) + '">' + o.timeText + '</dt>' +
-								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"></dd>';
+								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"><input class="ui_tpicker_time_input" ' + (o.timeInput ? '' : 'disabled') + '/></dd>';
 
 				// Create the markup
 				for (i = 0, l = this.units.length; i < l; i++) {
@@ -530,7 +530,21 @@
 					$dp.append($tp);
 				}
 
-				this.$timeObj = $tp.find('.ui_tpicker_time');
+				this.$timeObj = $tp.find('.ui_tpicker_time_input');
+				this.$timeObj.change(function () {
+					var timeFormat = tp_inst.inst.settings.timeFormat;
+					var parsedTime = $.datepicker.parseTime(timeFormat, this.value);
+					var update = new Date();
+					if (parsedTime) {
+						update.setHours(parsedTime.hour);
+						update.setMinutes(parsedTime.minute);
+						update.setSeconds(parsedTime.second);
+						$.datepicker._setTime(tp_inst.inst, update);
+					} else {
+						this.value = tp_inst.formattedTime;
+						this.blur();
+					}
+				});
 
 				if (this.inst !== null) {
 					var timeDefined = this.timeDefined;
@@ -868,12 +882,15 @@
 			// Updates the time within the timepicker
 			this.formattedTime = $.datepicker.formatTime(o.timeFormat, this, o);
 			if (this.$timeObj) {
+				var sPos = this.$timeObj[0].selectionStart;
+				var ePos = this.$timeObj[0].selectionEnd;
 				if (pickerTimeFormat === o.timeFormat) {
-					this.$timeObj.text(this.formattedTime + pickerTimeSuffix);
+					this.$timeObj.val(this.formattedTime + pickerTimeSuffix);
 				}
 				else {
-					this.$timeObj.text($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
+					this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
+				this.$timeObj[0].setSelectionRange(sPos, ePos);
 			}
 
 			this.timeDefined = true;
@@ -1548,18 +1565,19 @@
 	};
 
 	/*
-	* override "Today" button to also grab the time.
+	* override "Today" button to also grab the time and set it to input field.
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function (id) {
-		var inst = this._getInst($(id)[0]),
-			$dp = inst.dpDiv;
+		var inst = this._getInst($(id)[0]);
+		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
-		selectLocalTimezone(tp_inst);
+		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
+		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
 		this._setTime(inst, now);
 		this._setDate(inst, now);
-		this._base_gotoToday(id);
+		tp_inst._onSelectHandler();
 	};
 
 	/*

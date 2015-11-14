@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.5.5 - 2015-05-24
+/*! jQuery Timepicker Addon - v1.5.6 - 2015-11-14
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2015 Trent Richardson; Licensed MIT */
 
@@ -531,6 +531,28 @@
 		timeSuffix: '',
 		amNames: ['AM', 'AM', 'A'],
 		pmNames: ['PM', 'PM', 'P'],
+		isRTL: false
+	};
+
+// source: src/i18n/jquery-ui-timepicker-mk.js
+/* Macedonian cyrilic translation for the jQuery Timepicker Addon */
+/* Written by Vlatko Ristovski */
+
+	$.timepicker.regional['mk'] = {
+		timeOnlyTitle: 'Одберете време',
+		timeText: 'Време',
+		hourText: 'Час',
+		minuteText: 'Минути',
+		secondText: 'Секунди',
+		millisecText: 'Милисекунди',
+		microsecText: 'Микросекунди',
+		timezoneText: 'Временска зона',
+		currentText: 'Сега',
+		closeText: 'Затвори',
+		timeFormat: 'HH:mm',
+		timeSuffix: '',
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
 		isRTL: false
 	};
 
