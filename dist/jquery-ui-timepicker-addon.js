@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.5.6 - 2015-05-24
+/*! jQuery Timepicker Addon - v1.5.6 - 2015-11-14
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2015 Trent Richardson; Licensed MIT */
 (function (factory) {
@@ -1559,7 +1559,7 @@
 	};
 
 	/*
-	* override "Today" button to also grab the time.
+	* override "Today" button to also grab the time and set it to input field.
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function (id) {
@@ -1571,6 +1571,7 @@
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		tp_inst._onSelectHandler();
 	};
 
 	/*
