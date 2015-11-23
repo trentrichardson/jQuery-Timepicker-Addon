@@ -2065,8 +2065,12 @@
 			return 0;
 		}
 
-		if (!/^(\-|\+)\d{4}$/.test(normalized)) { // possibly a user defined tz, so just give it back
+		if(/^[a-zA-Z -]+$/.test(normalized)){ // possibly a user defined tz, so just give it back
 			return tzString;
+		}
+
+		if (!/^(\-|\+)\d{4}$/.test(normalized)) { 
+			return parseInt(tzString, 10);
 		}
 
 		return ((normalized.substr(0, 1) === '-' ? -1 : 1) * // plus or minus
