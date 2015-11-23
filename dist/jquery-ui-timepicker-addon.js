@@ -2059,11 +2059,7 @@
 			return 0;
 		}
 
-		if(/^[a-zA-Z -]+$/.test(normalized)){ // possibly a user defined tz, so just give it back
-			return tzString;
-		}
-
-		if (!/^(\-|\+)\d{4}$/.test(normalized)) { 
+		if (!/^(\-|\+)\d{4}$/.test(normalized)) { // possibly a user defined tz, so just give it back
 			return parseInt(tzString, 10);
 		}
 

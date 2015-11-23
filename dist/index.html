@@ -612,27 +612,6 @@ $('#timezone_example_2').datetimepicker({
 </pre>
 	</div>
 
-	<!-- ============= example -->
-	<div class="example-container">
-		<p>You may also use timezone string abbreviations for values.  This should be used with caution.  Computing accurate javascript Date objects may not be possible when trying to retrieve or set the date from timepicker (see setDate and getDate examples below).  For simple input values however this should work.</p>
-		<div>
-	 		<input type="text" name="timezone_example_3" id="timezone_example_3" value="" />
-		</div>					
-<pre>
-$('#timezone_example_3').datetimepicker({
-	timeFormat: 'HH:mm z',
-	timezone: 'MT',
-	timezoneList: [ 
-			{ value: 'ET', label: 'Eastern'}, 
-			{ value: 'CT', label: 'Central' }, 
-			{ value: 'MT', label: 'Mountain' }, 
-			{ value: 'PT', label: 'Pacific' } 
-		]
-});
-
-</pre>
-	</div>
-
 	<h3 id="slider_examples">Slider Modifications</h3>
 
 	<!-- ============= example -->
