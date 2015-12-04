@@ -717,7 +717,7 @@
 				} else if (this.hour===tempMinTime.getHours() && this.minute<tempMinTime.getMinutes()) {
 					this.minute=this._defaults.minuteMin=tempMinTime.getMinutes();
 				} else {						
-					if (this._defaults.hourMin<tempMinTime.getHours()) {
+					if (this._defaults.hourMin>tempMinTime.getHours()) {
 						this._defaults.hourMin=tempMinTime.getHours();
 						this._defaults.minuteMin=tempMinTime.getMinutes();					
 					} else if (this._defaults.hourMin===tempMinTime.getHours()===this.hour && this._defaults.minuteMin<tempMinTime.getMinutes()) {
@@ -736,7 +736,7 @@
 				} else if (this.hour===tempMaxTime.getHours() && this.minute>tempMaxTime.getMinutes()) {							
 					this.minute=this._defaults.minuteMax=tempMaxTime.getMinutes();						
 				} else {
-					if (this._defaults.hourMax>tempMaxTime.getHours()) {
+					if (this._defaults.hourMax<tempMaxTime.getHours()) {
 						this._defaults.hourMax=tempMaxTime.getHours();
 						this._defaults.minuteMax=tempMaxTime.getMinutes();					
 					} else if (this._defaults.hourMax===tempMaxTime.getHours()===this.hour && this._defaults.minuteMax>tempMaxTime.getMinutes()) {
