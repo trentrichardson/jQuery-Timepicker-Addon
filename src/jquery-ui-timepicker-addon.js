@@ -988,7 +988,6 @@
 				this.$input.val(formattedDateTime);
 			}
 
-			this.$input.trigger("change");
 		},
 
 		_onFocus: function () {
