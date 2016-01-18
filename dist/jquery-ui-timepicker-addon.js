@@ -1,6 +1,6 @@
 /*! jQuery Timepicker Addon - v1.6.2 - 2015-11-14
 * http://trentrichardson.com/examples/timepicker
-* Copyright (c) 2015 Trent Richardson; Licensed MIT */
+* Copyright (c) 2016 Trent Richardson; Licensed MIT */
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery', 'jquery-ui'], factory);
@@ -2223,7 +2223,8 @@
 	 * @return {void}
 	 */
 	$.timepicker.log = function () {
-		if (window.console) {
+		// Older IE (9, maybe 10) throw error on accessing `window.console.log.apply`, so check first.
+		if (window.console && window.console.log && window.console.log.apply) {
 			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
 		}
 	};
