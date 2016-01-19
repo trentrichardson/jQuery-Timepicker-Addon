@@ -1735,7 +1735,26 @@
 			}
 
 			var date = this._getDate(inst);
-			var currDT = $.trim((tp_inst.$altInput && tp_inst._defaults.altFieldTimeOnly) ? tp_inst.$input.val() + ' ' + tp_inst.$altInput.val() : tp_inst.$input.val());
+			
+			var currDT = null;
+
+			if (tp_inst.$altInput && tp_inst._defaults.altFieldTimeOnly) {
+				currDT = tp_inst.$input.val() + ' ' + tp_inst.$altInput.val();
+			}
+			else if (tp_inst.$input.get(0).tagName != 'INPUT' && tp_inst.$altInput) {
+				/**
+				 * in case the datetimepicker has been applied to a non-input tag for inline UI,
+				 * and the user has not configured the plugin to display only time in altInput,
+				 * pick current date time from the altInput (and hope for the best, for now, until "ER1" is applied)
+				 *
+				 * @todo ER1. Since altInput can have a totally difference format, convert it to standard format by reading input format from "altFormat" and "altTimeFormat" option values
+				 */
+				currDT = tp_inst.$altInput.val();
+			}
+			else {
+				currDT = tp_inst.$input.val();
+			}
+			
 			if (date && tp_inst._parseTime(currDT, !inst.settings.timeOnly)) {
 				date.setHours(tp_inst.hour, tp_inst.minute, tp_inst.second, tp_inst.millisec);
 				date.setMicroseconds(tp_inst.microsec);
