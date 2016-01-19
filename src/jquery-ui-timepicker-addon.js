@@ -1741,7 +1741,7 @@
 			if (tp_inst.$altInput && tp_inst._defaults.altFieldTimeOnly) {
 				currDT = tp_inst.$input.val() + ' ' + tp_inst.$altInput.val();
 			}
-			else if (tp_inst.$input.get(0).tagName != 'INPUT' && tp_inst.$altInput) {
+			else if (tp_inst.$input.get(0).tagName !== 'INPUT' && tp_inst.$altInput) {
 				/**
 				 * in case the datetimepicker has been applied to a non-input tag for inline UI,
 				 * and the user has not configured the plugin to display only time in altInput,
