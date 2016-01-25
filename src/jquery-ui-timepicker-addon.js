@@ -882,15 +882,17 @@
 			// Updates the time within the timepicker
 			this.formattedTime = $.datepicker.formatTime(o.timeFormat, this, o);
 			if (this.$timeObj) {
-				var sPos = this.$timeObj[0].selectionStart;
-				var ePos = this.$timeObj[0].selectionEnd;
 				if (pickerTimeFormat === o.timeFormat) {
 					this.$timeObj.val(this.formattedTime + pickerTimeSuffix);
 				}
 				else {
 					this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
-				this.$timeObj[0].setSelectionRange(sPos, ePos);
+				if (this.$timeObj[0].setSelectionRange) {
+					var sPos = this.$timeObj[0].selectionStart;
+					var ePos = this.$timeObj[0].selectionEnd;
+					this.$timeObj[0].setSelectionRange(sPos, ePos);
+				}
 			}
 
 			this.timeDefined = true;
