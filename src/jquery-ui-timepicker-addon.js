@@ -1574,6 +1574,10 @@
 		var inst = this._getInst($(id)[0]);
 		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
+		if (!tp_inst) {
+		  return;
+		}
+
 		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
