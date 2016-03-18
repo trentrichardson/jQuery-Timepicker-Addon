@@ -2,7 +2,7 @@
 	"name": "jquery-ui-timepicker-addon",
 	"title": "jQuery Timepicker Addon",
 	"description": "A timepicker addon for jQueryUI datepicker.",
-	"version": "1.6.1",
+	"version": "1.6.2",
 	"modified": "2015-11-14",
 	"homepage": "http://trentrichardson.com/examples/timepicker",
 	"author": {
