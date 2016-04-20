@@ -1,4 +1,4 @@
-/*! jQuery Timepicker Addon - v1.6.2 - 2015-11-14
+/*! jQuery Timepicker Addon - v1.6.2 - 2016-04-20
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2016 Trent Richardson; Licensed MIT */
 (function (factory) {
