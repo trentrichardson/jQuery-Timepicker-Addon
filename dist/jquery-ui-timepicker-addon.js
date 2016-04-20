@@ -1574,7 +1574,7 @@
 
 		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
-		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
+		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + parseInt(tzoffset, 10));
 		this._setTime(inst, now);
 		this._setDate(inst, now);
 		tp_inst._onSelectHandler();
@@ -1707,8 +1707,8 @@
 			if (!tp_inst.support.timezone && tp_inst._defaults.timezone === null) {
 				tp_inst.timezone = tp_date.getTimezoneOffset() * -1;
 			}
-			date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
-			tp_date = $.timepicker.timezoneAdjust(tp_date, tp_inst.timezone);
+			date = $.timepicker.timezoneAdjust(date, $.timepicker.timezoneOffsetString(-date.getTimezoneOffset()), tp_inst.timezone);
+			tp_date = $.timepicker.timezoneAdjust(tp_date, $.timepicker.timezoneOffsetString(-tp_date.getTimezoneOffset()), tp_inst.timezone);
 		}
 
 		this._updateDatepicker(inst);
@@ -1767,7 +1767,7 @@
 					if (!tp_inst.support.timezone && tp_inst._defaults.timezone === null) {
 						tp_inst.timezone = date.getTimezoneOffset() * -1;
 					}
-					date = $.timepicker.timezoneAdjust(date, tp_inst.timezone);
+					date = $.timepicker.timezoneAdjust(date, tp_inst.timezone, $.timepicker.timezoneOffsetString(-date.getTimezoneOffset()));
 				}
 			}
 			return date;
@@ -2096,13 +2096,15 @@
 	/**
 	 * No way to set timezone in js Date, so we must adjust the minutes to compensate. (think setDate, getDate)
 	 * @param  {Date} date
+	 * @param  {string} fromTimezone formatted like "+0500", "-1245"
 	 * @param  {string} toTimezone formatted like "+0500", "-1245"
 	 * @return {Date}
 	 */
-	$.timepicker.timezoneAdjust = function (date, toTimezone) {
+	$.timepicker.timezoneAdjust = function (date, fromTimezone, toTimezone) {
+		var fromTz = $.timepicker.timezoneOffsetNumber(fromTimezone);
 		var toTz = $.timepicker.timezoneOffsetNumber(toTimezone);
 		if (!isNaN(toTz)) {
-			date.setMinutes(date.getMinutes() + -date.getTimezoneOffset() - toTz);
+			date.setMinutes(date.getMinutes() + (-fromTz) - (-toTz));
 		}
 		return date;
 	};

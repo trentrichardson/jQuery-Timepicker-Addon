@@ -1580,7 +1580,7 @@
 
 		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
-		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
+		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + parseInt(tzoffset, 10));
 		this._setTime(inst, now);
 		this._setDate(inst, now);
 		tp_inst._onSelectHandler();
