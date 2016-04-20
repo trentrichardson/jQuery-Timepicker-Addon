@@ -6,6 +6,15 @@
 	},
 	"main": ["dist/jquery-ui-timepicker-addon.js", "dist/jquery-ui-timepicker-addon.css"],
 	"ignore": [
+		"/CONTRIBUTING.md",
+		"/Gruntfile.js",
+		"/README.md",
+		"/composer.json",
+		"/jquery-ui-timepicker-addon.json",
+		"/lib",
+		"/package.json",
+		"/src",
+		"/test"
 	],
 	"dependencies": {
 	}
