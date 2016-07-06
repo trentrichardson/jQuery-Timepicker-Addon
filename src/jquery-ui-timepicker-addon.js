@@ -2029,6 +2029,7 @@
 		}
 
 		parsedTime = $.datepicker.parseTime(timeFormat, parts.timeString, timeSettings);
+		date = $.datepicker._base_parseDate(dateFormat, parts.dateString, dateSettings);
 
 		if (!parsedTime) {
 			throw 'Wrong time format';
