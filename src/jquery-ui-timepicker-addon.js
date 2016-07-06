@@ -2029,8 +2029,8 @@
 		}
 
 		parsedTime = $.datepicker.parseTime(timeFormat, parts.timeString, timeSettings);
-		date = $.datepicker._base_parseDate(dateFormat, parts.dateString, dateSettings);
-
+                // the datepicker parse time method does not respect timezones
+                parsedTime.timezone = timeSettings.timezone;
 		if (!parsedTime) {
 			throw 'Wrong time format';
 		}
