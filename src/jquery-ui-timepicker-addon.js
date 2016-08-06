@@ -1115,7 +1115,7 @@
 				},
 				value: function (tp_inst, obj, unit, val) {
 					var $t = obj.children('select');
-					if (val !== undefined) {
+					if (val) {
 						return $t.val(val);
 					}
 					return $t.val();
