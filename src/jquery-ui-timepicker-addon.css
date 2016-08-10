@@ -5,8 +5,10 @@
 .ui-timepicker-div td { font-size: 90%; }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 .ui-timepicker-div .ui_tpicker_unit_hide{ display: none; }
+/*Fix icon alignment with jQuery UI 1.12*/
+.ui-datepicker .ui-timepicker-div .ui-icon {left: 50%; top: 50%;}
 
-.ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input { background: none; color: inherit; border: none; outline: none; border-bottom: solid 1px #555; width: 95%; }
+.ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input { background: none; color: inherit; border: none; outline: none; border-bottom: solid 0 #555; width: 95%; }
 .ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input:focus { border-bottom-color: #aaa; }
 
 .ui-timepicker-rtl{ direction: rtl; }
