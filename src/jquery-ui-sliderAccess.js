@@ -43,8 +43,8 @@
 						$buttons.children('button').each(function(j, jobj){
 							var $jt = $(this);
 							$jt.button({ 
-											text: o.text, 
-											icons: { primary: $jt.data('icon') }
+											showLabel: o.text, 
+											icon: $jt.data('icon')
 										})
 								.click(function(e){
 											var step = $jt.data('step'),
@@ -72,7 +72,7 @@
 						$t[o.where]($buttons);
 
 						if(o.buttonset){
-							$buttons.removeClass('ui-corner-right').removeClass('ui-corner-left').buttonset();
+							$buttons.removeClass('ui-corner-right').removeClass('ui-corner-left').controlgroup();
 							$buttons.eq(0).addClass('ui-corner-left');
 							$buttons.eq(1).addClass('ui-corner-right');
 						}
