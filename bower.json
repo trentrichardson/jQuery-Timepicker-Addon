@@ -1,6 +1,6 @@
 {
 	"name": "jqueryui-timepicker-addon",
-	"version": "1.6.4",
+	"version": "1.6.5",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:maliMirkec/jQuery-Timepicker-Addon.git"
