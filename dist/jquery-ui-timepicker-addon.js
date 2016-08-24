@@ -1,4 +1,7 @@
-/*! jQuery Timepicker Addon - v1.6.3 - 2016-04-20
+/*! jQuery Timepicker Addon - v1.6.4 - 2016-04-20
+* http://trentrichardson.com/examples/timepicker
+* Copyright (c) 2016 Trent Richardson; Licensed MIT */
+/*! jQuery Timepicker Addon - v1.6.4 - 2016-04-20
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2016 Trent Richardson; Licensed MIT */
 (function (factory) {
@@ -22,7 +25,7 @@
 	*/
 	$.extend($.ui, {
 		timepicker: {
-			version: "1.6.3"
+			version: "1.6.4"
 		}
 	});
 
@@ -2220,7 +2223,9 @@
 		$.fn[method].call(startTime, $.extend({
 			timeOnly: timeOnly,
 			onClose: function (dateText, inst) {
-				checkDates($(this), endTime);
+				if($(endTime)[0].hasAttribute('required')) {
+					checkDates($(this), endTime);
+				}
 			},
 			onSelect: function (selectedDateTime) {
 				selected($(this), endTime, 'minDate');
@@ -2229,7 +2234,9 @@
 		$.fn[method].call(endTime, $.extend({
 			timeOnly: timeOnly,
 			onClose: function (dateText, inst) {
-				checkDates($(this), startTime);
+				if($(startTime)[0].hasAttribute('required')) {
+					checkDates($(this), startTime);
+				}
 			},
 			onSelect: function (selectedDateTime) {
 				selected($(this), startTime, 'maxDate');
@@ -2286,6 +2293,6 @@
 	/*
 	* Keep up with the version
 	*/
-	$.timepicker.version = "1.6.3";
+	$.timepicker.version = "1.6.4";
 
 }));
