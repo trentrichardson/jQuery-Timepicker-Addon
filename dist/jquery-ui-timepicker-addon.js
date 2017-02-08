@@ -1,6 +1,6 @@
-/*! jQuery Timepicker Addon - v1.6.4 - 2016-04-20
+/*! jQuery Timepicker Addon - v1.6.4 - 2017-02-08
 * http://trentrichardson.com/examples/timepicker
-* Copyright (c) 2016 Trent Richardson; Licensed MIT */
+* Copyright (c) 2017 Trent Richardson; Licensed MIT */
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery', 'jquery-ui'], factory);
@@ -882,7 +882,7 @@
 				else {
 					this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
-				if (this.$timeObj[0].setSelectionRange) {
+				if (this.$timeObj[0].setSelectionRange && this.$timeObj.is(":visible")) {
 					var sPos = this.$timeObj[0].selectionStart;
 					var ePos = this.$timeObj[0].selectionEnd;
 					this.$timeObj[0].setSelectionRange(sPos, ePos);

@@ -1,6 +1,6 @@
-/*! jQuery Timepicker Addon - v1.6.4 - 2016-04-20
+/*! jQuery Timepicker Addon - v1.6.4 - 2017-02-08
 * http://trentrichardson.com/examples/timepicker
-* Copyright (c) 2016 Trent Richardson; Licensed MIT */
+* Copyright (c) 2017 Trent Richardson; Licensed MIT */
 
 (function($){
 
@@ -291,6 +291,28 @@
 		pmNames: ['ip.', 'PM', 'P'],
 		isRTL: false
 	};
+
+// source: src/i18n/jquery-ui-timepicker-fo.js
+/* Faroese translation for the jQuery Timepicker Addon */
+/* Written by Torkil Zachariassen */
+
+    $.timepicker.regional['fo'] = {
+        timeOnlyTitle: 'Vel tíð',
+        timeText: 'Tíð',
+        hourText: 'Tími',
+        minuteText: 'Minuttur',
+        secondText: 'Sekund',
+        millisecText: 'Millisekund',
+        microsecText: 'Mikrosekund',
+        timezoneText: 'Tíðarsona',
+        currentText: 'Nú',
+        closeText: 'Lat aftur',
+        timeFormat: 'HH:mm',
+        timeSuffix: '',
+        amNames: ['am', 'AM', 'A'],
+        pmNames: ['pm', 'PM', 'P'],
+        isRTL: false
+    };
 
 // source: src/i18n/jquery-ui-timepicker-fr.js
 /* French translation for the jQuery Timepicker Addon */
