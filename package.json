@@ -26,6 +26,7 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
+		"grunt-cli": "~0.1.13",
 		"grunt-contrib-jshint": "~0.1.1",
 		"grunt-contrib-jasmine": "~0.5.1",
 		"grunt-contrib-concat": "~0.4.0",
