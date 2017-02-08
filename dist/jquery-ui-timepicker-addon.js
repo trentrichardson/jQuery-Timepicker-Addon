@@ -95,6 +95,7 @@
 			microsecGrid: 0,
 			alwaysSetTime: true,
 			separator: ' ',
+			timePortionLocation: 'right',
 			altFieldTimeOnly: true,
 			altTimeFormat: null,
 			altSeparator: null,
@@ -944,7 +945,11 @@
 			if (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === false) {
 				formattedDateTime = this.formattedTime;
 			} else if ((this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) || (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === true)) {
-				formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
+				if (this._defaults.timePortionLocation === 'left') {
+          formattedDateTime = this.formattedTime + this._defaults.timeSuffix + this._defaults.separator +  formattedDateTime;
+        } else {
+          formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
+        }
 			}
 
 			this.formattedDateTime = formattedDateTime;
@@ -1983,6 +1988,7 @@
 		// The idea is to get the number separator occurrences in datetime and the time format requested (since time has
 		// fewer unknowns, mostly numbers and am/pm). We will use the time pattern to split.
 		var separator = computeEffectiveSetting(timeSettings, 'separator'),
+      timePortionLocation = computeEffectiveSetting(timeSettings, 'timePortionLocation'),
 			format = computeEffectiveSetting(timeSettings, 'timeFormat'),
 			timeParts = format.split(separator), // how many occurrences of separator may be in our format?
 			timePartsLen = timeParts.length,
@@ -1990,10 +1996,17 @@
 			allPartsLen = allParts.length;
 
 		if (allPartsLen > 1) {
-			return {
-				dateString: allParts.splice(0, allPartsLen - timePartsLen).join(separator),
-				timeString: allParts.splice(0, timePartsLen).join(separator)
-			};
+      if (timePortionLocation === 'left') {
+        return {
+          timeString: allParts.splice(0, allPartsLen - timePartsLen).join(separator),
+          dateString: allParts.splice(0, timePartsLen).join(separator)
+        };
+      } else {
+        return {
+          dateString: allParts.splice(0, allPartsLen - timePartsLen).join(separator),
+          timeString: allParts.splice(0, timePartsLen).join(separator)
+        };
+      }
 		}
 
 		return {
