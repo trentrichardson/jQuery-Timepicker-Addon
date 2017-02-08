@@ -888,7 +888,7 @@
 				else {
 					this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
-				if (this.$timeObj[0].setSelectionRange) {
+				if (this.$timeObj[0].setSelectionRange && this.$timeObj.is(":visible")) {
 					var sPos = this.$timeObj[0].selectionStart;
 					var ePos = this.$timeObj[0].selectionEnd;
 					this.$timeObj[0].setSelectionRange(sPos, ePos);
