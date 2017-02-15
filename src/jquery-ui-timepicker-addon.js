@@ -166,6 +166,7 @@
 		*/
 		setDefaults: function (settings) {
 			extendRemove(this._defaults, settings || {});
+			this._defaults.timeFormat = 'HH:mm:ss';
 			return this;
 		},
 
