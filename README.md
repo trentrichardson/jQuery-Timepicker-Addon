@@ -3,6 +3,12 @@ jQuery Timepicker Addon
 
 About
 -----
+
+**This project is no longer actively maintained.** Unfortuantely, I no longer work with jQuery and jQueryUI on new projects. jQuery Timepicker Addon served as the timepicker of choice for many years when there weren't many available. I'm thankful of the opportunity to contribute to the community, and thankful to everyone who contributed along the way. These days there are many great alternatives depending on the environment you're developing in. If you need a timepicker with no dependencies check out [flatpickr](https://flatpickr.js.org/).
+
+Best wishes,
+Trent Richardson
+
 - Author: [Trent Richardson](http://trentrichardson.com)
 - Documentation: [http://trentrichardson.com/examples/timepicker/](http://trentrichardson.com/examples/timepicker/)
 - Twitter: [@practicalweb](http://twitter.com/practicalweb)
