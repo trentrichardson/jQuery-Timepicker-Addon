@@ -1,6 +1,6 @@
 /*! jQuery Timepicker Addon - v1.6.4 - 2017-02-08
 * http://trentrichardson.com/examples/timepicker
-* Copyright (c) 2017 Trent Richardson; Licensed MIT */
+* Copyright (c) 2020 Trent Richardson; Licensed MIT */
 
 (function($){
 
@@ -46,6 +46,28 @@
 		amNames: ['AM', 'A'],
 		pmNames: ['PM', 'P'],
 		isRTL: false
+	};
+
+// source: src/i18n/jquery-ui-timepicker-ar.js
+/* Arabic translation for the jQuery Timepicker Addon */
+/* Written by Hamza Rashid hamza1886@gmail.com */
+
+	$.timepicker.regional['ar'] = {
+		timeOnlyTitle: 'اختر الوقت',
+		timeText: 'ساعة',
+		hourText: 'ساعات',
+		minuteText: 'الدقائق',
+		secondText: 'الثواني',
+		millisecText: 'مللي ثانية',
+		microsecText: 'ميكروثانية',
+		timezoneText: 'وحدة زمنية',
+		currentText: 'الآن',
+		closeText: 'منجز',
+		timeFormat: 'HH:mm',
+		timeSuffix: '',
+		amNames: ['AM', 'A'],
+		pmNames: ['PM', 'P'],
+		isRTL: true
 	};
 
 // source: src/i18n/jquery-ui-timepicker-bg.js
