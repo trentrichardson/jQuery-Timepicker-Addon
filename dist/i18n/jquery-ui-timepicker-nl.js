@@ -10,7 +10,7 @@
 		millisecText: 'Milliseconde',
 		microsecText: 'Microseconde',
 		timezoneText: 'Tijdzone',
-		currentText: 'Vandaag',
+		currentText: 'Nu',
 		closeText: 'Sluiten',
 		timeFormat: 'HH:mm',
 		timeSuffix: '',

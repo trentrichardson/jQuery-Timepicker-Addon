@@ -1,5 +1,5 @@
 <!-- ############################################################################# -->
-<!-- Options
+<!-- Options -->
 <!-- ############################################################################# -->
 <div id="tp-options">
 	<h2>Options</h2>
@@ -86,7 +86,7 @@
 		<dt>controlType</dt>
 			<dd><em>Default: 'slider'</em> - Whether to use 'slider' or 'select'. If 'slider' is unavailable through jQueryUI, 'select' will be used. For advanced usage you may pass an object which implements "create", "options", "value" methods to use controls other than sliders or selects.  See the _controls property in the source code for more details.
 <pre>{
-	create: function(tp_inst, obj, unit, val, min, max, step){	
+	create: function(tp_inst, obj, unit, val, min, max, step){
 		// generate whatever controls you want here, just return obj
 	},
 	options: function(tp_inst, obj, unit, opts, val){
@@ -202,10 +202,10 @@
 	<dl class="defs">
 		<dt>showButtonPanel</dt>
 			<dd><em>Default: true</em> - Whether to show the button panel at the bottom.  This is generally needed.</dd>
-    			
+
     <dt>timeInput</dt>
 			<dd><em>Default: false</em> - Allows direct input in time field</dd>
-			
+
 		<dt>timeOnly</dt>
 			<dd><em>Default: false</em> - Hide the datepicker and only provide a time interface.</dd>
 
@@ -226,7 +226,7 @@
 
 		<dt>pickerTimeFormat</dt>
 			<dd><em>Default: (timeFormat option)</em> - How to format the time displayed within the timepicker.</dd>
-		
+
 		<dt>pickerTimeSuffix</dt>
 			<dd><em>Default: (timeSuffix option)</em> - String to place after the formatted time within the timepicker.</dd>
 
@@ -258,7 +258,7 @@
 			<dd><em>Default: null</em> - String of the maximum time allowed. '8:00 pm' will restrict to times before 8pm</dd>
 
 		<dt>parse</dt>
-			<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object: 
+			<dd><em>Default: 'strict'</em> - How to parse the time string.  Two methods are provided: 'strict' which must match the timeFormat exactly, and 'loose' which uses javascript's new Date(timeString) to guess the time.  You may also pass in a function(timeFormat, timeString, options) to handle the parsing yourself, returning a simple object:
 <pre>{
 	hour: 19,
 	minute: 10,

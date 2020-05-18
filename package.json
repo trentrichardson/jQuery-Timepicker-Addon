@@ -1,11 +1,14 @@
 {
 	"name": "jquery-ui-timepicker-addon",
-	"version": "1.6.3",
+	"version": "1.6.4",
 	"engines": {
 		"node": ">= 0.8.0"
 	},
 	"keywords": [
-		"timepicker", "jquery", "datetime", "jquery-ui"
+		"timepicker",
+		"jquery",
+		"datetime",
+		"jquery-ui"
 	],
 	"repository": {
 		"type": "git",
