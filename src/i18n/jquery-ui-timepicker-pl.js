@@ -21,7 +21,7 @@
 		monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
 		monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
 		dayNames: ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'],
-		dayNamesMin: ['ndz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob', ],
+		dayNamesMin: ['ndz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'],
 		firstDay: 1,
 		isRTL: false
 	};
