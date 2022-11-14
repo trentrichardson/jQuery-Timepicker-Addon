@@ -10,7 +10,7 @@
 		secondText: 'Segundos',
 		millisecText: 'Milisegundos',
 		microsecText: 'Microsegundos',
-		timezoneText: 'Uso horario',
+		timezoneText: 'Zona horaria',
 		currentText: 'Hoy',
 		closeText: 'Cerrar',
 		timeFormat: 'HH:mm',
