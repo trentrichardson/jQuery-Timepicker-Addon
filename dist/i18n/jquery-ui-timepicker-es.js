@@ -11,7 +11,7 @@
 		millisecText: 'Milisegundos',
 		microsecText: 'Microsegundos',
 		timezoneText: 'Uso horario',
-		currentText: 'Hoy',
+		currentText: 'Ahora',
 		closeText: 'Cerrar',
 		timeFormat: 'HH:mm',
 		timeSuffix: '',
